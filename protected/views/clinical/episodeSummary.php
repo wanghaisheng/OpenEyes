@@ -17,41 +17,41 @@ if (!empty($episode)) {
 	$diagnosis = $episode->getPrincipalDiagnosis();
 
 	if (empty($diagnosis)) {
-					$eye = 'No diagnosis';
-					$text = 'No diagnosis';
+					$eye = Yii::t('strings','No diagnosis');
+					$text = Yii::t('strings','No diagnosis');
 	} else {
 					$eye = $diagnosis->getEyeText();
 					$text = $diagnosis->disorder->term;
 	}
 ?>
-<h3>Episode Summary (<?php echo $episode->firm->serviceSpecialtyAssignment->specialty->name?>)</h3>
+<h3><?php echo Yii::t('strings','Episode Summary')?> (<?php echo $episode->firm->serviceSpecialtyAssignment->specialty->name?>)</h3>
 
-<h4>Start date:</h4>
+<h4><?php echo Yii::t('strings','Start date')?>:</h4>
 <div class="eventHighlight">
 	<h4><?php echo date('d M Y', strtotime($episode->start_date))?></h4>
 </div>
 
-<h4>Principal eye:</h4>
+<h4><?php echo Yii::t('strings','Principal eye')?>:</h4>
 <div class="eventHighlight">
 	<h4><?php echo $eye?></h4>
 </div>
 
-<h4>End date:</h4>
+<h4><?php echo Yii::t('strings','End date')?>:</h4>
 <div class="eventHighlight">
-	<h4><?php echo !empty($episode->end_date) ? $episode->end_date : '(still open)'?></h4>
+	<h4><?php echo !empty($episode->end_date) ? $episode->end_date : '('.Yii::t('strings','still open').')'?></h4>
 </div>
 
-<h4>Principal diagnosis:</h4>
+<h4><?php echo Yii::t('strings','Principal diagnosis')?>:</h4>
 <div class="eventHighlight">
 	<h4><?php echo $text?></h4>
 </div>
 
-<h4>Specialty:</h4>
+<h4><?php echo Yii::t('strings','Specialty')?>:</h4>
 <div class="eventHighlight">
 	<h4><?php echo $episode->firm->serviceSpecialtyAssignment->specialty->name?></h4>
 </div>
 
-<h4>Consultant firm:</h4>
+<h4><?php echo Yii::t('strings','Consultant firm')?>:</h4>
 <div class="eventHighlight">
 	<h4><?php echo $episode->firm->name?></h4>
 </div>
@@ -78,7 +78,7 @@ if (!empty($episode)) {
 			height: 140,
 			modal: false,
 			buttons: {
-				"Close episode": function() {
+				"<?php echo Yii::t('strings','Close episode')?>": function() {
 					$.ajax({
 						url: $('#closelink').attr('href'),
 						type: 'GET',
@@ -107,11 +107,11 @@ if (!empty($episode)) {
 		<!--button id="close-episode" type="submit" value="submit" class="wBtn_close-episode ir">Close Episode</button-->
 
 		<div id="close-episode-popup" class="popup red" style="display: none;">
-			<p style="text-align:left;">You are closing this episode. This can not be undone. Once an episode is closed it can not be re-opened.</p>
-			<p><strong>Are you sure?</strong></p>
+			<p style="text-align:left;"><?php echo Yii::t('strings','You are closing this episode. This can not be undone. Once an episode is closed it can not be re-opened')?>.</p>
+			<p><strong><?php echo Yii::t('strings','Are you sure')?>?</strong></p>
 			<div class="action_options">
-				<span class="aBtn"><a id="yes-close-episode" href="#"><strong>Yes, I am</strong></a></span>
-				<span class="aBtn"><a id="no-close-episode" href="#"><strong>No, cancel this.</strong></a></span>
+				<span class="aBtn"><a id="yes-close-episode" href="#"><strong><?php echo Yii::t('strings','Yes, I am')?></strong></a></span>
+				<span class="aBtn"><a id="no-close-episode" href="#"><strong><?php echo Yii::t('strings','No, cancel this')?>.</strong></a></span>
 			</div>
 		</div>
 	</div>

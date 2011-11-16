@@ -50,36 +50,36 @@ if (empty($model->event_id)) {
 					</div>
 					<!-- Details -->
 					<?php if (empty($model->event_id)) {?>
-						<h3>Book Operation</h3>
+						<h3><?php echo Yii::t('strings','Book Operation')?></h3>
 					<?php }else{?>
-						<h3>Edit Operation</h3>
+						<h3><?php echo Yii::t('strings','Edit Operation')?></h3>
 					<?php }?>
-					<h4>Select diagnosis</h4>
+					<h4><?php echo Yii::t('strings','Select diagnosis')?></h4>
  
 					<div id="editEyeSelection" class="eventDetail">
-						<div class="label">Select eye(s):</div>
+						<div class="label"><?php echo Yii::t('strings','Select eye(s)')?>:</div>
 						<div class="data">
 							<input id="ytElementDiagnosis_eye" type="hidden" value="" name="ElementDiagnosis[eye]" />
 							<span class="group">
 							<input id="ElementDiagnosis_eye_0" value="1"<?php if ($diagnosis->eye == '1') {?> checked="checked"<?php }?> type="radio" name="ElementDiagnosis[eye]" />
-							<label for="ElementDiagnosis_eye_0">Right</label>
+							<label for="ElementDiagnosis_eye_0"><?php echo Yii::t('strings','Right')?></label>
 							</span>
 							<span class="group">
 							<input id="ElementDiagnosis_eye_1" value="0"<?php if (empty($diagnosis->eye)) {?> checked="checked"<?php }?> type="radio" name="ElementDiagnosis[eye]" />
-							<label for="ElementDiagnosis_eye_1">Left</label>
+							<label for="ElementDiagnosis_eye_1"><?php echo Yii::t('strings','Left')?></label>
 							</span>
 							<span class="group">
 							<input id="ElementDiagnosis_eye_2" value="2"<?php if ($diagnosis->eye == '2') {?> checked="checked"<?php }?> type="radio" name="ElementDiagnosis[eye]" />
-							<label for="ElementDiagnosis_eye_2">Both</label>
+							<label for="ElementDiagnosis_eye_2"><?php echo Yii::t('strings','Both')?></label>
 							</span>
 						</div>
 					</div>
  
 					<div id="editDiagnosis" class="eventDetail" style="display: none;">
-						<div class="label">Enter diagnosis:</div>
+						<div class="label"><?php echo Yii::t('strings','Enter diagnosis')?>:</div>
 						<div class="data">
-							<?php echo CHtml::dropDownList('ElementDiagnosis[disorder_id]', '', CommonOphthalmicDisorder::getList(Firm::model()->findByPk($this->selectedFirmId)), array('empty' => 'Select a commonly used diagnosis')); ?>
-							<span style="display:block; margin-top:10px; margin-bottom:10px;"><strong>or</strong></span>
+							<?php echo CHtml::dropDownList('ElementDiagnosis[disorder_id]', '', CommonOphthalmicDisorder::getList(Firm::model()->findByPk($this->selectedFirmId)), array('empty' => Yii::t('string','Select a commonly used diagnosis'))); ?>
+							<span style="display:block; margin-top:10px; margin-bottom:10px;"><strong><?php echo Yii::t('strings','or')?></strong></span>
 							<?php
 							$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 								'name'=>'ElementDiagnosis[disorder_id]',
@@ -107,10 +107,10 @@ if (empty($model->event_id)) {
 					</div>
 
 					<div id="enteredDiagnosis" class="eventDetail">
-						<div class="label">Selected diagnosis:</div>
+						<div class="label"><?php echo Yii::t('strings','Selected diagnosis')?>:</div>
 						<div class="data">
 							<span id="enteredDiagnosisText" class="bold" style="margin-right:20px;"><?php echo $value?></span>
-							<button id="modifyDiagnosis" type="submit" value="submit" class="smBtn_modify ir">Modify</button>
+							<button id="modifyDiagnosis" type="submit" value="submit" class="smBtn_modify ir"><?php echo Yii::t('strings','Modify')?></button>
 							<input type="hidden" name="ElementDiagnosis[disorder_id]" id="savedDiagnosis" value="<?php echo $value?>" />
 						</div>
 					</div>
@@ -122,7 +122,7 @@ if (empty($model->event_id)) {
 								$('input[name="ElementDiagnosis[disorder_id]"]').focus();
 							}
 						});
-						$('input[name="ElementDiagnosis[disorder_id]"]').watermark('type the first few characters of a diagnosis');
+						$('input[name="ElementDiagnosis[disorder_id]"]').watermark('<?php echo Yii::t('strings','type the first few characters of a diagnosis')?>');
 						$('#modifyDiagnosis').click(function() {
 							$('input[id=ElementDiagnosis_disorder_id_0]').val('');
 							$('input[id=savedDiagnosis]').val('');

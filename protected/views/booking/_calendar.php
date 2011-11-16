@@ -31,7 +31,7 @@ $nextYear = date('Y-m-d', mktime(0,0,0, date('m'), 1, date('Y')+1));
 							echo CHtml::hiddenField('operation', $operation->id);
 							echo CHtml::hiddenField('pmonth', $lastMonth);
 							echo '<span class="button">';
-							echo '<button type="submit" value="submit" name="yt1" id="previous_month" class="wBtn_previous-month ir">Previous Month</button>';
+							echo '<button type="submit" value="submit" name="yt1" id="previous_month" class="wBtn_previous-month ir">'.Yii::t('strings','Previous Month').'</button>';
 							echo '</span>';
 							echo CHtml::closeTag('form');
 							?>
@@ -45,7 +45,7 @@ $nextYear = date('Y-m-d', mktime(0,0,0, date('m'), 1, date('Y')+1));
 							echo CHtml::hiddenField('operation', $operation->id);
 							echo CHtml::hiddenField('nmonth', $nextMonth);
 							echo '<span class="button">';
-							echo '<button type="submit" value="submit" name="yt1" id="next_month" class="wBtn_next-month ir">Next Month</button>';
+							echo '<button type="submit" value="submit" name="yt1" id="next_month" class="wBtn_next-month ir">'.Yii::t('strings','Next Month').'</button>';
 							echo '</span>';
 							echo CHtml::closeTag('form'); ?>
 						<?php }?>
@@ -83,14 +83,14 @@ $nextYear = date('Y-m-d', mktime(0,0,0, date('m'), 1, date('Y')+1));
 				<tr>
 					<td colspan="8">
 						<div id="key">
-						<span>Key:</span>
-							<div class="container" id="day"><div class="color_box"></div><div class="label">Day of the week</div></div>
-							<div class="container" id="available"><div class="color_box"></div><div class="label">Slots Available</div></div>
-							<div class="container" id="limited"><div class="color_box"></div><div class="label">Limited Slots</div></div>
-							<div class="container" id="full"><div class="color_box"></div><div class="label">Full</div></div>
-							<div class="container" id="closed"><div class="color_box"></div><div class="label">Theatre Closed</div></div>
-							<div class="container" id="selected_date"><div class="color_box"></div><div class="label">Selected Date</div></div>
-							<div class="container" id="outside_rtt"><div class="color_box"></div><div class="label">Outside RTT</div></div>
+						<span><?php echo Yii::t('strings','Key')?>:</span>
+							<div class="container" id="day"><div class="color_box"></div><div class="label"><?php echo Yii::t('strings','Day of the week')?></div></div>
+							<div class="container" id="available"><div class="color_box"></div><div class="label"><?php echo Yii::t('strings','Slots Available')?></div></div>
+							<div class="container" id="limited"><div class="color_box"></div><div class="label"><?php echo Yii::t('strings','Limited Slots')?></div></div>
+							<div class="container" id="full"><div class="color_box"></div><div class="label"><?php echo Yii::t('strings','Full')?></div></div>
+							<div class="container" id="closed"><div class="color_box"></div><div class="label"><?php echo Yii::t('strings','Theatre Closed')?></div></div>
+							<div class="container" id="selected_date"><div class="color_box"></div><div class="label"><?php echo Yii::t('strings','Selected Date')?></div></div>
+							<div class="container" id="outside_rtt"><div class="color_box"></div><div class="label"><?php echo Yii::t('strings','Outside RTT')?></div></div>
 						</div>
 					</td>
 				</tr>

@@ -12,10 +12,10 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>MEDICATION: <br />
+?><?php echo Yii::t('strings','MEDICATION')?>: <br />
 
 	<div class="row">
-		<label for="ElementMedication_value">Phrase:</label>
+		<label for="ElementMedication_value"><?php echo Yii::t('strings','Phrase')?>:</label>
 		<?php echo CHtml::dropDownList('ElementMedication[phrase]', '', $model->getPhraseBySpecialtyOptions('Medication'),
 			array('onChange' => 'appendText($(this), $("#ElementMedication_value"));')); ?>
 	</div>

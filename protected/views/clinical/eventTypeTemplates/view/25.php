@@ -23,25 +23,25 @@ $cancelledBookings = $operation->getCancelledBookings();
 
 ?>
 <!-- Details -->
-<h3>Operation (<?php echo $operation->getStatusText()?>)</h3>
+<h3><?php echo Yii::t('strings','Operation')?> (<?php echo $operation->getStatusText()?>)</h3>
 
-<h4>User</h4>
+<h4><?php echo Yii::t('strings','User')?></h4>
 <div class="eventHighlight">
         <h4><?php echo $operation->event->user->username ?> on <?php echo date('d M Y', strtotime($operation->event->datetime)) ?> at <?php echo date('H:i', strtotime($operation->event->datetime)) ?></h4>
 </div>
 
-<h4>Diagnosis</h4>
+<h4><?php echo Yii::t('strings','Diagnosis')?></h4>
 <div class="eventHighlight">
 	<?php $disorder = $operation->getDisorder(); ?>
-	<h4><?php echo !empty($disorder) ? $operation->getDisorder() : 'Unknown' ?></h4>
+	<h4><?php echo !empty($disorder) ? $operation->getDisorder() : Yii::t('strings','Unknown') ?></h4>
 </div>
 
-<h4>Diagnosis Eye</h4>
+<h4><?php echo Yii::t('strings','Diagnosis Eye')?></h4>
 <div class="eventHighlight">
-        <h4><?php echo !empty($disorder) ? $operation->getEyeText() : 'Unknown' ?></h4>
+        <h4><?php echo !empty($disorder) ? $operation->getEyeText() : Yii::t('strings','Unknown') ?></h4>
 </div>
 
-<h4>Operation</h4>
+<h4><?php echo Yii::t('strings','Operation')?></h4>
 <div class="eventHighlight">
 	<h4><?php
 foreach ($elements as $element) {
@@ -52,7 +52,7 @@ foreach ($elements as $element) {
 		if (get_class($element) == 'ElementOperation') {
 			$procedureList = array();
 			foreach ($element->procedures as $procedure) {
-				echo "{$procedure->term} ({$procedure->default_duration} minutes)<br />";
+				echo "{$procedure->term} ({$procedure->default_duration} ".Yii::t('strings','minutes').")<br />";
 				$procedureList[] = $procedure->short_format;
 			}
 		}
@@ -62,31 +62,31 @@ foreach ($elements as $element) {
 </div>
 
 
-<h4>Operation Eye</h4>
+<h4><?php echo Yii::t('strings','Operation Eye')?></h4>
 <div class="eventHighlight">
         <h4><?php echo $operation->getEyeText(); ?></h4>
 </div>
 
-<h4>Total Duration</h4>
+<h4><?php echo Yii::t('strings','Total Duration')?></h4>
 <div class="eventHighlight">
-        <h4><?php echo $operation->total_duration; ?> minutes</h4>
+        <h4><?php echo $operation->total_duration; ?> <?php echo Yii::t('strings','minutes')?></h4>
 </div>
 
-<h4>Comments</h4>
+<h4><?php echo Yii::t('strings','Comments')?></h4>
 <div class="eventHighlight">
-        <h4><?php echo empty($operation->comments) ? 'none' : $operation->comments ?></h4>
+        <h4><?php echo empty($operation->comments) ? Yii::t('strings','none') : $operation->comments ?></h4>
 </div>
 
 <?php
 
 if (!empty($operation->booking)) {
 ?>
-<h4>Session</h4>
+<h4><?php echo Yii::t('strings','Session')?></h4>
 <div class="eventHighlight">
 <?php $session = $operation->booking->session ?>
 <h4><?php
 	if (empty($session->sequence->sequenceFirmAssignment)) {
-		$firmName = 'Emergency List';
+		$firmName = Yii::t('strings','Emergency List');
 	} else {
 		$firmName = $session->sequence->sequenceFirmAssignment->firm->name . ' (' .
 					$session->sequence->sequenceFirmAssignment->firm->serviceSpecialtyAssignment->specialty->name . ')';
@@ -98,7 +98,7 @@ if (!empty($operation->booking)) {
 ?></h4>
 </div>
 
-<h4>Admission Time</h4>
+<h4><?php echo Yii::t('strings','Admission Time')?></h4>
 <div class="eventHighlight">
 <h4><?php echo $operation->booking->admission_time ?></h4>
 </div>
@@ -107,13 +107,13 @@ if (!empty($operation->booking)) {
 
 if (count($cancelledBookings)) {
 ?>
-<h4>Cancelled Bookings</h4>
+<h4><?php echo Yii::t('strings','Cancelled Bookings')?></h4>
 <div class="eventHighlight"><h4>
 <?php
 	foreach ($cancelledBookings as $cb) {
-		echo 'Scheduled for ' . $cb->start_time . ' - ' . $cb->end_time . ', ' . date('d M Y', strtotime($cb->date));
+		echo Yii::t('strings','Scheduled for').' ' . $cb->start_time . ' - ' . $cb->end_time . ', ' . date('d M Y', strtotime($cb->date));
 		echo ', ' . $cb->theatre->name . ' (' . $cb->theatre->site->name . ') ';
-		echo ', cancelled on ' . date('d M Y', strtotime($cb->cancelled_date)) . ' by user ' . $cb->user->username . ' for reason: ' . $cb->cancelledReason->text . '<br />';
+		echo ', '.Yii::t('strings','cancelled on').' ' . date('d M Y', strtotime($cb->cancelled_date)) . ' '.Yii::t('strings','by user').' ' . $cb->user->username . ' '.Yii::t('strings','for reason').': ' . $cb->cancelledReason->text . '<br />';
 	}
 ?>
 </h4></div>
@@ -123,10 +123,10 @@ if (count($cancelledBookings)) {
 if ($operation->status == $operation::STATUS_CANCELLED && !empty($operation->cancellation)) {
 $co = $operation->cancellation;
 ?>
-<h4>Cancellation details</h4>
+<h4><?php echo Yii::t('strings','Cancellation details')?></h4>
 <div class="eventHighlight"><h4>
 <?php
-	echo 'Cancelled on ' . date('d M Y', strtotime($co->cancelled_date)) . ' by user ' . $co->user->username . ' for reason: ' . $co->cancelledReason->text . '<br />';
+	echo Yii::t('strings','Cancelled on').' ' . date('d M Y', strtotime($co->cancelled_date)) . ' '.Yii::t('strings','by user').' ' . $co->user->username . ' '.Yii::t('strings','for reason').': ' . $co->cancelledReason->text . '<br />';
 ?>
 </h4></div>
 <?php
@@ -139,18 +139,18 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 	if (empty($operation->booking)) {
 		// The operation hasn't been booked yet?>
 		<div style="margin-top:40px; text-align:center;">
-			<button type="submit" value="submit" class="wBtn_print-invitation-letter ir" id="btn_print-invitation-letter">Print invitation letter</button>
-			<button type="submit" value="submit" class="wBtn_print-reminder-letter ir" id="btn_print-reminder-letter">Print reminder letter</button>
+			<button type="submit" value="submit" class="wBtn_print-invitation-letter ir" id="btn_print-invitation-letter"><?php echo Yii::t('strings','Print invitation letter')?></button>
+			<button type="submit" value="submit" class="wBtn_print-reminder-letter ir" id="btn_print-reminder-letter"><?php echo Yii::t('strings','Print reminder letter')?></button>
 			<!--button type="submit" value="submit" class="wBtn_print-gp-refer-back-letter ir" id="btn_print-gp-refer-back-letter">Print GP refer back letter</button-->
-			<button type="submit" value="submit" class="wBtn_schedule-now ir" id="btn_schedule-now">Schedule now</button>
-			<button type="submit" value="submit" class="wBtn_cancel-operation ir" id="btn_cancel-operation">Cancel operation</button>
+			<button type="submit" value="submit" class="wBtn_schedule-now ir" id="btn_schedule-now"><?php echo Yii::t('strings','Schedule now')?></button>
+			<button type="submit" value="submit" class="wBtn_cancel-operation ir" id="btn_cancel-operation"><?php echo Yii::t('strings','Cancel operation')?></button>
 		</div>
 	<?php } else {?>
 		<div style="margin-top:40px; text-align:center;">
-			<button type="submit" value="submit" class="btn_print-letter ir" id="btn_print-letter">Print letter</button>
-			<button type="submit" value="submit" class="wBtn_reschedule-now ir" id="btn_reschedule-now">Reschedule now</button>
-			<button type="submit" value="submit" class="wBtn_reschedule-later ir" id="btn_reschedule-later">Reschedule later</button>
-			<button type="submit" value="submit" class="wBtn_cancel-operation ir" id="btn_cancel-operation">Cancel operation</button>
+			<button type="submit" value="submit" class="btn_print-letter ir" id="btn_print-letter"><?php echo Yii::t('strings','Print letter')?></button>
+			<button type="submit" value="submit" class="wBtn_reschedule-now ir" id="btn_reschedule-now"><?php echo Yii::t('strings','Reschedule now')?></button>
+			<button type="submit" value="submit" class="wBtn_reschedule-later ir" id="btn_reschedule-later"><?php echo Yii::t('strings','Reschedule later')?></button>
+			<button type="submit" value="submit" class="wBtn_cancel-operation ir" id="btn_cancel-operation"><?php echo Yii::t('strings','Cancel operation')?></button>
 		</div>
 	<?php }?>
 <?php }?>
@@ -206,7 +206,7 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 	$event = Event::model()->findByPk($eventId);
 	$consultant = $event->episode->firm->getConsultant();
 	if (empty($consultant)) {
-		$consultantName = 'CONSULTANT';
+		$consultantName = Yii::t('strings','CONSULTANT');
 	} else {
 		$contact = $consultant->contact;
 
@@ -233,7 +233,7 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 	$patientName = CHtml::encode($patient->title . ' ' . $patient->first_name . ' ' . $patient->last_name);
 
 	if ($patient->isChild()) {
-		$patientName = CHtml::encode('Parent/Guardian of ') . $patientName;
+		$patientName = CHtml::encode(Yii::t('strings','Parent/Guardian of').' ') . $patientName;
 	}
 ?>
 
@@ -249,8 +249,8 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 				}
 			}
 
-			echo '<br />Tel ' . CHtml::encode($site->telephone) . '<br />';
-			echo 'Fax: ' . CHtml::encode($site->fax) . '</td></tr>';
+			echo '<br />'.Yii::t('strings','Tel').' ' . CHtml::encode($site->telephone) . '<br />';
+			echo Yii::t('strings','Fax').': ' . CHtml::encode($site->fax) . '</td></tr>';
 		?>';
 
 		baseContent += '<tr><td colspan="2" style="text-align:left; font-family: sans-serif; font-size:10pt;"><?php echo $patientName ?>';
@@ -261,13 +261,13 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 
 
 
-		baseContent += '<div id="l_content" style="font-family: sans-serif; font-size:10pt;"><p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><strong>Hospital number reference: <?php echo $patient->hos_num ?><?php
+		baseContent += '<div id="l_content" style="font-family: sans-serif; font-size:10pt;"><p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><strong><?php echo Yii::t('strings','Hospital number reference')?>: <?php echo $patient->hos_num ?><?php
 			if (!empty($patient->nhs_num)) {
-				echo '<br />NHS number: ' . $patient->nhs_num . '</strong>';
+				echo '<br />'.Yii::t('strings','NHS number').': ' . $patient->nhs_num . '</strong>';
 			}
 		?><p />';
 
-		baseContent += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">Dear <?php echo $patientName ?>,</p>';
+		baseContent += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','Dear')?> <?php echo $patientName ?>,</p>';
 
   		appendPrintContent(baseContent);
 	}
@@ -335,53 +335,53 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 		}
 	}
 ?>
-		var content = '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">I have been asked to arrange your <?php
+		var content = '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','I have been asked to arrange your')?> <?php
 		if ($patient->isChild()) {
 ?>child&apos;s <?php
 		}
-?> admission for surgery under the care of <?php echo $consultantName ?>.';
+?> <?php echo Yii::t('strings','admission for surgery under the care of')?> <?php echo $consultantName ?>.';
 
-		content += ' This is currently anticipated to be a <?php
+		content += ' <?php echo Yii::t('strings','This is currently anticipated to be a')?> <?php
 			if ($operation->overnight_stay) {
-				echo 'an overnight stay';
+				echo Yii::t('strings','an overnight stay');
 			} else {
-				echo 'day case';
+				echo Yii::t('strings','day case');
 			}
-		?> procedure.</p>';
+		?> <?php echo Yii::t('strings','procedure')?>.</p>';
 
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">Please will you telephone <?php echo $changeContact ?> within 2 weeks of the date of this letter to discuss and agree a convenient date for this operation. If there is no reply, please leave a message and contact number on the answer phone.</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','Please will you telephone')?> <?php echo $changeContact ?> <?php echo Yii::t('strings','within 2 weeks of the date of this letter to discuss and agree a convenient date for this operation. If there is no reply, please leave a message and contact number on the answer phone.')?></p>';
 
 		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">Should you<?php
 		if ($patient->isChild()) {
 ?>r child<?php
 		}
-?> no longer require treatment please let me know as soon as possible.</p>';
+?> <?php echo Yii::t('strings','no longer require treatment please let me know as soon as possible.')?></p>';
 
 		appendPrintContent(content);
 	}
 
 	function loadReminderLetterPrintContent() {
-		var content = '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">I recently invited you to telephone to arrange a date for your <?php
+		var content = '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','I recently invited you to telephone to arrange a date for your')?> <?php
 		if ($patient->isChild()) {
 ?>child&apos;s <?php
 		}
-?> admission for surgery under the care of <?php echo $consultantName ?>. I have not yet heard from you.</p>';
+?> <?php echo Yii::t('strings','admission for surgery under the care of')?> <?php echo $consultantName ?>. <?php echo Yii::t('strings','I have not yet heard from you')?>.</p>';
 
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">This is currently anticipated to be a <?php
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','This is currently anticipated to be a')?> <?php
 			if ($operation->overnight_stay) {
-				echo 'an overnight stay';
+				echo Yii::t('strings','an overnight stay');
 			} else {
-				echo 'day case';
+				echo Yii::t('strings','day case');
 			}
-		?> procedure.</p>';
+		?> <?php echo Yii::t('strings','procedure')?>.</p>';
 
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">Please will you telephone <?php echo $changeContact ?> within 2 weeks of the date of this letter to discuss and agree a convenient date for this operation.</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','Please will you telephone')?> <?php echo $changeContact ?> <?php echo Yii::t('strings','within 2 weeks of the date of this letter to discuss and agree a convenient date for this operation.')?></p>';
 
 		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">Should you<?php
 		if ($patient->isChild()) {
 ?>r child<?php
 		}
-?> no longer require treatment please let me know as soon as possible.</p>';
+?> <?php echo Yii::t('strings','no longer require treatment please let me know as soon as possible')?>.</p>';
 
 		appendPrintContent(content);
 	}
@@ -449,67 +449,67 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 		var content = '';
 
 <?php
-		$schedule = '<table style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><tr><td>Date of admission:</td><td>' . date('d M Y', strtotime($operation->booking->session->date)) . '</td></tr>';
-		$schedule .= '<tr><td>Time to arrive:</td><td>' . $operation->booking->admission_time . '</td></tr>';
-		$schedule .= '<tr><td>Date of surgery:</td><td>' . date('d M Y', strtotime($operation->booking->session->date)) . '</td></tr>';
+		$schedule = '<table style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><tr><td>'.Yii::t('strings','Date of admission').':</td><td>' . date('d M Y', strtotime($operation->booking->session->date)) . '</td></tr>';
+		$schedule .= '<tr><td>'.Yii::t('strings','Time to arrive').':</td><td>' . $operation->booking->admission_time . '</td></tr>';
+		$schedule .= '<tr><td>'.Yii::t('strings','Date of surgery').':</td><td>' . date('d M Y', strtotime($operation->booking->session->date)) . '</td></tr>';
 
 		if ($patient->isChild()) {
 			if ($operation->status == ElementOperation::STATUS_RESCHEDULED) {
 ?>
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">I am writing to inform you that the date for your child&apos;s eye operation has been changed from <?php echo date('d M Y', strtotime($cancelledBookings[0]->date)) ?>. The details now are:</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','I am writing to inform you that the date for your child&apos;s eye operation has been changed from')?> <?php echo date('d M Y', strtotime($cancelledBookings[0]->date)) ?>. <?php echo Yii::t('strings','The details now are')?>:</p>';
 <?php
 			} else {
 				if ($site->id == 5) { // St George's
 ?>
-		 content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">On behalf of <?php echo $consultantName ?>, I am delighted to confirm the date you have agreed for your child&apos;s operation. The details are:</p>';
+		 content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','On behalf of')?> <?php echo $consultantName ?>, <?php echo Yii::t('strings','I am delighted to confirm the date you have agreed for your child&apos;s operation. The details are')?>:</p>';
 <?php
 				} else { // City Road
 ?>
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">I am writing to confirm the date for your child&apos;s eye operation. The details are:</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','I am writing to confirm the date for your child&apos;s eye operation. The details are')?>:</p>';
 <?php
 				}
 			}
 ?>
-		content += '<?php echo $schedule ?><tr><td>Location:</td><td><?php
+		content += '<?php echo $schedule ?><tr><td><?php echo Yii::t('strings','Location')?>:</td><td><?php
 			if ($site->id == 5) { // St George's
 				echo 'St Georges Jungle Ward';
 			} else { // City Road
 				echo 'Richard Desmond&apos;s Children&apos;s Eye Centre (RDCEC)';
 			}
 		?></td></tr></table>';
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">To ensure your admission proceeds smoothly, please follow these instructions:<br />';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','To ensure your admission proceeds smoothly, please follow these instructions')?>:<br />';
 		content += '<ul style="font-family: sans-serif; font-size:10pt; margin:0 0 1.5em 0.5em;">';
 <?php
 			 if ($site->id != 5) { // City Road
 ?>
-		content += '<li><b>Please contact the Children&apos;s Ward as soon as possible on 0207 566 2595 or 2596 to discuss pre-operative instructions</b></li>';
+		content += '<li><b><?php echo Yii::t('strings','Please contact the Children&apos;s Ward as soon as possible on 0207 566 2595 or 2596 to discuss pre-operative instructions')?></b></li>';
 <?php
 			}
 ?>
-		content += '<li>Bring this letter with you on <?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></li>';
-		content += '<li>Please complete the attached in-patient questionnaire and bring it with you</li>';
+		content += '<li><?php echo Yii::t('strings','Bring this letter with you on')?> <?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></li>';
+		content += '<li><?php echo Yii::t('strings','Please complete the attached in-patient questionnaire and bring it with you')?></li>';
 <?php
 			if ($site->id == 5) { // St Georges
 ?>
-		content += '<li>Please go directly to Duke Elder Ward on level 5 of the Lanesborough wing at the time of admission.</li>';
+		content += '<li><?php echo Yii::t('strings','Please go directly to Duke Elder Ward on level 5 of the Lanesborough wing at the time of admission')?>.</li>';
 <?php
 			} else {
 ?>
-		content += '<li>Please go directly to the Main Reception on level 5 of the RDCEC at the time of your child&apos;s admission.</li>';
+		content += '<li><?php echo Yii::t('strings','Please go directly to the Main Reception on level 5 of the RDCEC at the time of your child&apos;s admission')?>.</li>';
 <?php
 			}
 ?>
 		content += '</ul>';
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">If there has been any change in your child&apos;s general health, such as a cough or cold, any infection disease, or any other condition which might affect their fitness for operation, please telephone <?php
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','If there has been any change in your child&apos;s general health, such as a cough or cold, any infection disease, or any other condition which might affect their fitness for operation, please telephone')?> <?php
 			if ($site->id == 5) { // St George's
 				echo '020 8725 0060 and ask Naeela Butt for advice.';
 			} else {
 				echo '0207 566 2596 and ask to speak to a nurse';
 			}
-		?> for advice<p />';
+		?> <?php echo Yii::t('strings','for advice')?><p />';
 
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">If you do not speak English, please arrange for an English speaking adult to stay with you until you reach the ward and have been seen by a Doctor.</p>';
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">It is very important that you let us know immediately if you are unable to keep this admission date. ';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','If you do not speak English, please arrange for an English speaking adult to stay with you until you reach the ward and have been seen by a Doctor')?>.</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','It is very important that you let us know immediately if you are unable to keep this admission date')?>. ';
 <?php
 			if ($site->id == 5) { // St George's
 ?>
@@ -523,15 +523,15 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 		} else {
 			if ($operation->status == ElementOperation::STATUS_RESCHEDULED) {
 ?>
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">I am writing to inform you that the date for your eye operation has been changed from <?php echo date('d M Y', strtotime($cancelledBookings[0]->date)) ?>. The details now are:</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','I am writing to inform you that the date for your eye operation has been changed from')?> <?php echo date('d M Y', strtotime($cancelledBookings[0]->date)) ?>. <?php echo Yii::t('strings','The details now are')?>:</p>';
 <?php
 			} else {
 ?>
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">On behalf of <?php echo $consultantName ?>, I am delighted to confirm the date of your operation. The details are:</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','On behalf of')?> <?php echo $consultantName ?>, <?php echo Yii::t('strings','I am delighted to confirm the date of your operation. The details are')?>:</p>';
 <?php
 			}
 ?>
-		content += '<?php echo $schedule ?><tr><td>Ward:</td><td><?php
+		content += '<?php echo $schedule ?><tr><td><?php echo Yii::t('strings','Ward')?>:</td><td><?php
 			if ($specialty->id == 13) { // Refractive laser
                                 echo 'Refractive waiting room - Cumberlidge Wing 4th Floor';
                         } else {
@@ -539,33 +539,33 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
                         }
                 ?></td></tr></table>';
 
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">It is very important that you let us know immediately if you are unable to attend on this admission date. ';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','It is very important that you let us know immediately if you are unable to attend on this admission date')?>. ';
 <?php
 			if ($site->id == 1 && $specialty->id != 13) { // City Road and not Refractive
 ?>
-		content += 'You can do this by calling <?php echo $refuseContact ?><p />';
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">Please let us know if you have any change in your general health that may affect your surgery.</p>';
+		content += '<?php echo Yii::t('strings','You can do this by calling')?> <?php echo $refuseContact ?><p />';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','Please let us know if you have any change in your general health that may affect your surgery')?>.</p>';
 <?php
 			} else {
 ?>
-		content += 'Please let us know by return of post, or if necessary, telephone <?php echo $refuseContact ?>.<p />';
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">If there has been any change in your general health, such as a cough or cold, any infection disease, or any other condition which might affect your fitness for operation, please telephone <?php echo $healthContact ?> for advice.<p />';
+		content += '<?php echo Yii::t('strings','Please let us know by return of post, or if necessary, telephone')?> <?php echo $refuseContact ?>.<p />';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','If there has been any change in your general health, such as a cough or cold, any infection disease, or any other condition which might affect your fitness for operation, please telephone')?> <?php echo $healthContact ?> <?php echo Yii::t('strings','for advice')?>.<p />';
 <?php
 			}
 ?>
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">If you do not speak English, please arrange for an English speaking adult to stay with you until you reach the ward and have been seen by a Doctor.</p>';
-		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">To ensure your admission proceeds smoothly, please follow these instructions:<br />';
-		content += '<ul style="font-family: sans-serif; font-size:10pt; margin:0 0 1.5em 0.5em;"><li>Bring this letter with you on <?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></li>';
-		content += '<li>Please complete the attached in-patient questionnaire and bring it with you</li>';
-		content += '<li>Please go directly to <?php
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','If you do not speak English, please arrange for an English speaking adult to stay with you until you reach the ward and have been seen by a Doctor')?>.</p>';
+		content += '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','To ensure your admission proceeds smoothly, please follow these instructions')?>:<br />';
+		content += '<ul style="font-family: sans-serif; font-size:10pt; margin:0 0 1.5em 0.5em;"><li><?php echo Yii::t('strings','Bring this letter with you on')?> <?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></li>';
+		content += '<li><?php echo Yii::t('strings','Please complete the attached in-patient questionnaire and bring it with you')?></li>';
+		content += '<li><?php echo Yii::t('strings','Please go directly to')?> <?php
 			if ($specialty->id == 13) { // Refractive laser
 				echo 'Refractive waiting room - Cumberlidge Wing 4th Floor';
 			} else {
 				echo 'ward ' . CHtml::encode($operation->booking->ward->name);
 			}
 		?></li>';
-		content += '<li>You must not drive yourself to or from hospital</li>';
-		content == '<li>We would like to request that only 1 person should accompany you in order to ensure that adequate seating area is available for patients coming for surgery.</li>';
+		content += '<li><?php echo Yii::t('strings','You must not drive yourself to or from hospital')?></li>';
+		content == '<li><?php echo Yii::t('strings','We would like to request that only 1 person should accompany you in order to ensure that adequate seating area is available for patients coming for surgery')?>.</li>';
 		content += '</ul>';
 <?php
 		}
@@ -575,7 +575,7 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 	}
 
 	function loadEndLetterPrintContent() {
-		var content = '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;">Yours sincerely,<br /><br /><br />Admissions Officer</p></div></div> <!-- #letterTemplate --></div> <!-- #letters -->';
+		var content = '<p style="font-family: sans-serif; font-size:10pt; margin-bottom:1em;"><?php echo Yii::t('strings','Yours sincerely')?>,<br /><br /><br /><?php echo Yii::t('strings','Admissions Officer')?></p></div></div> <!-- #letterTemplate --></div> <!-- #letters -->';
 		content += '<div id="letterFooter" style="text-align:right; font-family: sans-serif; font-size:8pt;"><!--  letter footer -->Patron: Her Majesty The Queen<br />Chairman: Rudy Markham<br />Chief Executive: John Pelly<br /></div>';
 
 		appendPrintContent(content);
@@ -605,96 +605,96 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 
 		var content = '<table width="100%">';
 
-		content += '<tr><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Admitting Consultant:</strong></td> <!-- width control --><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $consultantName ?></td>';
-		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Decision to admit date (or today&apos;s date):</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo date('d M Y', strtotime($operation->decision_date)) ?></td></tr>';
+		content += '<tr><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Admitting Consultant')?>:</strong></td> <!-- width control --><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $consultantName ?></td>';
+		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Decision to admit date')?> (<?php echo Yii::t('strings','or today&apos;s date')?>):</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo date('d M Y', strtotime($operation->decision_date)) ?></td></tr>';
 
-		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">Service:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($event->episode->firm->serviceSpecialtyAssignment->specialty->name) ?></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">Telephone:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($patient->primary_phone) ?>&nbsp;</td></tr>';
+		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','Service')?>:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($event->episode->firm->serviceSpecialtyAssignment->specialty->name) ?></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','Telephone')?>:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($patient->primary_phone) ?>&nbsp;</td></tr>';
 
-		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">Site:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($site->name) ?></td><td colspan="2" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">';
+		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','Site')?>:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($site->name) ?></td><td colspan="2" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">';
 		content += '<table width="100%" class="subTableNoBorders" style="border:none;"><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table></td></tr>';
 
-		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Person organising admission:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $consultantName ?></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Dates patient unavailable:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
+		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Person organising admission')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $consultantName ?></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Dates patient unavailable')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
 
-		content += '<tr><td colspan="2" style="border-bottom:1px dotted #000; border:1px solid #000; font-family: sans-serif; font-size:10pt;">Signature:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">Available at short notice:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
+		content += '<tr><td colspan="2" style="border-bottom:1px dotted #000; border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','Signature')?>:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','Available at short notice')?>:</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
 
 		content += '</table>';
 
 		appendPrintContent(content);
 
-		content = '<span class="subTitle" style="font-family: sans-serif; font-size:10pt;">ADMISSION DETAILS</span><table width="100%">';
-		content += '<tr><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Urgency:</strong></td> <!-- width control --><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td>';
-		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Consultant to be present:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php
+		content = '<span class="subTitle" style="font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','ADMISSION DETAILS')?></span><table width="100%">';
+		content += '<tr><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Urgency')?>:</strong></td> <!-- width control --><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td>';
+		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Consultant to be present')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php
 			if (empty($operation->consultant_required)) {
-				echo 'No';
+				echo Yii::t('strings','No');
 			} else {
-				echo 'Yes';
+				echo Yii::t('strings','Yes');
 			}
 		?></td></tr>';
 
-		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Admission category:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php
+		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Admission category')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php
                         if ($operation->overnight_stay) {
-                                echo 'an overnight stay';
+                                echo Yii::t('strings','an overnight stay');
                         } else {
-                                echo 'day case';
+                                echo Yii::t('strings','day case');
                         } ?></td>';
 <?php
                         if (empty($operation->booking)) {
 ?>
 		content += '<td colspan="2" rowspan="5" align="center" style="vertical-align:middle; font-family: sans-serif; font-size:10pt; border:1px solid #000; font-family: sans-serif; font-size:10pt;">';
-		content += '<strong>Patient Added to Waiting List.<br />Admission Date to be arranged</strong></td></tr>';
+		content += '<strong><?php echo Yii::t('strings','Patient Added to Waiting List')?>.<br /><?php echo Yii::t('strings','Admission Date to be arranged')?></strong></td></tr>';
 <?php
 						} else {
 ?>
-		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Operation date:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></td></tr>';
+		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Operation date')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></td></tr>';
 <?php
 						}
 ?>
-		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Diagnosis:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php
+		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Diagnosis')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php
 
 			$disorder = $operation->getDisorder();
 
-			echo !empty($disorder) ? $operation->getEyeText() : 'Unknown';
+			echo !empty($disorder) ? $operation->getEyeText() : Yii::t('strings','Unknown');
 			echo !empty($disorder) ? CHtml::encode($operation->getDisorder()) : ''
 		?></td>';
 
 <?php
                         if (!empty($operation->booking)) {
 ?>
-		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Discussed with patient:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td>';
+		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Discussed with patient')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td>';
 <?php
 						}
 ?>
-		content += '</tr><tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Intended procedure:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode(implode(', ', $procedureList)) ?></td>';
+		content += '</tr><tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Intended procedure')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode(implode(', ', $procedureList)) ?></td>';
 <?php
                         if (!empty($operation->booking)) {
 ?>
-		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Theatre session:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td>';
+		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Theatre session')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td>';
 <?php
 						}
 ?>
-		content += '</tr><tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Eye:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $operation->getEyeText() ?></td>';
+		content += '</tr><tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Eye')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $operation->getEyeText() ?></td>';
 <?php
                         if (!empty($operation->booking)) {
 ?>
-		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Admission time:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $operation->booking->admission_time ?></td>';
+		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Admission time')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $operation->booking->admission_time ?></td>';
 <?php
 						}
 ?>
-		content += '</tr><tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Total theatre time (mins):</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($operation->total_duration) ?></td>';
+		content += '</tr><tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Total theatre time (mins)')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo CHtml::encode($operation->total_duration) ?></td>';
 <?php
                         if (!empty($operation->booking)) {
 ?>
-		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Proposed admission date:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></td>';
+		content += '<td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Proposed admission date')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo date('d M Y', strtotime($operation->booking->session->date)) ?></td>';
 <?php
 						}
 ?>
 		content += '</tr></table>';
 
 		// Pre-op
-		content += '<span class="subTitle" style="font-family: sans-serif; font-size:10pt;">PRE-OP ASSESSMENT INFORMATION</span><table width="100%">';
-		content += '<tr><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Anaesthesia:</strong></td> <!-- width control --><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $operation->getAnaestheticText() ?></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Likely to need anaesthetist review:</strong></td><td  width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
+		content += '<span class="subTitle" style="font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','PRE-OP ASSESSMENT INFORMATION')?></span><table width="100%">';
+		content += '<tr><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Anaesthesia')?>:</strong></td> <!-- width control --><td width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><?php echo $operation->getAnaestheticText() ?></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Likely to need anaesthetist review')?>:</strong></td><td  width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
 
-		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Anaesthesia is:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong>Does the patient need to stop medication:</strong></td><td  width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
+		content += '<tr><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Anaesthesia is')?>:</strong></td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td><td style="border:1px solid #000; font-family: sans-serif; font-size:10pt;"><strong><?php echo Yii::t('strings','Does the patient need to stop medication')?>:</strong></td><td  width="25%" style="border:1px solid #000; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr>';
 
 		content += '</table>';
 
@@ -702,7 +702,7 @@ if ($operation->status != $operation::STATUS_CANCELLED && $editable) {
 	}
 
 	function loadEndFormPrintContent() {
-		var content = '<span class="subTitle" style="font-family: sans-serif; font-size:10pt;">COMMENTS</span>';
+		var content = '<span class="subTitle" style="font-family: sans-serif; font-size:10pt;"><?php echo Yii::t('strings','COMMENTS')?></span>';
 
 		content += '<table width="100%"><tr><td style="border:2px solid #666; height:7em; font-family: sans-serif; font-size:10pt;">&nbsp;</td></tr></table>';
 

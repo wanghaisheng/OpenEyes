@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Anterior segment: <br />
+?><?php echo Yii::t('strings','Anterior segment')?>: <br />
 
 	<?php echo $form->errorSummary($model); ?>
 

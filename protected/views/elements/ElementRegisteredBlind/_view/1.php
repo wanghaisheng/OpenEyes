@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Registered Blind:<br />
+?><?php echo Yii::t('strings','Registered Blind')?>:<br />
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>

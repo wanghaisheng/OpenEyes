@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Phrase By Firm'=>array('index'),
+	Yii::t('strings','Phrase By Firm')=>array('index'),
 	$model->section->name => array('phraseindex', 'section_id'=>$model->section->id),
 	$model->name->name=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List PhraseByFirm', 'url'=>array('index')),
-	array('label'=>'Create PhraseByFirm', 'url'=>array('create')),
-	array('label'=>'View PhraseByFirm', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','List PhraseByFirm'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create PhraseByFirm'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View PhraseByFirm'), 'url'=>array('view', 'id'=>$model->id)),
 );
 ?>
 
-<h1>Update PhraseByFirm <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update PhraseByFirm')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -12,10 +12,10 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>SOCIAL HISTORY: <br />
+?><?php echo Yii::t('strings','SOCIAL HISTORY')?>: <br />
 
 	<div class="row">
-		<label for="ElementSocialHistory_value">Phrase:</label>
+		<label for="ElementSocialHistory_value"><?php echo Yii::t('strings','Phrase')?>:</label>
 		<?php echo CHtml::dropDownList('ElementSocialHistory[phrase]', '', $model->getPhraseBySpecialtyOptions('Social history'),
 			array('onChange' => 'appendText($(this), $("#ElementSocialHistory_value"));')); ?>
 	</div>

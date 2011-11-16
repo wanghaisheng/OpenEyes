@@ -12,15 +12,15 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Referred from screening:<br />
+?><?php echo Yii::t('strings','Referred from screening')?>:<br />
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('referred')); ?>:</b>
 	<?php
 		if ($data->referred) {
-			echo "Yes";
+			echo Yii::t('strings',"Yes");
 		} else {
-			echo "No";
+			echo Yii::t('strings',"No");
 		}
 	?>
 	<br />

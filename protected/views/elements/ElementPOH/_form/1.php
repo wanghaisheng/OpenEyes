@@ -15,7 +15,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 ?>POH: <br />
 
 	<div class="row">
-		<label for="ElementPOH_phrase">Phrase:</label>
+		<label for="ElementPOH_phrase"><?php echo Yii::t('strings','Phrase')?>:</label>
 		<?php echo CHtml::dropDownList('ElementPOH[phrase]', '', $model->getPhraseBySpecialtyOptions('POH'),
 			array('onChange' => 'appendText($(this), $("#ElementPOH_value"));')); ?>
 	</div>

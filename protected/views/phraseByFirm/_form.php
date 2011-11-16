@@ -25,7 +25,7 @@ if (isset($_GET['section_id'])) {
 }
 ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note"><?php echo Yii::t('strings','Fields with')?> <span class="required">*</span> <?php echo Yii::t('strings','are required')?>.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -34,13 +34,13 @@ if (isset($_GET['section_id'])) {
                 <?php
                         if ($overrideableNames = PhraseByFirm::Model()->getOverrideableNames($_GET['section_id'], Firm::Model()->findByPk($this->selectedFirmId)->id)) {
                                 echo $form->labelEx($model,'phrase_name_id');
-                                echo $form->dropDownList($model,'phrase_name_id',CHtml::listData($overrideableNames, 'id', 'name'),array('prompt' => 'Override a global phrase name'));
+                                echo $form->dropDownList($model,'phrase_name_id',CHtml::listData($overrideableNames, 'id', 'name'),array('prompt' => Yii::t('strings','Override a global phrase name')));
                                 echo $form->error($model,'phrase_name_id');
                         }
                 ?>
 
                 <?php
-                        echo CHtml::label('New phrase name', 'name');
+                        echo CHtml::label(Yii::t('strings','New phrase name'), 'name');
                         echo CHtml::textField('PhraseName','');
                 ?>
 

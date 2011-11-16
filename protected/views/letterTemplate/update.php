@@ -13,18 +13,18 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Letter Templates'=>array('index'),
+	Yii::t('strings','Letter Templates')=>array('index'),
 	$model->name=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List Letter Template', 'url'=>array('index')),
-	array('label'=>'Create Letter Template', 'url'=>array('create')),
-	array('label'=>'View Letter Template', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','List Letter Template'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Letter Template'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View Letter Template'), 'url'=>array('view', 'id'=>$model->id)),
 );
 ?>
 
-<h1>Update Letter Template <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update Letter Template')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

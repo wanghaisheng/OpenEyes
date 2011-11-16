@@ -12,13 +12,13 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-$this->pageTitle=Yii::app()->name . ' - Error';
+$this->pageTitle=Yii::app()->name . ' - '.Yii::t('strings','Error');
 $this->breadcrumbs=array(
-	'Error',
+	Yii::t('strings','Error'),
 );
 ?>
 
-<h2>Error <?php echo $code; ?></h2>
+<h2><?php echo Yii::t('strings','Error')?> <?php echo $code; ?></h2>
 
 <div class="error">
 <?php echo CHtml::encode($message); ?>

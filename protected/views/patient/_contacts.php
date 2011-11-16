@@ -14,5 +14,5 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
 Yii::app()->clientScript->scriptMap['jquery.js'] = false; ?>
 <div id="box_gradient_top"></div>
-<div id="box_gradient_bottom">Patient contacts here.
+<div id="box_gradient_bottom"><?php echo Yii::t('strings','Patient contacts here')?>.
 </div>

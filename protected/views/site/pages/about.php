@@ -12,12 +12,11 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-$this->pageTitle=Yii::app()->name . ' - About';
+$this->pageTitle=Yii::app()->name . ' - '.Yii::t('strings','About');
 $this->breadcrumbs=array(
-	'About',
+	Yii::t('strings','About'),
 );
 ?>
-<h1>About</h1>
+<h1><?php echo Yii::t('strings','About')?></h1>
 
-<p>This is a "static" page. You may change the content of this page
-by updating the file <tt><?php echo __FILE__; ?></tt>.</p>
+<p><?php echo Yii::t('strings','This is a "static" page')?>. <?php echo Yii::t('strings','You may change the content of this page by updating the file')?> <tt><?php echo __FILE__; ?></tt>.</p>

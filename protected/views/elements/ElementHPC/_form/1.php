@@ -15,31 +15,31 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 ?>HPC: <br />
 
 	<div class="row">
-		<label for="ElementHPC_value">History:</label>
+		<label for="ElementHPC_value"><?php echo Yii::t('strings','History')?>:</label>
 		<?php echo CHtml::dropDownList('ElementHPC[phrase]', '', $model->getPhraseBySpecialtyOptions('History'),
 			array('onChange' => 'appendText($(this), $("#ElementHPC_value"));')); ?>
 	</div>
 
 	<div class="row">
-		<label for="ElementHPC_value">Severity:</label>
+		<label for="ElementHPC_value"><?php echo Yii::t('strings','Severity')?>:</label>
 		<?php echo CHtml::dropDownList('ElementHPC[phrase]', '', $model->getPhraseBySpecialtyOptions('Severity'),
 			array('onChange' => 'appendText($(this), $("#ElementHPC_value"));')); ?>
 	</div>
 
 	<div class="row">
-		<label for="ElementHPC_value">Onset:</label>
+		<label for="ElementHPC_value"><?php echo Yii::t('strings','Onset')?>:</label>
 		<?php echo CHtml::dropDownList('ElementHPC[phrase]', '', $model->getPhraseBySpecialtyOptions('Onset'),
 			array('onChange' => 'appendText($(this), $("#ElementHPC_value"));')); ?>
 	</div>
 
 	<div class="row">
-		<label for="ElementHPC_value">Site:</label>
+		<label for="ElementHPC_value"><?php echo Yii::t('strings','Site')?>:</label>
 		<?php echo CHtml::dropDownList('ElementHPC[phrase]', '', $model->getPhraseBySpecialtyOptions('Site'),
 			array('onChange' => 'appendText($(this), $("#ElementHPC_value"));')); ?>
 	</div>
 
 	<div class="row">
-		<label for="ElementHPC_value">Duration:</label>
+		<label for="ElementHPC_value"><?php echo Yii::t('strings','Duration')?>:</label>
 		<?php echo CHtml::dropDownList('ElementHPC[phrase]', '', $model->getPhraseBySpecialtyOptions('Duration'),
 			array('onChange' => 'appendText($(this), $("#ElementHPC_value"));')); ?>
 	</div>

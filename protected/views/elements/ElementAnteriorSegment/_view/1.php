@@ -13,7 +13,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 ?><br />
-Anterior segment:
+<?php echo Yii::t('strings','Anterior segment')?>:
 
 <div class="view">
 	<?php echo EyeDrawService::activeEyeDrawField($this, $data, 'left', false);?>

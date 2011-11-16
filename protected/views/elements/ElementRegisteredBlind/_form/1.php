@@ -13,9 +13,9 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $selectOptions = $model->getSelectOptions(); ?>
-Registered Blind:
+<?php echo Yii::t('strings','Registered Blind')?>:
 <br />
 <div class="row">
-	<label for="ElementRegisteredBlind_value">Registered:</label>
+	<label for="ElementRegisteredBlind_value"><?php echo Yii::t('strings','Registered')?>:</label>
 	<?php echo CHtml::activeDropDownList($model, 'status', $selectOptions); ?>
 </div>

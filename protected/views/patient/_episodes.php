@@ -17,7 +17,7 @@ Yii::app()->clientScript->scriptMap['jquery.js'] = false; ?>
 <div id="box_gradient_bottom">
 <div style="height: 20px; float: left;"></div>
 <div id="add_episode">
-	<img src="/images/add_event_button.png" alt="Add an event to this episode" />
+	<img src="/images/add_event_button.png" alt="<?php echo Yii::t('strings','Add an event to this episode')?>" />
 	<ul id="episode_types">
 <?php
 	foreach ($eventTypeGroups as $group => $eventTypes) { ?>

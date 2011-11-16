@@ -13,9 +13,9 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $selectOptions = $model->getSelectOptions(); ?>
-Diabetes Type:
+<?php echo Yii::t('strings','Diabetes Type')?>:
 <br />
 <div class="row">
-	<label for="ElementDiabetesType_value">Type of Diabetes:</label>
+	<label for="ElementDiabetesType_value"><?php echo Yii::t('strings','Type of Diabetes')?>:</label>
 	<?php echo CHtml::activeDropDownList($model, 'type', $selectOptions); ?>
 </div>

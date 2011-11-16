@@ -20,20 +20,20 @@ if (!empty($operation->booking)) {
 	if (isset($session->firm)) {
 		$firmName = $session->firm->name . ' (' . $session->firm->serviceSpecialtyAssignment->service->name . ')';
 	} else {
-		$firmName = 'Emergency List';
+		$firmName = Yii::t('strings','Emergency List');
 	}
 
 	$theatre = $session->sequence->theatre;
 ?>
                 <div class="data">
 
-                        <span style="display:inline-block; width:160px;">Firm:</span><strong><?php echo CHtml::encode($firmName); ?></strong><br>
-                        <span style="display:inline-block; width:160px;">Location:</span><strong><?php echo CHtml::encode($theatre->site->name) . ' - ' . CHtml::encode($theatre->name); ?></strong><br>
-                        <span style="display:inline-block; width:160px;">Date of operation:</span><strong><?php echo date('d M Y', strtotime($session->date)); ?></strong><br>
-                        <span style="display:inline-block; width:160px;">Session time:</span><strong><?php echo substr($session->start_time, 0, 5) . ' - ' . substr($session->end_time, 0, 5); ?></strong><br>
-                        <span style="display:inline-block; width:160px;">Admission time:</span><strong><?php echo substr($operation->booking->admission_time, 0, 5); ?></strong> <br>
+                        <span style="display:inline-block; width:160px;"><?php echo Yii::t('strings','Firm')?>:</span><strong><?php echo CHtml::encode($firmName); ?></strong><br>
+                        <span style="display:inline-block; width:160px;"><?php echo Yii::t('strings','Location')?>:</span><strong><?php echo CHtml::encode($theatre->site->name) . ' - ' . CHtml::encode($theatre->name); ?></strong><br>
+                        <span style="display:inline-block; width:160px;"><?php echo Yii::t('strings','Date of operation')?>:</span><strong><?php echo date('d M Y', strtotime($session->date)); ?></strong><br>
+                        <span style="display:inline-block; width:160px;"><?php echo Yii::t('strings','Session time')?>:</span><strong><?php echo substr($session->start_time, 0, 5) . ' - ' . substr($session->end_time, 0, 5); ?></strong><br>
+                        <span style="display:inline-block; width:160px;"><?php echo Yii::t('strings','Admission time')?>:</span><strong><?php echo substr($operation->booking->admission_time, 0, 5); ?></strong> <br>
 
-                        <span style="display:inline-block; width:160px;">Duration of operation:</span><strong><?php echo $operation->total_duration . ' minutes'; ?></strong>
+                        <span style="display:inline-block; width:160px;"><?php echo Yii::t('strings','Duration of operation')?>:</span><strong><?php echo $operation->total_duration . ' '.Yii::t('strings','minutes'); ?></strong>
                 </div>
 <?php
 }

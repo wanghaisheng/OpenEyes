@@ -14,11 +14,11 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
 Yii::app()->clientScript->scriptMap['jquery.js'] = false; ?>
 <div class="view">
-	<strong>Eye(s) to be operated on:</strong>
+	<strong><?php echo Yii::t('strings','Eye(s) to be operated on')?>:</strong>
 	<?php echo CHtml::encode($operation->getEyeText()); ?>
 </div>
 <div class="view">
-	<strong>Procedure(s) entered:</strong>
+	<strong><?php echo Yii::t('strings','Procedure(s) entered')?>:</strong>
 <?php
 	$procedures = '';
 	if (!empty($operation->procedures)) {
@@ -31,18 +31,18 @@ Yii::app()->clientScript->scriptMap['jquery.js'] = false; ?>
 	echo $procedures; ?>
 </div>
 <div class="view">
-	<strong>Consultant required?</strong>
+	<strong><?php echo Yii::t('strings','Consultant required')?>?</strong>
 	<?php echo CHtml::encode($operation->getBooleanText('consultant_required')); ?>
 </div>
 <div class="view">
-	<strong>Anaesthetic required:</strong>
+	<strong><?php echo Yii::t('strings','Anaesthetic required')?>:</strong>
 	<?php echo CHtml::encode($operation->getAnaestheticText()); ?>
 </div>
 <div class="view">
-	<strong>Overnight stay required?</strong>
+	<strong><?php echo Yii::t('strings','Overnight stay required')?>?</strong>
 	<?php echo CHtml::encode($operation->getBooleanText('overnight_stay')); ?>
 </div>
 <div class="view">
-	<strong>Comments:</strong>
+	<strong><?php echo Yii::t('strings','Comments')?>:</strong>
 	<?php echo CHtml::encode($operation->comments); ?>
 </div>

@@ -13,40 +13,40 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 */
 
 ?>
-		<h2>Theatre Schedules</h2>
+		<h2><?php echo Yii::t('strings','Theatre Schedules')?></h2>
 
 		<div class="fullWidth fullBox clearfix">
 			<div id="whiteBox">
-				<p><strong>Use the filters below to view Theatre schedules:</strong></p>
+				<p><strong><?php echo Yii::t('strings','Use the filters below to view Theatre schedules')?>:</strong></p>
 			</div>
 
 			<div id="theatre_display">
 				<?php $this->beginWidget('CActiveForm', array('id'=>'theatre-filter', 'action'=>Yii::app()->createUrl('theatre/search'), 'enableAjaxValidation'=>false))?>
 				<div id="search-options">
 					<div id="main-search" class="grid-view">
-						<h3>Search schedules by:</h3>
+						<h3><?php echo Yii::t('strings','Search schedules by')?>:</h3>
 							<table>
 								<tbody>
 								<tr>
-									<th>Site:</th>
-									<th>Theatre:</th>
-									<th>Firm:</th>
-									<th>Specialty:</th>
-									<th>Ward:</th>
-									<th>Emergency List:</th>
+									<th><?php echo Yii::t('strings','Site')?>:</th>
+									<th><?php echo Yii::t('strings','Theatre')?>:</th>
+									<th><?php echo Yii::t('strings','Firm')?>:</th>
+									<th><?php echo Yii::t('strings','Specialty')?>:</th>
+									<th><?php echo Yii::t('strings','Ward')?>:</th>
+									<th><?php echo Yii::t('strings','Emergency List')?>:</th>
 								</tr>
 								<tr class="even">
 									<td>
-										<?php echo CHtml::dropDownList('site-id', '', Site::model()->getList(), array('empty'=>'All sites', 'onChange' => "js:loadTheatres(this.value); loadWards(this.value);"))?>
+										<?php echo CHtml::dropDownList('site-id', '', Site::model()->getList(), array('empty'=>Yii::t('strings','All sites'), 'onChange' => "js:loadTheatres(this.value); loadWards(this.value);"))?>
 									</td>
 									<td>
-										<?php echo CHtml::dropDownList('theatre-id', '', array(), array('empty'=>'All theatres'))?>
+										<?php echo CHtml::dropDownList('theatre-id', '', array(), array('empty'=>Yii::t('strings','All theatres')))?>
 									</td>
 									<td>
-										<?php echo CHtml::dropDownList('firm-id', '', array(), array('empty'=>'All firms', 'disabled'=>(empty($firmId))))?>
+										<?php echo CHtml::dropDownList('firm-id', '', array(), array('empty'=>Yii::t('strings','All firms'), 'disabled'=>(empty($firmId))))?>
 									</td>
 									<td>
-										<?php echo CHtml::dropDownList('specialty-id', '', Specialty::model()->getList(), array('empty'=>'All specialties', 'ajax'=>array('type'=>'POST', 'data'=>array('specialty_id'=>'js:this.value'), 'url'=>Yii::app()->createUrl('theatre/filterFirms'), 'success'=>"js:function(data) {
+										<?php echo CHtml::dropDownList('specialty-id', '', Specialty::model()->getList(), array('empty'=>Yii::t('strings','All specialties'), 'ajax'=>array('type'=>'POST', 'data'=>array('specialty_id'=>'js:this.value'), 'url'=>Yii::app()->createUrl('theatre/filterFirms'), 'success'=>"js:function(data) {
 				if ($('#specialty-id').val() != '') {
 					$('#firm-id').attr('disabled', false);
 					$('#firm-id').html(data);
@@ -58,7 +58,7 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 		)))?>
 									</td>
 									<td>
-										<?php echo CHtml::dropDownList('ward-id', '', array(), array('empty'=>'All wards'))?>
+										<?php echo CHtml::dropDownList('ward-id', '', array(), array('empty'=>Yii::t('strings','All wards')))?>
 									</td>
 									<td>
 										<?php echo CHtml::checkBox('emergency_list')?>
@@ -71,19 +71,19 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 						<div class="data">
 							<span class="group">
 							<input type="radio" name="date-filter" id="date-filter_0" value="today">
-							<label for="date-filter_0">Today</label>
+							<label for="date-filter_0"><?php echo Yii::t('strings','Today')?></label>
 							</span>
 							<span class="group">
 							<input type="radio" name="date-filter" id="date-filter_1" value="week">
-							<label for="date-filter_1">This week</label>
+							<label for="date-filter_1"><?php echo Yii::t('strings','This week')?></label>
 							</span>
 							<span class="group">
 							<input type="radio" name="date-filter" id="date-filter_2" value="month">
-							<label for="date-filter_2">This month</label>
+							<label for="date-filter_2"><?php echo Yii::t('strings','This month')?></label>
 							</span>
 							<span class="group">
 							<input type="radio" name="date-filter" id="date-filter_3" value="custom">
-							<label for="date-filter_3">or select date range:</label>
+							<label for="date-filter_3"><?php echo Yii::t('strings','or select date range')?>:</label>
 <?php
 $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 		'name'=>'date-start',
@@ -117,7 +117,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 	'htmlOptions'=>array('size'=>10),
 ));
 ?>
-							to
+							<?php echo Yii::t('strings','to')?>
 <?php
 $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 		'name'=>'date-end',
@@ -153,7 +153,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 ?>
 							</span>
 
-							<button value="submit" type="submit" class="btn_search ir" style="float:right;">Search</button>
+							<button value="submit" type="submit" class="btn_search ir" style="float:right;"><?php echo Yii::t('strings','Search')?></button>
 							<?php $this->endWidget()?>
 						</div>
 
@@ -171,7 +171,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 				<!-- ====================================================  end of P R I N T  S T U F F ============  -->
 
 			</div> <!-- #theatre_display -->
-			<div style="text-align:right; margin-right:10px;"><button type="submit" value="submit" class="btn_print ir" id="btn_print">Print</button></div>
+			<div style="text-align:right; margin-right:10px;"><button type="submit" value="submit" class="btn_print ir" id="btn_print"><?php echo Yii::t('strings','Print')?></button></div>
 		</div> <!-- .fullWidth -->
 <script type="text/javascript">
 	$(document).ready(function() {

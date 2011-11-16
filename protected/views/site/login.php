@@ -15,7 +15,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 $this->pageTitle=Yii::app()->name . ' - Login';
 $this->layout = 'simple';
 ?>
-		<h2 class="alert">Please login</h2>
+		<h2 class="alert"><?php echo Yii::t('strings','Please login')?></h2>
 
 		<div id="login-form" class="form_greyBox">
 		<?php $form=$this->beginWidget('CActiveForm', array(
@@ -26,36 +26,36 @@ $this->layout = 'simple';
 		<?php //<form action="/site/login" method="post"> ?>
 
 			<div class="loginRow bigInput">
-				<?php echo CHtml::activeLabel($model,'username', array('label'=>'Username:')); ?>
+				<?php echo CHtml::activeLabel($model,'username', array('label'=>Yii::t('strings','Username').':')); ?>
 				<?php echo $form->textField($model,'username',array('tabindex' => 1)); ?>
 				<?php if (Yii::app()->params['auth_source'] == 'BASIC') {?>
-					<a href="#" tabindex="5"><span class="small">Forgotten your username?</span></a>
+					<a href="#" tabindex="5"><span class="small"><?php echo Yii::t('strings','Forgotten your username')?>?</span></a>
 				<?php }?>
 			</div>
 
 			<div class="loginRow bigInput">
-				<?php echo CHtml::activeLabel($model,'password', array('label'=>'Password:')); ?>
+				<?php echo CHtml::activeLabel($model,'password', array('label'=>Yii::t('strings','Password').':')); ?>
 				<?php echo $form->passwordField($model,'password',array('tabindex' => 2)); ?>
 				<?php if (Yii::app()->params['auth_source'] == 'BASIC') {?>
-					<a href="#" tabindex="6"><span class="small">Forgotten your password?</span></a>
+					<a href="#" tabindex="6"><span class="small"><?php echo Yii::t('strings','Forgotten your password')?>?</span></a>
 				<?php }?>
 			</div>
 
 			<div class="row">
-				<?php echo CHtml::activeLabel($model,'siteId', array('label'=>'Site:')); ?>
+				<?php echo CHtml::activeLabel($model,'siteId', array('label'=>Yii::t('strings','Site').':')); ?>
 				<?php echo $form->dropDownList($model, 'siteId', $sites, array('tabindex' => 3)); ?>
 				<?php echo $form->error($model,'siteId'); ?>
 			</div>
 
 			<div class="row">
-				<button type="submit" name="yt0" value="" class="btn_login ir" tabindex="4">Login</button>
+				<button type="submit" name="yt0" value="" class="btn_login ir" tabindex="4"><?php echo Yii::t('strings','Login')?></button>
 			</div>
 
 		<?php $this->endWidget(); ?>
 	</div><!-- #login-form -->
 	<script type="text/javascript">
-		$('input[id=LoginForm_username]').watermark('enter username');
-		$('input[id=LoginForm_password]').watermark('enter password');
+		$('input[id=LoginForm_username]').watermark('<?php echo Yii::t('strings','enter username')?>');
+		$('input[id=LoginForm_password]').watermark('<?php echo Yii::t('strings','enter password')?>');
 
 		if ($('#LoginForm_username').val() == '') {
 			$('#LoginForm_username').focus();

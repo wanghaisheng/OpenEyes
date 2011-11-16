@@ -20,7 +20,7 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 //$cs->registerCSSFile('/css/jqueryui/theme/jquery-ui.css', 'all');
 
 if (empty($theatres)) {?>
-	<p class="fullBox"><strong>No theatre schedules match your search criteria.</strong></p>
+	<p class="fullBox"><strong><?php echo Yii::t('strings','No theatre schedules match your search criteria')?>.</strong></p>
 <?php } else {
 	$panels = array();
 
@@ -39,7 +39,7 @@ if (empty($theatres)) {?>
 					if ($previousSequenceId != '') {
 ?>
 							<tr>
-								<th colspan="8" class="footer">Time unallocated: <span><?php echo $timeAvailable ?> min</span></th>
+								<th colspan="8" class="footer"><?php echo Yii::t('strings','Time unallocated')?>: <span><?php echo $timeAvailable ?> <?php echo Yii::t('strings','min')?></span></th>
 							</tr>
 						</tbody>
 					</table>
@@ -47,27 +47,27 @@ if (empty($theatres)) {?>
 <?php
 					}
 ?>
-<h3 class="sessionDetails"><span class="date"><strong><?php echo date('d M',$timestamp)?></strong> <?php echo date('Y',$timestamp)?></span> - <strong><span class="day"><?php echo date('l',$timestamp)?></span>, <span class="time"><?php echo substr($session['startTime'], 0, 5)?> - <?php echo substr($session['endTime'], 0, 5)?></span></strong> for <?php echo !empty($session['firm_name']) ? $session['firm_name'] : 'Emergency List' ?> <?php echo !empty($session['specialty_name']) ? 'for (' . $session['specialty_name'] . ')' : '' ?> </h3>
+<h3 class="sessionDetails"><span class="date"><strong><?php echo date('d M',$timestamp)?></strong> <?php echo date('Y',$timestamp)?></span> - <strong><span class="day"><?php echo date('l',$timestamp)?></span>, <span class="time"><?php echo substr($session['startTime'], 0, 5)?> - <?php echo substr($session['endTime'], 0, 5)?></span></strong> for <?php echo !empty($session['firm_name']) ? $session['firm_name'] : Yii::t('strings','Emergency List') ?> <?php echo !empty($session['specialty_name']) ? Yii::t('strings','for').' (' . $session['specialty_name'] . ')' : '' ?> </h3>
 				<div class="theatre-sessions whiteBox clearfix">
 
 						<div class="sessionComments" style="display:block; float:right; width:250px; ">
 							<form>
 								<textarea rows="2" style="width:245px;" id="comments<?php echo $session['sessionId'] ?>"><?php echo $session['comments'] ?></textarea>
 							</form>
-							<div class="modifyComments"><span class="edit"><a href="#" id="editComments<?php echo $session['sessionId'] ?>" name="<?php echo $session['sessionId'] ?>">Edit comment</a></span></div>
+							<div class="modifyComments"><span class="edit"><a href="#" id="editComments<?php echo $session['sessionId'] ?>" name="<?php echo $session['sessionId'] ?>"><?php echo Yii::t('strings','Edit comment')?></a></span></div>
 						</div>
 
 					<table>
 						<tbody>
 							<tr>
-								<th>Admit time</th>
-								<th>Hospital #</th>
-								<th>Patient (Age)</th>
-								<th>[Eye] Operation</th>
-								<th>Anesth</th>
-								<th>Ward</th>
-								<th>Info</th>
-								<th>Move</th>
+								<th><?php echo Yii::t('strings','Admit time')?></th>
+								<th><?php echo Yii::t('strings','Hospital #')?></th>
+								<th><?php echo Yii::t('strings','Patient (Age)')?></th>
+								<th>[<?php echo Yii::t('strings','Eye')?>] <?php echo Yii::t('strings','Operation')?></th>
+								<th><?php echo Yii::t('strings','Anesth')?></th>
+								<th><?php echo Yii::t('strings','Ward')?></th>
+								<th><?php echo Yii::t('strings','Info')?></th>
+								<th><?php echo Yii::t('strings','Move')?></th>
 							</tr>
 <?php
 					$previousSequenceId = $session['sequenceId'];
@@ -79,8 +79,8 @@ if (empty($theatres)) {?>
 ?>
 							<tr id="oprow_<?php echo $session['operationId'] ?>">
 								<td class="session">
-                                                                	<input type="text" id="admitTime<?php echo $session['operationId'] ?>" value="<?php echo substr($session['admissionTime'], 0, 5)?>" size="4">
-									<a href="#" id="editAdmitTime<?php echo $session['operationId'] ?>">Save</a>
+                  <input type="text" id="admitTime<?php echo $session['operationId'] ?>" value="<?php echo substr($session['admissionTime'], 0, 5)?>" size="4">
+									<a href="#" id="editAdmitTime<?php echo $session['operationId'] ?>"><?php echo Yii::t('strings','Save')?></a>
 								</td>
 								<td class="hospital"><?php echo CHtml::link(
 									$session['patientHosNum'],
@@ -88,7 +88,7 @@ if (empty($theatres)) {?>
 							       	);
 								?></td>
 								<td class="patient leftAlign"><?php echo $session['patientName'] . ' (' . $session['patientAge'] . ')'; ?></td>
-								<td class="operation leftAlign"><?php echo !empty($session['procedures']) ? '['.$session['eye'].'] '.$session['procedures'] : 'No procedures'?></td>
+								<td class="operation leftAlign"><?php echo !empty($session['procedures']) ? '['.$session['eye'].'] '.$session['procedures'] : Yii::t('strings','No procedures')?></td>
 								<td class="anesthetic"><?php echo $session['anaesthetic'] ?></td>
 								<td class="ward"><?php echo $session['ward']; ?></td>
 								<td class="alerts">
@@ -109,12 +109,12 @@ if (empty($theatres)) {?>
 					}
 
 					if (!empty($session['overnightStay'])) {
-							?><img src="/img/_elements/icons/alerts/overnight.png" alt="Overnight stay required" width="17" height="17" />
+							?><img src="/img/_elements/icons/alerts/overnight.png" alt="<?php echo Yii::t('strings','Overnight stay required')?>" width="17" height="17" />
 <?php
 					}
 
 					if (!empty($session['consultantRequired'])) {
-							?><img src="/img/_elements/icons/alerts/consultant.png" alt="Consultant required" width="17" height="17" />
+							?><img src="/img/_elements/icons/alerts/consultant.png" alt="<?php echo Yii::t('strings','Consultant required')?>" width="17" height="17" />
 <?php
 					}
 ?>
@@ -132,7 +132,7 @@ if (empty($theatres)) {?>
 			}
 ?>
 							<tr>
-								<th colspan="8" class="footer">Time unallocated: <span><?php echo $timeAvailable ?> min</span></th>
+								<th colspan="8" class="footer"><?php echo Yii::t('strings','Time unallocated')?>: <span><?php echo $timeAvailable ?> <?php echo Yii::t('strings','min')?></span></th>
 							</tr>
 						</tbody>
 					</table>

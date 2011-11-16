@@ -29,7 +29,7 @@ echo CHtml::hiddenField('action', 'update');
 echo CHtml::hiddenField('event_id', $id);
 
 ?>
-<div id="event-update_es_" class="errorSummary" style="display:none"><p>Please fix the following input errors:</p>
+<div id="event-update_es_" class="errorSummary" style="display:none"><p><?php echo Yii::t('strings','Please fix the following input errors')?>:</p>
 <ul><li>&nbsp;</li></ul></div>
 <?php
 
@@ -49,7 +49,7 @@ foreach ($elements as $element) {
 
 ?>
 <div class="cleartall"></div>
-<button type="submit" value="submit" class="shinybutton highlighted" id="updateEvent"><span>Update</span></button>
+<button type="submit" value="submit" class="shinybutton highlighted" id="updateEvent"><span><?php echo Yii::t('strings','Update')?></span></button>
 <?php
 $this->endWidget();
 ?>

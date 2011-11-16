@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>History view 2
+?><?php echo Yii::t('strings','History view')?> 2
 <br />
 <?php $this->widget('zii.widgets.CDetailView', array(
     'data'=>$model,

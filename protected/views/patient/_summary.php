@@ -16,17 +16,17 @@ Yii::app()->clientScript->scriptMap['jquery.js'] = false; ?>
 <div id="box_gradient_top"></div>
 <div id="box_gradient_bottom">
 <div class="details" id="personal_details">
-	<h3>Personal Details:</h3>
+	<h3><?php echo Yii::t('strings','Personal Details')?>:</h3>
 	<div class="data_row">
-		<div class="data_label">First name(s):</div>
+		<div class="data_label"><?php echo Yii::t('strings','First name(s)')?>:</div>
 		<div class="data_value"><?php echo $model->first_name; ?></div>
 	</div>
 	<div class="data_row">
-		<div class="data_label">Last name:</div>
+		<div class="data_label"><?php echo Yii::t('strings','Last name')?>:</div>
 		<div class="data_value"><?php echo $model->last_name; ?></div>
 	</div>
 	<div class="data_row address">
-		<div class="data_label">Address:</div>
+		<div class="data_label"><?php echo Yii::t('strings','Address')?>:</div>
 		<div class="data_value">
 <?php
 	if (!empty($address)) {
@@ -56,55 +56,55 @@ Yii::app()->clientScript->scriptMap['jquery.js'] = false; ?>
 			echo '<br />';
 		}
 	} else {
-		echo 'Unknown';
+		echo Yii::t('strings','Unknown');
 	} ?>
 		</div>
 	</div>
 	<div class="data_row">
-		<div class="data_label">Date of Birth:</div>
+		<div class="data_label"><?php echo Yii::t('strings','Date of Birth')?>:</div>
 		<div class="data_value"><?php
 		$dobTime = strtotime($model->dob);
 		echo date('d M Y', $dobTime);
-		echo ' (Age ' . $model->getAge()  . ')';
+		echo ' ('.Yii::t('strings','Age').' ' . $model->getAge()  . ')';
 		?></div>
 	</div>
 	<div class="data_row row_buffer">
-		<div class="data_label">Gender:</div>
-		<div class="data_value"><?php echo $model->gender == 'F' ? 'Female' : 'Male'; ?></div>
+		<div class="data_label"><?php echo Yii::t('strings','Gender')?>:</div>
+		<div class="data_value"><?php echo $model->gender == 'F' ? Yii::t('strings','Female') : Yii::t('strings','Male'); ?></div>
 	</div>
 </div>
 <div class="details" id="contact_details">
-	<h3>Contact Details:</h3>
+	<h3><?php echo Yii::t('strings','Contact Details')?>:</h3>
 	<div class="data_row telephone">
-		<div class="data_label">Telephone:</div>
+		<div class="data_label"><?php echo Yii::t('strings','Telephone')?>:</div>
 		<div class="data_value"><?php echo !empty($model->primary_phone)
-			? $model->primary_phone : 'Unknown'; ?></div>
+			? $model->primary_phone : Yii::t('strings','Unknown'); ?></div>
 	</div>
 	<div class="data_row row_buffer">
-		<div class="data_label">Email:</div>
+		<div class="data_label"><?php echo Yii::t('strings','Email')?>:</div>
 		<div class="data_value"><?php echo !empty($address->email)
-                        ? $address->email : 'Unknown'; ?></div>
+                        ? $address->email : Yii::t('strings','Unknown'); ?></div>
 
 	</div>
 	<div class="data_row row_buffer">
-		<div class="data_label">Next of Kin:</div>
-		<div class="data_value">Unknown</div>
+		<div class="data_label"><?php echo Yii::t('strings','Next of Kin')?>:</div>
+		<div class="data_value"><?php echo Yii::t('strings','Unknown')?></div>
 	</div>
 </div>
 <div class="details" id="recent_episodes">
-	<h3>Recent Episodes:</h3>
+	<h3><?php echo Yii::t('strings','Recent Episodes')?>:</h3>
 	<div id="view_all"></div>
 	<div class="clear"></div>
 <?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'dataProvider'=>$episodes,
 		'columns'=>array(
-			array('name'=>'Start Date','value'=>'date("d M Y", strtotime($data->start_date))'),
-			array('name'=>'End Date','value'=>'!empty($data->end_date) ? date("d M Y", strtotime($data->end_date)) : ""'),
-			array('name'=>'Firm', 'value'=>'$data->firm->name'),
-			array('name'=>'Specialty', 'value'=>'$data->firm->serviceSpecialtyAssignment->specialty->name'),
-			array('name'=>'Eye','value'=>'$data->getPrincipalDiagnosisEyeText()'), // 'diagnosis.location',
-			array('name'=>'Diagnosis','value'=>'$data->getPrincipalDiagnosisDisorderTerm()'), // 'disorder.name'
+			array('name'=>Yii::t('strings','Start Date'),'value'=>'date("d M Y", strtotime($data->start_date))'),
+			array('name'=>Yii::t('strings','End Date'),'value'=>'!empty($data->end_date) ? date("d M Y", strtotime($data->end_date)) : ""'),
+			array('name'=>Yii::t('strings','Firm'), 'value'=>'$data->firm->name'),
+			array('name'=>Yii::t('strings','Specialty'), 'value'=>'$data->firm->serviceSpecialtyAssignment->specialty->name'),
+			array('name'=>Yii::t('strings','Eye'),'value'=>'$data->getPrincipalDiagnosisEyeText()'), // 'diagnosis.location',
+			array('name'=>Yii::t('strings','Diagnosis'),'value'=>'$data->getPrincipalDiagnosisDisorderTerm()'), // 'disorder.name'
 //			array('class'=>'CButtonColumn', 'buttons'=>array(
 //				'view'=>array(
 //					'label'=>'View',
@@ -118,7 +118,7 @@ Yii::app()->clientScript->scriptMap['jquery.js'] = false; ?>
 		'enablePagination'=>false,
 		'enableSorting'=>false,
 		'summaryText'=>'',
-		'emptyText'=>'No episodes found.'
+		'emptyText'=>Yii::t('strings','No episodes found').'.'
 	)); ?>
 </div>
 </div>

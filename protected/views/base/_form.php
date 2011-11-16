@@ -22,14 +22,14 @@ if (!Yii::app()->user->isGuest) {
 	<div id="user_panel">
 		<div class="clearfix">
 			<div id="user_id">
-				Hi <strong><?php echo $user->first_name . ' ' . $user->last_name; ?></strong>&nbsp;<!--a href="#" class="small">(not you?)</a-->
+				<?php echo Yii::t('strings','Hi')?> <strong><?php echo $user->first_name . ' ' . $user->last_name; ?></strong>&nbsp;<!--a href="#" class="small">(not you?)</a-->
 			</div>
 
 			<ul id="user_nav">
-				<li><a href="/">Home</a></li>
-				<li><a href="/theatre">Diary</a></li>
-				<li><a href="/waitingList">Waiting List</a></li>
-				<li><a href="/site/logout" class="logout">Logout</a></li>
+				<li><a href="/"><?php echo Yii::t('strings','Home')?></a></li>
+				<li><a href="/theatre"><?php echo Yii::t('strings','Diary')?></a></li>
+				<li><a href="/waitingList"><?php echo Yii::t('strings','Waiting List')?></a></li>
+				<li><a href="/site/logout" class="logout"><?php echo Yii::t('strings','Logout')?></a></li>
 			</ul>
 		</div>
 		<?php

@@ -70,7 +70,7 @@ foreach ($templates as $key => $template) {
 ?>
 </script>
 
-<h2 class="element_letterout">Letter out</h2>
+<h2 class="element_letterout"><?php echo Yii::t('strings','Letter out')?></h2>
 
 <div class="row_element_letterout">
 	<h3 class="element_letterout"><?php echo $form->labelEx($model,'to_address'); ?></h3 class="element_letterout">
@@ -112,7 +112,7 @@ foreach ($templates as $key => $template) {
 
 <div class="row_element_letterout">
 	<span class="element_letterout_right">
-		Nickname:
+		<?php echo Yii::t('strings','Nickname')?>:
 		<?php echo CHtml::checkBox('use_nickname', '', array()); ?>
 	</span>
 </div>
@@ -136,17 +136,17 @@ foreach ($templates as $key => $template) {
 <div class="row_element_letterout">
 	<h3 class="element_letterout"><?php echo $form->labelEx($model,'value'); ?></h3 class="element_letterout">
 	<span class="element_letterout_left">
-	<?php echo CHtml::dropDownList('Introduction', '', $allPhraseOptions['Introduction'], array('empty'=>'Introduction')); ?>
+	<?php echo CHtml::dropDownList(Yii::t('strings','Introduction'), '', $allPhraseOptions['Introduction'], array('empty'=>'Introduction')); ?>
 	<br />
-	<?php echo CHtml::dropDownList('Findings', '', $allPhraseOptions['Findings'], array('empty'=>'Findings')); ?>
+	<?php echo CHtml::dropDownList(Yii::t('strings','Findings'), '', $allPhraseOptions['Findings'], array('empty'=>'Findings')); ?>
 	<br />
-	<?php echo CHtml::dropDownList('Diagnosis', '', $allPhraseOptions['Diagnosis'], array('empty'=>'Diagnosis')); ?>
+	<?php echo CHtml::dropDownList(Yii::t('strings','Diagnosis'), '', $allPhraseOptions['Diagnosis'], array('empty'=>'Diagnosis')); ?>
 	<br />
-	<?php echo CHtml::dropDownList('Management', '', $allPhraseOptions['Management'], array('empty'=>'Management')); ?>
+	<?php echo CHtml::dropDownList(Yii::t('strings','Management'), '', $allPhraseOptions['Management'], array('empty'=>'Management')); ?>
 	<br />
-	<?php echo CHtml::dropDownList('Drugs', '', $allPhraseOptions['Drugs'], array('empty'=>'Drugs')); ?>
+	<?php echo CHtml::dropDownList(Yii::t('strings','Drugs'), '', $allPhraseOptions['Drugs'], array('empty'=>'Drugs')); ?>
 	<br />
-	<?php echo CHtml::dropDownList('Outcome', '', $allPhraseOptions['Outcome'], array('empty'=>'Outcome')); ?>
+	<?php echo CHtml::dropDownList(Yii::t('strings','Outcome'), '', $allPhraseOptions['Outcome'], array('empty'=>'Outcome')); ?>
 	</span>
 	<span class="element_letterout_right">
 		<?php echo $form->textArea($model,'value',array('rows'=>6, 'cols'=>50)); ?>

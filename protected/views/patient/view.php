@@ -58,9 +58,9 @@ if (!empty($address)) {
 		$address_str .= '<br />';
 	}
 } else {
-	$address_str .= 'Unknown';
+	$address_str .= Yii::t('strings','Unknown');
 } ?>
-		<h2>Patient Summary</h2>
+		<h2><?php echo Yii::t('strings','Patient Summary')?></h2>
 			<div class="wrapTwo clearfix">
 				<div class="halfColumnLeft">
  
@@ -72,56 +72,56 @@ if (!empty($address)) {
 					-->
 
 					<div class="whiteBox" id="personal_details">
-						<h4>Personal Details:</h4>
+						<h4><?php echo Yii::t('strings','Personal Details')?>:</h4>
 						<div class="data_row">
-							<div class="data_label">First name(s):</div>
+							<div class="data_label"><?php echo Yii::t('strings','First name(s)')?>:</div>
 							<div class="data_value"><?php echo $model->first_name?></div>
 						</div>
 						<div class="data_row">
-							<div class="data_label">Last name:</div>
+							<div class="data_label"><?php echo Yii::t('strings','Last name')?>:</div>
 							<div class="data_value"><?php echo $model->last_name?></div>
 						</div>
 						<div class="data_row">
-							<div class="data_label">Address:</div>
+							<div class="data_label"><?php echo Yii::t('strings','Address')?>:</div>
 							<div class="data_value"><?php echo $address_str?></div>
 						</div>
 						<div class="data_row">
-							<div class="data_label">Date of Birth:</div>
-							<div class="data_value"><?php echo date('d M Y', strtotime($model->dob)).' (Age '.$model->getAge().')'?></div>
+							<div class="data_label"><?php echo Yii::t('strings','Date of Birth')?>:</div>
+							<div class="data_value"><?php echo date('d M Y', strtotime($model->dob)).' ('.Yii::t('strings','Age').' '.$model->getAge().')'?></div>
 						</div>
 						<div class="data_row">
-							<div class="data_label">Gender:</div>
-							<div class="data_value"><?php echo $model->gender == 'F' ? 'Female' : 'Male'?></div>
+							<div class="data_label"><?php echo Yii::t('strings','Gender')?>:</div>
+							<div class="data_value"><?php echo $model->gender == 'F' ? Yii::t('strings','Female') : Yii::t('strings','Male')?></div>
 						</div>
 					</div> <!-- #personal_details -->
 					<div class="whiteBox" id="contact_details">
-						<h4>Contact Details:</h4>
+						<h4><?php echo Yii::t('strings','Contact Details')?>:</h4>
 						<div class="data_row">
-							<div class="data_label">Telephone:</div>
-							<div class="data_value"><?php echo !empty($model->primary_phone) ? $model->primary_phone : 'Unknown'?></div>
+							<div class="data_label"><?php echo Yii::t('strings','Telephone')?>:</div>
+							<div class="data_value"><?php echo !empty($model->primary_phone) ? $model->primary_phone : Yii::t('strings','Unknown')?></div>
 						</div>
 						<div class="data_row">
-							<div class="data_label">Email:</div>
-							<div class="data_value"><?php echo !empty($address->email) ? $address->email : 'Unknown'?></div>
+							<div class="data_label"><?php echo Yii::t('strings','Email')?>:</div>
+							<div class="data_value"><?php echo !empty($address->email) ? $address->email : Yii::t('strings','Unknown')?></div>
 
 						</div>
 						<div class="data_row">
-							<div class="data_label">Next of Kin:</div>
-							<div class="data_value">Unknown</div>
+							<div class="data_label"><?php echo Yii::t('strings','Next of Kin')?>:</div>
+							<div class="data_value"><?php echo Yii::t('strings','Unknown')?></div>
 						</div>
 					</div>
 				</div>	<!-- .halfColumn -->
 
 				<div class="halfColumnRight">
 					<div class="blueBox">
-						<h5>All Episodes<span style="float:right;">&nbsp; open <?php echo $episodes_open?> &nbsp;|&nbsp;<span style="font-weight:normal;">closed <?php echo $episodes_closed?></span></span></h5>
+						<h5><?php echo Yii::t('strings','All Episodes')?><span style="float:right;">&nbsp; <?php echo Yii::t('strings','open')?> <?php echo $episodes_open?> &nbsp;|&nbsp;<span style="font-weight:normal;"><?php echo Yii::t('strings','closed')?> <?php echo $episodes_closed?></span></span></h5>
 						<div id="yw0" class="grid-view">
 							<?php if (empty($episodes)) {?>
-								<div class="summary">No episodes</div>
+								<div class="summary"><?php echo Yii::t('strings','No episodes')?></div>
 							<?php }else{?>
 								<table class="items">
 									<thead>
-										<tr><th id="yw0_c0">Start  Date</th><th id="yw0_c1">End  Date</th><th id="yw0_c2">Firm</th><th id="yw0_c3">Specialty</th><th id="yw0_c4">Eye</th><th id="yw0_c5">Diagnosis</th></tr>
+										<tr><th id="yw0_c0"><?php echo Yii::t('strings','Start  Date')?></th><th id="yw0_c1"><?php echo Yii::t('strings','End  Date')?></th><th id="yw0_c2"><?php echo Yii::t('strings','Firm')?></th><th id="yw0_c3"><?php echo Yii::t('strings','Specialty')?></th><th id="yw0_c4"><?php echo Yii::t('strings','Eye')?></th><th id="yw0_c5"><?php echo Yii::t('strings','Diagnosis')?></th></tr>
 									</thead>
 									<tbody>
 										<?php foreach ($episodes as $i => $episode) {?>
@@ -131,8 +131,8 @@ if (!empty($address)) {
 												<td><?php echo CHtml::encode($episode->firm->name)?></td>
 												<td><?php echo CHtml::encode($episode->firm->serviceSpecialtyAssignment->specialty->name)?></td>
 												<?php $diagnosis = $episode->getPrincipalDiagnosis() ?>
-												<td><?php echo !empty($diagnosis) ? $diagnosis->getEyeText() : 'No diagnosis' ?></td>
-												<td><?php echo !empty($diagnosis) ? $diagnosis->disorder->term : 'No diagnosis'?></td>
+												<td><?php echo !empty($diagnosis) ? $diagnosis->getEyeText() : Yii::t('strings','No diagnosis')?></td>
+												<td><?php echo !empty($diagnosis) ? $diagnosis->disorder->term : Yii::t('strings','No diagnosis')?></td>
 											</tr>
 										<?php }?>
 									</tbody>
@@ -141,7 +141,7 @@ if (!empty($address)) {
 							<?php }?>
 						</div> <!-- .grid-view -->
 					</div>	<!-- .blueBox -->
-					<p><a href="/patient/episodes/<?php echo $model->id?>"><span class="aPush">View all Episodes, Summaries and Events</span></a></p>
+					<p><a href="/patient/episodes/<?php echo $model->id?>"><span class="aPush"><?php echo Yii::t('strings','View all Episodes, Summaries and Events')?></span></a></p>
 				</div> <!-- .halfColumn -->
 			</div><!-- .wrapTwo -->
 			<script type="text/javascript">

@@ -2,7 +2,7 @@
 <?php
 
 if (empty($operations)) { ?>
-<h2 class="theatre">Waiting list empty.</h2>
+<h2 class="theatre"><?php echo Yii::t('strings','Waiting list empty')?>.</h2>
 <?php
 } else {
 ?>
@@ -11,14 +11,14 @@ if (empty($operations)) { ?>
 					    <tbody>
 
 					    	<tr>
-								<th>Letter status</th>
-						        <th>Hospital #</th>
-						        <th>Patient</th>
-						        <th>Procedures</th>
-						        <th>Eye</th>
-						        <th>Firm</th>
-						        <th>Decision Date</th>
-						        <th>Book Status</th>
+								<th><?php echo Yii::t('strings','Letter status')?></th>
+						        <th><?php echo Yii::t('strings','Hospital #')?></th>
+						        <th><?php echo Yii::t('strings','Patient')?></th>
+						        <th><?php echo Yii::t('strings','Procedures')?></th>
+						        <th><?php echo Yii::t('strings','Eye')?></th>
+						        <th><?php echo Yii::t('strings','Firm')?></th>
+						        <th><?php echo Yii::t('strings','Decision Date')?></th>
+						        <th><?php echo Yii::t('strings','Book Status')?></th>
 					    	</tr>
 <?php
 	$i = 0;

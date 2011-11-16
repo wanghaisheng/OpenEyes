@@ -15,7 +15,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 ?>PMH: <br />
 
 	<div class="row">
-		<label for="ElementPMH_value">Phrase:</label>
+		<label for="ElementPMH_value"><?php echo Yii::t('strings','Phrase')?>:</label>
 		<?php echo CHtml::dropDownList('ElementPMH[phrase]', '', $model->getPhraseBySpecialtyOptions('PMH'),
 			array('onChange' => 'appendText($(this), $("#ElementPMH_value"));')); ?>
 	</div>

@@ -20,32 +20,32 @@ $patient = $operation->event->episode->patient;
 		<span class="patient"><strong><?php echo $patient->first_name ?></strong> <?php echo $patient->last_name ?> (<?php echo $patient->hos_num ?>)</span>
 	</div>
 
-	<h3>Schedule Operation</h3>
+	<h3><?php echo Yii::t('strings','Schedule Operation')?></h3>
 
 	<?php
 	if ($operation->event->episode->firm_id != $firm->id) {
-		if ($firm->name == 'Emergency List') {
+		if ($firm->name == Yii::t('strings','Emergency List')) {
 			$class = 'flash-error';
-			$message = 'You are booking into the Emergency List.';
+			$message = Yii::t('strings','You are booking into the Emergency List').'.';
 		} else {
 			$class = 'flash-notice';
-			$message = 'You are booking into the list for ' . $firm->name . '.';
+			$message = Yii::t('strings','You are booking into the list for').' ' . $firm->name . '.';
 		} ?>
 		<div class="<?php echo $class; ?>"><?php echo $message; ?></div>
 		<?php
 	}
 	if (empty($sessions)) { ?>
-		<div class="flash-error">This firm has no scheduled sessions.</div>
+		<div class="flash-error"><?php echo Yii::t('strings','This firm has no scheduled sessions')?>.</div>
 		<?php
 	}
 	?>
 
 	<div id="firmSelect" class="eventDetail clearfix">
-		<div class="label"><span class="normal">Viewing the schedule for </span><br /><strong><?php echo $firm->name?></strong></div>
+		<div class="label"><span class="normal"><?php echo Yii::t('strings','Viewing the schedule for')?> </span><br /><strong><?php echo $firm->name?></strong></div>
 		<div class="data">
 			<select id="firmId">
-				<option value="">Select a different firm</option>
-				<option value="EMG">Emergency List</option>
+				<option value=""><?php echo Yii::t('strings','Select a different firm')?></option>
+				<option value="EMG"><?php echo Yii::t('strings','Emergency List')?></option>
 				<?php foreach ($firmList as $aFirm) {?>
 					<option value="<?php echo $aFirm->id; ?>"><?php echo $aFirm->name; ?> (<?php echo $aFirm->serviceSpecialtyAssignment->specialty->name ?>)</option>
 				<?php }?>
@@ -54,7 +54,7 @@ $patient = $operation->event->episode->patient;
 	</div>
 
 <div id="operation">
-	<h3>Select theatre slot</h3>
+	<h3><?php echo Yii::t('strings','Select theatre slot')?></h3>
 
 	<?php if (Yii::app()->user->hasFlash('info')) {?>
 		<div class="flash-notice">
@@ -62,7 +62,7 @@ $patient = $operation->event->episode->patient;
 		</div>
 	<?php }?>
 
-	<h4>Select a session date:</h4>
+	<h4><?php echo Yii::t('strings','Select a session date')?>:</h4>
 	<div id="calendar">
 		<div id="session_dates">
 			<div id="details">

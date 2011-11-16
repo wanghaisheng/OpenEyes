@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Type of Diabetes:<br />
+?><?php echo Yii::t('strings','Type of Diabetes')?>:<br />
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('type')); ?>:</b>

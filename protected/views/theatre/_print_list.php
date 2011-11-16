@@ -19,7 +19,7 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 <!-- ================================================ -->
 
 <div id="diaryTemplate">
-<div id="d_title">OPERATION LIST FORM</div>
+<div id="d_title"><?php echo Yii::t('strings','OPERATION LIST FORM')?></div>
 
 <?php
 
@@ -41,28 +41,28 @@ foreach ($theatres as $name => $dates) {
 ?>
 <table class="d_overview">
 <tbody><tr><td>
-THEATRE NO:
+<?php echo Yii::t('strings','THEATRE NO')?>:
 </td><td colspan="2">
 <?php echo(htmlspecialchars($name, ENT_QUOTES)) ?>
 </td></tr>
 <tr><td>
-SESSION:
+<?php echo Yii::t('strings','SESSION')?>:
 </td><td>
 <?php echo substr($session['startTime'], 0, 5)?> - <?php echo substr($session['endTime'], 0, 5) ?>
 </td><td>
-NHS
+<?php echo Yii::t('strings','NHS')?>
 </td></tr>
 </tbody></table>
 
 <table class="d_overview">
 <tbody><tr><td>
-SURGICAL FIRM: <?php echo empty($session['firm_name']) ? 'Emergency list' : htmlspecialchars($session['firm_name'], ENT_QUOTES) ?>
+<?php echo Yii::t('strings','SURGICAL FIRM')?>: <?php echo empty($session['firm_name']) ? Yii::t('strings','Emergency list') : htmlspecialchars($session['firm_name'], ENT_QUOTES) ?>
 </td><td>
-ANAESTHETIST:
+<?php echo Yii::t('strings','ANAESTHETIST')?>:
 </td><td>
 &nbsp;
 </td><td>
-DATE:
+<?php echo Yii::t('strings','DATE')?>:
 </td><td>
 <?php echo date('d M Y') ?>
 </td></tr>
@@ -71,13 +71,13 @@ DATE:
 <table class="d_data">
 <tbody>
 <tr>
-<th>HOSPT NO</th>
-<th>PATIENT</th>
-<th>AGE</th>
-<th>WARD</th>
-<th>GA or LA</th>
-<th>PROCEDURES AND COMMENTS</th>
-<th>ADMISSION TIME</th>
+<th><?php echo Yii::t('strings','HOSPT NO')?></th>
+<th><?php echo Yii::t('strings','PATIENT')?></th>
+<th><?php echo Yii::t('strings','AGE')?></th>
+<th><?php echo Yii::t('strings','WARD')?></th>
+<th><?php echo Yii::t('strings','GA or LA')?></th>
+<th><?php echo Yii::t('strings','PROCEDURES AND COMMENTS')?></th>
+<th><?php echo Yii::t('strings','ADMISSION TIME')?></th>
 </tr>
 <?php
 				}
@@ -93,7 +93,7 @@ DATE:
 <td><?php echo htmlspecialchars($session['ward']) ?></td>
 <td><?php echo htmlspecialchars($session['anaesthetic']) ?></td>
 <td>
-<?php echo !empty($session['procedures']) ? '['.$session['eye'].'] '.htmlspecialchars($session['procedures']) : 'No procedures'?><br />
+<?php echo !empty($session['procedures']) ? '['.$session['eye'].'] '.htmlspecialchars($session['procedures']) : Yii::t('strings','No procedures')?><br />
 <?php echo htmlspecialchars($session['operationComments']) ?>
 <td><?php echo $session['admissionTime'] ?></td>
 </td></tr>

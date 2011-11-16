@@ -33,7 +33,7 @@ echo CHtml::hiddenField('patient_id', $patient->id);
 echo CHtml::hiddenField('firm_id', $firm->id);
 
 ?>
-<div id="clinical-create_es_" class="errorSummary" style="display:none"><p>Please fix the following input errors:</p>
+<div id="clinical-create_es_" class="errorSummary" style="display:none"><p><?php echo Yii::t('strings','Please fix the following input errors')?>:</p>
 <ul><li>&nbsp;</li></ul></div>
 <?php
 
@@ -63,31 +63,31 @@ if (isset($referrals) && is_array($referrals)) {
 ?>
 <div class="box_grey_big_gradient_top"></div>
 <div class="box_grey_big_gradient_bottom">
-	<span class="referral_red">There is more than one open referral that could apply to this event.</span><p />
-	<label for="referral_id">Select the referral that applies to this event:</label>
+	<span class="referral_red"><?php echo Yii::t('strings','There is more than one open referral that could apply to this event')?>.</span><p />
+	<label for="referral_id"><?php echo Yii::t('strings','Select the referral that applies to this event')?>:</label>
 <?php echo CHtml::dropDownList('referral_id', '', CHtml::listData($referrals, 'id', 'id')); ?>
 </div>
 <?php }}?>
-	<h4>Schedule Operation</h4>
+	<h4><?php echo Yii::t('strings','Schedule Operation')?></h4>
 
 	<div id="schedule options" class="eventDetail">
-			<div class="label">Schedule options:</div>
+			<div class="label"><?php echo Yii::t('strings','Schedule options')?>:</div>
 			<div class="data">
 				<input id="ScheduleOperation" type="hidden" value="" name="ScheduleOperationn[schedule]" />
 				<span class="group">
 					<input id="ScheduleOperation_0" value="1" checked="checked" type="radio" name="ScheduleOperation[schedule]" />
-					<label for="ScheduleOperation_0">As soon as possible</label>
+					<label for="ScheduleOperation_0"><?php echo Yii::t('strings','As soon as possible')?></label>
 				</span>
 				<span class="group">
 					<input id="ScheduleOperation_1" value="0" type="radio" name="ScheduleOperation[schedule]" />
-					<label for="ScheduleOperation_1">Within timeframe specified by patient</label>
+					<label for="ScheduleOperation_1"><?php echo Yii::t('strings','Within timeframe specified by patient')?></label>
 				</span>
 			</div>
 	</div>
 
 	<div class="form_button">
-			<button type="submit" value="submit" class="wBtn_save-schedule-later ir fancybox" id="scheduleLater">Save and Schedule later</button>
-			<button type="submit" value="submit" class="wBtn_save-schedule-now ir fancybox" id="scheduleNow">Save and Schedule now</button>
+			<button type="submit" value="submit" class="wBtn_save-schedule-later ir fancybox" id="scheduleLater"><?php echo Yii::t('strings','Save and Schedule later')?></button>
+			<button type="submit" value="submit" class="wBtn_save-schedule-now ir fancybox" id="scheduleNow"><?php echo Yii::t('strings','Save and Schedule now')?></button>
 	</div>
 
 	</form>

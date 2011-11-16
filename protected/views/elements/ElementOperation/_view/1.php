@@ -14,23 +14,23 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
 Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 Yii::app()->clientScript->registerCSSFile('/css/theatre_calendar.css', 'all'); ?>
-<h3>Operation Details</h3>
+<h3><?php echo Yii::t('strings','Operation Details')?></h3>
 <div class="view">
 	<strong><?php echo $data->getEyeLabelText(); ?></strong>
 	<?php echo $data->getEyeText(); ?>
 </div>
-<div class="view"><strong>Procedures:</strong><br />
+<div class="view"><strong><?php echo Yii::t('strings','Procedures')?>:</strong><br />
 <?php
 	$totalDuration = 0;
 	if (!empty($data->procedures)) {
 		foreach ($data->procedures as $procedure) {
 			$totalDuration += $procedure->default_duration;
 
-			echo "{$procedure->short_format} ({$procedure->default_duration} minutes)<br />";
+			echo "{$procedure->short_format} ({$procedure->default_duration} ".Yii::t('strings','minutes').")<br />";
 		} ?>
 	<p/>
-	<p>Calculated Total Duration: <?php echo $totalDuration; ?> min</p>
-	<p>Estimated Total Duration: <?php echo $data->total_duration; ?> min</p>
+	<p><?php echo Yii::t('strings','Calculated Total Duration')?>: <?php echo $totalDuration; ?> <?php echo Yii::t('strings','min')?></p>
+	<p><?php echo Yii::t('strings','Estimated Total Duration')?>: <?php echo $data->total_duration; ?> <?php echo Yii::t('strings','min')?></p>
 <?php
 	} ?>
 </div>
@@ -42,7 +42,7 @@ Yii::app()->clientScript->registerCSSFile('/css/theatre_calendar.css', 'all'); ?
 <?php
 	if ($data->consultant_required) { ?>
 <div class="view">
-	<strong>Consultant Required</strong>
+	<strong><?php echo Yii::t('strings','Consultant Required')?></strong>
 	<br />
 </div>
 <?php
@@ -53,7 +53,7 @@ Yii::app()->clientScript->registerCSSFile('/css/theatre_calendar.css', 'all'); ?
 
 	if ($data->anaesthetist_required) { ?>
 	<br />
-	<strong>Anaesthetist Required</strong>
+	<strong><?php echo Yii::t('strings','Anaesthetist Required')?></strong>
 	<br />
 <?php
 	} ?>
@@ -94,7 +94,7 @@ if ($data->status != ElementOperation::STATUS_CANCELLED && !empty($data->booking
 <div class="cleartall"></div>
 <?php
 if ($data->schedule_timeframe != $data::SCHEDULE_IMMEDIATELY) {
-	Yii::app()->user->setFlash('info',"Patient Request: Schedule On/After " . date('d M Y', $data->getMinDate()));
+	Yii::app()->user->setFlash('info',Yii::t('strings',"Patient Request: Schedule On/After")." " . date('d M Y', $data->getMinDate()));
 } ?>
 <script type="text/javascript">
 	$('#procedureDiv').show();

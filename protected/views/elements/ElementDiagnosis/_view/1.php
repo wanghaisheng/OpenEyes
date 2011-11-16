@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?><h3>Diagnosis</h3>
+?><h3><?php echo Yii::t('strings','Diagnosis')?></h3>
 
 <div class="view">
 	<strong><?php echo $data->getAttributeLabel('eye'); ?></strong>

@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>ALLERGIES:<br />
+?><?php echo Yii::t('strings','ALLERGIES')?>:<br />
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('value')); ?>:</b>

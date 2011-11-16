@@ -15,25 +15,25 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 $based_on = '';
 
 if (@$_GET['first_name'] && $_GET['first_name'] != '0') {
-	$based_on = 'FIRST NAME: <strong>"'.$_GET['first_name'].'"</strong>';
+	$based_on = Yii::t('strings','FIRST NAME').': <strong>"'.$_GET['first_name'].'"</strong>';
 }
 if (@$_GET['last_name'] && $_GET['last_name'] != '0') {
 	if (@$based_on) {
 		$based_on .= ', ';
 	}
-	$based_on .= 'LAST NAME: <strong>"'.$_GET['last_name'].'"</strong>';
+	$based_on .= Yii::t('strings','LAST NAME').': <strong>"'.$_GET['last_name'].'"</strong>';
 }
 if (@$_GET['hos_num'] && $_GET['hos_num'] != '0') {
 	if (@$based_on) {
 		$based_on .= ', ';
 	}
-	$based_on .= 'HOSPITAL NUMBER: <strong>'.$_GET['hos_num']."</strong>";
+	$based_on .= Yii::t('strings','HOSPITAL NUMBER').': <strong>'.$_GET['hos_num']."</strong>";
 }
 ?>
-			<h2>Search Results</h2>
+			<h2><?php echo Yii::t('strings','Search Results')?></h2>
 			<div class="wrapTwo clearfix">
 				<div class="wideColumn">
-					<p><strong><?php echo $total_items?> patients found</strong>, based on <?php echo $based_on?></p>
+					<p><strong><?php echo $total_items?> <?php echo Yii::t('strings','patients found')?></strong>, <?php echo Yii::t('strings','based on')?> <?php echo $based_on?></p>
 					
 					<div class="whiteBox">
 						<?php
@@ -43,7 +43,7 @@ if (@$_GET['hos_num'] && $_GET['hos_num'] != '0') {
 							$to = $total_items;
 						}
 						?>
-						<h3>Results. You are viewing patients <?php echo $from?> to <?php echo $to?>, of <?php echo $total_items?></h3>
+						<h3><?php echo Yii::t('strings','Results. You are viewing patients')?> <?php echo $from?> <?php echo Yii::t('strings','to')?> <?php echo $to?>, <?php echo Yii::t('strings','of')?> <?php echo $total_items?></h3>
 
 						<?php $this->widget('zii.widgets.grid.CGridView', array(
 							'id'=>'patient-grid',
@@ -61,7 +61,7 @@ if (@$_GET['hos_num'] && $_GET['hos_num'] != '0') {
 						));
 						?>
 
-						<div class="resultsPagination">Viewing patients:
+						<div class="resultsPagination"><?php echo Yii::t('strings','Viewing patients')?>:
 							<?php for ($i=0; $i<$pages; $i++) {?>
 								<?php if ($i == $pagen) {
 									$to = ($i+1)*$items_per_page;
@@ -96,8 +96,8 @@ if (@$_GET['hos_num'] && $_GET['hos_num'] != '0') {
 						<input type="hidden" name="dob_year" value="<?php echo $_GET['dob_year']?>" />
 
 						<div id="refine_patient_details" class="form_greyBox clearfix">
-							<h3>Refine your search</h3>
-							<h4>Add, or modify, the details below to help you find the patient you are looking for.</h4>
+							<h3><?php echo Yii::t('strings','Refine your search')?></h3>
+							<h4><?php echo Yii::t('strings','Add, or modify, the details below to help you find the patient you are looking for')?>.</h4>
 							
 							<!--<div class="multiInputRight clearfix">
 								<label for="dob">Age range:<span class="labelHint">e.g. 20 to 40</span></label>
@@ -107,25 +107,25 @@ if (@$_GET['hos_num'] && $_GET['hos_num'] != '0') {
 							-->
 						
 							<div class="inputLayout clearfix">	
-								<label for="nhs_number">NHS #:<span class="labelHint">for example: #111-222-3333</span></label>
+								<label for="nhs_number"><?php echo Yii::t('strings','NHS #')?>:<span class="labelHint"><?php echo Yii::t('strings','for example')?>: #111-222-3333</span></label>
 								<input type="text" value="<?php if (@$_GET['nhs_num']!='0') echo @$_GET['nhs_num']?>" name="Patient[nhs_num]" id="Patient_nhs_num" />
 							</div>
 							<div class="customRight clearfix">
-								<label style="float:left;"for="gender">Gender:<span class="labelHint">if known</span></label>
+								<label style="float:left;"for="gender"><?php echo Yii::t('strings','Gender')?>:<span class="labelHint"><?php echo Yii::t('strings','if known')?></span></label>
 								<input	value="M" id="Patient_gender_0" type="radio" name="Patient[gender]"<?php if (@$_GET['gender'] == 'M') echo ' checked="checked"'?> /> 
-								<label style="padding-right:10px;" for="Patient_gender_0">Male</label>
+								<label style="padding-right:10px;" for="Patient_gender_0"><?php echo Yii::t('strings','Male')?></label>
 								<input value="F" id="Patient_gender_1" type="radio" name="Patient[gender]"<?php if (@$_GET['gender'] == 'F') echo ' checked="checked"'?> /> 
-								<label for="Patient_gender_1">Female</label>
+								<label for="Patient_gender_1"><?php echo Yii::t('strings','Female')?></label>
 							</div>
 						
 							<div class="form_button">
-								<button type="submit" value="submit" class="btn_refine-search ir" id="refinePatient_details">Find patient</button>	
+								<button type="submit" value="submit" class="btn_refine-search ir" id="refinePatient_details"><?php echo Yii::t('strings','Find patient')?></button>	
 							</div>
 							
 						</div>
 				</form>
 				
-				<p><a href="/">Clear this search and <span class="aPush">start a new search</span></a></p>
+				<p><a href="/"><?php echo Yii::t('strings','Clear this search and')?> <span class="aPush"><?php echo Yii::t('strings','start a new search')?></span></a></p>
 				
 				</div> <!-- .narrowColumn -->
 			</div><!-- .wrapTwo -->

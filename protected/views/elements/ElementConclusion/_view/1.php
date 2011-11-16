@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Conclusion:<br />
+?><?php echo Yii::t('strings','Conclusion')?>:<br />
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('value')); ?>:</b>

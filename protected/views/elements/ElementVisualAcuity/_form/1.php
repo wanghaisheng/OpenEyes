@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Visual Acuity:<br />
+?><?php echo Yii::t('strings','Visual Acuity')?>:<br />
 
 	<?php
 		$visualAcuityOptions = $model->getVisualAcuityOptions(ElementVisualAcuity::SNELLEN_METRE);

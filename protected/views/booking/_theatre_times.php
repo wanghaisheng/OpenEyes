@@ -18,7 +18,7 @@ Yii::app()->clientScript->scriptMap['jquery-ui.min.js'] = false;
 ?>
 
 <div id="theatres">
-	<h4>Select a session time:</h4>
+	<h4><?php echo Yii::t('strings','Select a session time')?>:</h4>
 	<div id="theatre-times">
 		<ul>
 <?php
@@ -44,10 +44,10 @@ foreach ($theatres as $name => $sessions) {
 		$startTime = substr($session['start_time'], 0, 5);
 		$endTime = substr($session['end_time'], 0, 5);
 		if ($session['time_available'] >= 0) {
-			$status = 'available';
+			$status = Yii::t('strings','available');
 			$class = ' available';
 		} else {
-			$status = 'overbooked';
+			$status = Yii::t('strings','overbooked');
 			$class = '';
 		}
 ?>

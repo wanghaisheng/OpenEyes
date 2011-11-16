@@ -20,17 +20,17 @@ if (!$reschedule) {
 }
 
 ?>
-	<h4>Other operations in this session: <?php echo abs($session['time_available']) . " min {$minutesStatus}"; ?></h4>
+	<h4><?php echo Yii::t('strings','Other operations in this session')?>: <?php echo abs($session['time_available']) . " min {$minutesStatus}"; ?></h4>
 
 	<div class="theatre-sessions">
 	<table id="appointment_list">
 		<thead>
 			<tr>
-				<th>Operation list overview</th>
-				<th>Date: <?php echo date('d M Y', strtotime($session['date'])); ?></th>
-				<th>Session time: <?php echo substr($session['start_time'], 0, 5) . ' - '
+				<th><?php echo Yii::t('strings','Operation list overview')?></th>
+				<th><?php echo Yii::t('strings','Date')?>: <?php echo date('d M Y', strtotime($session['date'])); ?></th>
+				<th><?php echo Yii::t('strings','Session time')?>: <?php echo substr($session['start_time'], 0, 5) . ' - '
 				. substr($session['end_time'], 0, 5); ?></th>
-				<th>Admission time</th>
+				<th><?php echo Yii::t('strings','Admission time')?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -47,13 +47,13 @@ if (!$reschedule) {
 		}
 		$procedureList = implode(', ', $procedureNames);
 		if (empty($procedureList)) {
-			$procedureList = 'No procedures';
+			$procedureList = Yii::t('strings','No procedures');
 		} ?>
 
 			<tr>
 				<td><?php echo "{$counter}. {$patient->first_name} {$patient->last_name}"; ?></td>
 				<td><?php echo $procedureList; ?></td>
-				<td><?php echo "{$thisOperation->total_duration} minutes"; ?></td>
+				<td><?php echo "{$thisOperation->total_duration} ".Yii::t('strings','minutes'); ?></td>
 				<td><?php echo $booking->admission_time ?></td>
 
 			</tr>
@@ -63,25 +63,25 @@ if (!$reschedule) {
 	</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="4"><?php echo ($counter - 1) . ' booking';
+				<th colspan="4"><?php echo ($counter - 1) . ' '.Yii::t('strings','booking');
 	if (($counter - 1) != 1) {
 		echo 's';
 	}
-	echo ' currently scheduled'; ?></th>
+	echo ' '.Yii::t('strings','currently scheduled'); ?></th>
 			</tr>
 		</tfoot>
 </table>
 </div>
 
 <div class="eventDetail clearfix">
-	<div class="label"><strong>Admission Time:</strong></div>
+	<div class="label"><strong><?php echo Yii::t('strings','Admission Time')?>:</strong></div>
 	<div class="data"> 
 		<input type="text" id="Booking_admission_time" name="Booking[admission_time]" value="<?php echo ($session['start_time'] == '13:30:00') ? '12:00' : date('H:i', strtotime('-1 hour', strtotime($session['start_time']))) ?>" size="6">
 	</div>
 </div>
 
 <div class="eventDetail clearfix" style="position:relative;">
-	<div class="label"><strong>Session comments:</strong>
+	<div class="label"><strong><?php echo Yii::t('strings','Session comments')?>:</strong>
 
 	<img src="img/_elements/icons/alerts/comment.png" alt="comment" width="17" height="17" style="position:absolute; bottom:10px; left:10px;" />
 	</div>
@@ -105,7 +105,7 @@ if (!$reschedule) {
 
 if (!empty($reschedule)) {
 	echo '<div class="errorSummary" style="display:none"></div><p/>';
-	echo CHtml::label('Re-schedule reason: ', 'cancellation_reason');
+	echo CHtml::label(Yii::t('strings','Re-schedule reason').': ', 'cancellation_reason');
 	if (date('Y-m-d') == date('Y-m-d', strtotime($operation->booking->session->date))) {
 		$listIndex = 3;
 	} else {
@@ -113,17 +113,17 @@ if (!empty($reschedule)) {
 	}
 	echo CHtml::dropDownList('cancellation_reason', '',
 		CancellationReason::getReasonsByListNumber($listIndex),
-		array('empty' => 'Select a reason')
+		array('empty' => Yii::t('strings','Select a reason'))
 	);
 }
 ?>
 
-<span id="dateSelected">Date/Time currently selected: <span class="highlighted"><?php echo date('d M Y', strtotime($session['date'])); ?>, <?php echo substr($session['start_time'], 0, 5) . ' - ' . substr($session['end_time'], 0, 5); ?></span></span>
+<span id="dateSelected"><?php echo Yii::t('strings','Date/Time currently selected')?>: <span class="highlighted"><?php echo date('d M Y', strtotime($session['date'])); ?>, <?php echo substr($session['start_time'], 0, 5) . ' - ' . substr($session['end_time'], 0, 5); ?></span></span>
 
 <div style="margin-top:10px;">
 
-<button id="confirm_slot" value="submit" type="submit" class="wBtn_confirm-slot ir">Confirm slot</button>
-<button id="cancel_operation" value="submit" type="submit" class="wBtn_cancel-operation ir"><span>Cancel operation</span></button>
+<button id="confirm_slot" value="submit" type="submit" class="wBtn_confirm-slot ir"><?php echo Yii::t('strings','Confirm slot')?></button>
+<button id="cancel_operation" value="submit" type="submit" class="wBtn_cancel-operation ir"><span><?php echo Yii::t('strings','Cancel operation')?></span></button>
 </div>
 
 <?php
@@ -135,7 +135,7 @@ echo CHtml::endForm();
 	if (!empty($reschedule)) { ?>
 	$('#bookingForm button[type="submit"]').click(function () {
 		if ('' == $('#cancellation_reason option:selected').val()) {
-			$('div.errorSummary').html('Please select a cancellation reason');
+			$('div.errorSummary').html('<?php echo Yii::t('strings','Please select a cancellation reason')?>');
 			$('div.errorSummary').show();
 			return false;
 		}

@@ -15,7 +15,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 ?>FOH: <br />
 
 	<div class="row">
-		<label for="ElementFOH_value">Phrase:</label>
+		<label for="ElementFOH_value"><?php echo Yii::t('strings','Phrase')?>:</label>
 		<?php echo CHtml::dropDownList('ElementFOH[phrase]', '', $model->getPhraseBySpecialtyOptions('FOH'),
 			array('onChange' => 'appendText($(this), $("#ElementFOH_value"));')); ?>
 	</div>

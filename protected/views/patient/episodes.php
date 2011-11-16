@@ -1,8 +1,8 @@
-		<h2>Episodes &amp; Events</h2>
+		<h2><?php echo Yii::t('strings','Episodes &amp; Events')?></h2>
 		<div class="fullWidth fullBox clearfix">
 			<div id="episodesBanner whiteBox">
 				<form><button type="submit" value="submit" class="btn_newEvent ir" id="addNewEvent"><img style="float:right; margin:0px 0px 0 0;" src="/img/_elements/btns/new-event.png" alt="add-new-event" width="155" height="35" /></button></form>
-				<p><strong>&nbsp;<?php if (count($episodes) <1) {?>No Episodes for this patient<?php }?></strong></p>
+				<p><strong>&nbsp;<?php if (count($episodes) <1) {?><?php echo Yii::t('strings','No Episodes for this patient')?><?php }?></strong></p>
 			</div>
 			<div id="episodes_sidebar">
 				<?php foreach ($episodes as $i => $episode) {
@@ -17,7 +17,7 @@
 					<div class="episode <?php echo empty($episode->end_date) ? 'closed' : 'open' ?> clearfix">
 						<div class="episode_nav">
 							<input type="hidden" name="episode-id" value="<?php echo $episode->id?>" />
-							<div class="small"><?php echo date('d M Y',strtotime($episode->start_date))?><span style="float:right;"><a href="#" rel="<?php echo $episode->id?>" class="episode-details">Details</a><span></div>
+							<div class="small"><?php echo date('d M Y',strtotime($episode->start_date))?><span style="float:right;"><a href="#" rel="<?php echo $episode->id?>" class="episode-details"><?php echo Yii::t('strings','Details')?></a><span></div>
 							<h4><?php echo CHtml::encode($episode->firm->serviceSpecialtyAssignment->specialty->name)?></h4>
 							<ul class="events">
 								<?php foreach ($episode->events as $event) {?>
@@ -37,13 +37,13 @@
 							</ul>
 						</div>
 						<div class="episode_details hidden" id="episode-details-<?php echo $episode->id?>">
-							<div class="row"><span class="label">Start date:</span><?php echo date('d M Y',strtotime($episode->start_date))?></div>
-							<div class="row"><span class="label">End date:</span><?php echo ($episode->end_date ? date('d M Y',strtotime($episode->end_date)) : '-')?></div>
+							<div class="row"><span class="label"><?php echo Yii::t('strings','Start date')?>:</span><?php echo date('d M Y',strtotime($episode->start_date))?></div>
+							<div class="row"><span class="label"><?php echo Yii::t('strings','End date')?>:</span><?php echo ($episode->end_date ? date('d M Y',strtotime($episode->end_date)) : '-')?></div>
                                                         <?php $diagnosis = $episode->getPrincipalDiagnosis() ?>
-							<div class="row"><span class="label">Principal eye:</span><?php echo !empty($diagnosis) ? $diagnosis->getEyeText() : 'No diagnosis' ?></div>
-							<div class="row"><span class="label">Principal diagnosis:</span><?php echo !empty($diagnosis) ? $diagnosis->disorder->term : 'No diagnosis' ?></div>
-							<div class="row"><span class="label">Specialty:</span><?php echo CHtml::encode($episode->firm->serviceSpecialtyAssignment->specialty->name)?></div>
-							<div class="row"><span class="label">Consultant firm:</span><?php echo CHtml::encode($episode->firm->name)?></span></div>
+							<div class="row"><span class="label"><?php echo Yii::t('strings','Principal eye')?>:</span><?php echo !empty($diagnosis) ? $diagnosis->getEyeText() : 'No diagnosis' ?></div>
+							<div class="row"><span class="label"><?php echo Yii::t('strings','Principal diagnosis')?>:</span><?php echo !empty($diagnosis) ? $diagnosis->disorder->term : 'No diagnosis' ?></div>
+							<div class="row"><span class="label"><?php echo Yii::t('strings','Specialty')?>:</span><?php echo CHtml::encode($episode->firm->serviceSpecialtyAssignment->specialty->name)?></div>
+							<div class="row"><span class="label"><?php echo Yii::t('strings','Consultant firm')?>:</span><?php echo CHtml::encode($episode->firm->name)?></span></div>
 							<img class="folderIcon"src="/img/_elements/icons/folder_open.png" alt="folder open" />
 						</div>
 					</div> <!-- .episode -->
@@ -51,8 +51,8 @@
 			</div> <!-- #episodes_sidebar -->
 			<div id="event_display">
 				<div id="add-event-select-type" class="whiteBox addEvent clearfix" style="display: none;">
-					<h3>Adding New Event</h3>
-					<p><strong>Select event to add:</strong></p>
+					<h3><?php echo Yii::t('strings','Adding New Event')?></h3>
+					<p><strong><?php echo Yii::t('strings','Select event to add')?>:</strong></p>
 					<?php
 						foreach ($eventTypes as $eventType) {
 ?>
@@ -65,12 +65,12 @@
 				<?php
 				if (!isset($current_episode)) {?>
 					<div class="alertBox fullWidthEvent">
-						<h4>There are currently no episodes for this patient, please add a new event to open an episode.</h4>
+						<h4><?php echo Yii::t('strings','There are currently no episodes for this patient, please add a new event to open an episode')?>.</h4>
 					</div>
 				<?php }?>
 				<div class="display_actions"<?php if (!isset($current_episode)) {?> style="display: none;"<?php }?>>
-					<div class="display_mode">View mode</div>
-					<div class="action_options"<?php if (!ctype_digit(@$_GET['event'])){?> style="display: none;"<?php }?>><span class="aBtn_inactive">View</span><span class="aBtn edit-event"<?php if (!$editable){?> style="display: none;"<?php }?>><a class="edit-event" href="#">Edit</a></span></div>
+					<div class="display_mode"><?php echo Yii::t('strings','View mode')?></div>
+					<div class="action_options"<?php if (!ctype_digit(@$_GET['event'])){?> style="display: none;"<?php }?>><span class="aBtn_inactive"><?php echo Yii::t('strings','View')?></span><span class="aBtn edit-event"<?php if (!$editable){?> style="display: none;"<?php }?>><a class="edit-event" href="#"><?php echo Yii::t('strings','Edit')?></a></span></div>
 				</div>
 				<!-- EVENT CONTENT HERE -->
 				<div id="event_content" class="eventBox fullWidthEvent">
@@ -97,7 +97,7 @@
 				</div>
 				<!-- #event_content -->
 				<div id="display_actions_footer" class="display_actions footer"<?php if (!isset($current_episode)) {?> style="display: none;"<?php }?>>
-					<div class="action_options"<?php if (!ctype_digit(@$_GET['event'])){?> style="display: none;"<?php }?>><span class="aBtn_inactive">View</span><span class="aBtn edit-event"<?php if (!$editable){?> style="display: none;"<?php }?>><a class="edit-event" href="#">Edit</a></span></div>
+					<div class="action_options"<?php if (!ctype_digit(@$_GET['event'])){?> style="display: none;"<?php }?>><span class="aBtn_inactive"><?php echo Yii::t('strings','View')?></span><span class="aBtn edit-event"<?php if (!$editable){?> style="display: none;"<?php }?>><a class="edit-event" href="#"><?php echo Yii::t('strings','Edit')?></a></span></div>
 				</div>
 			</div><!-- #event_display -->
 		</div> <!-- .fullWidth -->
@@ -204,7 +204,7 @@
 			}
 
 			function edit_mode() {
-				$('div.action_options').html('<span class="aBtn"><a class="view-event" href="#">View</a></span><span class="aBtn_inactive edit-event">Edit</span>');
+				$('div.action_options').html('<span class="aBtn"><a class="view-event" href="#"><?php echo Yii::t('strings','View')?></a></span><span class="aBtn_inactive edit-event"><?php echo Yii::t('strings','Edit')?></span>');
 				$('a.view-event').unbind('click').click(function() {
 					view_event($('#edit-eventid').val());
 					view_mode();
@@ -213,7 +213,7 @@
 			}
 
 			function view_mode() {
-				$('div.action_options').html('<span class="aBtn_inactive">View</span><span class="aBtn edit-event"><a class="edit-event" href="#">Edit</a></span>');
+				$('div.action_options').html('<span class="aBtn_inactive"><?php echo Yii::t('strings','View')?></span><span class="aBtn edit-event"><a class="edit-event" href="#"><?php echo Yii::t('strings','Edit')?></a></span>');
 				$('a.edit-event').unbind('click').click(function() {
 					edit_event($('#edit-eventid').val());
 					edit_mode();

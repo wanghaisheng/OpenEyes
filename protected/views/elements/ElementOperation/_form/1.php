@@ -8,120 +8,120 @@ OpenEyes is free software: you can redistribute it and/or modify it under the te
 OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
 _____________________________________________________________________________
-http://www.openeyes.org.uk       info@openeyes.org.uk
+http://www.openeyes.org.uk			 info@openeyes.org.uk
 --
 */
 
 if (empty($model->event_id)) {
-        // It's a new event so fetch the most recent element_diagnosis
-        $diagnosis = ElementDiagnosis::model()->getNewestDiagnosis();
+				// It's a new event so fetch the most recent element_diagnosis
+				$diagnosis = ElementDiagnosis::model()->getNewestDiagnosis();
 
-        if (!empty($diagnosis->disorder)) {
-                $model->eye = $diagnosis->eye;
-        }
+				if (!empty($diagnosis->disorder)) {
+								$model->eye = $diagnosis->eye;
+				}
 }
 ?>
-					<h4>Operation details</h4>
+					<h4><?php echo Yii::t('strings','Operation details')?></h4>
 					<div id="editEyeOperation" class="eventDetail">
-						<div class="label">Select eye(s):</div>
+						<div class="label"><?php echo Yii::t('strings','Select eye(s)')?>:</div>
 						<div class="data">
 							<input id="ytElementOperation_eye" type="hidden" value="" name="ElementOperation[eye]" />
 							<span class="group">
 							<input id="ElementOperation_eye_0" value="1" <?php if ($model->eye == '1') {?>checked="checked" <?php }?>type="radio" name="ElementOperation[eye]" />
-							<label for="ElementOperation_eye_0">Right</label>
+							<label for="ElementOperation_eye_0"><?php echo Yii::t('strings','Right')?></label>
 							</span>
 							<span class="group">
 							<input id="ElementOperation_eye_1" value="0" <?php if (empty($model->eye)) {?>checked="checked" <?php }?>type="radio" name="ElementOperation[eye]" />
-							<label for="ElementOperation_eye_1">Left</label>
+							<label for="ElementOperation_eye_1"><?php echo Yii::t('strings','Left')?></label>
 							</span>
 							<span class="group">
 							<input id="ElementOperation_eye_2" value="2" <?php if ($model->eye == '2') {?>checked="checked" <?php }?>type="radio" name="ElementOperation[eye]" />
-							<label for="ElementOperation_eye_2">Both</label>
+							<label for="ElementOperation_eye_2"><?php echo Yii::t('strings','Both')?></label>
 							</span>
 						</div>
 					</div>
 
 					<div id="typeProcedure" class="eventDetail">
-						<div class="label">Add procedure:</div>
+						<div class="label"><?php echo Yii::t('strings','Add procedure')?>:</div>
 						<div class="data">
-                                                        <?php if (!empty($subsections) || !empty($procedures)) { ?>
-                                                                <div class="data"> <?php
-                                                                        if (!empty($subsections)) {
-                                                                                echo CHtml::dropDownList('subsection_id', '', $subsections, array('empty' => 'Select a subsection'));
-                                                                                echo CHtml::dropDownList('select_procedure_id', '', array(), array('empty' => 'Select a commonly used procedure', 'style' => 'display: none;'));
-                                                                        } else {
-                                                                                echo CHtml::dropDownList('select_procedure_id', '', $procedures, array('empty' => 'Select a commonly used procedure'));
-                                                                        } ?> &nbsp;
-                                                                </div>
-                                                        <?php }?>
-						<span class="labelHint"><strong>Click to select</strong> the required procedure<br /><strong>or</strong> type the first few characters of a procedure.</span>
+							<?php if (!empty($subsections) || !empty($procedures)) { ?>
+								<div class="data"> <?php
+									if (!empty($subsections)) {
+										echo CHtml::dropDownList('subsection_id', '', $subsections, array('empty' => Yii::t('strings','Select a subsection')));
+										echo CHtml::dropDownList('select_procedure_id', '', array(), array('empty' => Yii::t('strings','Select a commonly used procedure'), 'style' => 'display: none;'));
+									} else {
+										echo CHtml::dropDownList('select_procedure_id', '', $procedures, array('empty' => Yii::t('strings','Select a commonly used procedure')));
+									} ?> &nbsp;
+								</div>
+							<?php }?>
+						<span class="labelHint"><strong><?php echo Yii::t('strings','Click to select')?></strong> <?php echo Yii::t('strings','the required procedure')?><br /><strong><?php echo Yii::t('strings','or')?></strong> <?php echo Yii::t('strings','type the first few characters of a procedure')?>.</span>
 						</div>
 
 						<div class="extraDetails">
-                                                <?php /*<input style="width: 400px;" id="procedure_id" type="text" name="procedure_id" />*/?>
+																								<?php /*<input style="width: 400px;" id="procedure_id" type="text" name="procedure_id" />*/?>
 <?php
 $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-        'name'=>'procedure_id',
-        'id'=>'autocomplete_procedure_id',
-        'source'=>"js:function(request, response) {
-                var existingProcedures = [];
-                $('#procedure_list tbody').children().each(function () {
-                        var text = $(this).children('td:first').text();
-                        existingProcedures.push(text.replace(/ remove$/i, ''));
-                });
+				'name'=>'procedure_id',
+				'id'=>'autocomplete_procedure_id',
+				'source'=>"js:function(request, response) {
+								var existingProcedures = [];
+								$('#procedure_list tbody').children().each(function () {
+												var text = $(this).children('td:first').text();
+												existingProcedures.push(text.replace(/ remove$/i, ''));
+								});
 
-                $.ajax({
-                        'url': '" . Yii::app()->createUrl('procedure/autocomplete') . "',
-                        'type':'GET',
-                        'data':{'term': request.term},
-                        'success':function(data) {
-                                data = $.parseJSON(data);
+								$.ajax({
+												'url': '" . Yii::app()->createUrl('procedure/autocomplete') . "',
+												'type':'GET',
+												'data':{'term': request.term},
+												'success':function(data) {
+																data = $.parseJSON(data);
 
-                                var result = [];
+																var result = [];
 
-                                for (var i = 0; i < data.length; i++) {
-                                        var index = $.inArray(data[i], existingProcedures);
-                                        if (index == -1) {
-                                                result.push(data[i]);
-                                        }
-                                }
+																for (var i = 0; i < data.length; i++) {
+																				var index = $.inArray(data[i], existingProcedures);
+																				if (index == -1) {
+																								result.push(data[i]);
+																				}
+																}
 
-                                response(result);
-                        }
-                });
-        }",
-        'options'=>array(
-                'minLength'=>'2',
-                'select'=>"js:function(event, ui) {
-                        $.ajax({
-                                'url': '" . Yii::app()->createUrl('procedure/details') . "',
-                                'type': 'GET',
-                                'data': {'name': ui.item.value},
-                                'success': function(data) {
-                                        // append selection onto procedure list
-                                        $('#procedure_list tbody').append(data);
-                                        $('#procedureDiv').show();
-                                        $('#procedure_list').show();
+																response(result);
+												}
+								});
+				}",
+				'options'=>array(
+								'minLength'=>'2',
+								'select'=>"js:function(event, ui) {
+												$.ajax({
+																'url': '" . Yii::app()->createUrl('procedure/details') . "',
+																'type': 'GET',
+																'data': {'name': ui.item.value},
+																'success': function(data) {
+																				// append selection onto procedure list
+																				$('#procedure_list tbody').append(data);
+																				$('#procedureDiv').show();
+																				$('#procedure_list').show();
 
 										updateTotalDuration();
 
-                                        // clear out text field
-                                        $('#autocomplete_procedure_id').val('');
+																				// clear out text field
+																				$('#autocomplete_procedure_id').val('');
 
-                                        // remove selection from the filter box
-                                        if ($('select[name=procedure]').children().length > 0) {
-                                                var name = $('#procedure_list tbody').children().children(\":nth-child(2)\").text().replace(/ remove$/i, '');
-                                                $('select[name=procedure] option').each(function () {
-                                                        if ($(this).text() == name) {
-                                                                $(this).remove();
-                                                        }
-                                                });
-                                        }
-                                }
-                        });
-                }",
-        ),
-        'htmlOptions'=>array('style'=>'width: 400px;')
+																				// remove selection from the filter box
+																				if ($('select[name=procedure]').children().length > 0) {
+																								var name = $('#procedure_list tbody').children().children(\":nth-child(2)\").text().replace(/ remove$/i, '');
+																								$('select[name=procedure] option').each(function () {
+																												if ($(this).text() == name) {
+																																$(this).remove();
+																												}
+																								});
+																				}
+																}
+												});
+								}",
+				),
+				'htmlOptions'=>array('style'=>'width: 400px;')
 )); ?>
 						</div> <!-- .extraDetails -->
 					</div>
@@ -135,8 +135,8 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 						} ?>" title="Procedure List">
 								<thead>
 									<tr>
-										<th>Procedures Added</th>
-										<th>Duration</th>
+										<th><?php echo Yii::t('strings','Procedures Added')?></th>
+										<th><?php echo Yii::t('strings','Duration')?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -158,11 +158,11 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 								</tbody>
 								<tfoot style="border-top:2px solid #CCC;">
 									<tr>
-										<td class="topPadded">Calculated Total Duration:</td>
+										<td class="topPadded"><?php echo Yii::t('strings','Calculated Total Duration')?>:</td>
 										<td id="projected_duration"><?php echo $totalDuration; ?></td>
 									</tr>
 									<tr>
-										<td>Estimated Total Duration:</td>
+										<td><?php echo Yii::t('strings','Estimated Total Duration')?>:</td>
 										<td><span></span><?php echo CHtml::activeTextField($model, 'total_duration', array('style'=>'width: 40px;')); ?></td>
 									</tr>
 								</tfoot>
@@ -170,21 +170,21 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 						</div>
 					</div>
 					<div id="consultRequired" class="eventDetail">
-						<div class="label">Consultant required?</div>
+						<div class="label"><?php echo Yii::t('strings','Consultant required')?>?</div>
 						<div class="data">
 							<input id="ytElementOperation_consultant_required" type="hidden" value="<?php echo $model->consultant_required?>" name="ElementOperation[consultant_required]" />
 							<span class="group">
 							<input id="ElementOperation_consultant_required_0" value="1" <?php if ($model->consultant_required) {?>checked="checked" <?php }?>type="radio" name="ElementOperation[consultant_required]" />
-							<label for="ElementOperation_consultant_required_0">Yes</label>
+							<label for="ElementOperation_consultant_required_0"><?php echo Yii::t('strings','Yes')?></label>
 							</span>
 							<span class="group">
 							<input id="ElementOperation_consultant_required_1" value="0" <?php if (!$model->consultant_required) {?>checked="checked" <?php }?>type="radio" name="ElementOperation[consultant_required]" />
-							<label for="ElementOperation_consultant_required_1">No</label>
+							<label for="ElementOperation_consultant_required_1"><?php echo Yii::t('strings','No')?></label>
 							</span>
 						</div>
 					</div>
 					<div id="anaestheticType" class="eventDetail">
-						<div class="label">Anaesthetic type:</div>
+						<div class="label"><?php echo Yii::t('strings','Anaesthetic type')?>:</div>
 						<div class="data">
 							<?php foreach ($model->getAnaestheticOptions() as $id => $value) {?>
 								<span class="group">
@@ -195,22 +195,22 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 						</div>
 					</div>
 					<div id="overnightStay" class="eventDetail">
-						<div class="label">Post operative stay required?</div>
+						<div class="label"><?php echo Yii::t('strings','Post operative stay required')?>?</div>
 						<div class="data">
 							<input id="ytElementOperation_overnight_stay" type="hidden" value="" name="ElementOperation[overnight_stay]" />
 							<span class="group">
 								<input id="ElementOperation_overnight_stay_0" value="1" <?php if ($model->overnight_stay == 1){?>checked="checked" <?php }?>type="radio" name="ElementOperation[overnight_stay]" />
-								<label for="ElementOperation_overnight_stay_0">Yes</label>
+								<label for="ElementOperation_overnight_stay_0"><?php echo Yii::t('strings','Yes')?></label>
 							</span>
 							<span class="group">
 								<input id="ElementOperation_overnight_stay_1" value="0" <?php if ($model->overnight_stay == 0){?>checked="checked" <?php }?>type="radio" name="ElementOperation[overnight_stay]" />
-								<label for="ElementOperation_overnight_stay_1">No</label>
+								<label for="ElementOperation_overnight_stay_1"><?php echo Yii::t('strings','No')?></label>
 							</span>
 						</div>
 					</div>
 
 					<div id="decisionDate" class="eventDetail">
-						<div class="label">Decision Date:</div>
+						<div class="label"><?php echo Yii::t('strings','Decision Date')?>:</div>
 						<div class="data">
 							<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 								'name'=>'ElementOperation[decision_date]',
@@ -228,14 +228,14 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 					</div>
 
 					<div id="addComments" class="eventDetail">
-						<div class="label">Add comments:</div>
+						<div class="label"><?php echo Yii::t('strings','Add comments')?>:</div>
 						<div class="data">
 							<textarea rows="4" cols="50" name="ElementOperation[comments]" id="ElementOperation_comments"><?php echo strip_tags($model->comments)?></textarea>
 						</div>
 					</div>
 <script type="text/javascript">
 	$(function() {
-		$('input[id=autocomplete_procedure_id]').watermark('type the first few characters of a procedure');
+		$('input[id=autocomplete_procedure_id]').watermark('<?php echo Yii::t('strings','type the first few characters of a procedure')?>');
 		$("#ElementOperation_decision_date_0").val('<?php
 			echo (empty($model->decision_date) || $model->decision_date == '0000-00-00')
 				? date('d M Y') : $model->decision_date; ?>');
@@ -264,7 +264,7 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 
 		$('select[id=subsection_id]').change(function() {
 			var subsection = $('select[name=subsection_id] option:selected').val();
-			if (subsection != 'Select a subsection') {
+			if (subsection != '<?php echo Yii::t('strings','Select a subsection')?>') {
 				var existingProcedures = [];
 				$('#procedure_list tbody').children().each(function () {
 					var text = $(this).children('td:first').text();
@@ -285,7 +285,7 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 
 		$('#select_procedure_id').change(function() {
 			var procedure = $('select[name=select_procedure_id] option:selected').text();
-			if (procedure != 'Select a commonly used procedure') {
+			if (procedure != '<?php echo Yii::t('strings','Select a commonly used procedure')?>') {
 				$.ajax({
 					'url': '<?php echo Yii::app()->createUrl('procedure/details'); ?>',
 					'type': 'GET',

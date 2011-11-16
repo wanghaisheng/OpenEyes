@@ -47,7 +47,7 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 			<?php echo $this->renderPartial('//base/_form', array()); ?>
 			<div id="patientID">
 				<div class="i_patient">
-					<a href="/patient/view/<?php echo $this->model->id?>" class="small">View Summary</a>
+					<a href="/patient/view/<?php echo $this->model->id?>" class="small"><?php echo Yii::t('strings','View Summary')?></a>
 					<img class="i_patient" src="/img/_elements/icons/patient_small.png" alt="patient_small" width="26" height="30" />
 				</div>
 
@@ -81,12 +81,12 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 		</div> <!-- #content -->
 		<div id="help" class="clearfix">
 			<div class="hint">
-				<p><strong>Online Help</strong></p>
-				<p><a href="#">Quick Reference Guide</a></p>
+				<p><strong><?php echo Yii::t('strings','Online Help')?></strong></p>
+				<p><a href="#"><?php echo Yii::t('strings','Quick Reference Guide')?></a></p>
 				<p>&nbsp;</p>
-				<p><strong>Helpdesk</strong></p>
-				<p>Telephone: <?php echo Yii::app()->params['helpdesk_phone']?></p>
-				<p>Email: <a href="mailto:<?php echo Yii::app()->params['helpdesk_email']?>"><?php echo Yii::app()->params['helpdesk_email']?></a></p>
+				<p><strong><?php echo Yii::t('strings','Helpdesk')?></strong></p>
+				<p><?php echo Yii::t('strings','Telephone')?>: <?php echo Yii::app()->params['helpdesk_phone']?></p>
+				<p><?php echo Yii::t('strings','Email')?>: <a href="mailto:<?php echo Yii::app()->params['helpdesk_email']?>"><?php echo Yii::app()->params['helpdesk_email']?></a></p>
 			</div>
 		</div>
 	</div>
@@ -121,7 +121,7 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 
 		function printContent() {
 			printElem({
-				pageTitle:'openeyes printout',
+				pageTitle:'openeyes <?php echo Yii::t('strings','printout')?>',
 				printBodyOptions:{styleToAdd:'width:auto !important; margin: 0.75em !important;',classNameToAdd : 'openeyesPrintout'},
 				overrideElementCSS:['css/style.css',{href:'css/style.css',media:'print'}]
 			});

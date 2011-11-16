@@ -18,13 +18,13 @@ $patient = $operation->event->episode->patient; ?>
 <div id="schedule">
 <p><strong>Patient:</strong> <?php echo $patient->first_name . ' ' . $patient->last_name . ' (' . $patient->hos_num . ')'; ?></p>
 <div id="operation">
-	<h1>Cancel operation</h1><br />
+	<h1><?php echo Yii::t('strings','Cancel operation')?></h1><br />
 <?php
 echo CHtml::form(array('booking/cancelOperation'), 'post', array('id' => 'cancelForm'));
 echo CHtml::hiddenField('operation_id', $operation->id); ?>
 <div class="errorSummary" style="display:none"></div>
 <?php
-echo CHtml::label('Cancellation Reason: ', 'cancellation_reason');
+echo CHtml::label(Yii::t('strings','Cancellation Reason').': ', 'cancellation_reason');
 if (!empty($operation->booking) && (date('Y-m-d') == date('Y-m-d', strtotime($operation->booking->session->date)))) {
 	$listIndex = 3;
 } else {
@@ -32,10 +32,10 @@ if (!empty($operation->booking) && (date('Y-m-d') == date('Y-m-d', strtotime($op
 }
 echo CHtml::dropDownList('cancellation_reason', '',
 	CancellationReason::getReasonsByListNumber($listIndex),
-	array('empty'=>'Select a reason')
+	array('empty'=>Yii::t('Select a reason'))
 ); ?>
 <div class="buttonwrapper">
-<button type="submit" value="submit" class="shinybutton highlighted"><span>Cancel operation</span></button>
+<button type="submit" value="submit" class="shinybutton highlighted"><span><?php echo Yii::t('strings','Cancel operation')?></span></button>
 </div><?php
 echo CHtml::endForm(); ?>
 </div>
@@ -43,7 +43,7 @@ echo CHtml::endForm(); ?>
 <script type="text/javascript">
 	$('#cancelForm button[type="submit"]').click(function () {
 		if ('' == $('#cancellation_reason option:selected').val()) {
-			$('div.errorSummary').html('Please select a cancellation reason');
+			$('div.errorSummary').html('<?php echo Yii::t('strings','Please select a cancellation reason')?>');
 			$('div.errorSummary').show();
 			return false;
 		}

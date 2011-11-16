@@ -14,13 +14,13 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
 $retinopathyOptions = $model->getSelectOptions(NSCGrade::RETINOPATHY);
 $maculopathyOptions = $model->getSelectOptions(NSCGrade::MACULOPATHY); ?>
-NSC Grade:
+<?php echo Yii::t('strings','NSC Grade')?>:
 <br />
 <div class="row">
-	<label for="ElementNSCGrade_value">Retinopathy:</label>
+	<label for="ElementNSCGrade_value"><?php echo Yii::t('strings','Retinopathy')?>:</label>
 	<?php echo CHtml::activeDropDownList($model, 'retinopathy_grade_id', $retinopathyOptions); ?>
 </div>
 <div class="row">
-	<label for="ElementNSCGrade_value">Maculopathy:</label>
+	<label for="ElementNSCGrade_value"><?php echo Yii::t('strings','Maculopathy')?>:</label>
 	<?php echo CHtml::activeDropDownList($model, 'maculopathy_grade_id', $maculopathyOptions); ?>
 </div>

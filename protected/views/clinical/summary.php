@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Here is the summary:
+?><?php echo Yii::t('strings','Here is the summary')?>:
 <br />
 <br />
 <?php $this->widget('application.components.summaryWidgets.' . $summary, array(

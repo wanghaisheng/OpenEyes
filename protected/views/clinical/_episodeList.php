@@ -13,7 +13,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 if (empty($episodes)) {
-	echo 'No episodes.';
+	echo Yii::t('strings','No episodes').'.';
 } else {
 	foreach ($episodes as $episode) { ?>
 <div class="episode">

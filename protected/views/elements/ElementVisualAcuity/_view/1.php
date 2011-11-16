@@ -13,7 +13,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 ?><br />
-Visual Acuity:
+<?php echo Yii::t('strings','Visual Acuity')?>:
 
 <div class="view">
 
@@ -50,7 +50,7 @@ Visual Acuity:
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('distance')); ?>:</b>
-	<?php echo CHtml::encode($data->getDistanceText(ElementVisualAcuity::SNELLEN_METRE)); ?> metres
+	<?php echo CHtml::encode($data->getDistanceText(ElementVisualAcuity::SNELLEN_METRE)); ?> <?php echo Yii::t('strings','metres')?>
 	<br />
 
 </div>

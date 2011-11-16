@@ -14,16 +14,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
 $this->layout = 'main'; ?>
 <script type="text/javascript" src="/js/phrase.js"></script>
-<h2>Patient search</h2>
+<h2><?php echo Yii::t('strings','Patient search')?></h2>
 <div class="centralColumn">
-	<p><strong>Find a patient.</strong> Either by hospital number or by personal details. You must know their surname.</p>
+	<p><strong><?php echo Yii::t('strings','Find a patient')?>.</strong> <?php echo Yii::t('strings','Either by hospital number or by personal details')?>. <?php echo Yii::t('strings','You must know their surname')?>.</p>
 	<?php if ($_SERVER['REQUEST_URI'] == '/patient/results/error') {?>
 		<div id="patient-search-error" class="alertBox">
-			<h3>Please enter either a valid hospital number or a firstname and lastname.</h3>
+			<h3><?php echo Yii::t('strings','Please enter either a valid hospital number or a firstname and lastname')?>.</h3>
 		</div>
 	<?php }else if ($_SERVER['REQUEST_URI'] == '/patient/no-results') {?>
 		<div id="patient-search-error" class="alertBox">
-			<h3>Sorry, No patients found for that search.</h3>
+			<h3><?php echo Yii::t('strings','Sorry, No patients found for that search')?>.</h3>
 		</div>
 	<?php }else{?>
 		<div id="patient-search-error" class="alertBox" style="display: none;">
@@ -38,10 +38,10 @@ $this->layout = 'main'; ?>
 	));?>
 	<div id="search_patient_id" class="form_greyBox bigInput">
 		<?php
-			echo CHtml::label('Search by hospital number:', 'hospital_number');
+			echo CHtml::label(Yii::t('strings','Search by hospital number').':', 'hospital_number');
 			echo CHtml::textField('Patient[hos_num]', '', array('style'=>'width: 204px;'));
 		?>
-		<button type="submit" value="submit" class="btn_find-patient ir" id="findPatient_id">Find patient</button>
+		<button type="submit" value="submit" class="btn_find-patient ir" id="findPatient_id"><?php echo Yii::t('strings','Find patient')?></button>
 		<?php //$this->endWidget();?>
 	</div>
 	<?php
@@ -66,7 +66,7 @@ $this->layout = 'main'; ?>
 
 	function patient_search() {
 		if (!$('#Patient_hos_num').val() && (!$('#Patient_last_name').val() || !$('#Patient_first_name').val())) {
-			$('#patient-search-error').html('<h3>Please enter either a hospital number or a firstname and lastname.</h3>');
+			$('#patient-search-error').html('<h3><?php echo Yii::t('strings','Please enter either a hospital number or a firstname and lastname')?>.</h3>');
 			$('#patient-search-error').show();
 			$('#patient-list').hide();
 			return false;
@@ -100,14 +100,14 @@ $this->layout = 'main'; ?>
 								$('#patient-adv-search').accordion('activate', 0);
 							}
 
-							content = '<br /><strong>' + arr.length + " results found</strong><p />\n";
-							content += "<table><tr><th>Patient name</th><th>Date of Birth</th><th>Gender</th><th>NHS Number</th><th>Hospital Number</th></tr>\n";
+							content = '<br /><strong>' + arr.length + " <?php echo Yii::t('strings','results found')?></strong><p />\n";
+							content += "<table><tr><th><?php echo Yii::t('strings','Patient name')?></th><th><?php echo Yii::t('strings','Date of Birth')?></th><th><?php echo Yii::t('strings','Gender')?></th><th><?php echo Yii::t('strings','NHS Number')?></th><th><?php echo Yii::t('strings','Hospital Number')?></th></tr>\n";
 
 							$.each(arr, function(index, value) {
 								if (value['gender'] == 'M') {
-									gender = 'Male';
+									gender = '<?php echo Yii::t('strings','Male')?>';
 								} else {
-									gender = 'Female';
+									gender = '<?php echo Yii::t('strings','Female')?>';
 								}
 								content += '<tr><td>' + value['first_name'] + ' ' + value['last_name'] + '</td><td>' + value['dob'] + '</td><td>' + gender;
 								content += '</td><td>' + value['nhs_num'] + '</td><td>';
@@ -123,7 +123,7 @@ $this->layout = 'main'; ?>
 							$('#patient-list').show();
 						}
 					} else {
-						$('#patient-search-error').html('No patients found matching the selected options. Please choose different options and try again.');
+						$('#patient-search-error').html('<?php echo Yii::t('strings','No patients found matching the selected options')?>. <?php echo Yii::t('strings','Please choose different options and try again')?>.');
 						$('#patient-search-error').show();
 						$('#patient-list').hide();
 					}

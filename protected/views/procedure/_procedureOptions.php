@@ -14,7 +14,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
 echo CHtml::tag('option',
 	array('value'=>''),
-	CHtml::encode('Select a commonly used procedure'), true);
+	CHtml::encode(Yii::t('strings','Select a commonly used procedure')), true);
 foreach ($procedures as $procedure) {
 	echo CHtml::tag('option',
 		array('value'=>$procedure->id),

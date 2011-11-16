@@ -13,15 +13,15 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Patients'=>array('index'),
-	'Search',
+	Yii::t('strings','Patients')=>array('index'),
+	Yii::t('strings','Search'),
 );
 ?>
 
-<h1>Search Patients</h1>
+<h1><?php echo Yii::t('strings','Search Patients')?></h1>
 
 <p>
-Enter as many fields as you would like for searching.
+<?php echo Yii::t('strings','Enter as many fields as you would like for searching')?>.
 </p>
 
 <?php $this->renderPartial('_search',array(

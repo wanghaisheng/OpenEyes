@@ -1,8 +1,8 @@
-		<h2>Waiting List</h2>
+		<h2><?php echo Yii::t('strings','Waiting List')?></h2>
 
 		<div class="fullWidth fullBox clearfix">
 			<div id="whiteBox">
-				<p><strong>Use the filters below to find patients:</strong></p>
+				<p><strong><?php echo Yii::t('strings','Use the filters below to find patients')?>:</strong></p>
 			</div>
 
 		<div id="waitinglist_display">
@@ -10,21 +10,21 @@
 				<div id="search-options">
 
 					<div id="main-search" class="grid-view">
-						<h3>Search Waiting Lists by:</h3>
+						<h3><?php echo Yii::t('strings','Search Waiting Lists by')?>:</h3>
 					        <table>
 					        <tbody>
 					        	<tr>
-					                <th>Service:</th>
-					                <th>Firm:</th>
+					                <th><?php echo Yii::t('strings','Service')?>:</th>
+					                <th><?php echo Yii::t('strings','Firm')?>:</th>
 
-					                <th>Type:</th>
+					                <th><?php echo Yii::t('strings','Type')?>:</th>
 
 					        	</tr>
 					        	<tr  class="even">
 					                <td>
 					                	<?php
 										        echo CHtml::dropDownList('specialty-id', '', Specialty::model()->getList(),
-										                array('empty'=>'All specialties', 'ajax'=>array(
+										                array('empty'=>Yii::t('strings','All specialties'), 'ajax'=>array(
 										                        'type'=>'POST',
 										                        'data'=>array('specialty_id'=>'js:this.value'),
 										                        'url'=>Yii::app()->createUrl('waitingList/filterFirms'),
@@ -43,7 +43,7 @@
 
 					                	<?php
 										        echo CHtml::dropDownList('firm-id', '', array(),
-                									array('empty'=>'All firms', 'disabled'=>(empty($firmId))));
+                									array('empty'=>Yii::t('strings','All firms'), 'disabled'=>(empty($firmId))));
                 						?>
 					                </td>
 					                <td>
@@ -52,7 +52,7 @@
 									    ?>
 									</td>
 									<td>
-										<button value="submit" type="submit" class="btn_search ir" style="float:right;">Search</button>
+										<button value="submit" type="submit" class="btn_search ir" style="float:right;"><?php echo Yii::t('strings','Search')?></button>
 
 									</td>
 								</tr>
@@ -61,7 +61,7 @@
 					        </div> <!-- #main-search -->
 					        <!-- extra search currently just used as padding but could be used like Theatre Management for extra filtering -->
 					        <div id="extra-search" class="eventDetail clearfix">
-					        	<h5>Search Results:</h5>
+					        	<h5><?php echo Yii::t('strings','Search Results')?>:</h5>
 
 								<!--<div class="data">
 									no extra search filters

@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>NSC Grade:<br />
+?><?php echo Yii::t('strings','NSC Grade')?>:<br />
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('retinopathy_grade_id')); ?>:</b>

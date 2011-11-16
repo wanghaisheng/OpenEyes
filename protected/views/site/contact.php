@@ -12,13 +12,13 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - '.Yii::t('strings','Contact Us');
 $this->breadcrumbs=array(
-	'Contact',
+	Yii::t('strings','Contact'),
 );
 ?>
 
-<h1>Contact Us</h1>
+<h1><?php echo Yii::t('strings','Contact Us')?></h1>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
@@ -29,14 +29,14 @@ $this->breadcrumbs=array(
 <?php else: ?>
 
 <p>
-If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
+<?php echo Yii::t('strings','If you have business inquiries or other questions, please fill out the following form to contact us').'. '.Yii::t('strings','Thank you')?>.
 </p>
 
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm'); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note"><?php echo Yii::t('strings','Fields with')?> <span class="required">*</span> <?php echo Yii::t('strings','are required')?>.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -67,8 +67,8 @@ If you have business inquiries or other questions, please fill out the following
 		<?php $this->widget('CCaptcha'); ?>
 		<?php echo $form->textField($model,'verifyCode'); ?>
 		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
-		<br/>Letters are not case-sensitive.</div>
+		<div class="hint"><?php echo Yii::t('strings','Please enter the letters as they are shown in the image above')?>.
+		<br/><?php echo Yii::t('strings','Letters are not case-sensitive')?>.</div>
 	</div>
 	<?php endif; ?>
 

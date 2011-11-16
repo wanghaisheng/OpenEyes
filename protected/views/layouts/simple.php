@@ -56,17 +56,17 @@ http://www.openeyes.org.uk	 info@openeyes.org.uk
 	</div> <!-- #content --> 
 	<div id="help" class="clearfix"> 
 		<div class="hint">
-			<p><strong>Login Help</strong></p>
-			<p>User name and password are case sensitive: "A" is different to "a".</p>
-			<p>Ensure that CAPs LOCK is off.</p>
+			<p><strong><?php echo Yii::t('strings','Login Help')?></strong></p>
+			<p><?php echo Yii::t('strings','User name and password are case sensitive: "A" is different to "a"')?>.</p>
+			<p><?php echo Yii::t('strings','Ensure that CAPs LOCK is off')?>.</p>
 		</div>
 
 		<?php if (Yii::app()->params['helpdesk_phone'] && Yii::app()->params['helpdesk_email']) {?>
 			<div class="hint">
-				<p><strong>Do you require a username and password?</strong></p>
-				<p>Contact the helpdesk:</p>
-				<p>Telephone: <?php echo Yii::app()->params['helpdesk_phone']?></p>
-				<p>Email: <a href="mailto:<?php echo Yii::app()->params['helpdesk_email']?>"><?php echo Yii::app()->params['helpdesk_email']?></a></p>
+				<p><strong><?php echo Yii::t('strings','Do you require a username and password')?>?</strong></p>
+				<p><?php echo Yii::t('strings','Contact the helpdesk')?>:</p>
+				<p><?php echo Yii::t('strings','Telephone')?>: <?php echo Yii::app()->params['helpdesk_phone']?></p>
+				<p><?php echo Yii::t('strings','Email')?>: <a href="mailto:<?php echo Yii::app()->params['helpdesk_email']?>"><?php echo Yii::app()->params['helpdesk_email']?></a></p>
 			</div>
 		<?php }?>
 	</div> <!-- #help --> 

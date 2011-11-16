@@ -45,7 +45,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 						<?php
 							if ($writeable) {
 						?>
-                                                <button title="Report" onclick="report<?php echo get_class($model)?>_<?php echo $side?>(); return false;">Report</button><br />
+                                                <button title="Report" onclick="report<?php echo get_class($model)?>_<?php echo $side?>(); return false;"><?php echo Yii::t('strings','Report')?></button><br />
 						<?php } ?>
                                         </span>
                                 </div>

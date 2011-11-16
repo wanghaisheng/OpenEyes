@@ -12,7 +12,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Referred from screening: <br />
+?><?php echo Yii::t('strings','Referred from screening')?>: <br />
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'referred'); ?>

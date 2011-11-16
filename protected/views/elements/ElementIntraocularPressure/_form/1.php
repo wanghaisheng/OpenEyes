@@ -13,13 +13,13 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $selectOptions = $model->getSelectOptions(); ?>
-Intraocular Pressure:
+<?php echo Yii::t('strings','Intraocular Pressure')?>:
 <br />
 <div class="row">
-	<label for="ElementIntraocularPressure_value">Right Eye:</label>
+	<label for="ElementIntraocularPressure_value"><?php echo Yii::t('strings','Right Eye')?>:</label>
 	<?php echo CHtml::activeDropDownList($model, 'right_iop', $selectOptions); ?>
 </div>
 <div class="row">
-	<label for="ElementIntraocularPressure_value">Left Eye:</label>
+	<label for="ElementIntraocularPressure_value"><?php echo Yii::t('strings','Left Eye')?>:</label>
 	<?php echo CHtml::activeDropDownList($model, 'left_iop', $selectOptions); ?>
 </div>

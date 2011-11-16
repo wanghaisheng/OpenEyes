@@ -13,7 +13,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Clinical',
+	Yii::t('strings','Clinical'),
 );
 
 $this->menu=array(
@@ -38,7 +38,7 @@ foreach ($this->eventTypes as $eventType) {
 <?php
 
 foreach ($this->episodes as $episode) {
-	$episodeString = "episode: " . $episode->firm->serviceSpecialtyAssignment->specialty->name;
+	$episodeString = Yii::t('strings',"episode").": " . $episode->firm->serviceSpecialtyAssignment->specialty->name;
 
 	if ($this->firm->serviceSpecialtyAssignment->specialty_id == $episode->firm->serviceSpecialtyAssignment->specialty_id) {
 		$episodeString = '<b>' . $episodeString . '</b>';

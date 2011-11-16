@@ -12,28 +12,28 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 --
 */
 
-?>Conclusion: <br />
+?><?php echo Yii::t('strings','Conclusion')?>: <br />
 
 	<div class="row">
-		<label for="ElementConclusion_value">Conclusion:</label>
+		<label for="ElementConclusion_value"><?php echo Yii::t('strings','Conclusion')?>:</label>
 		<?php echo CHtml::dropDownList('ElementConclusion[phrase]', '', $model->getPhraseBySpecialtyOptions('Conclusion'),
 			array('onChange' => 'appendText($(this), $("#ElementConclusion_value"));')); ?>
 	</div>
 
 	<div class="row">
-		<label for="ElementConclusion_value">Treatment:</label>
+		<label for="ElementConclusion_value"><?php echo Yii::t('strings','Treatment')?>:</label>
 		<?php echo CHtml::dropDownList('ElementConclusion[phrase]', '', $model->getPhraseBySpecialtyOptions('Treatment'),
 			array('onChange' => 'appendText($(this), $("#ElementConclusion_value"));')); ?>
 	</div>
 
 	<div class="row">
-		<label for="ElementConclusion_value">Outcome:</label>
+		<label for="ElementConclusion_value"><?php echo Yii::t('strings','Outcome')?>:</label>
 		<?php echo CHtml::dropDownList('ElementConclusion[phrase]', '', $model->getPhraseBySpecialtyOptions('Outcome'),
 			array('onChange' => 'appendText($(this), $("#ElementConclusion_value"));')); ?>
 	</div>
 
 	<div class="row">
-		<label for="ElementConclusion_value">Timing:</label>
+		<label for="ElementConclusion_value"><?php echo Yii::t('strings','Timing')?>:</label>
 		<?php echo CHtml::dropDownList('ElementConclusion[phrase]', '', $model->getPhraseBySpecialtyOptions('Timing'),
 			array('onChange' => 'appendText($(this), $("#ElementConclusion_value"));')); ?>
 	</div>
