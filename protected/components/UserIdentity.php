@@ -116,7 +116,7 @@ class UserIdentity extends CUserIdentity
 			/**
 			 * Unknown auth_source, error
 			 */
-			 throw new SystemException('Unknown auth_source: ' . Yii::app()->params['auth_source']);
+			 throw new SystemException(Yii::t('strings','Unknown').' auth_source: ' . Yii::app()->params['auth_source']);
 		}
 
 		$this->_id = $user->id;
@@ -158,7 +158,7 @@ class UserIdentity extends CUserIdentity
 		}
 
 		if (!count($firms)) {
-			throw new Exception('User has no firm rights and cannot use the system.');
+			throw new Exception(Yii::t('strings','User has no firm rights and cannot use the system').'.';
 		}
 
 		natcasesort($firms);

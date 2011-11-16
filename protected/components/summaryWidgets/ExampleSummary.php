@@ -19,13 +19,13 @@ class ExampleSummary extends CWidget {
 	public function run()
 	{
 		if (!isset($this->episode_id)) {
-			throw new CHttpException(403, 'No episode id provided.');
+			throw new CHttpException(403, Yii::t('strings','No episode id provided').'.';
 		}
 
 		$episode = Episode::model()->findByPk($this->episode_id);
 
 		if (!isset($episode)) {
-			throw new CHttpException(403, 'There is no episode of that id.');
+			throw new CHttpException(403, Yii::t('strings','There is no episode of that id').'.';
 		}
 
 	        $noEvents = Yii::app()->db->createCommand()

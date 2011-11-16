@@ -13,7 +13,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 ?>
 
-This is an example summary that shows the number of events for this episode.
+<?php echo Yii::t('strings','This is an example summary that shows the number of events for this episode')?>.
 <br />
 <br />
-Number of events: <?php echo $this->noEvents; ?>
+<?php echo Yii::t('strings','Number of events')?>: <?php echo $this->noEvents; ?>

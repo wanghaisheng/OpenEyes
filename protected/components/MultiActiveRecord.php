@@ -52,7 +52,7 @@ abstract class MultiActiveRecord extends CActiveRecord
             if(version_compare(PHP_VERSION,'5.3',">"))
                 $className=get_called_class();
             else
-                throw new CException("You must define a static function 'model' in your models");
+                throw new CException(Yii::t('strings',"You must define a static function 'model' in your models"));
         }
         return parent::model($className);
     }
