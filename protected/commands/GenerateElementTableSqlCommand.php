@@ -16,11 +16,11 @@ class GenerateElementTableSqlCommand extends CConsoleCommand
 {
 	public function getName()
 	{
-		return 'Generate Element Table SQL Command.';
+		return Yii::t('strings','Generate Element Table SQL Command.');
 	}
 	public function getHelp()
 	{
-		return 'A quick and dirty script to generate the SQL to create tables for a list of element tables in the database.';
+		return Yii::t('strings','A quick and dirty script to generate the SQL to create tables for a list of element tables in the database').'.';
 	}
 
 	public function run($args)

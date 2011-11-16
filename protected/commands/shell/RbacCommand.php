@@ -28,11 +28,11 @@ EOD;
 	{
 		if (($this->_authManager = Yii::app()->authManager) === null)
 		{
-			echo "No authManager configured.\n";
+			echo Yii::t('strings',"No authManager configured").".\n";
 			return;
 		}
 
-		echo "Rebuild OpenEyes basic RBAC permissions? [Yes|No]\n";
+		echo Yii::t('strings',"Rebuild OpenEyes basic RBAC permissions? [Yes|No]")."\n";
 
 		if (!strncasecmp(trim(fgets(STDIN)), 'y', 1))
 		{
@@ -55,7 +55,7 @@ EOD;
 		}
 		else
 		{
-			echo "Exiting.\n";
+			echo Yii::t('strings',"Exiting").".\n";
 		}
 	}
 }

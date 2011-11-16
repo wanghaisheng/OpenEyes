@@ -16,12 +16,12 @@ class GenerateSessionsCommand extends CConsoleCommand
 {
 	public function getName()
 	{
-		return 'Generate Session Data Command.';
+		return Yii::t('strings','Generate Session Data Command').'.';
 	}
 	public function getHelp()
 	{
-		$help = "A script to generate session data based on sequences in the database for future dates.\n
-Optional parameters to 1) specify the end date for the script, 2) specify whether output should be returned rather than displayed.\n";
+		$help = Yii::t('strings',"A script to generate session data based on sequences in the database for future dates").".\n
+".Yii::t('strings','Optional parameters to 1) specify the end date for the script, 2) specify whether output should be returned rather than displayed').".\n";
 
 		return $help;
 	}
@@ -135,7 +135,7 @@ Optional parameters to 1) specify the end date for the script, 2) specify whethe
 					$insert .= "\n";
 				}
 
-				$output .= "\nSequence ID {$sequence->id}: Created " . count($dateList) . " session(s).\n";
+				$output .= "\nSequence ID {$sequence->id}: ".Yii::t('strings','Created')." " . count($dateList) . " ".Yii::t('strings','session(s)').".\n";
 
 				$command = Yii::app()->db->createCommand($insert);
 				$command->execute();
