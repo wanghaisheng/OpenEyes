@@ -91,7 +91,7 @@ class SiteController extends BaseController
 	{
 		if($error=Yii::app()->errorHandler->error)
 		{
-			error_log("PHP Fatal error:  Uncaught exception '".@$error['type']."' with message '".@$error['message']."' in ".@$error['file'].":".@$error['line']."\nStack trace:\n".@$error['trace']);
+			error_log(Yii::t('strings',"PHP Fatal error").':  '.Yii::t('strings','Uncaught exception')." '".@$error['type']."' ".Yii::t('strings','with message')." '".@$error['message']."' ".Yii::t('strings','in')." ".@$error['file'].":".@$error['line']."\n".Yii::t('strings','Stack trace').":\n".@$error['trace']);
 
 			if(Yii::app()->request->isAjaxRequest)
 				echo $error['message'];

@@ -98,7 +98,7 @@ class BaseController extends Controller
 		$patient = Patient::model()->findByPk($patientId);
 
 		if (empty($patient)) {
-			throw new Exception('Invalid patient id provided.');
+			throw new Exception(Yii::t('strings','Invalid patient id provided').'.';
 		}
 
 		$this->setSessionPatient($patient);
@@ -135,7 +135,7 @@ class BaseController extends Controller
 			$this->patientId = $app->session['patient_id'];
 			$this->patientName = $app->session['patient_name'];
 		} else {
-			throw new CHttpException(403, 'You are not authorised to perform this action.');
+			throw new CHttpException(403, Yii::t('strings','You are not authorised to perform this action').'.';
 		}
 	}
 

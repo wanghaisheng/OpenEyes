@@ -8,7 +8,7 @@ OpenEyes is free software: you can redistribute it and/or modify it under the te
 OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
 _____________________________________________________________________________
-http://www.openeyes.org.uk   info@openeyes.org.uk
+http://www.openeyes.org.uk	 info@openeyes.org.uk
 --
 */
 
@@ -20,9 +20,9 @@ class LetterTemplateController extends BaseController
 	protected function beforeAction($action)
 	{
 		// Only internal consultants are allowed to use this page
-                if (!User::isConsultant()) {
-                        throw new CHttpException(403, 'You are not permitted to administrate letter templates.');
-                }
+		if (!User::isConsultant()) {
+			throw new CHttpException(403, Yii::t('strings','You are not permitted to administrate letter templates').'.');
+		}
 
 		$this->storeData();
 
@@ -76,7 +76,7 @@ class LetterTemplateController extends BaseController
 		$model=$this->loadModel($id);
 
 		if ($model->specialty_id != $this->firm->serviceSpecialtyAssignment->specialty_id) {
-			throw new CHttpException(403, 'You are not permitted to alter this letter template.');
+			throw new CHttpException(403, Yii::t('strings','You are not permitted to alter this letter template').'.');
 		}
 
 		if(isset($_POST['LetterTemplate']))
@@ -118,11 +118,11 @@ class LetterTemplateController extends BaseController
 		$model=LetterTemplate::model()->findByPk((int)$id);
 
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404, Yii::t('strings','The requested page does not exist').'.');
 
-                if ($model->specialty_id != $this->firm->serviceSpecialtyAssignment->specialty_id) {
-                        throw new CHttpException(403, 'You are not permitted to view this letter template.');
-                }
+			if ($model->specialty_id != $this->firm->serviceSpecialtyAssignment->specialty_id) {
+				throw new CHttpException(403, Yii::t('strings','You are not permitted to view this letter template').'.');
+			}
 
 		return $model;
 	}

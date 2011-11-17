@@ -52,7 +52,7 @@ class PatientController extends BaseController
 
 		if (!isset($this->firm)) {
 			// No firm selected, reject
-			throw new CHttpException(403, 'You are not authorised to view this page without selecting a firm.');
+			throw new CHttpException(403, Yii::t('strings','You are not authorised to view this page without selecting a firm').'.');
 		}
 
 		$this->service = new ClinicalService;
@@ -78,7 +78,7 @@ class PatientController extends BaseController
 
 		$this->setSessionPatient($patient);
 
-		$this->logActivity('viewed patient');
+		$this->logActivity(Yii::t('strings','viewed patient'));
 
 		$episodes_open = 0;
 		$episodes_closed = 0;
@@ -303,7 +303,7 @@ class PatientController extends BaseController
 
 			$event_template_name = $this->getTemplateName('view', $event->event_type_id);
 
-			$this->logActivity('viewed event');
+			$this->logActivity(Yii::t('strings','viewed event'));
 		}
 
 		$eventTypes = EventType::model()->getAllPossible($this->firm->serviceSpecialtyAssignment->specialty_id);
@@ -324,7 +324,7 @@ class PatientController extends BaseController
 	{
 		$model = Patient::model()->findByPk((int) $id);
 		if ($model === null)
-			throw new CHttpException(404, 'The requested page does not exist.');
+			throw new CHttpException(404, Yii::t('strings','The requested page does not exist').'.');
 		return $model;
 	}
 

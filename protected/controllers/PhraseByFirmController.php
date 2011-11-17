@@ -170,7 +170,7 @@ class PhraseByFirmController extends BaseController
 				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('phraseIndex', 'section_id'=>$model->section_id, 'firm_id'=>Firm::Model()->findByPk($this->selectedFirmId)->id));
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('strings','Invalid request').'. '.Yii::t('strings','Please do not repeat this request again').'.');
 	}
 
 	/**
@@ -213,7 +213,7 @@ class PhraseByFirmController extends BaseController
 	{
 		$model=PhraseByFirm::model()->findByPk((int)$id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404, Yii::t('strings','The requested page does not exist').'.');
 		return $model;
 	}
 

@@ -47,7 +47,7 @@ class BookingController extends BaseController
 		$operationId = !empty($_GET['operation']) ? $_GET['operation'] : 0;
 		$operation = ElementOperation::model()->findByPk($operationId);
 		if (empty($operation)) {
-			throw new Exception('Operation id is invalid.');
+			throw new Exception(Yii::t('strings','Operation id is invalid').'.';
 		}
 		$minDate = $operation->getMinDate();
 		$thisMonth = mktime(0,0,0,date('m'),1,date('Y'));
@@ -61,10 +61,10 @@ class BookingController extends BaseController
 			$firm = Firm::model()->findByPk($firmId);
 		} else {
 			$firm = new Firm;
-			$firm->name = 'Emergency List';
+			$firm->name = Yii::t('strings','Emergency List');
 		}
 
-		$sessions = $operation->getSessions($firm->name == 'Emergency List');
+		$sessions = $operation->getSessions($firm->name == Yii::t('strings','Emergency List'));
 
 		$criteria = new CDbCriteria;
 		$criteria->order = 'name ASC';
@@ -82,7 +82,7 @@ class BookingController extends BaseController
 		$operationId = !empty($_GET['operation']) ? $_GET['operation'] : 0;
 		$operation = ElementOperation::model()->findByPk($operationId);
 		if (empty($operation)) {
-			throw new Exception('Operation id is invalid.');
+			throw new Exception(Yii::t('strings','Operation id is invalid').'.');
 		}
 		$minDate = $operation->getMinDate();
 		$thisMonth = mktime(0,0,0,date('m'),1,date('Y'));
@@ -96,15 +96,15 @@ class BookingController extends BaseController
 			$firm = Firm::model()->findByPk($firmId);
 		} else {
 			$firm = new Firm;
-			$firm->name = 'Emergency List';
+			$firm->name = Yii::t('strings','Emergency List');
 		}
-		if ($firm->name != 'Emergency List') {
+		if ($firm->name != Yii::t('strings','Emergency List')) {
 			$siteList = Session::model()->getSiteListByFirm($firmId);
 		} else {
 			$siteList = Site::model()->getList();
 		}
 
-		$sessions = $operation->getSessions($firm->name == 'Emergency List');
+		$sessions = $operation->getSessions($firm->name == Yii::t('strings','Emergency List'));
 
 		$criteria = new CDbCriteria;
 		$criteria->order = 'name ASC';
@@ -129,7 +129,7 @@ class BookingController extends BaseController
 		$operationId = !empty($_GET['operation']) ? $_GET['operation'] : 0;
 		$operation = ElementOperation::model()->findByPk($operationId);
 		if (empty($operation)) {
-			throw new Exception('Operation id is invalid.');
+			throw new Exception(Yii::t('strings','Operation id is invalid').'.');
 		}
 		$minDate = $operation->getMinDate();
 		$thisMonth = mktime(0,0,0,date('m'),1,date('Y'));
@@ -139,7 +139,7 @@ class BookingController extends BaseController
 
 		$firmId = $operation->event->episode->firm_id;
 		$firm = Firm::model()->findByPk($firmId);
-		$sessions = $operation->getSessions($firm->name == 'Emergency List');
+		$sessions = $operation->getSessions($firm->name == Yii::t('strings','Emergency List'));
 
 		$this->renderPartial('/booking/_reschedule_later',
 			array(
@@ -180,7 +180,7 @@ class BookingController extends BaseController
 			$operationId = !empty($_GET['operation']) ? $_GET['operation'] : 0;
 			$operation = ElementOperation::model()->findByPk($operationId);
 			if (empty($operation)) {
-				throw new Exception('Operation id is invalid.');
+				throw new Exception(Yii::t('strings','Operation id is invalid').'.';
 			}
 			$minDate = $operation->getMinDate();
 			$thisMonth = mktime(0,0,0,date('m'),1,date('Y'));
@@ -198,7 +198,7 @@ class BookingController extends BaseController
 		$operationId = !empty($_GET['operation']) ? $_GET['operation'] : 0;
 		$operation = ElementOperation::model()->findByPk($operationId);
 		if (empty($operation)) {
-			throw new Exception('Operation id is invalid.');
+			throw new Exception(Yii::t('strings','Operation id is invalid').'.');
 		}
 		$minDate = !empty($_GET['date']) ? strtotime($_GET['date']) : $operation->getMinDate();
 
@@ -208,10 +208,10 @@ class BookingController extends BaseController
 			$firm = Firm::model()->findByPk($firmId);
 		} else {
 			$firm = new Firm;
-			$firm->name = 'Emergency List';
+			$firm->name = Yii::t('strings','Emergency List');
 		}
 
-		if ($firm->name != 'Emergency List') {
+		if ($firm->name != Yii::t('strings','Emergency List')) {
 			$siteList = Session::model()->getSiteListByFirm($firmId);
 		} else {
 			$siteList = Site::model()->getList();
@@ -224,7 +224,7 @@ class BookingController extends BaseController
 		if (!empty($siteId)) {
 			unset($siteList[$siteId]);
 			$site = Site::model()->findByPk($siteId);
-			$sessions = $operation->getSessions($firm->name == 'Emergency List', $siteId);
+			$sessions = $operation->getSessions($firm->name == Yii::t('strings','Emergency List'), $siteId);
 		} else {
 			$site = new Site;
 			$sessions = array();
@@ -239,16 +239,16 @@ class BookingController extends BaseController
 		$operationId = !empty($_GET['operation']) ? $_GET['operation'] : 0;
 		$operation = ElementOperation::model()->findByPk($operationId);
 		if (empty($operation)) {
-			throw new Exception('Operation id is invalid.');
+			throw new Exception(Yii::t('strings','Operation id is invalid').'.';
 		}
 		$firmId = empty($_GET['firm']) ? 'EMG' : $_GET['firm'];
 		$month = !empty($_GET['month']) ? $_GET['month'] : null;
 		if (empty($month)) {
-			throw new Exception('Month is required.');
+			throw new Exception(Yii::t('strings','Month is required').'.');
 		}
 		$day = !empty($_GET['day']) ? $_GET['day'] : null;
 		if (empty($day)) {
-			throw new Exception('Day is required.');
+			throw new Exception(Yii::t('strings','Day is required').'.');
 		}
 		if (empty($_REQUEST['reschedule']) || $_REQUEST['reschedule'] == 0) {
 			$reschedule = 0;
@@ -269,12 +269,12 @@ class BookingController extends BaseController
 		$operationId = !empty($_GET['operation']) ? $_GET['operation'] : 0;
 		$operation = ElementOperation::model()->findByPk($operationId);
 		if (empty($operation)) {
-			throw new Exception('Operation id is invalid.');
+			throw new Exception(Yii::t('strings','Operation id is invalid').'.');
 		}
 		$sessionId = !empty($_GET['session']) ? $_GET['session'] : 0;
 		$session = $operation->getSession($sessionId);
 		if (empty($session)) {
-			throw new Exception('Session id is invalid.');
+			throw new Exception(Yii::t('strings','Session id is invalid').'.');
 		}
 		$session['id'] = $sessionId;
 
@@ -289,9 +289,9 @@ class BookingController extends BaseController
 		$bookings = Booking::model()->findAll($criteria);
 
 		if ($session['time_available'] >= 0) {
-			$minutesStatus = 'available';
+			$minutesStatus = Yii::t('strings','available');
 		} else {
-			$minutesStatus = 'overbooked';
+			$minutesStatus = Yii::t('strings','overbooked');
 		}
 
 		if (empty($_REQUEST['reschedule']) || $_REQUEST['reschedule'] == 0) {

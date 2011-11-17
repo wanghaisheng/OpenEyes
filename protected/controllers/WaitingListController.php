@@ -69,7 +69,7 @@ class WaitingListController extends BaseController
 	public function actionFilterFirms()
 	{
 		echo CHtml::tag('option', array('value'=>''),
-			CHtml::encode('All firms'), true);
+			CHtml::encode(Yii::t('strings','All firms')), true);
 		if (!empty($_POST['specialty_id'])) {
 			$firms = $this->getFilteredFirms($_POST['specialty_id']);
 

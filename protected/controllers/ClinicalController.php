@@ -59,7 +59,7 @@ class ClinicalController extends BaseController
 		$event = Event::model()->findByPk($id);
 
 		if (!isset($event)) {
-			throw new CHttpException(403, 'Invalid event id.');
+			throw new CHttpException(403, Yii::t('strings','Invalid event id').'.');
 		}
 
 		// Check the patient id for this event is the same as the session patient id
@@ -82,7 +82,7 @@ class ClinicalController extends BaseController
 
 		$site = Site::model()->findByPk(Yii::app()->request->cookies['site_id']->value);
 
-		$this->logActivity('viewed event');
+		$this->logActivity(Yii::t('strings','viewed event'));
 
 		$this->renderPartial(
 			$this->getTemplateName('view', $event->event_type_id), array(
@@ -95,7 +95,7 @@ class ClinicalController extends BaseController
 
 	public function actionIndex()
 	{
-		$this->logActivity('viewed patient index');
+		$this->logActivity(Yii::t('string','viewed patient index'));
 
 		$this->render('index');
 	}
@@ -106,7 +106,7 @@ class ClinicalController extends BaseController
 	public function actionCreate()
 	{
 		if (!isset($_GET['event_type_id'])) {
-			throw new CHttpException(403, 'No event_type_id specified.');
+			throw new CHttpException(403, Yii::t('strings','No event_type_id specified').'.');
 		}
 
 		$eventTypeId = $_GET['event_type_id'];
@@ -114,7 +114,7 @@ class ClinicalController extends BaseController
 		$eventType = EventType::model()->findByPk($eventTypeId);
 
 		if (!isset($eventType)) {
-			throw new CHttpException(403, 'Invalid event_type_id.');
+			throw new CHttpException(403, Yii::t('strings','Invalid event_type_id').'.');
 		}
 
 		// Check the patient id for this new event is the same as the session patient id
@@ -137,7 +137,7 @@ class ClinicalController extends BaseController
 				$this->firm = Firm::model()->findByPk($this->selectedFirmId);
 			} else {
 				// They've supplied a firm id in the post to which they are not entitled??
-				throw new Exception('Invalid firm id on attempting to create event.');
+				throw new Exception(Yii::t('strings','Invalid firm id on attempting to create event').'.');
 			}
 		}
 
@@ -146,7 +146,7 @@ class ClinicalController extends BaseController
 		);
 
 		if (!count($elements)) {
-			throw new CHttpException(403, 'That combination event type and firm specialty is not defined.');
+			throw new CHttpException(403, Yii::t('strings','That combination event type and firm specialty is not defined').'.');
 		}
 
 		$specialties = Specialty::model()->findAll();
@@ -177,10 +177,10 @@ class ClinicalController extends BaseController
 			);
 
 			if ($eventId) {
-				$this->logActivity('created event.');
+				$this->logActivity(Yii::t('strings','created event').'.');
 
 				$eventTypeName = ucfirst($eventType->name);
-				Yii::app()->user->setFlash('success', "{$eventTypeName} created.");
+				Yii::app()->user->setFlash('success', "{$eventTypeName} ".Yii::t('strings','created').".");
 				if (!empty($_POST['scheduleNow'])) {
 					$operation = ElementOperation::model()->findByAttributes(array('event_id' => $eventId));
 					$this->redirect(array('booking/schedule', 'operation' => $operation->id));
@@ -235,14 +235,14 @@ class ClinicalController extends BaseController
 		$event = Event::model()->findByPk($id);
 
 		if (!isset($event)) {
-			throw new CHttpException(403, 'Invalid event id.');
+			throw new CHttpException(403, Yii::t('strings','Invalid event id').'.');
 		}
 
 		// Check the user's firm is of the correct specialty to have the
 		// rights to update this event
 		if ($this->firm->serviceSpecialtyAssignment->specialty_id !=
 			$event->episode->firm->serviceSpecialtyAssignment->specialty_id) {
-			throw new CHttpException(403, 'The firm you are using is not associated with the specialty for this event.');
+			throw new CHttpException(403, Yii::t('strings','The firm you are using is not associated with the specialty for this event').'.');
 		}
 
 		// Check the patient id for this event is the same as the session patient id
@@ -254,7 +254,7 @@ class ClinicalController extends BaseController
 		$elements = $this->service->getElements(null, null, null, $this->getUserId(), $event);
 
 		if (!count($elements)) {
-			throw new CHttpException(403, 'That combination event type and firm specialty is not defined.');
+			throw new CHttpException(403, Yii::t('strings','That combination event type and firm specialty is not defined').'.');
 		}
 
 		$specialties = Specialty::model()->findAll();
@@ -282,7 +282,7 @@ class ClinicalController extends BaseController
 			$success = $this->service->updateElements($elements, $_POST, $event);
 
 			if ($success) {
-				$this->logActivity('updated event');
+				$this->logActivity(Yii::t('strings','updated event'));
 
 				// Update event to indicate user has made a change
 				$event->datetime = date("Y-m-d H:i:s");
@@ -335,7 +335,7 @@ class ClinicalController extends BaseController
 		$episode = Episode::model()->findByPk($id);
 
 		if (!isset($episode)) {
-			throw new CHttpException(403, 'Invalid episode id.');
+			throw new CHttpException(403, Yii::t('strings','Invalid episode id').'.');
 		}
 
 		// Decide whether to display the 'edit' button in the template
@@ -364,11 +364,11 @@ class ClinicalController extends BaseController
 		$episode = Episode::model()->findByPk($id);
 
 		if (!isset($episode)) {
-			throw new CHttpException(403, 'Invalid episode id.');
+			throw new CHttpException(403, Yii::t('strings','Invalid episode id').'.');
 		}
 
 		if (!isset($_GET['summary'])) {
-			throw new CHttpException(403, 'No summary.');
+			throw new CHttpException(403, Yii::t('strings','No summary').'.');
 		}
 
 		// Decide whether to display the 'edit' button in the template
@@ -384,7 +384,7 @@ class ClinicalController extends BaseController
 			$this->resetSessionPatient($episode->patient->id);
 		}
 
-		$this->logActivity('viewed patient summary');
+		$this->logActivity(Yii::t('strings','viewed patient summary'));
 
 		$this->renderPartial('summary', array(
 			'episode' => $episode,
@@ -429,7 +429,7 @@ class ClinicalController extends BaseController
 
 		if (!isset($this->firm)) {
 			// No firm selected, reject
-			throw new CHttpException(403, 'You are not authorised to view this page without selecting a firm.');
+			throw new CHttpException(403, Yii::t('strings','You are not authorised to view this page without selecting a firm').'.');
 		}
 
 		$this->service = new ClinicalService;
@@ -454,7 +454,7 @@ class ClinicalController extends BaseController
 		$episode = Episode::model()->findByPk($id);
 
 		if (!isset($episode)) {
-			throw new CHttpException(403, 'Invalid episode id.');
+			throw new CHttpException(403, Yii::t('strings','Invalid episode id').'.');
 		}
 
 		// Decide whether to display the 'edit' button in the template
