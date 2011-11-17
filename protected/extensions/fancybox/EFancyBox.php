@@ -81,7 +81,7 @@ class EFancyBox extends CWidget
 				Yii::app()->clientScript->registerScriptFile($baseUrl . '/jquery.easing-1.3.pack.js', CClientScript::POS_HEAD);
 			}
 		} else {
-			throw new Exception('EFancyBox - Error: Couldn\'t find assets to publish.');
+			throw new Exception('EFancyBox - '.Yii::t('strings','Error: Couldn\'t find assets to publish').'.');
 		}
 	}
 }

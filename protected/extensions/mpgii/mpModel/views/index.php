@@ -32,9 +32,9 @@ $('#{$class}_tableName').bind('keyup change', function(){
 $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#{$class}_tableName').val().length-1)!='*');
 ");
 ?>
-<h1>Model Generator</h1>
+<h1><?php echo Yii::t('strings','Model Generator')?></h1>
 
-<p>This generator generates a model class for the specified database table.</p>
+<p><?php echo Yii::t('strings','This generator generates a model class for the specified database table')?>.</p>
 
 <?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
 
@@ -42,12 +42,10 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 		<?php echo $form->labelEx($model,'tablePrefix'); ?>
 		<?php echo $form->textField($model,'tablePrefix', array('size'=>65)); ?>
 		<div class="tooltip">
-		This refers to the prefix name that is shared by all database tables.
-		Setting this property mainly affects how model classes are named based on
-		the table names. For example, a table prefix <code>tbl_</code> with a table name <code>tbl_post</code>
-		will generate a model class named <code>Post</code>.
+		<?php echo Yii::t('strings','This refers to the prefix name that is shared by all database tables')?>.
+		<?php echo Yii::t('strings','Setting this property mainly affects how model classes are named based on the table names. For example, a table prefix <code>tbl_</code> with a table name <code>tbl_post</code> will generate a model class named <code>Post</code>')?>.
 		<br/>
-		Leave this field empty if your database tables do not use common prefix.
+		<?php echo Yii::t('strings','Leave this field empty if your database tables do not use common prefix')?>.
 		</div>
 		<?php echo $form->error($model,'tablePrefix'); ?>
 	</div>
@@ -55,10 +53,9 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 		<?php echo $form->labelEx($model,'tableName'); ?>
 		<?php echo $form->textField($model,'tableName', array('size'=>65)); ?>
 		<div class="tooltip">
-		This refers to the table name that a new model class should be generated for
-		(e.g. <code>tbl_user</code>). It can contain schema name, if needed (e.g. <code>public.tbl_post</code>).
-		You may also enter <code>*</code> (or <code>schemaName.*</code> for a particular DB schema)
-		to generate a model class for EVERY table.
+		<?php echo Yii::t('strings','This refers to the table name that a new model class should be generated for (e.g. <code>tbl_user</code>)')?>.
+		<?php echo Yii::t('strings','It can contain schema name, if needed (e.g. <code>public.tbl_post</code>)')?>.
+		<?php echo Yii::t('strings','You may also enter <code>*</code> (or <code>schemaName.*</code> for a particular DB schema) to generate a model class for EVERY table')?>.
 		</div>
 		<?php echo $form->error($model,'tableName'); ?>
 	</div>
@@ -66,8 +63,8 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 		<?php echo $form->label($model,'modelClass',array('required'=>true)); ?>
 		<?php echo $form->textField($model,'modelClass', array('size'=>65)); ?>
 		<div class="tooltip">
-		This is the name of the model class to be generated (e.g. <code>Post</code>, <code>Comment</code>).
-		It is case-sensitive.
+		<?php echo Yii::t('strings','This is the name of the model class to be generated (e.g. <code>Post</code>, <code>Comment</code>)')?>.
+		<?php echo Yii::t('strings','It is case-sensitive')?>.
 		</div>
 		<?php echo $form->error($model,'modelClass'); ?>
 	</div>
@@ -75,8 +72,8 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 		<?php echo $form->labelEx($model,'baseClass'); ?>
 		<?php echo $form->textField($model,'baseClass',array('size'=>65)); ?>
 		<div class="tooltip">
-			This is the class that the new model class will extend from.
-			Please make sure the class exists and can be autoloaded.
+			<?php echo Yii::t('strings','This is the class that the new model class will extend from')?>.
+			<?php echo Yii::t('strings','Please make sure the class exists and can be autoloaded')?>.
 		</div>
 		<?php echo $form->error($model,'baseClass'); ?>
 	</div>
@@ -84,8 +81,8 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 		<?php echo $form->labelEx($model,'modelPath'); ?>
 		<?php echo $form->textField($model,'modelPath', array('size'=>65)); ?>
 		<div class="tooltip">
-			This refers to the directory that the new model class file should be generated under.
-			It should be specified in the form of a path alias, for example, <code>application.models</code>.
+			<?php echo Yii::t('strings','This refers to the directory that the new model class file should be generated under')?>.
+			<?php echo Yii::t('strings','It should be specified in the form of a path alias, for example, <code>application.models</code>')?>.
 		</div>
 		<?php echo $form->error($model,'modelPath'); ?>
 	</div>
@@ -93,7 +90,7 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 		<?php echo $form->labelEx($model,'connectionId'); ?>
 		<?php echo $form->textField($model,'connectionId', array('size'=>65)); ?>
 		<div class="tooltip">
-			This refers to the id of the database connection component.
+			<?php echo Yii::t('strings','This refers to the id of the database connection component')?>.
 		</div>
 		<?php echo $form->error($model,'connectionId'); ?>
 	</div>

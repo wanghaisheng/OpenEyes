@@ -20,9 +20,9 @@ class ModelCode extends CCodeModel
 		return array_merge(parent::rules(), array(
 			array('tablePrefix, baseClass, tableName, modelClass, modelPath, connectionId', 'filter', 'filter'=>'trim'),
 			array('tableName, modelPath, baseClass, connectionId', 'required'),
-			array('tablePrefix, tableName, modelPath', 'match', 'pattern'=>'/^(\w+[\w\.]*|\*?|\w+\.\*)$/', 'message'=>'{attribute} should only contain word characters, dots, and an optional ending asterisk.'),
+			array('tablePrefix, tableName, modelPath', 'match', 'pattern'=>'/^(\w+[\w\.]*|\*?|\w+\.\*)$/', 'message'=>'{attribute} '.Yii::t('strings','should only contain word characters, dots, and an optional ending asterisk').'.'),
 			array('tableName', 'validateTableName', 'skipOnError'=>true),
-			array('tablePrefix, modelClass, baseClass', 'match', 'pattern'=>'/^[a-zA-Z_]\w*$/', 'message'=>'{attribute} should only contain word characters.'),
+			array('tablePrefix, modelClass, baseClass', 'match', 'pattern'=>'/^[a-zA-Z_]\w*$/', 'message'=>'{attribute} '.Yii::t('strings','should only contain word characters').'.'),
 			array('modelPath', 'validateModelPath', 'skipOnError'=>true),
             array('connectionId', 'validateConnectionId', 'skipOnError'=>true),
 			array('baseClass, modelClass', 'validateReservedWord', 'skipOnError'=>true),
@@ -52,7 +52,7 @@ class ModelCode extends CCodeModel
 	public function init()
 	{
 		if(Yii::app()->{$this->connectionId}===null)
-			throw new CHttpException(500,'An active "db" connection is required to run this generator.');
+			throw new CHttpException(500, Yii::t('strings','An active "db" connection is required to run this generator').'.');
 		$this->tablePrefix=Yii::app()->{$this->connectionId}->tablePrefix;
 		parent::init();
 	}
@@ -116,30 +116,30 @@ class ModelCode extends CCodeModel
 		else
 		{
 			if($this->getTableSchema($this->tableName)===null)
-				$this->addError('tableName',"Table '{$this->tableName}' does not exist.");
+				$this->addError('tableName',Yii::t('strings',"Table")." '{$this->tableName}' ".Yii::t('strings','does not exist').".");
 			if($this->modelClass==='')
-				$this->addError('modelClass','Model Class cannot be blank.');
+				$this->addError('modelClass',Yii::t('strings','Model Class cannot be blank').'.');
 		}
 	}
 
 	public function validateModelPath($attribute,$params)
 	{
 		if(Yii::getPathOfAlias($this->modelPath)===false)
-			$this->addError('modelPath','Model Path must be a valid path alias.');
+			$this->addError('modelPath',Yii::t('strings','Model Path must be a valid path alias').'.');
 	}
     public function validateConnectionId($attribute,$params)
 	{
 		if(Yii::app()->hasComponent($this->connectionId)===false || !(Yii::app()->getComponent($this->connectionId) instanceof CDbConnection))
-			$this->addError('connectionId','An active "'.$this->connectionId.'" connection is required to run this generator.');
+			$this->addError('connectionId',Yii::t('strings','An active').' "'.$this->connectionId.'" '.Yii::t('strings','connection is required to run this generator').'.');
 	}
 
 	public function validateBaseClass($attribute,$params)
 	{
 		$class=@Yii::import($this->baseClass,true);
 		if(!is_string($class) || !$this->classExists($class))
-			$this->addError('baseClass', "Class '{$this->baseClass}' does not exist or has syntax error.");
+			$this->addError('baseClass', Yii::t('strings',"Class")." '{$this->baseClass}' ".Yii::t('strings','does not exist or has syntax error').".");
 		else if($class!=='CActiveRecord' && !is_subclass_of($class,'CActiveRecord'))
-			$this->addError('baseClass', "'{$this->model}' must extend from CActiveRecord.");
+			$this->addError('baseClass', "'{$this->model}' ".Yii::t('strings','must extend from CActiveRecord').".");
 	}
 
 	public function getTableSchema($tableName)
