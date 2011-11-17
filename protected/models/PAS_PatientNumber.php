@@ -90,9 +90,9 @@ class PAS_PatientNumber extends MultiActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'NUMBER_ID' => 'Number',
-			'NUM_ID_TYPE' => 'Num Id Type',
-			'RM_PATIENT_NO' => 'Rm Patient No',
+			'NUMBER_ID' => Yii::t('strings','Number'),
+			'NUM_ID_TYPE' => Yii::t('strings','Num Id Type'),
+			'RM_PATIENT_NO' => Yii::t('strings','Rm Patient No'),
 		);
 	}
 

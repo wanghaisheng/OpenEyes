@@ -66,9 +66,9 @@ class ProcedureSpecialtyAssignment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'proc_id' => 'Procedure',
-			'specialty_id' => 'Specialty',
+			'id' => Yii::t('strings','ID'),
+			'proc_id' => Yii::t('strings','Procedure'),
+			'specialty_id' => Yii::t('strings','Specialty'),
 		);
 	}
 

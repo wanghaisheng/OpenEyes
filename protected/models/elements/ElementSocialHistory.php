@@ -71,9 +71,9 @@ class ElementSocialHistory extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'value' => 'Value',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'value' => Yii::t('strings','Value'),
 		);
 	}
 

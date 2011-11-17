@@ -79,9 +79,9 @@ class SpecialtySubsection extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'specialty_id' => 'Specialty',
-			'name' => 'Name',
+			'id' => Yii::t('strings','ID'),
+			'specialty_id' => Yii::t('strings','Specialty'),
+			'name' => Yii::t('strings','Name'),
 		);
 	}
 

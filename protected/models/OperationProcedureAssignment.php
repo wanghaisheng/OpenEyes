@@ -86,9 +86,9 @@ class OperationProcedureAssignment extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'operation_id' => 'Operation',
-			'proc_id' => 'Procedure',
-			'display_order' => 'Display Order',
+			'operation_id' => Yii::t('strings','Operation'),
+			'proc_id' => Yii::t('strings','Procedure'),
+			'display_order' => Yii::t('strings','Display Order'),
 		);
 	}
 

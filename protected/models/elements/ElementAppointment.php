@@ -73,8 +73,8 @@ class ElementAppointment extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
 		);
 	}
 

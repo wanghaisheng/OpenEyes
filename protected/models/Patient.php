@@ -87,17 +87,17 @@ class Patient extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'pas_key' => 'PAS Key',
-			'title' => 'Title',
-			'first_name' => 'First Name',
-			'last_name' => 'Last Name',
-			'dob' => 'Date of Birth',
-			'gender' => 'Gender',
-			'hos_num' => 'Hospital Number',
-			'nhs_num' => 'NHS Number',
-			'primary_phone' => 'Primary Phone',
-			'address_id' => 'Address'
+			'id' => Yii::t('strings','ID'),
+			'pas_key' => Yii::t('strings','PAS Key'),
+			'title' => Yii::t('strings','Title'),
+			'first_name' => Yii::t('strings','First Name'),
+			'last_name' => Yii::t('strings','Last Name'),
+			'dob' => Yii::t('strings','Date of Birth'),
+			'gender' => Yii::t('strings','Gender'),
+			'hos_num' => Yii::t('strings','Hospital Number'),
+			'nhs_num' => Yii::t('strings','NHS Number'),
+			'primary_phone' => Yii::t('strings','Primary Phone'),
+			'address_id' => Yii::t('strings','Address')
 		);
 	}
 

@@ -47,11 +47,11 @@ class ElementVisualAcuity extends BaseElement
 	const AID_REFRACTION = 4;
 
 	public $visualAcuityStrings = array(
-		0 => 'Not recorded',
-		1 => 'NPL',
-		2 => 'PL',
-		3 => 'HM',
-		4 => 'CF'
+		0 => Yii::t('strings','Not recorded'),
+		1 => Yii::t('strings','NPL'),
+		2 => Yii::t('strings','PL'),
+		3 => Yii::t('strings','HM'),
+		4 => Yii::t('strings','CF')
 	);
 
 	/**
@@ -104,18 +104,18 @@ class ElementVisualAcuity extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'rva_ua' => 'Rva Ua',
-			'lva_ua' => 'Lva Ua',
-			'rva_cr' => 'Rva Cr',
-			'lva_cr' => 'Lva Cr',
-			'rva_ph' => 'Rva Ph',
-			'lva_ph' => 'Lva Ph',
-			'right_aid' => 'Right Aid',
-			'left_aid' => 'Left Aid',
-			'distance' => 'Distance',
-			'type' => 'Type',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'rva_ua' => Yii::t('strings','Rva Ua'),
+			'lva_ua' => Yii::t('strings','Lva Ua'),
+			'rva_cr' => Yii::t('strings','Rva Cr'),
+			'lva_cr' => Yii::t('strings','Lva Cr'),
+			'rva_ph' => Yii::t('strings','Rva Ph'),
+			'lva_ph' => Yii::t('strings','Lva Ph'),
+			'right_aid' => Yii::t('strings','Right Aid'),
+			'left_aid' => Yii::t('strings','Left Aid'),
+			'distance' => Yii::t('strings','Distance'),
+			'type' => Yii::t('strings','Type'),
 		);
 	}
 
@@ -169,7 +169,7 @@ class ElementVisualAcuity extends BaseElement
 		if (!in_array($field, array(
 			'rva_ua', 'lva_ua', 'rva_cr', 'lva_cr', 'rva_ph', 'lva_ph')
 		)) {
-			throw new Exception('Invalid measurementType in getVisualAcuity.');
+			throw new Exception(Yii::t('strings','Invalid measurementType in getVisualAcuity').'.');
 		}
 
 		if ($this->$field < 5) {
@@ -190,7 +190,7 @@ class ElementVisualAcuity extends BaseElement
 				return $this->toLogMar($this->$field);
 				break;
 			default:
-				throw new Exception('system not defined yet in getVisualAcuity.');
+				throw new Exception(Yii::t('strings','system not defined yet in getVisualAcuity').'.');
 				break;
 		}
 	}
@@ -206,7 +206,7 @@ class ElementVisualAcuity extends BaseElement
 		if (!in_array($field, array(
 			'right_aid', 'left_aid')
 		)) {
-			throw new Exception('Invalid aid field name in getAidText.');
+			throw new Exception(Yii::t('strings','Invalid aid field name in getAidText').'.');
 		}
 
 		$aidOptions = $this->getAidOptions();
@@ -237,7 +237,7 @@ class ElementVisualAcuity extends BaseElement
 				$options = array();
 				break;
 			default:
-				throw new Exception('system not defined yet.');
+				throw new Exception(Yii::t('strings','system not defined yet').'.');
 				break;
 		}
 
@@ -256,11 +256,11 @@ class ElementVisualAcuity extends BaseElement
 	public function getAidOptions()
 	{
 		return array(
-			self::AID_UNAIDED => 'Unaided',
-			self::AID_GLASSES => 'Glasses',
-			self::AID_CONTACT_LENS => 'Contact Lens',
-			self::AID_PINHOLE => 'Pinhole',
-			self::AID_REFRACTION => 'Refraction',
+			self::AID_UNAIDED => Yii::t('strings','Unaided'),
+			self::AID_GLASSES => Yii::t('strings','Glasses'),
+			self::AID_CONTACT_LENS => Yii::t('strings','Contact Lens'),
+			self::AID_PINHOLE => Yii::t('strings','Pinhole'),
+			self::AID_REFRACTION => Yii::t('strings','Refraction'),
 		);
 	}
 
@@ -360,7 +360,7 @@ class ElementVisualAcuity extends BaseElement
 	 */
 	public function toLogMar($value)
 	{
-		throw new Exception('toLogMar not written yet.');
+		throw new Exception(Yii::t('strings','toLogMar not written yet').'.');
 	}
 
 	public function toDecimal($_value)

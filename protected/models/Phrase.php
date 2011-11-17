@@ -85,11 +85,11 @@ class Phrase extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'phrase' => 'Phrase',
-			'section_id' => 'Section',
-			'display_order' => 'Display Order',
-			'phrase_name_id' => 'Name',
+			'id' => Yii::t('strings','ID'),
+			'phrase' => Yii::t('strings','Phrase'),
+			'section_id' => Yii::t('strings','Section'),
+			'display_order' => Yii::t('strings','Display Order'),
+			'phrase_name_id' => Yii::t('strings','Name'),
 		);
 	}
 

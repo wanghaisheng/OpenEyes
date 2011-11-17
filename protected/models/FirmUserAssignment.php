@@ -78,9 +78,9 @@ class FirmUserAssignment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'firm_id' => 'Firm',
-			'user_id' => 'User',
+			'id' => Yii::t('strings','ID'),
+			'firm_id' => Yii::t('strings','Firm'),
+			'user_id' => Yii::t('strings','User'),
 		);
 	}
 

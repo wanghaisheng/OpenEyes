@@ -66,10 +66,10 @@ class User extends BaseActiveRecord
 			return array_merge(
 				$commonRules,
 				array(
-					array('username', 'match', 'pattern' => '/^[\w|_]+$/', 'message' => 'Only letters, numbers and underscores are allowed for usernames.'),
+					array('username', 'match', 'pattern' => '/^[\w|_]+$/', 'message' => Yii::t('strings','Only letters, numbers and underscores are allowed for usernames').'.'),
 					array('username, password, password_repeat, email, first_name, last_name, active, global_firm_rights', 'required'),
 					array('username, password, first_name, last_name', 'length', 'max' => 40),
-					array('password', 'length', 'min' => 6, 'message' => 'Passwords must be at least 6 characters long.'),
+					array('password', 'length', 'min' => 6, 'message' => Yii::t('strings','Passwords must be at least 6 characters long').'.'),
 					array('email', 'length', 'max' => 80),
 					array('email', 'email'),
 					array('salt', 'length', 'max' => 10),
@@ -87,7 +87,7 @@ class User extends BaseActiveRecord
 				)
 			);
 		} else {
-			 throw new SystemException('Unknown auth_source: ' . Yii::app()->params['auth_source']);
+			 throw new SystemException(Yii::t('strings','Unknown').' auth_source: ' . Yii::app()->params['auth_source']);
 		}
 	}
 
@@ -113,14 +113,14 @@ class User extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'username' => 'Username',
-			'first_name' => 'First name',
-			'last_name' => 'Last name',
-			'email' => 'Email',
-			'active' => 'Active',
-			'password' => 'Password',
-			'global_firm_rights' => 'Global firm rights'
+			'id' => Yii::t('strings','ID'),
+			'username' => Yii::t('strings','Username'),
+			'first_name' => Yii::t('strings','First name'),
+			'last_name' => Yii::t('strings','Last name'),
+			'email' => Yii::t('strings','Email'),
+			'active' => Yii::t('strings','Active'),
+			'password' => Yii::t('strings','Password'),
+			'global_firm_rights' => Yii::t('strings','Global firm rights')
 		);
 	}
 
@@ -214,9 +214,9 @@ class User extends BaseActiveRecord
 	public function getActiveText()
 	{
 		if ($this->active) {
-			return 'Yes';
+			return Yii::t('strings','Yes');
 		} else {
-			return 'No';
+			return Yii::t('strings','No');
 		}
 	}
 
@@ -228,9 +228,9 @@ class User extends BaseActiveRecord
 	public function getGlobalFirmRightsText()
 	{
 		if ($this->global_firm_rights) {
-			return 'Yes';
+			return Yii::t('strings','Yes');
 		} else {
-			return 'No';
+			return Yii::t('strings','No');
 		}
 	}
 

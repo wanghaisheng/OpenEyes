@@ -84,10 +84,10 @@ class Procedure extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'term' => 'Term',
-			'short_format' => 'Short Format',
-			'default_duration' => 'Default Duration',
+			'id' => Yii::t('strings','ID'),
+			'term' => Yii::t('strings','Term'),
+			'short_format' => Yii::t('strings','Short Format'),
+			'default_duration' => Yii::t('strings','Default Duration'),
 		);
 	}
 

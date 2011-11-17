@@ -73,10 +73,10 @@ class Referral extends MultiActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'refno' => 'Refno',
-			'patient_id' => 'Patient',
-			'service_id' => 'Service',
+			'id' => Yii::t('strings','ID'),
+			'refno' => Yii::t('strings','Refno'),
+			'patient_id' => Yii::t('strings','Patient'),
+			'service_id' => Yii::t('strings','Service'),
 		);
 	}
 

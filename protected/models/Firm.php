@@ -83,10 +83,10 @@ class Firm extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'service_specialty_assignment_id' => 'Service Specialty Assignment',
-			'pas_code' => 'Pas Code',
-			'name' => 'Name',
+			'id' => Yii::t('strings','ID'),
+			'service_specialty_assignment_id' => Yii::t('strings','Service Specialty Assignment'),
+			'pas_code' => Yii::t('strings','Pas Code'),
+			'name' => Yii::t('strings','Name'),
 		);
 	}
 

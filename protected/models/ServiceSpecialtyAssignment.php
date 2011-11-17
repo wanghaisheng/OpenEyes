@@ -80,9 +80,9 @@ class ServiceSpecialtyAssignment extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'service_id' => 'Service',
-			'specialty_id' => 'Specialty',
+			'id' => Yii::t('strings','ID'),
+			'service_id' => Yii::t('strings','Service'),
+			'specialty_id' => Yii::t('strings','Specialty'),
 		);
 	}
 

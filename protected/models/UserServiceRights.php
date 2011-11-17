@@ -78,9 +78,9 @@ class UserServiceRights extends MultiActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'user_id' => 'User',
-			'service_id' => 'Service',
+			'id' => Yii::t('strings','ID'),
+			'user_id' => Yii::t('strings','User'),
+			'service_id' => Yii::t('strings','Service'),
 		);
 	}
 

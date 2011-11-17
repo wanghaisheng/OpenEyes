@@ -78,9 +78,9 @@ class UserContactAssignment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'user_id' => 'User',
-			'contact_id' => 'Contact',
+			'id' => Yii::t('strings','ID'),
+			'user_id' => Yii::t('strings','User'),
+			'contact_id' => Yii::t('strings','Contact'),
 		);
 	}
 

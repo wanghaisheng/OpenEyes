@@ -87,10 +87,10 @@ class Disorder extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'fully_specified_name' => 'Fully Specified Name',
-			'term' => 'Term',
-			'systemic' => 'Systemic',
+			'id' => Yii::t('strings','ID'),
+			'fully_specified_name' => Yii::t('strings','Fully Specified Name'),
+			'term' => Yii::t('strings','Term'),
+			'systemic' => Yii::t('strings','Systemic'),
 		);
 	}
 

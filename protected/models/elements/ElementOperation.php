@@ -91,9 +91,9 @@ class ElementOperation extends BaseElement
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('eye', 'required', 'message' => 'Please select an eye option'),
+			array('eye', 'required', 'message' => Yii::t('strings','Please select an eye option')),
 			array('eye', 'matchDiagnosisEye'),
-			array('decision_date', 'required', 'message' => 'Please enter a decision date'),
+			array('decision_date', 'required', 'message' => Yii::t('strings','Please enter a decision date')),
 			array('eye, total_duration, consultant_required, anaesthetist_required, anaesthetic_type, overnight_stay, schedule_timeframe', 'numerical', 'integerOnly' => true),
 			array('eye, event_id, comments, decision_date', 'safe'),
 			// The following rule is used by search().
@@ -124,17 +124,17 @@ class ElementOperation extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'eye' => 'Eye(s)',
-			'comments' => 'Comments',
-			'total_duration' => 'Total Duration',
-			'consultant_required' => 'Consultant Required',
-			'anaesthetist_required' => 'Anaesthetist Required',
-			'anaesthetic_type' => 'Anaesthetic Type',
-			'overnight_stay' => 'Overnight Stay',
-			'decision_date' => 'Decision Date',
-			'schedule_timeframe' => 'Schedule Timeframe',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'eye' => Yii::t('strings','Eye(s)'),
+			'comments' => Yii::t('strings','Comments'),
+			'total_duration' => Yii::t('strings','Total Duration'),
+			'consultant_required' => Yii::t('strings','Consultant Required'),
+			'anaesthetist_required' => Yii::t('strings','Anaesthetist Required'),
+			'anaesthetic_type' => Yii::t('strings','Anaesthetic Type'),
+			'overnight_stay' => Yii::t('strings','Overnight Stay'),
+			'decision_date' => Yii::t('strings','Decision Date'),
+			'schedule_timeframe' => Yii::t('strings','Schedule Timeframe'),
 		);
 	}
 
@@ -187,9 +187,9 @@ class ElementOperation extends BaseElement
 	public function getEyeOptions()
 	{
 		return array(
-			self::EYE_RIGHT => 'Right',
-			self::EYE_LEFT => 'Left',
-			self::EYE_BOTH => 'Both',
+			self::EYE_RIGHT => Yii::t('strings','Right'),
+			self::EYE_LEFT => Yii::t('strings','Left'),
+			self::EYE_BOTH => Yii::t('strings','Both'),
 		);
 	}
 
@@ -197,10 +197,10 @@ class ElementOperation extends BaseElement
 	{
 		switch ($this->eye) {
 			case self::EYE_BOTH:
-				$text = 'Eyes:';
+				$text = Yii::t('strings','Eyes').':';
 				break;
 			default:
-				$text = 'Eye:';
+				$text = Yii::t('strings','Eye').':';
 				break;
 		}
 
@@ -211,16 +211,16 @@ class ElementOperation extends BaseElement
 	{
 		switch ($this->eye) {
 			case self::EYE_LEFT:
-				$text = 'Left';
+				$text = Yii::t('strings','Left');
 				break;
 			case self::EYE_RIGHT:
-				$text = 'Right';
+				$text = Yii::t('strings','Right');
 				break;
 			case self::EYE_BOTH:
-				$text = 'Both';
+				$text = Yii::t('strings','Both');
 				break;
 			default:
-				$text = 'Unknown';
+				$text = Yii::t('strings','Unknown');
 				break;
 		}
 
@@ -234,8 +234,8 @@ class ElementOperation extends BaseElement
 	public function getConsultantOptions()
 	{
 		return array(
-			self::CONSULTANT_REQUIRED => 'Yes',
-			self::CONSULTANT_NOT_REQUIRED => 'No',
+			self::CONSULTANT_REQUIRED => Yii::t('strings','Yes'),
+			self::CONSULTANT_NOT_REQUIRED => Yii::t('strings','No'),
 		);
 	}
 
@@ -243,10 +243,10 @@ class ElementOperation extends BaseElement
 	{
 		switch ($this->$field) {
 			case 1:
-				$text = 'Yes';
+				$text = Yii::t('strings','Yes');
 				break;
 			default:
-				$text = 'No';
+				$text = Yii::t('strings','No');
 				break;
 		}
 
@@ -260,11 +260,11 @@ class ElementOperation extends BaseElement
 	public function getAnaestheticOptions()
 	{
 		return array(
-			self::ANAESTHETIC_TOPICAL => 'Topical',
-			self::ANAESTHETIC_LOCAL => 'LA',
-			self::ANAESTHETIC_LOCAL_WITH_COVER => 'LAC',
-			self::ANAESTHETIC_LOCAL_WITH_SEDATION => 'LAS',
-			self::ANAESTHETIC_GENERAL => 'GA'
+			self::ANAESTHETIC_TOPICAL => Yii::t('strings','Topical'),
+			self::ANAESTHETIC_LOCAL => Yii::t('strings','LA'),
+			self::ANAESTHETIC_LOCAL_WITH_COVER => Yii::t('strings','LAC'),
+			self::ANAESTHETIC_LOCAL_WITH_SEDATION => Yii::t('strings','LAS'),
+			self::ANAESTHETIC_GENERAL => Yii::t('strings','GA')
 		);
 	}
 
@@ -272,22 +272,22 @@ class ElementOperation extends BaseElement
 	{
 		switch ($this->anaesthetic_type) {
 			case self::ANAESTHETIC_TOPICAL:
-				$text = 'Topical';
+				$text = Yii::t('strings','Topical');
 				break;
 			case self::ANAESTHETIC_LOCAL:
-				$text = 'LA';
+				$text = Yii::t('strings','LA');
 				break;
 			case self::ANAESTHETIC_LOCAL_WITH_COVER:
-				$text = 'LAC';
+				$text = Yii::t('strings','LAC');
 				break;
 			case self::ANAESTHETIC_LOCAL_WITH_SEDATION:
-				$text = 'LAS';
+				$text = Yii::t('strings','LAS');
 				break;
 			case self::ANAESTHETIC_GENERAL:
-				$text = 'GA';
+				$text = Yii::t('strings','GA');
 				break;
 			default:
-				$text = 'Unknown';
+				$text = Yii::t('strings','Unknown');
 				break;
 		}
 
@@ -298,22 +298,22 @@ class ElementOperation extends BaseElement
 	{
 		switch ($this->anaesthetic_type) {
 			case self::ANAESTHETIC_TOPICAL:
-				$text = 'Topical';
+				$text = Yii::t('strings','Topical');
 				break;
 			case self::ANAESTHETIC_LOCAL:
-				$text = 'LA';
+				$text = Yii::t('strings','LA');
 				break;
 			case self::ANAESTHETIC_LOCAL_WITH_COVER:
-				$text = 'LAC';
+				$text = Yii::t('strings','LAC');
 				break;
 			case self::ANAESTHETIC_LOCAL_WITH_SEDATION:
-				$text = 'LAS';
+				$text = Yii::t('strings','LAS');
 				break;
 			case self::ANAESTHETIC_GENERAL:
-				$text = 'GA';
+				$text = Yii::t('strings','GA');
 				break;
 			default:
-				$text = 'Unknown';
+				$text = Yii::t('strings','Unknown');
 				break;
 		}
 
@@ -327,8 +327,8 @@ class ElementOperation extends BaseElement
 	public function getScheduleOptions()
 	{
 		return array(
-			self::SCHEDULE_IMMEDIATELY => 'As soon as possible',
-			1 => 'Within timeframe specified by patient'
+			self::SCHEDULE_IMMEDIATELY => Yii::t('strings','As soon as possible'),
+			1 => Yii::t('strings','Within timeframe specified by patient')
 		);
 	}
 
@@ -339,9 +339,9 @@ class ElementOperation extends BaseElement
 	public function getScheduleDelayOptions()
 	{
 		return array(
-			self::SCHEDULE_AFTER_1MO => 'After 1 Month',
-			self::SCHEDULE_AFTER_2MO => 'After 2 Months',
-			self::SCHEDULE_AFTER_3MO => 'After 3 Months',
+			self::SCHEDULE_AFTER_1MO => Yii::t('strings','After 1 Month'),
+			self::SCHEDULE_AFTER_2MO => Yii::t('strings','After 2 Months'),
+			self::SCHEDULE_AFTER_3MO => Yii::t('strings','After 3 Months'),
 		);
 	}
 
@@ -349,19 +349,19 @@ class ElementOperation extends BaseElement
 	{
 		switch ($this->schedule_timeframe) {
 			case self::SCHEDULE_IMMEDIATELY:
-				$text = 'Immediately';
+				$text = Yii::t('strings','Immediately');
 				break;
 			case self::SCHEDULE_AFTER_1MO:
-				$text = 'After 1 month';
+				$text = Yii::t('strings','After 1 month');
 				break;
 			case self::SCHEDULE_AFTER_2MO:
-				$text = 'After 2 months';
+				$text = Yii::t('strings','After 2 months');
 				break;
 			case self::SCHEDULE_AFTER_3MO:
-				$text = 'After 3 months';
+				$text = Yii::t('strings','After 3 months');
 				break;
 			default:
-				$text = 'Unknown';
+				$text = Yii::t('strings','Unknown');
 				break;
 		}
 
@@ -375,8 +375,8 @@ class ElementOperation extends BaseElement
 	public function getOvernightOptions()
 	{
 		return array(
-			1 => 'Yes',
-			0 => 'No',
+			1 => Yii::t('strings','Yes'),
+			0 => Yii::t('strings','No'),
 		);
 	}
 
@@ -390,7 +390,7 @@ class ElementOperation extends BaseElement
 			if ($diagnosis != ElementDiagnosis::EYE_BOTH &&
 				$diagnosis != $operation
 			) {
-				$this->addError('eye', 'Operation eye must match diagnosis eye!');
+				$this->addError('eye', Yii::t('strings','Operation eye must match diagnosis eye!'));
 			}
 		}
 	}
@@ -428,7 +428,7 @@ class ElementOperation extends BaseElement
 				$procedure->proc_id = $id;
 				$procedure->display_order = $order;
 				if (!$procedure->save()) {
-					throw new Exception('Unable to save procedure');
+					throw new Exception(Yii::t('strings','Unable to save procedure'));
 				}
 
 				$order++;
@@ -440,7 +440,7 @@ class ElementOperation extends BaseElement
 	protected function beforeValidate()
 	{
 		if (!empty($_POST['action']) && empty($_POST['Procedures'])) {
-			$this->addError('eye', 'At least one procedure must be entered');
+			$this->addError('eye', Yii::t('strings','At least one procedure must be entered'));
 		}
 
 		return parent::beforeValidate();
@@ -451,7 +451,7 @@ class ElementOperation extends BaseElement
 		$date = strtotime($this->event->datetime);
 
 		if ($this->schedule_timeframe != self::SCHEDULE_IMMEDIATELY) {
-			$interval = str_replace('After ', '+', $this->getScheduleText());
+			$interval = str_replace(Yii::t('strings','After').' ', '+', $this->getScheduleText());
 			$date = strtotime($interval, $date);
 		}
 
@@ -517,15 +517,15 @@ class ElementOperation extends BaseElement
 							}
 						}
 						if ($full == $totalSessions) {
-							$status = 'full';
+							$status = Yii::t('strings','full');
 						} elseif ($full > 0 && $open > 0) {
-							$status = 'limited';
+							$status = Yii::t('strings','limited');
 						} elseif ($open == $totalSessions) {
-							$status = 'available';
+							$status = Yii::t('strings','available');
 						}
 					}
 				} else {
-					$status = 'closed';
+					$status = Yii::t('strings','closed');
 				}
 				$results[$weekday][$selectedDay]['status'] = $status;
 			}
@@ -546,7 +546,7 @@ class ElementOperation extends BaseElement
 	public function getTheatres($date, $emergency = false)
 	{
 		if (empty($date)) {
-			throw new Exception('Date is required.');
+			throw new Exception(Yii::t('strings','Date is required').'.');
 		}
 /*
 		if (!$emergency) {
@@ -578,9 +578,9 @@ class ElementOperation extends BaseElement
 			unset($session['session_duration'], $session['date'], $session['name']);
 
 			if ($session['time_available'] <= 0) {
-				$status = 'full';
+				$status = Yii::t('strings','full');
 			} else {
-				$status = 'available';
+				$status = Yii::t('strings','available');
 			}
 			$session['status'] = $status;
 
@@ -600,7 +600,7 @@ class ElementOperation extends BaseElement
 	public function getSession($sessionId)
 	{
 		if (empty($sessionId)) {
-			throw new Exception('Session id is invalid.');
+			throw new Exception(Yii::t('strings','Session id is invalid').'.');
 		}
 		$service = $this->getBookingService();
 		$results = $service->findSession($sessionId);
@@ -614,9 +614,9 @@ class ElementOperation extends BaseElement
 			unset($session['session_duration'], $session['name']);
 
 			if ($session['time_available'] <= 0) {
-				$status = 'full';
+				$status = Yii::t('strings','full');
 			} else {
-				$status = 'available';
+				$status = Yii::t('strings','available');
 			}
 			$session['status'] = $status;
 		} else {
@@ -635,25 +635,25 @@ class ElementOperation extends BaseElement
 	{
 		switch ($index) {
 			case 1:
-				$text = 'Monday';
+				$text = Yii::t('strings','Monday');
 				break;
 			case 2:
-				$text = 'Tuesday';
+				$text = Yii::t('strings','Tuesday');
 				break;
 			case 3:
-				$text = 'Wednesday';
+				$text = Yii::t('strings','Wednesday');
 				break;
 			case 4:
-				$text = 'Thursday';
+				$text = Yii::t('strings','Thursday');
 				break;
 			case 5:
-				$text = 'Friday';
+				$text = Yii::t('strings','Friday');
 				break;
 			case 6:
-				$text = 'Saturday';
+				$text = Yii::t('strings','Saturday');
 				break;
 			case 7:
-				$text = 'Sunday';
+				$text = Yii::t('strings','Sunday');
 				break;
 		}
 
@@ -663,7 +663,7 @@ class ElementOperation extends BaseElement
 	public function getWardOptions($siteId, $theatreId = null)
 	{
 		if (empty($siteId)) {
-			throw new Exception('Site id is required.');
+			throw new Exception(Yii::t('strings','Site id is required').'.');
 		}
 		$results = array();
 		// if we have a theatre id, see if it has an associated ward
@@ -732,8 +732,8 @@ class ElementOperation extends BaseElement
 		$text = '';
 		$cancellation = $this->cancellation;
 		if (!empty($cancellation)) {
-			$text = "Operation Cancelled: By " . $cancellation->user->first_name;
-			$text .= ' ' . $cancellation->user->last_name . ' on ' . date('F j, Y', strtotime($cancellation->cancelled_date));
+			$text = Yii::t('strings','Operation Cancelled').': '.Yii::t('strings','By')." " . $cancellation->user->first_name;
+			$text .= ' ' . $cancellation->user->last_name . ' '.Yii::t('strings','on').' ' . date('F j, Y', strtotime($cancellation->cancelled_date));
 			$text .= ' [' . $cancellation->cancelledReason->text . ']';
 		}
 
@@ -744,22 +744,22 @@ class ElementOperation extends BaseElement
 	{
 		switch ($this->status) {
 			case self::STATUS_PENDING:
-				$status = 'Pending';
+				$status = Yii::t('strings','Pending');
 				break;
 			case self::STATUS_SCHEDULED:
-				$status = 'Scheduled';
+				$status = Yii::t('strings','Scheduled');
 				break;
 			case self::STATUS_NEEDS_RESCHEDULING:
-				$status = 'Needs rescheduling';
+				$status = Yii::t('strings','Needs rescheduling');
 				break;
 			case self::STATUS_RESCHEDULED:
-				$status = 'Rescheduled';
+				$status = Yii::t('strings','Rescheduled');
 				break;
 			case self::STATUS_CANCELLED:
-				$status = 'Cancelled';
+				$status = Yii::t('strings','Cancelled');
 				break;
 			default:
-				$status = 'Unknown status';
+				$status = Yii::t('strings','Unknown status');
 				break;
 		}
 
@@ -822,11 +822,11 @@ class ElementOperation extends BaseElement
 	{
 		return array(
 			'' => 'Any',
-			self::LETTER_INVITE => 'Invitation',
-			self::LETTER_REMINDER_1 => '1st Reminder',
-			self::LETTER_REMINDER_2 => '2nd Reminder',
-			self::LETTER_GP => 'Refer to GP',
-			self::LETTER_REMOVAL => 'To be removed'
+			self::LETTER_INVITE => Yii::t('strings','Invitation'),
+			self::LETTER_REMINDER_1 => Yii::t('strings','1st Reminder'),
+			self::LETTER_REMINDER_2 => Yii::t('strings','2nd Reminder'),
+			self::LETTER_GP => Yii::t('strings','Refer to GP'),
+			self::LETTER_REMOVAL => Yii::t('strings','To be removed')
 		);
 	}
 

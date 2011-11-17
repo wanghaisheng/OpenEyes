@@ -74,12 +74,12 @@ class ElementPosteriorSegment extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'description_left' => 'Description (left)',
-			'description_right' => 'Description (right)',
-			'image_string_left' => 'EyeDraw (left)',
-			'image_string_right' => 'EyeDraw (right)'
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'description_left' => Yii::t('strings','Description (left)'),
+			'description_right' => Yii::t('strings','Description (right)'),
+			'image_string_left' => Yii::t('strings','EyeDraw (left)'),
+			'image_string_right' => Yii::t('strings','EyeDraw (right)')
 		);
 	}
 

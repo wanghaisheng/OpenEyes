@@ -73,10 +73,10 @@ class ElementIntraocularPressure extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'right_iop' => 'Right Eye',
-			'left_iop' => 'Left Eye',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'right_iop' => Yii::t('strings','Right Eye'),
+			'left_iop' => Yii::t('strings','Left Eye'),
 		);
 	}
 

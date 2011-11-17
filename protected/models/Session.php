@@ -91,13 +91,13 @@ class Session extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'sequence_id' => 'Sequence',
-			'date' => 'Date',
-			'start_time' => 'Start Time',
-			'end_time' => 'End Time',
-			'comments' => 'Comments',
-			'status' => 'Status'
+			'id' => Yii::t('strings','ID'),
+			'sequence_id' => Yii::t('strings','Sequence'),
+			'date' => Yii::t('strings','Date'),
+			'start_time' => Yii::t('strings','Start Time'),
+			'end_time' => Yii::t('strings','End Time'),
+			'comments' => Yii::t('strings','Comments'),
+			'status' => Yii::t('strings','Status')
 		);
 	}
 
@@ -169,7 +169,7 @@ class Session extends CActiveRecord
 		if (!empty($sequence->sequenceFirmAssignment)) {
 			$name = $sequence->sequenceFirmAssignment->firm->name;
 		} else {
-			$name = 'None';
+			$name = Yii::t('strings','None');
 		}
 
 		return $name;
@@ -190,8 +190,8 @@ class Session extends CActiveRecord
 	public function getStatusOptions()
 	{
 		return array(
-			self::STATUS_AVAILABLE => 'Available',
-			self::STATUS_UNAVAILABLE => 'Unavailable'
+			self::STATUS_AVAILABLE => Yii::t('strings','Available'),
+			self::STATUS_UNAVAILABLE => Yii::t('strings','Unavailable')
 		);
 	}
 
@@ -199,10 +199,10 @@ class Session extends CActiveRecord
 	{
 		switch($this->status) {
 			case self::STATUS_UNAVAILABLE:
-				$text = 'Unavailable';
+				$text = Yii::t('strings','Unavailable');
 				break;
 			default:
-				$text = 'Available';
+				$text = Yii::t('strings','Available');
 				break;
 		}
 

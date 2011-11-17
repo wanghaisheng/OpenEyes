@@ -85,12 +85,12 @@ class LetterTemplate extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
-			'phrase' => 'Phrase',
-			'specialty_id' => 'Specialty',
-			'send_to' => 'To',
-			'cc' => 'Cc',
+			'id' => Yii::t('strings','ID'),
+			'name' => Yii::t('strings','Name'),
+			'phrase' => Yii::t('strings','Phrase'),
+			'specialty_id' => Yii::t('strings','Specialty'),
+			'send_to' => Yii::t('strings','To'),
+			'cc' => Yii::t('strings','Cc'),
 		);
 	}
 

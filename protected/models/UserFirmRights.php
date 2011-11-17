@@ -78,9 +78,9 @@ class UserFirmRights extends MultiActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'user_id' => 'User',
-			'firm_id' => 'Firm',
+			'id' => Yii::t('strings','ID'),
+			'user_id' => Yii::t('strings','User'),
+			'firm_id' => Yii::t('strings','Firm'),
 		);
 	}
 

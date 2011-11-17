@@ -85,15 +85,15 @@ class CancelledBooking extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'element_operation_id' => 'Element Operation',
-			'date' => 'Date',
-			'start_time' => 'Start Time',
-			'end_time' => 'End Time',
-			'theatre_id' => 'Theatre',
-			'cancelled_date' => 'Cancelled Date',
-			'user_id' => 'User',
-			'cancelled_reason_id' => 'Cancelled Reason',
+			'id' => Yii::t('strings','ID'),
+			'element_operation_id' => Yii::t('strings','Element Operation'),
+			'date' => Yii::t('strings','Date'),
+			'start_time' => Yii::t('strings','Start Time'),
+			'end_time' => Yii::t('strings','End Time'),
+			'theatre_id' => Yii::t('strings','Theatre'),
+			'cancelled_date' => Yii::t('strings','Cancelled Date'),
+			'user_id' => Yii::t('strings','User'),
+			'cancelled_reason_id' => Yii::t('strings','Cancelled Reason'),
 		);
 	}
 

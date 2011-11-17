@@ -82,11 +82,11 @@ class Event extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'episode_id' => 'Episode',
-			'user_id' => 'User',
-			'event_type_id' => 'Event Type',
-			'datetime' => 'Datetime',
+			'id' => Yii::t('strings','ID'),
+			'episode_id' => Yii::t('strings','Episode'),
+			'user_id' => Yii::t('strings','User'),
+			'event_type_id' => Yii::t('strings','Event Type'),
+			'datetime' => Yii::t('strings','Datetime'),
 		);
 	}
 

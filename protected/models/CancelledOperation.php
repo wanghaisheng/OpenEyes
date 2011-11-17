@@ -81,10 +81,10 @@ class CancelledOperation extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'element_operation_id' => 'Element Operation',
-			'cancelled_date' => 'Cancelled Date',
-			'user_id' => 'User',
-			'cancelled_reason_id' => 'Cancelled Reason',
+			'element_operation_id' => Yii::t('strings','Element Operation'),
+			'cancelled_date' => Yii::t('strings','Cancelled Date'),
+			'user_id' => Yii::t('strings','User'),
+			'cancelled_reason_id' => Yii::t('strings','Cancelled Reason'),
 		);
 	}
 

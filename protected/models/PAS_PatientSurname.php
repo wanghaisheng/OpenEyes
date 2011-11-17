@@ -102,17 +102,17 @@ class PAS_PatientSurname extends MultiActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'RM_PATIENT_NO' => 'Rm Patient No',
-			'SURNAME_TYPE' => 'Surname Type',
-			'SURNAME_ID' => 'Surname',
-			'NAME1' => 'Name1',
-			'NAME2' => 'Name2',
-			'TITLE' => 'Title',
-			'SURNAME_ID_SOUNDEX' => 'Surname Id Soundex',
-			'NAME1_SOUNDEX' => 'Name1 Soundex',
-			'NAME2_SOUNDEX' => 'Name2 Soundex',
-			'HDDR_GROUP' => 'Hddr Group',
-			'NAME3' => 'Name3',
+			'RM_PATIENT_NO' => Yii::t('strings','Rm Patient No'),
+			'SURNAME_TYPE' => Yii::t('strings','Surname Type'),
+			'SURNAME_ID' => Yii::t('strings','Surname'),
+			'NAME1' => Yii::t('strings','Name1'),
+			'NAME2' => Yii::t('strings','Name2'),
+			'TITLE' => Yii::t('strings','Title'),
+			'SURNAME_ID_SOUNDEX' => Yii::t('strings','Surname Id Soundex'),
+			'NAME1_SOUNDEX' => Yii::t('strings','Name1 Soundex'),
+			'NAME2_SOUNDEX' => Yii::t('strings','Name2 Soundex'),
+			'HDDR_GROUP' => Yii::t('strings','Hddr Group'),
+			'NAME3' => Yii::t('strings','Name3'),
 		);
 	}
 

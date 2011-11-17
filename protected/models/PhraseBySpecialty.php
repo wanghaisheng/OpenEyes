@@ -87,12 +87,12 @@ class PhraseBySpecialty extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'phrase' => 'Phrase',
-			'section_id' => 'Section',
-			'display_order' => 'Display Order',
-			'specialty_id' => 'Specialty',
-			'phrase_name_id' => 'Name',
+			'id' => Yii::t('strings','ID'),
+			'phrase' => Yii::t('strings','Phrase'),
+			'section_id' => Yii::t('strings','Section'),
+			'display_order' => Yii::t('strings','Display Order'),
+			'specialty_id' => Yii::t('strings','Specialty'),
+			'phrase_name_id' => Yii::t('strings','Name'),
 		);
 	}
 
@@ -106,7 +106,7 @@ class PhraseBySpecialty extends BaseActiveRecord
 		// this phrase name id must not exist at this level (not select * from phrase_by_firm where section_id=x and firm_id=y)
 		if (PhraseBySpecialty::model()->findByAttributes(array('section_id' => $this->section_id, 'specialty_id' => $this->specialty_id, 'phrase_name_id' => $this->phrase_name_id))) {
 			if (!$this->id) {
-				$this->addError($attribute,'That phrase name has already been overridden for this section (' . $this->section_id . ') and specialty (' . $this->specialty_id . ')');
+				$this->addError($attribute,Yii::t('strings','That phrase name has already been overridden for this section').' (' . $this->section_id . ') '.Yii::t('strings','and specialty').' (' . $this->specialty_id . ')');
 			}
 		}
 	}

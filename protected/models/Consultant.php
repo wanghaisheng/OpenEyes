@@ -78,10 +78,10 @@ class Consultant extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'obj_prof' => 'Obj Prof',
-			'nat_id' => 'Nat',
-			'contact_id' => 'Contact',
+			'id' => Yii::t('strings','ID'),
+			'obj_prof' => Yii::t('strings','Obj Prof'),
+			'nat_id' => Yii::t('strings','Nat'),
+			'contact_id' => Yii::t('strings','Contact'),
 		);
 	}
 

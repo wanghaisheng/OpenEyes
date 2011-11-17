@@ -81,14 +81,14 @@ class Address extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'address1' => 'Address1',
-			'address2' => 'Address2',
-			'city' => 'City',
-			'postcode' => 'Postcode',
-			'county' => 'County',
-			'country_id' => 'Country',
-			'email' => 'Email',
+			'id' => Yii::t('strings','ID'),
+			'address1' => Yii::t('strings','Address1'),
+			'address2' => Yii::t('strings','Address2'),
+			'city' => Yii::t('strings','City'),
+			'postcode' => Yii::t('strings','Postcode'),
+			'county' => Yii::t('strings','County'),
+			'country_id' => Yii::t('strings','Country'),
+			'email' => Yii::t('strings','Email'),
 		);
 	}
 

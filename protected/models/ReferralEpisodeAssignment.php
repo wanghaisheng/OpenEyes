@@ -72,9 +72,9 @@ class ReferralEpisodeAssignment extends MultiActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'referral_id' => 'Referral',
-			'episode_id' => 'Episode',
+			'id' => Yii::t('strings','ID'),
+			'referral_id' => Yii::t('strings','Referral'),
+			'episode_id' => Yii::t('strings','Episode'),
 		);
 	}
 

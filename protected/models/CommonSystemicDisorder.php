@@ -75,8 +75,8 @@ class CommonSystemicDisorder extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'disorder_id' => 'Disorder',
+			'id' => Yii::t('strings','ID'),
+			'disorder_id' => Yii::t('strings','Disorder'),
 		);
 	}
 

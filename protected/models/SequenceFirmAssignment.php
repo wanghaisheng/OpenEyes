@@ -77,9 +77,9 @@ class SequenceFirmAssignment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'sequence_id' => 'Sequence',
-			'firm_id' => 'Firm',
+			'id' => Yii::t('strings','ID'),
+			'sequence_id' => Yii::t('strings','Sequence'),
+			'firm_id' => Yii::t('strings','Firm'),
 		);
 	}
 

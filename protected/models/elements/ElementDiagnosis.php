@@ -56,8 +56,8 @@ class ElementDiagnosis extends BaseElement
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('eye', 'required', 'message' => 'Please select an eye option'),
-			array('disorder_id', 'required', 'message' => 'Please enter a valid disorder'),
+			array('eye', 'required', 'message' => Yii::t('strings','Please select an eye option')),
+			array('disorder_id', 'required', 'message' => Yii::t('strings','Please enter a valid disorder')),
 			array('eye', 'numerical', 'integerOnly'=>true),
 			array('disorder_id', 'length', 'max'=>10),
 			// The following rule is used by search().
@@ -85,10 +85,10 @@ class ElementDiagnosis extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'disorder_id' => 'Disorder',
-			'eye' => 'Eye',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'disorder_id' => Yii::t('strings','Disorder'),
+			'eye' => Yii::t('strings','Eye'),
 		);
 	}
 
@@ -120,25 +120,25 @@ class ElementDiagnosis extends BaseElement
 	public function getEyeOptions()
 	{
 		return array(
-			self::EYE_RIGHT => 'Right',
-			self::EYE_LEFT => 'Left',
-			self::EYE_BOTH => 'Both',
+			self::EYE_RIGHT => Yii::t('strings','Right'),
+			self::EYE_LEFT => Yii::t('strings','Left'),
+			self::EYE_BOTH => Yii::t('strings','Both'),
 		);
 	}
 
 	public function getEyeText() {
 		switch ($this->eye) {
 			case self::EYE_LEFT:
-				$text = 'Left';
+				$text = Yii::t('strings','Left');
 				break;
 			case self::EYE_RIGHT:
-				$text = 'Right';
+				$text = Yii::t('strings','Right');
 				break;
 			case self::EYE_BOTH:
-				$text = 'Both';
+				$text = Yii::t('strings','Both');
 				break;
 			default:
-				$text = 'Unknown';
+				$text = Yii::t('strings','Unknown');
 				break;
 		}
 

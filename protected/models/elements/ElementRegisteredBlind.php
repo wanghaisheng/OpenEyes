@@ -75,9 +75,9 @@ class ElementRegisteredBlind extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'status' => 'Status',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'status' => Yii::t('strings','Status'),
 		);
 	}
 
@@ -108,9 +108,9 @@ class ElementRegisteredBlind extends BaseElement
 	public function getSelectOptions()
 	{
 		return array(
-			self::NOT_REGISTERED => 'Not Registered',
-			self::SIGHT_IMPAIRED => 'Sight Impaired',
-			self::SEVERELY_SIGHT_IMPAIRED => 'Severely Sight Impaired'
+			self::NOT_REGISTERED => Yii::t('strings','Not Registered'),
+			self::SIGHT_IMPAIRED => Yii::t('strings','Sight Impaired'),
+			self::SEVERELY_SIGHT_IMPAIRED => Yii::t('strings','Severely Sight Impaired')
 		);
 	}
 
@@ -124,13 +124,13 @@ class ElementRegisteredBlind extends BaseElement
 		$text = '';
 		switch ($this->status) {
 			case self::NOT_REGISTERED:
-				$text = 'Not Registered';
+				$text = Yii::t('strings','Not Registered');
 				break;
 			case self::SIGHT_IMPAIRED:
-				$text = 'Sight Impaired';
+				$text = Yii::t('strings','Sight Impaired');
 				break;
 			case self::SEVERELY_SIGHT_IMPAIRED:
-				$text = 'Severely Sight Impared';
+				$text = Yii::t('strings','Severely Sight Impared');
 				break;
 		}
 		return $text;

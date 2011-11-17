@@ -85,10 +85,10 @@ class Ward extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'site_id' => 'Site',
-			'name' => 'Name',
-			'restriction' => 'Restriction',
+			'id' => Yii::t('strings','ID'),
+			'site_id' => Yii::t('strings','Site'),
+			'name' => Yii::t('strings','Name'),
+			'restriction' => Yii::t('strings','Restriction'),
 		);
 	}
 

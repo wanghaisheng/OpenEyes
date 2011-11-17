@@ -76,9 +76,9 @@ class Section extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
-			'section_type_id' => 'Section type',
+			'id' => Yii::t('strings','ID'),
+			'name' => Yii::t('strings','Name'),
+			'section_type_id' => Yii::t('strings','Section type'),
 		);
 	}
 

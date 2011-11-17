@@ -66,9 +66,9 @@ class ProcedureSpecialtySubsectionAssignment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'proc_id' => 'Proc',
-			'specialty_subsection_id' => 'Specialty Subsection',
+			'id' => Yii::t('strings','ID'),
+			'proc_id' => Yii::t('strings','Proc'),
+			'specialty_subsection_id' => Yii::t('strings','Specialty Subsection'),
 		);
 	}
 

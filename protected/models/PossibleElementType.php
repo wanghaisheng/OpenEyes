@@ -85,11 +85,11 @@ class PossibleElementType extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_type_id' => 'Event Type',
-			'element_type_id' => 'Element Type',
-			'view_number' => 'View Number',
-			'display_order' => 'Display order',
+			'id' => Yii::t('strings','ID'),
+			'event_type_id' => Yii::t('strings','Event Type'),
+			'element_type_id' => Yii::t('strings','Element Type'),
+			'view_number' => Yii::t('strings','View Number'),
+			'display_order' => Yii::t('strings','Display order'),
 		);
 	}
 

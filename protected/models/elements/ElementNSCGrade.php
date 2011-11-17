@@ -75,10 +75,10 @@ class ElementNSCGrade extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'retinopathy_grade_id' => 'Retinopathy Grade',
-			'maculopathy_grade_id' => 'Maculopathy Grade',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'retinopathy_grade_id' => Yii::t('strings','Retinopathy Grade'),
+			'maculopathy_grade_id' => Yii::t('strings','Maculopathy Grade'),
 		);
 	}
 

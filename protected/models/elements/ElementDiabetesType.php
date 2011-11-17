@@ -71,9 +71,9 @@ class ElementDiabetesType extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'type' => 'Type',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'type' => Yii::t('strings','Type'),
 		);
 	}
 

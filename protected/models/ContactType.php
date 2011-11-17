@@ -70,9 +70,9 @@ class ContactType extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
-			'letter_template_only' => 'Letter Template Only',
+			'id' => Yii::t('strings','ID'),
+			'name' => Yii::t('strings','Name'),
+			'letter_template_only' => Yii::t('strings','Letter Template Only'),
 		);
 	}
 

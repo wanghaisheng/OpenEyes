@@ -78,7 +78,7 @@ class PhraseByFirm extends BaseActiveRecord
 		// this phrase name id must not exist at this level (not select * from phrase_by_firm where section_id=x and firm_id=y)
 		if (PhraseByFirm::model()->findByAttributes(array('section_id' => $this->section_id, 'firm_id' => $this->firm_id, 'phrase_name_id' => $this->phrase_name_id))) {
 			if (!$this->id) {
-				$this->addError($attribute,'That phrase name has already been overridden for this section (' . $this->section_id . ') and firm (' . $this->firm_id . ')');
+				$this->addError($attribute,Yii::t('strings','That phrase name has already been overridden for this section').' (' . $this->section_id . ') '.Yii::t('strings','and firm').' (' . $this->firm_id . ')');
 			}
 		}
 	}
@@ -103,13 +103,13 @@ class PhraseByFirm extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'phrase' => 'Phrase',
-			'section_id' => 'Section',
-			'display_order' => 'Display Order',
-			'firm_id' => 'Firm',
-			'phrase_name_id' => 'Name',
-			'section_by_firm_id' => 'Section'
+			'id' => Yii::t('strings','ID'),
+			'phrase' => Yii::t('strings','Phrase'),
+			'section_id' => Yii::t('strings','Section'),
+			'display_order' => Yii::t('strings','Display Order'),
+			'firm_id' => Yii::t('strings','Firm'),
+			'phrase_name_id' => Yii::t('strings','Name'),
+			'section_by_firm_id' => Yii::t('strings','Section')
 		);
 	}
 

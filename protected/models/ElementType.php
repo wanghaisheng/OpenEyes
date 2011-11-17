@@ -76,9 +76,9 @@ class ElementType extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
-			'class_name' => 'Class Name',
+			'id' => Yii::t('strings','ID'),
+			'name' => Yii::t('strings','Name'),
+			'class_name' => Yii::t('strings','Class Name'),
 		);
 	}
 

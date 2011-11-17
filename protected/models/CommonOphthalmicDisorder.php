@@ -78,9 +78,9 @@ class CommonOphthalmicDisorder extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'disorder_id' => 'Disorder',
-			'specialty_id' => 'Specialty',
+			'id' => Yii::t('strings','ID'),
+			'disorder_id' => Yii::t('strings','Disorder'),
+			'specialty_id' => Yii::t('strings','Specialty'),
 		);
 	}
 

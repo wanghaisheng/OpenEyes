@@ -108,13 +108,13 @@ class Sequence extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'theatre_id' => 'Theatre',
-			'start_date' => 'Start Date',
-			'start_time' => 'Start Time (HH:MM or HH:MM:SS)',
-			'end_time' => 'End Time (HH:MM or HH:MM:SS)',
-			'end_date' => 'End Date',
-			'repeat_interval' => 'Repeat',
+			'id' => Yii::t('strings','ID'),
+			'theatre_id' => Yii::t('strings','Theatre'),
+			'start_date' => Yii::t('strings','Start Date'),
+			'start_time' => Yii::t('strings','Start Time (HH:MM or HH:MM:SS)'),
+			'end_time' => Yii::t('strings','End Time (HH:MM or HH:MM:SS)'),
+			'end_date' => Yii::t('strings','End Date'),
+			'repeat_interval' => Yii::t('strings','Repeat'),
 		);
 	}
 
@@ -178,38 +178,38 @@ class Sequence extends CActiveRecord
 	public function getFrequencyOptions()
 	{
 		return array(
-			self::FREQUENCY_1WEEK => 'Every week',
-			self::FREQUENCY_2WEEKS => 'Every 2 weeks',
-			self::FREQUENCY_3WEEKS => 'Every 3 weeks',
-			self::FREQUENCY_4WEEKS => 'Every 4 weeks',
-			self::FREQUENCY_ONCE => 'One time',
+			self::FREQUENCY_1WEEK => Yii::t('strings','Every week'),
+			self::FREQUENCY_2WEEKS => Yii::t('strings','Every 2 weeks'),
+			self::FREQUENCY_3WEEKS => Yii::t('strings','Every 3 weeks'),
+			self::FREQUENCY_4WEEKS => Yii::t('strings','Every 4 weeks'),
+			self::FREQUENCY_ONCE => Yii::t('strings','One time'),
 		);
 	}
 
 	public function getWeekSelectionOptions()
 	{
 		return array(
-			self::SELECT_1STWEEK => '1st in month',
-			self::SELECT_2NDWEEK => '2nd in month',
-			self::SELECT_3RDWEEK => '3rd in month',
-			self::SELECT_4THWEEK => '4th in month',
-			self::SELECT_5THWEEK => '5th in month',
+			self::SELECT_1STWEEK => Yii::t('strings','1st in month'),
+			self::SELECT_2NDWEEK => Yii::t('strings','2nd in month'),
+			self::SELECT_3RDWEEK => Yii::t('strings','3rd in month'),
+			self::SELECT_4THWEEK => Yii::t('strings','4th in month'),
+			self::SELECT_5THWEEK => Yii::t('strings','5th in month'),
 		);
 	}
 
 	public function getFrequencyAndWeekOptions()
 	{
 		return array(
-			self::FREQUENCY_1WEEK => 'Every week',
-			self::FREQUENCY_2WEEKS => 'Every 2 weeks',
-			self::FREQUENCY_3WEEKS => 'Every 3 weeks',
-			self::FREQUENCY_4WEEKS => 'Every 4 weeks',
-			self::FREQUENCY_ONCE => 'One time',
-			(self::FREQUENCY_4WEEKS + self::SELECT_1STWEEK) => '1st in month',
-			(self::FREQUENCY_4WEEKS + self::SELECT_2NDWEEK) => '2nd in month',
-			(self::FREQUENCY_4WEEKS + self::SELECT_3RDWEEK) => '3rd in month',
-			(self::FREQUENCY_4WEEKS + self::SELECT_4THWEEK) => '4th in month',
-			(self::FREQUENCY_4WEEKS + self::SELECT_5THWEEK) => '5th in month',
+			self::FREQUENCY_1WEEK => Yii::t('strings','Every week'),
+			self::FREQUENCY_2WEEKS => Yii::t('strings','Every 2 weeks'),
+			self::FREQUENCY_3WEEKS => Yii::t('strings','Every 3 weeks'),
+			self::FREQUENCY_4WEEKS => Yii::t('strings','Every 4 weeks'),
+			self::FREQUENCY_ONCE => Yii::t('strings','One time'),
+			(self::FREQUENCY_4WEEKS + self::SELECT_1STWEEK) => Yii::t('strings','1st in month'),
+			(self::FREQUENCY_4WEEKS + self::SELECT_2NDWEEK) => Yii::t('strings','2nd in month'),
+			(self::FREQUENCY_4WEEKS + self::SELECT_3RDWEEK) => Yii::t('strings','3rd in month'),
+			(self::FREQUENCY_4WEEKS + self::SELECT_4THWEEK) => Yii::t('strings','4th in month'),
+			(self::FREQUENCY_4WEEKS + self::SELECT_5THWEEK) => Yii::t('strings','5th in month'),
 		);
 	}
 
@@ -227,13 +227,13 @@ class Sequence extends CActiveRecord
 	public function getWeekdayOptions()
 	{
 		return array(
-			1 => 'Monday',
-			2 => 'Tuesday',
-			3 => 'Wednesday',
-			4 => 'Thursday',
-			5 => 'Friday',
-			6 => 'Saturday',
-			7 => 'Sunday',
+			1 => Yii::t('strings','Monday'),
+			2 => Yii::t('strings','Tuesday'),
+			3 => Yii::t('strings','Wednesday'),
+			4 => Yii::t('strings','Thursday'),
+			5 => Yii::t('strings','Friday'),
+			6 => Yii::t('strings','Saturday'),
+			7 => Yii::t('strings','Sunday'),
 		);
 	}
 
@@ -269,7 +269,7 @@ class Sequence extends CActiveRecord
 			$end = strtotime($this->end_date);
 
 			if ($end < $start) {
-				$this->addError('end_date', 'End date must be after the start date.');
+				$this->addError('end_date', Yii::t('strings','End date must be after the start date').'.');
 			}
 		}
 	}
@@ -280,14 +280,14 @@ class Sequence extends CActiveRecord
 		$end = strtotime($this->end_time);
 
 		if ($end <= $start) {
-			$this->addError('end_time', 'End time must be after the start time.');
+			$this->addError('end_time', Yii::t('strings','End time must be after the start time').'.');
 		}
 	}
 
 	protected function beforeValidate()
 	{
 		$startTimestamp = strtotime($this->start_date);
-		$endTimestamp = !empty($this->end_date) ? strtotime($this->end_date) : strtotime('+100 years');
+		$endTimestamp = !empty($this->end_date) ? strtotime($this->end_date) : strtotime('+100 '.Yii::t('strings','years'));
 
 		$startDate = date('Y-m-d', $startTimestamp);
 		$endDate = date('Y-m-d', $endTimestamp);
@@ -295,7 +295,7 @@ class Sequence extends CActiveRecord
 		$endTime = date('H:i:s', strtotime($this->end_time));
 
 		$weekday = date('N', $startTimestamp);
-		$endTimeLimit = strtotime('+12 weeks', $startTimestamp);
+		$endTimeLimit = strtotime('+12 '.Yii::t('strings','weeks'), $startTimestamp);
 
 		if (empty($this->week_selection)) {
 			$interval = $this->getFrequencyInteger($this->repeat_interval, $endTimestamp);
@@ -315,13 +315,13 @@ class Sequence extends CActiveRecord
 		$valid = true;
 		if (!empty($conflicts)) {
 			$valid = false;
-			$this->addError('start_date, end_date', 'There is a conflict with an existing sequence.');
+			$this->addError('start_date, end_date', Yii::t('strings','There is a conflict with an existing sequence').'.');
 		}
 
 		// check for one-off sequence and empty end date
 		if (!empty($this->start_date) && empty($this->week_selection) && $this->repeat_interval == self::FREQUENCY_ONCE && empty($this->end_date)) {
 			$valid = false;
-			$this->addError('end_date', 'End date must be set if repeat is set to one time.');
+			$this->addError('end_date', Yii::t('strings','End date must be set if repeat is set to one time').'.');
 		}
 
 		$valid = $valid && parent::beforeValidate();
@@ -438,7 +438,7 @@ class Sequence extends CActiveRecord
 		if (!empty($this->sequenceFirmAssignment)) {
 			return $this->sequenceFirmAssignment->firm->name . ' (' . $this->sequenceFirmAssignment->firm->serviceSpecialtyAssignment->specialty->name . ')';
 		} else {
-			return 'None';
+			return Yii::t('strings','None');
 		}
 	}
 
@@ -446,22 +446,22 @@ class Sequence extends CActiveRecord
 	{
 		switch($this->repeat_interval) {
 			case self::FREQUENCY_ONCE:
-				$text = 'Once';
+				$text = Yii::t('strings','Once');
 				break;
 			case self::FREQUENCY_1WEEK:
-				$text = 'Every week';
+				$text = Yii::t('strings','Every week');
 				break;
 			case self::FREQUENCY_2WEEKS:
-				$text = 'Every 2 weeks';
+				$text = Yii::t('strings','Every 2 weeks');
 				break;
 			case self::FREQUENCY_3WEEKS:
-				$text = 'Every 3 weeks';
+				$text = Yii::t('strings','Every 3 weeks');
 				break;
 			case self::FREQUENCY_4WEEKS:
-				$text = 'Every 4 weeks';
+				$text = Yii::t('strings','Every 4 weeks');
 				break;
 			default:
-				$text = 'Unknown';
+				$text = Yii::t('strings','Unknown');
 				break;
 		}
 

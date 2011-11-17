@@ -73,15 +73,15 @@ class ElementLetterOut extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'from_address' => 'From',
-			'date' => 'Date',
-			'dear' => 'Dear...',
-			're' => 'RE',
-			'value' => 'Text',
-			'to_address' => 'To',
-			'cc' => 'cc'
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'from_address' => Yii::t('strings','From'),
+			'date' => Yii::t('strings','Date'),
+			'dear' => Yii::t('strings','Dear...'),
+			're' => Yii::t('strings','RE'),
+			'value' => Yii::t('strings','Text'),
+			'to_address' => Yii::t('strings','To'),
+			Yii::t('strings','cc') => Yii::t('strings','cc')
 		);
 	}
 

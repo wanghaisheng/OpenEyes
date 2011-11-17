@@ -84,12 +84,12 @@ class SiteElementType extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'possible_element_type_id' => 'Possible element type',
-			'specialty_id' => 'Specialty',
-			'first_in_episode' => 'First In Episode',
-			'view_number' => 'View number',
-			'required' => 'Required'
+			'id' => Yii::t('strings','ID'),
+			'possible_element_type_id' => Yii::t('strings','Possible element type'),
+			'specialty_id' => Yii::t('strings','Specialty'),
+			'first_in_episode' => Yii::t('strings','First In Episode'),
+			'view_number' => Yii::t('strings','View number'),
+			'required' => Yii::t('strings','Required')
 		);
 	}
 

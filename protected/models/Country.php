@@ -72,9 +72,9 @@ class Country extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'code' => 'Code',
-			'name' => 'Name',
+			'id' => Yii::t('strings','ID'),
+			'code' => Yii::t('strings','Code'),
+			'name' => Yii::t('strings','Name'),
 		);
 	}
 

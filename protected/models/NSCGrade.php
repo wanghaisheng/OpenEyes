@@ -82,11 +82,11 @@ class NSCGrade extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
-			'type' => 'Type',
-			'medical_phrase' => 'Medical Phrase',
-			'layman_phrase' => 'Layman Phrase',
+			'id' => Yii::t('strings','ID'),
+			'name' => Yii::t('strings','Name'),
+			'type' => Yii::t('strings','Type'),
+			'medical_phrase' => Yii::t('strings','Medical Phrase'),
+			'layman_phrase' => Yii::t('strings','Layman Phrase'),
 		);
 	}
 

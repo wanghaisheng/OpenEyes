@@ -66,9 +66,9 @@ class TheatreWardAssignment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'theatre_id' => 'Theatre',
-			'ward_id' => 'Ward',
+			'id' => Yii::t('strings','ID'),
+			'theatre_id' => Yii::t('strings','Theatre'),
+			'ward_id' => Yii::t('strings','Ward'),
 		);
 	}
 

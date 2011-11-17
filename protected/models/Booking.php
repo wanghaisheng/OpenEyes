@@ -85,11 +85,11 @@ class Booking extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'element_operation_id' => 'Element Operation',
-			'session_id' => 'Session',
-			'display_order' => 'Display Order',
-			'ward_id' => 'Ward',
+			'id' => Yii::t('strings','ID'),
+			'element_operation_id' => Yii::t('strings','Element Operation'),
+			'session_id' => Yii::t('strings','Session'),
+			'display_order' => Yii::t('strings','Display Order'),
+			'ward_id' => Yii::t('strings','Ward'),
 		);
 	}
 

@@ -83,11 +83,11 @@ class Episode extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'patient_id' => 'Patient',
-			'firm_id' => 'Firm',
-			'start_date' => 'Start Date',
-			'end_date' => 'End Date',
+			'id' => Yii::t('strings','ID'),
+			'patient_id' => Yii::t('strings','Patient'),
+			'firm_id' => Yii::t('strings','Firm'),
+			'start_date' => Yii::t('strings','Start Date'),
+			'end_date' => Yii::t('strings','End Date'),
 		);
 	}
 

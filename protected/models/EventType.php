@@ -78,8 +78,8 @@ class EventType extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
+			'id' => Yii::t('strings','ID'),
+			'name' => Yii::t('strings','Name'),
 		);
 	}
 

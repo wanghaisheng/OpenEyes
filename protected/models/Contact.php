@@ -78,8 +78,8 @@ class Contact extends BaseActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'nick_name' => 'Nick Name',
+			'id' => Yii::t('strings','ID'),
+			'nick_name' => Yii::t('strings','Nick Name'),
 		);
 	}
 

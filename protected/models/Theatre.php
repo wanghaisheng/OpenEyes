@@ -79,9 +79,9 @@ class Theatre extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
-			'site_id' => 'Site',
+			'id' => Yii::t('strings','ID'),
+			'name' => Yii::t('strings','Name'),
+			'site_id' => Yii::t('strings','Site'),
 		);
 	}
 
@@ -108,10 +108,10 @@ class Theatre extends CActiveRecord
 	public static function getDateFilterOptions()
 	{
 		return array(
-			'today' => 'Today',
-			'week' => 'This week',
-			'month' => 'This month',
-			'custom' => 'or from'
+			'today' => Yii::t('strings','Today'),
+			'week' => Yii::t('strings','This week'),
+			'month' => Yii::t('strings','This month'),
+			'custom' => Yii::t('strings','or from')
 		);
 	}
 

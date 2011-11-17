@@ -81,10 +81,10 @@ class CancellationReason extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'text' => 'Text',
-			'parent_id' => 'Parent',
-			'list_no' => 'List No',
+			'id' => Yii::t('strings','ID'),
+			'text' => Yii::t('strings','Text'),
+			'parent_id' => Yii::t('strings','Parent'),
+			'list_no' => Yii::t('strings','List No'),
 		);
 	}
 

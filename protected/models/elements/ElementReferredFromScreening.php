@@ -71,9 +71,9 @@ class ElementReferredFromScreening extends BaseElement
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'event_id' => 'Event',
-			'referred' => 'Referred from screening?',
+			'id' => Yii::t('strings','ID'),
+			'event_id' => Yii::t('strings','Event'),
+			'referred' => Yii::t('strings','Referred from screening').'?',
 		);
 	}
 
