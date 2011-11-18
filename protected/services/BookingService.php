@@ -25,7 +25,7 @@ class BookingService
 		if ($firmId !== null) {
 			$firm = Firm::model()->findByPk($firmId);
 			if (empty($firm)) {
-				throw new Exception('Firm id is invalid.');
+				throw new Exception(Yii::t('strings','Firm id is invalid').'.');
 			}
 		}
 		if (substr($minDate,0,8) == substr($monthStart,0,8)) {
@@ -87,7 +87,7 @@ class BookingService
 		} else {
 			$firm = Firm::model()->findByPk($firmId);
 			if (empty($firm)) {
-				throw new Exception('Firm id is invalid.');
+				throw new Exception(Yii::t('strings','Firm id is invalid').'.');
 			}
 			$firmSql = "f.firm_id = $firmId";
 		}
@@ -196,7 +196,7 @@ class BookingService
 	) {
 		if (empty($startDate) || empty($endDate) ||
 			(strtotime($endDate) < strtotime($startDate))) {
-			throw new Exception('Invalid start and end dates.');
+			throw new Exception(Yii::t('strings','Invalid start and end dates').'.');
 		}
 
 		$whereSql = 's.date BETWEEN :start AND :end';

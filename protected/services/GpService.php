@@ -8,7 +8,7 @@ OpenEyes is free software: you can redistribute it and/or modify it under the te
 OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
 _____________________________________________________________________________
-http://www.openeyes.org.uk   info@openeyes.org.uk
+http://www.openeyes.org.uk	 info@openeyes.org.uk
 --
 */
 
@@ -24,7 +24,7 @@ class GpService
 		$contactType = ContactType::model()->find("name = 'GP'");
 
 		if (!isset($contactType)) {
-			exit("Unable to find GP contact type.\n");
+			exit(Yii::t('strings',"Unable to find GP contact type").".\n");
 		}
 
 // For testing - getting all the GPs is very slow.
@@ -49,15 +49,15 @@ class GpService
 
 							$this->populateGp($gp, $pasGp);
 						} else {
-							echo "No address for gp contact " . $contact->id . "\n";
+							echo Yii::t('strings',"No address for gp contact")." " . $contact->id . "\n";
 						}
 					} else {
-						echo "Unable to update existing gp contact " . $pasGp->OBJ_PROF . "\n";
+						echo Yii::t('strings',"Unable to update existing gp contact")." " . $pasGp->OBJ_PROF . "\n";
 					}
 				} else {
-                                        $address = new Address;
+					$address = new Address;
 
-                                        $this->populateAddress($address, $pasGp);
+					$this->populateAddress($address, $pasGp);
 			
 					$contact = new Contact;
 
@@ -94,7 +94,7 @@ class GpService
 		$address->country_id = 1;
 
 		if (!$address->save()) {
-			exit('failed to save address for ' . $pasGp->OBJ_PROF);
+			exit(Yii::t('strings','failed to save address for').' ' . $pasGp->OBJ_PROF);
 		}
 	}
 

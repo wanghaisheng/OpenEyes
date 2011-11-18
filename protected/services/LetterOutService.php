@@ -25,7 +25,7 @@ class LetterOutService
 		if (isset(Yii::app()->session['patient_id'])) {
 			$this->patient = Patient::model()->findByPk(Yii::app()->session['patient_id']);
 		} else {
-			throw new Exception('No patient id in session.');
+			throw new Exception(Yii::t('strings','No patient id in session').'.');
 		}
 	}
 
@@ -156,13 +156,13 @@ class LetterOutService
 		$name = PhraseName::model()->find('name = ?', array($phraseName));
 
 		if (!isset($name)) {
-			return 'NO NAME';
+			return Yii::t('strings','NO NAME');
 		}
 
 		$section = Section::model()->find('section_type_id = 1 AND name = ?', array($sectionName));
 
 		if (!isset($section)) {
-			return 'NO SECTION';
+			return Yii::t('strings','NO SECTION');
 		}
 
 		$phrase = PhraseByFirm::model()->find('firm_id = ? AND phrase_name_id = ? AND section_id = ?', array(
@@ -189,7 +189,7 @@ class LetterOutService
 			return $phrase->phrase;
 		}
 
-		return 'NO DATA';
+		return Yii::t('strings','NO DATA');
 	}
 
 	/**
@@ -311,7 +311,7 @@ class LetterOutService
 				'full_name' => $this->stripNewlines($this->patient->title . ' ' . $this->patient->first_name . ' ' . $this->patient->last_name),
 				'dear_name' => $this->stripNewlines($this->patient->title . ' ' . $this->patient->last_name),
 				'nickname' => $this->stripNewlines($this->patient->first_name . ' ' . $this->patient->last_name),
-				'identifier' => $this->stripNewlines($this->patient->first_name . ' ' . $this->patient->last_name . ' (Patient)')
+				'identifier' => $this->stripNewlines($this->patient->first_name . ' ' . $this->patient->last_name . ' ('.Yii::t('strings','Patient').')')
 			)
 		);
 
@@ -322,10 +322,10 @@ class LetterOutService
 
 			if (isset($contact->gp)) {
 				$key = 'gp_' . $contact->id;
-				$identifier .= ' (GP)';
+				$identifier .= ' ('.Yii::t('strings','GP').')';
 			} elseif (isset($contact->consultant)) {
 				$key = 'c_' . $contact->id;
-				$identifier .= ' (Consultant)';
+				$identifier .= ' ('.Yii::t('strings','Consultant').')';
 			} else {
 				$key = $contact->id;
 			}
@@ -350,32 +350,32 @@ class LetterOutService
 			$this->substitutions['age'] = $age;
 
 			if ($this->patient->gender == 'M') {
-				$this->substitutions['obj'] = 'him';
-				$this->substitutions['pos'] = 'his';
-				$this->substitutions['pro'] = 'he';
+				$this->substitutions['obj'] = Yii::t('strings','him');
+				$this->substitutions['pos'] = Yii::t('strings','his');
+				$this->substitutions['pro'] = Yii::t('strings','he');
 
 				if ($age < 16) {
-					$this->substitutions['sub'] = 'boy';
+					$this->substitutions['sub'] = Yii::t('strings','boy');
 				} else {
-					$this->substitutions['sub'] = 'man';
+					$this->substitutions['sub'] = Yii::t('strings','man');
 				}
 			} else {
-				$this->substitutions['obj'] = 'her';
-				$this->substitutions['pos'] = 'her';
-				$this->substitutions['pro'] = 'she';
+				$this->substitutions['obj'] = Yii::t('strings','her');
+				$this->substitutions['pos'] = Yii::t('strings','her');
+				$this->substitutions['pro'] = Yii::t('strings','she');
 
 				if ($age < 16) {
-					$this->substitutions['sub'] = 'girl';
+					$this->substitutions['sub'] = Yii::t('strings','girl');
 				} else {
-					$this->substitutions['sub'] = 'woman';
+					$this->substitutions['sub'] = Yii::t('strings','woman');
 				}
 			}
 
 			// Find most recent episode, if any
 			$episode = Episode::getCurrentEpisodeByFirm($this->patient->id, $this->firm);
 
-			$this->substitutions['epd'] = 'NO DATA';
-			$this->substitutions['eps'] = 'NO DATA';
+			$this->substitutions['epd'] = Yii::t('strings','NO DATA');
+			$this->substitutions['eps'] = Yii::t('strings','NO DATA');
 
 			if (isset($episode) && $episode) {
 				$diagnosis = $episode->getPrincipalDiagnosis();

@@ -68,7 +68,7 @@ class ClinicalService
 
 			// No need to validate as it has already been validated and the event id was just generated.
 			if (!$element->save(false)) {
-				throw new Exception('Unable to save element ' . get_class($element) . '.');
+				throw new Exception(Yii::t('strings','Unable to save element').' ' . get_class($element) . '.');
 			}
 		}
 
@@ -221,7 +221,7 @@ class ClinicalService
 			$episode->start_date = date("Y-m-d H:i:s");
 
 			if (!$episode->save()) {
-				throw new Exception('Unable to create create episode.');
+				throw new Exception(Yii::t('strings','Unable to create create episode').'.');
 			}
 		}
 
@@ -244,7 +244,7 @@ class ClinicalService
 		$event->event_type_id = $eventTypeId;
 		$event->datetime = date("Y-m-d H:i:s");
 		if (!$event->save()) {
-			throw new Exception('Unable to save event.');
+			throw new Exception(Yii::t('strings','Unable to save event').'.');
 		}
 
 		return $event;

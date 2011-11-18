@@ -23,7 +23,7 @@ class ReferralService
 	public function getNewReferrals()
 	{
                 if (!Yii::app()->params['use_pas']) {
-			throw new Exception('use_pas not set to true');
+			throw new Exception(Yii::t('strings','use_pas not set to true'));
                 }
 
                 $mid = Yii::app()->db->createCommand()
@@ -32,7 +32,7 @@ class ReferralService
                         ->queryRow();
 
                 if (empty($mid['mrn'])) {
-			throw new Exception('No MID in ReferralService.search');
+			throw new Exception(Yii::t('strings','No').' MID '.Yii::t('strings','in').' ReferralService.search');
                 }
 		
 		$results = PAS_Referral::model()->findAll('REFNO > ? AND REF_SPEC <> \'OP\'', array($mid['mrn']));
@@ -42,7 +42,7 @@ class ReferralService
 			$specialty = Specialty::model()->find('ref_spec = ?', array($pasReferral->REF_SPEC));
 
 			if (empty($specialty)) {
-				echo 'No specialty for ref_spec ' . $pasReferral->REF_SPEC . "\n";
+				echo Yii::t('strings','No specialty for').' ref_spec ' . $pasReferral->REF_SPEC . "\n";
 			} else {
 				$ssa = ServiceSpecialtyAssignment::model()->find('specialty_id = ?', array($specialty->id));
 				$referral = new Referral;
@@ -57,14 +57,14 @@ class ReferralService
 				}
 	
 				if ($referral->save()) {
-					echo 'Added referral refo ' . $referral->refno . "\n";
+					echo Yii::t('strings','Added').' referral refo ' . $referral->refno . "\n";
 				} else {
-					echo 'Unable to save referral refno ' . $referral->refno . "\n";
+					echo Yii::t('strings','Unable to save').' referral refno ' . $referral->refno . "\n";
 				}
 			}
 		}
 
-		echo "\nREFERRAL CREATION COMPLETE.\n\n";
+		echo "\n".Yii::t('strings','REFERRAL CREATION COMPLETE').".\n\n";
 
 		// Find all the open referrals with no referral
                 $command = Yii::app()->db->createCommand()
@@ -86,15 +86,15 @@ class ReferralService
                 			$rea->episode_id = $result['epid'];
                 			$rea->referral_id = $referralId;
                 			if (!$rea->save()) {
-						echo 'Unable to save referral for epid ' . $result['epid'] . ' and referral ' . $referralId . "\n";
+						echo Yii::t('strings','Unable to save').' referral '.Yii::t('strings','for').' epid ' . $result['epid'] . ' '.Yii::t('strings','and').' referral ' . $referralId . "\n";
 					} else {
-						echo 'Assignment rea id ' . $rea->id . ' to patient ' . $result['epid'] . ' and referral ' . $referralId . "\n";
+						echo Yii::t('strings','Assignment').' rea id ' . $rea->id . ' '.Yii::t('strings','to').' patient ' . $result['epid'] . ' '.Yii::t('strings','and').' referral ' . $referralId . "\n";
 					}
 				}
 			}
 		}
 
-		echo "\nREFERRAL ASSIGNMENT COMPLETE.\n\n";
+		echo "\n".Yii::t('strings','REFERRAL ASSIGNMENT COMPLETE').".\n\n";
 	}
 
 	/**
