@@ -19,7 +19,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('strings','List CommonOphthalmicDisorder'), 'url'=>array('index')),
-	array('label'=>Yii::t('strings','Create CommonOphthalmicDisorder)', 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Create CommonOphthalmicDisorder'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
