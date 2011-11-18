@@ -13,25 +13,25 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sequences'=>array('index'),
+	Yii::t('strings','Sequences')=>array('index'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List Sequence', 'url'=>array('index')),
-	array('label'=>'Create Sequence', 'url'=>array('create')),
-	array('label'=>'Update Sequence', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Sequence', 'url'=>'#', 'visible' => ($model->getAssociatedBookings() == 0),
-		  'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Sequence', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Sequence'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Sequence'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Update Sequence'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Delete Sequence'), 'url'=>'#', 'visible' => ($model->getAssociatedBookings() == 0),
+		  'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('strings','Are you sure you want to delete this item?'))),
+	array('label'=>Yii::t('strings','Manage Sequence'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Sequence #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','View Sequence')?> #<?php echo $model->id; ?></h1>
 
 <?php
 if ($model->getAssociatedBookings() > 0) { ?>
-<div class="flash-notice">This sequence cannot be deleted as it has associated bookings.</div>
+<div class="flash-notice"><?php echo Yii::t('strings','This sequence cannot be deleted as it has associated bookings')?>.</div>
 <?php
 }
 	?>
@@ -41,28 +41,28 @@ if ($model->getAssociatedBookings() > 0) { ?>
 	'attributes'=>array(
 		'id',
 		array(
-			'label' => 'Firm',
+			'label' => Yii::t('strings','Firm'),
 			'value' => $model->getFirmName()
 		),
 		array(
-			'label' => 'Theatre',
+			'label' => Yii::t('strings','Theatre'),
 			'value' => $model->theatre->site->name . ' - ' . $model->theatre->name
 		),
 		array(
-			'label' => 'Start Date',
+			'label' => Yii::t('strings','Start Date'),
 			'value' => $model->start_date . ' (' . date('l', strtotime($model->start_date)) . ')'
 		),
 		array(
-			'label' => 'Start Time',
+			'label' => Yii::t('strings','Start Time'),
 			'value' => substr($model->start_time, 0, 5)
 		),
 		array(
-			'label' => 'End Time',
+			'label' => Yii::t('strings','End Time'),
 			'value' => substr($model->end_time, 0, 5)
 		),
 		'end_date',
 		array(
-			'label' => 'Occurrence',
+			'label' => Yii::t('strings','Occurrence'),
 			'value' => !empty($model->week_selection) ? $model->getWeekText() : $model->getFrequencyText(),
 		),
 	),

@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Common Ophthalmic Disorders'=>array('index'),
-	'Create',
+	Yii::t('strings','Common Ophthalmic Disorders')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List CommonOphthalmicDisorder', 'url'=>array('index')),
-	array('label'=>'Manage CommonOphthalmicDisorder', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List CommonOphthalmicDisorder'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage CommonOphthalmicDisorder'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create CommonOphthalmicDisorder</h1>
+<h1><?php echo Yii::t('strings','Create CommonOphthalmicDisorder')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

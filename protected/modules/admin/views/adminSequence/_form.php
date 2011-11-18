@@ -19,7 +19,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note"><?php echo Yii::t('strings','Fields with')?> <span class="required">*</span> <?php echo Yii::t('strings','are required')?>.</p>
 
 	<?php echo $form->errorSummary(array($model, $firm)); ?>
 
@@ -102,12 +102,12 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'repeat_interval'); ?>
-		<?php echo $form->dropDownList($model,'repeat_interval',$model->getFrequencyOptions()) . ' (Leave as-is if using week selection above)'; ?>
+		<?php echo $form->dropDownList($model,'repeat_interval',$model->getFrequencyOptions()) . ' ('.Yii::t('strings','Leave as-is if using week selection above').')'; ?>
 		<?php echo $form->error($model,'repeat_interval'); ?>
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('strings','Create') : Yii::t('strings','Save')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

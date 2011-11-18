@@ -13,18 +13,18 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Site Element Types'=>array('index'),
+	Yii::t('strings','Site Element Types')=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List SiteElementType', 'url'=>array('index')),
-	array('label'=>'View SiteElementType', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage SiteElementType', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List SiteElementType'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','View SiteElementType'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage SiteElementType'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Site Element Type for:</h1>
+<h1><?php echo Yii::t('strings','Update Site Element Type for')?>:</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

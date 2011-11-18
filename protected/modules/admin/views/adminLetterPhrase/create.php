@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Letterphrases'=>array('index'),
-	'Create',
+	Yii::t('strings','Letterphrases')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List Letterphrase', 'url'=>array('index')),
-	array('label'=>'Manage Letterphrase', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Letterphrase'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage Letterphrase'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Letterphrase</h1>
+<h1><?php echo Yii::t('strings','Create Letterphrase')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

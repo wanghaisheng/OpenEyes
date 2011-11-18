@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sequences'=>array('index'),
+	Yii::t('strings','Sequences')=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List Sequence', 'url'=>array('index')),
-	array('label'=>'Create Sequence', 'url'=>array('create')),
-	array('label'=>'View Sequence', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Sequence', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Sequence'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Sequence'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View Sequence'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage Sequence'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Sequence <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update Sequence')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model, 'firm'=>$firm)); ?>

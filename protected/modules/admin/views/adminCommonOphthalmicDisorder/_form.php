@@ -55,7 +55,7 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('strings','Create') : Yii::t('strings','Save')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Lettertemplates',
+	Yii::t('strings','Lettertemplates'),
 );
 
 $this->menu=array(
-	array('label'=>'Create Lettertemplate', 'url'=>array('create')),
-	array('label'=>'Manage Lettertemplate', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','Create Lettertemplate'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Manage Lettertemplate'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Lettertemplates</h1>
+<h1><?php echo Yii::t('strings','Lettertemplates')?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

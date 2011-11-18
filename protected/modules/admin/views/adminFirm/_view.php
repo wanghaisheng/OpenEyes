@@ -19,11 +19,11 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b>Service:</b>
+	<b><?php echo Yii::t('strings','Service')?>:</b>
 	<?php echo CHtml::encode($data->getServiceText()); ?>
 	<br />
 
-	<b>Specialty:</b>
+	<b><?php echo Yii::t('strings','Specialty')?>:</b>
 	<?php echo CHtml::encode($data->getSpecialtyText()); ?>
 	<br />
 

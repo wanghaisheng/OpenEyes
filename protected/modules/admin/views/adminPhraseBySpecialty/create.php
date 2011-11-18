@@ -13,18 +13,18 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-        'Phrase By Specialties' => array('/admin/adminPhraseBySpecialty/index'),
+        Yii::t('strings','Phrase By Specialties') => array('/admin/adminPhraseBySpecialty/index'),
         $sectionName => array('specialtyIndex', 'section_id'=>$sectionId),
         $specialtyName => array('phraseIndex', 'section_id'=>$sectionId, 'specialty_id'=>$specialtyId),
-	'Create'
+	Yii::t('strings','Create')
 );
 
 $this->menu=array(
-	array('label'=>'List phrases by specialty', 'url'=>array('index')),
-	array('label'=>'Manage phrases by specialty', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List phrases by specialty'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage phrases by specialty'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create PhraseBySpecialty</h1>
+<h1><?php echo Yii::t('strings','Create PhraseBySpecialty')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

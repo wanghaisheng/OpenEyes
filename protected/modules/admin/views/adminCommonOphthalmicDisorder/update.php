@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Common Ophthalmic Disorders'=>array('index'),
+	Yii::t('strings','Common Ophthalmic Disorders')=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List CommonOphthalmicDisorder', 'url'=>array('index')),
-	array('label'=>'Create CommonOphthalmicDisorder', 'url'=>array('create')),
-	array('label'=>'View CommonOphthalmicDisorder', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage CommonOphthalmicDisorder', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List CommonOphthalmicDisorder'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create CommonOphthalmicDisorder'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View CommonOphthalmicDisorder'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage CommonOphthalmicDisorder'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update CommonOphthalmicDisorder <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update CommonOphthalmicDisorder')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

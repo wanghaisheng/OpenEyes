@@ -13,33 +13,33 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Site Element Types'=>array('index'),
+	Yii::t('strings','Site Element Types')=>array('index'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List SiteElementType', 'url'=>array('index')),
-	array('label'=>'Update SiteElementType', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Manage SiteElementType', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List SiteElementType'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Update SiteElementType'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage SiteElementType'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Site Element Type for: </h1>
+<h1><?php echo Yii::t('strings','View Site Element Type for')?>:</h1>
 
 <div class="view">
 
                 <table>
                         <tr>
-                                <td>Event type</td><td><?php echo $model->possibleElementType->eventType->name;?></td>
+                                <td><?php echo Yii::t('strings','Event type')?></td><td><?php echo $model->possibleElementType->eventType->name;?></td>
                         </tr>
                         <tr>
-                                <td>Element type</td><td><?php echo $model->possibleElementType->elementType->name;?></td>
+                                <td><?php echo Yii::t('strings','Element type')?></td><td><?php echo $model->possibleElementType->elementType->name;?></td>
                         </tr>
                         <tr>
-                                <td>Specialty</td><td><?php echo $model->specialty->name;?></td>
+                                <td><?php echo Yii::t('strings','Specialty')?></td><td><?php echo $model->specialty->name;?></td>
                         </tr>
                         <tr>
-                                <td>First in episode</td><td><?php if ($model->first_in_episode) {echo 'Yes';} else {echo 'No';} ?></td>
+                                <td><?php echo Yii::t('strings','First in episode')?></td><td><?php if ($model->first_in_episode) {echo Yii::t('strings','Yes');} else {echo Yii::t('strings','No');} ?></td>
                         </tr>
                 </table>
 </div>
@@ -62,11 +62,11 @@ $this->menu=array(
         <br />
 
         <b><?php echo CHtml::encode($model->getAttributeLabel('required')); ?>:</b>
-        <?php if ($model->required) {echo 'Yes';} else {echo 'No';} ?>
+        <?php if ($model->required) {echo Yii::t('strings','Yes');} else {echo Yii::t('strings','No');} ?>
         <br />
 
         <b><?php echo CHtml::encode($model->getAttributeLabel('first_in_episode')); ?>:</b>
-        <?php if ($model->first_in_episode) {echo 'Yes';} else {echo 'No';} ?>
+        <?php if ($model->first_in_episode) {echo Yii::t('strings','Yes');} else {echo Yii::t('strings','No');} ?>
         <br />
 </div>
 

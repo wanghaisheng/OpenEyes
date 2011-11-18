@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Users',
+	Yii::t('strings','Users'),
 );
 
 $this->menu=array(
-	array('label'=>'Create User', 'url'=>array('create')),
-	array('label'=>'Manage User', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','Create User'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Manage User'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Users</h1>
+<h1><?php echo Yii::t('strings','Users')?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

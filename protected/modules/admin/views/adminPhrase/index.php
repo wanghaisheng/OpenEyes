@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Global phrases',
+	Yii::t('strings','Global phrases'),
 );
 
 $this->menu=array(
 );
 ?>
 
-<h1>Global phrases</h1>
+<h1><?php echo Yii::t('strings','Global phrases')?></h1>
 
-<h2>Sections</h2>
+<h2><?php echo Yii::t('strings','Sections')?></h2>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

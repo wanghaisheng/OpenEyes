@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sessions'=>array('index'),
+	Yii::t('strings','Sessions')=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List Session', 'url'=>array('index')),
-	array('label'=>'Create Sessions', 'url'=>array('massCreate')),
-	array('label'=>'View Session', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Sessions', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Session'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Sessions'), 'url'=>array('massCreate')),
+	array('label'=>Yii::t('strings','View Session'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage Sessions'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Session <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update Session')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

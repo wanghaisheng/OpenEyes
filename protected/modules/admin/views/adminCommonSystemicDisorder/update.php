@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Common Systemic Disorders'=>array('index'),
+	Yii::t('strings','Common Systemic Disorders')=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List CommonSystemicDisorder', 'url'=>array('index')),
-	array('label'=>'Create CommonSystemicDisorder', 'url'=>array('create')),
-	array('label'=>'View CommonSystemicDisorder', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage CommonSystemicDisorder', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List CommonSystemicDisorder'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create CommonSystemicDisorder'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View CommonSystemicDisorder'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage CommonSystemicDisorder'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update CommonSystemicDisorder <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update CommonSystemicDisorder')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

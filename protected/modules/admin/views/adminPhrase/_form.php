@@ -26,7 +26,7 @@ if (isset($_GET['section_id'])) {
 }
 ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note"><?php echo Yii::t('strings','Fields with')?> <span class="required">*</span> <?php echo Yii::t('strings','are required')?>.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -68,7 +68,7 @@ if (isset($_GET['section_id'])) {
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('strings','Create') : Yii::t('strings','Save')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

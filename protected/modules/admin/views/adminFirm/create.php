@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
-	'Create',
+	Yii::t('strings','Firms')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List Firm', 'url'=>array('index')),
-	array('label'=>'Manage Firm', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Firm'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage Firm'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Firm</h1>
+<h1><?php echo Yii::t('strings','Create Firm')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

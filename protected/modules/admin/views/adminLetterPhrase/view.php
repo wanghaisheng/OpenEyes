@@ -13,20 +13,20 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Letterphrases'=>array('index'),
+	Yii::t('strings','Letterphrases')=>array('index'),
 	$model->name,
 );
 
 $this->menu=array(
-	array('label'=>'List Letterphrase', 'url'=>array('index')),
-	array('label'=>'Create Letterphrase', 'url'=>array('create')),
-	array('label'=>'Update Letterphrase', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Letterphrase', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Letterphrase', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Letterphrase'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Letterphrase'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Update Letterphrase'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Delete Letterphrase'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('strings','Are you sure you want to delete this item').'?')),
+	array('label'=>Yii::t('strings','Manage Letterphrase'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Letterphrase #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','View Letterphrase')?> #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

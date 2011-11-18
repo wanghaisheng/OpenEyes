@@ -24,7 +24,7 @@ class AdminCommonOphthalmicDisorderController extends Controller
 	{
 		// Sample code to be used when RBAC is fully implemented.
 		if (!Yii::app()->user->checkAccess('admin')) {
-			throw new CHttpException(403, 'You are not authorised to perform this action.');
+			throw new CHttpException(403, Yii::t('strings','You are not authorised to perform this action').'.');
 		}
 
 		return parent::beforeAction($action);
@@ -61,7 +61,7 @@ class AdminCommonOphthalmicDisorderController extends Controller
 						$this->redirect(array('view','id'=>$model->id));
 					}
 				} else {
-					$model->addError('disorder_id', 'There is no disorder of that name.');
+					$model->addError('disorder_id', Yii::t('strings','There is no disorder of that name').'.');
 				}
 			}
 		}
@@ -95,7 +95,7 @@ class AdminCommonOphthalmicDisorderController extends Controller
 						$this->redirect(array('view','id'=>$model->id));
 					}
 				} else {
-					$model->addError('disorder_id', 'There is no disorder of that name.');
+					$model->addError('disorder_id', Yii::t('strings','There is no disorder of that name').'.');
 				}
 			}
 		}
@@ -122,7 +122,7 @@ class AdminCommonOphthalmicDisorderController extends Controller
 				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('strings','Invalid request').'. '.Yii::t('strings','Please do not repeat this request again').'.');
 	}
 
 	/**
@@ -160,7 +160,7 @@ class AdminCommonOphthalmicDisorderController extends Controller
 	{
 		$model=CommonOphthalmicDisorder::model()->findByPk((int)$id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404,Yii::t('strings','The requested page does not exist').'.');
 		return $model;
 	}
 

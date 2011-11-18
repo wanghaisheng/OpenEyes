@@ -13,21 +13,21 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Phrase By Specialties'=>array('index'),
+	Yii::t('strings','Phrase By Specialties')=>array('index'),
         $model->section->name => array('specialtyIndex', 'section_id'=>$model->section->id),
         $model->specialty->name => array('phraseIndex', 'specialty_id'=>$model->specialty->id, 'section_id'=>$model->section->id),
 	$model->name->name=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List PhraseBySpecialty', 'url'=>array('index')),
-	array('label'=>'Create PhraseBySpecialty', 'url'=>array('create')),
-	array('label'=>'View PhraseBySpecialty', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage PhraseBySpecialty', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List PhraseBySpecialty'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create PhraseBySpecialty'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View PhraseBySpecialty'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage PhraseBySpecialty'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update PhraseBySpecialty <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update PhraseBySpecialty')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

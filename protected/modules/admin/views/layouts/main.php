@@ -23,7 +23,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Open Eyes - Admin</title>
+  <title>Open Eyes - <?php echo Yii::t('strings','Admin')?></title>
   <meta name="viewport" content="width=device-width">
 
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -42,13 +42,13 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 		<div id="user_panel" class="inAdmin">
 			<div class="clearfix">
 				<div id="user_id">
-					Hi <strong>Bob Andrews</strong>&nbsp;<a href="#" class="small">(not you?)</a>
+					<?php echo Yii::t('strings','Hi')?> <strong>Bob Andrews</strong>&nbsp;<a href="#" class="small">(<?php echo Yii::t('strings','not you')?>?)</a>
 				</div>
 				
 				<ul id="user_nav">
 
 					<li><a href="/">OpenEyes Home</a></li>
-					<li><a href="/site/logout" class="logout">Logout</a></li>
+					<li><a href="/site/logout" class="logout"><?php echo Yii::t('strings','Logout')?></a></li>
 				</ul>
 			</div>
 		</div> <!-- #user_panel -->
@@ -56,24 +56,24 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 	
 	<div id="content" class="adminMode">
 
-		<h2 class="admin">ADMIN</h2>
+		<h2 class="admin"><?php echo Yii::t('strings','ADMIN')?></h2>
 		<div id="mainmenu" class="fullBox" style="background:#ccc;">
 
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'Users', 'url'=>array('/admin/adminUser/index')),
-				array('label'=>'Firms', 'url'=>array('/admin/adminFirm/index')),
-				array('label'=>'Global phrases', 'url'=>array('/admin/adminPhrase/index')),
-				array('label'=>'Phrases by specialty', 'url'=>array('/admin/adminPhraseBySpecialty/index')),
-				array('label'=>'Phrases by firm', 'url'=>array('/admin/adminPhraseByFirm/index')),
-				array('label'=>'Letter Templates', 'url'=>array('/admin/adminLetterTemplate/index')),
+				array('label'=>Yii::t('strings','Home'), 'url'=>array('/site/index')),
+				array('label'=>Yii::t('strings','Users'), 'url'=>array('/admin/adminUser/index')),
+				array('label'=>Yii::t('strings','Firms'), 'url'=>array('/admin/adminFirm/index')),
+				array('label'=>Yii::t('strings','Global phrases'), 'url'=>array('/admin/adminPhrase/index')),
+				array('label'=>Yii::t('strings','Phrases by specialty'), 'url'=>array('/admin/adminPhraseBySpecialty/index')),
+				array('label'=>Yii::t('strings','Phrases by firm'), 'url'=>array('/admin/adminPhraseByFirm/index')),
+				array('label'=>Yii::t('strings','Letter Templates'), 'url'=>array('/admin/adminLetterTemplate/index')),
 //				array('label'=>'Ophthalmic Disorders', 'url'=>array('/admin/adminCommonOphthalmicDisorder/index')),
 //				array('label'=>'Systemic Disorders', 'url'=>array('/admin/adminCommonSystemicDisorder/index')),
 // Removed because the typical admin shouldn't be able to alter site_element_types. Surely they are the domain of the sysadmin?
 //				array('label'=>'Site Element Types', 'url'=>array('/admin/adminSiteElementType')),
-				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+				array('label'=>Yii::t('strings','Login'), 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+				array('label'=>Yii::t('strings','Logout').' ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
 		)); ?>
 		</div>	<!-- #mainmenu -->
@@ -86,7 +86,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
                 <?php
                         $this->beginWidget('zii.widgets.CPortlet', array(
-                                'title'=>'Operations',
+                                'title'=>Yii::t('strings','Operations'),
                         ));
                         $this->widget('zii.widgets.CMenu', array(
                                 'items'=>$this->menu,
@@ -106,24 +106,24 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
 	<div id="help" class="clearfix">
 		<div class="hint">
-			<p><strong>Do you need help with OpenEyes?</strong></p>
-			<p>Before you contact the helpdesk...</p>
-			<p>Is there a "Super User" in your office available? (A "Super User" is...)</p>
-			<p>Have you checked the <a href="#">Quick Reference Guide?</a></p>
+			<p><strong><?php echo Yii::t('strings','Do you need help with OpenEyes')?>?</strong></p>
+			<p><?php echo Yii::t('strings','Before you contact the helpdesk')?>...</p>
+			<p><?php echo Yii::t('strings','Is there a "Super User" in your office available')?>? (<?php echo Yii::t('strings','A "Super User" is')?>...)</p>
+			<p><?php echo Yii::t('strings','Have you checked the')?> <a href="#"><?php echo Yii::t('strings','Quick Reference Guide')?>?</a></p>
 
 		</div>
 		
 		<div class="hint">
-			<p><strong>Searching by patient details.</strong></p>
-			<p>Although the Last Name is required it doesn't have to be complete. For example if you search for "Smi", the results will include all last names starting with "Smi...". Any other information you can add will help narrow the search results.</p>
+			<p><strong><?php echo Yii::t('strings','Searching by patient details')?>.</strong></p>
+			<p><?php echo Yii::t('strings','Although the Last Name is required it doesn\'t have to be complete')?>. <?php echo Yii::t('strings','For example if you search for "Smi", the results will include all last names starting with "Smi..."')?>. <?php echo Yii::t('strings','Any other information you can add will help narrow the search results')?>.</p>
 		</div>
 		
 		<div class="hint">
-			<p><strong>Still need help?</strong></p>
+			<p><strong><?php echo Yii::t('strings','Still need help')?>?</strong></p>
 
-			<p>Contact the helpdesk:</p>
-			<p>Telephone: 01234 12343567 ext. 0000</p>
-			<p>Email: <a href="#">helpdesk@openeyes.org.uk</a></p>
+			<p><?php echo Yii::t('strings','Contact the helpdesk')?>:</p>
+			<p><?php echo Yii::t('strings','Telephone')?>: 01234 12343567 ext. 0000</p>
+			<p><?php echo Yii::t('strings','Email')?>: <a href="#">helpdesk@openeyes.org.uk</a></p>
 		</div>
 		
 	</div> <!-- #help -->
@@ -132,7 +132,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
   
   <div id="footer">
-  	<h6>&copy; Copyright OpenEyes Foundation 2011 &nbsp;&nbsp;|&nbsp;&nbsp; Terms of Use &nbsp;&nbsp;|&nbsp;&nbsp; Legals</h6>
+  	<h6>&copy; <?php echo Yii::t('strings','Copyright')?> OpenEyes Foundation 2011 &nbsp;&nbsp;|&nbsp;&nbsp; <?php echo Yii::t('strings','Terms of Use')?> &nbsp;&nbsp;|&nbsp;&nbsp; <?php echo Yii::t('strings','Legals')?></h6>
   </div> <!-- #footer -->
 
 </body>

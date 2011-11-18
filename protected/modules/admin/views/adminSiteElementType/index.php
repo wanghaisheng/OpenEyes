@@ -13,15 +13,15 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Site Element Types',
+	Yii::t('strings','Site Element Types'),
 );
 
 $this->menu=array(
-	array('label'=>'Manage SiteElementType', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','Manage SiteElementType'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Site Element Types</h1>
+<h1><?php echo Yii::t('strings','Site Element Types')?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

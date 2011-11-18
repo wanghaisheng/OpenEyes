@@ -18,16 +18,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 
                 <table>
                         <tr>
-                                <td>Event type</td><td><?php echo $data->possibleElementType->eventType->name;?></td>
+                                <td><?php echo Yii::t('strings','Event type')?></td><td><?php echo $data->possibleElementType->eventType->name;?></td>
                         </tr>
                         <tr>
-                                <td>Element type</td><td><?php echo $data->possibleElementType->elementType->name;?></td>
+                                <td><?php echo Yii::t('strings','Element type')?></td><td><?php echo $data->possibleElementType->elementType->name;?></td>
                         </tr>
                         <tr>
-                                <td>Specialty</td><td><?php echo $data->specialty->name;?></td>
+                                <td><?php echo Yii::t('strings','Specialty')?></td><td><?php echo $data->specialty->name;?></td>
                         </tr>
                         <tr>
-                                <td>First in episode</td><td><?php if ($data->first_in_episode) {echo 'Yes';} else {echo 'No';} ?></td>
+                                <td><?php echo Yii::t('strings','First in episode')?></td><td><?php if ($data->first_in_episode) {echo Yii::t('strings','Yes');} else {echo Yii::t('strings','No');} ?></td>
                         </tr>
                 </table>
 

@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Users'=>array('index'),
-	'Create',
+	Yii::t('strings','Users')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List User', 'url'=>array('index')),
-	array('label'=>'Manage User', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List User'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage User'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create User</h1>
+<h1><?php echo Yii::t('strings','Create User')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

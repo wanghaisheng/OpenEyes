@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Contact Types',
+	Yii::t('strings','Contact Types'),
 );
 
 $this->menu=array(
-	array('label'=>'Create ContactType', 'url'=>array('create')),
-	array('label'=>'Manage ContactType', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','Create ContactType'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Manage ContactType'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Contact Types</h1>
+<h1><?php echo Yii::t('strings','Contact Types')?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

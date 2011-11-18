@@ -13,15 +13,15 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Phrase By Firm' => array('/admin/phraseByFirm/index'), 
+	Yii::t('strings','Phrase By Firm') => array('/admin/phraseByFirm/index'), 
 	$sectionName
 );
 $this->menu=array(
 );
 ?>
 
-<h1>Phrase By Firm</h1>
-<h2>List of firms in section: <?php echo $sectionName; ?></h2>
+<h1><?php echo Yii::t('strings','Phrase By Firm')?></h1>
+<h2><?php echo Yii::t('strings','List of firms in section')?>: <?php echo $sectionName; ?></h2>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

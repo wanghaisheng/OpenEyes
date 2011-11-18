@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
+	Yii::t('strings','Firms')=>array('index'),
 	$model->name=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List Firm', 'url'=>array('index')),
-	array('label'=>'Create Firm', 'url'=>array('create')),
-	array('label'=>'View Firm', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Firm', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Firm'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Firm'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View Firm'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage Firm'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Firm <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update Firm')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -13,20 +13,20 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Phrase By Specialties'=>array('index'),
+	Yii::t('strings','Phrase By Specialties')=>array('index'),
 	$model->section->name => array('specialtyIndex', 'section_id'=>$model->section->id),
 	$model->specialty->name => array('phraseIndex', 'specialty_id'=>$model->specialty->id, 'section_id'=>$model->section->id),
 	$model->name->name,
 );
 
 $this->menu=array(
-	array('label'=>'Update this phrase', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete this phrase', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id, 'specialty_id'=>$model->specialty->id,'section_id'=>$model->section->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'List all phrases for this section and specialty', 'url'=>array('phraseindex', 'specialty_id'=>$model->specialty->id,'section_id'=>$model->section->id)),
+	array('label'=>Yii::t('strings','Update this phrase'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Delete this phrase'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id, 'specialty_id'=>$model->specialty->id,'section_id'=>$model->section->id),'confirm'=>Yii::t('strings','Are you sure you want to delete this item').'?')),
+	array('label'=>Yii::t('strings','List all phrases for this section and specialty'), 'url'=>array('phraseindex', 'specialty_id'=>$model->specialty->id,'section_id'=>$model->section->id)),
 );
 ?>
 
-<h1>View PhraseBySpecialty #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','View PhraseBySpecialty')?> #<?php echo $model->id; ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(

@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sequences'=>array('index'),
-	'Create',
+	Yii::t('strings','Sequences')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List Sequence', 'url'=>array('index')),
-	array('label'=>'Manage Sequence', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Sequence'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage Sequence'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Sequence</h1>
+<h1><?php echo Yii::t('strings','Create Sequence')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model, 'firm'=>$firm)); ?>

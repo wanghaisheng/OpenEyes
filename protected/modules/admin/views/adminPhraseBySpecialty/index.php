@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Phrase By Specialties',
+	Yii::t('strings','Phrase By Specialties'),
 );
 
 $this->menu=array(
 );
 ?>
 
-<h1>Phrase By Specialties</h1>
+<h1><?php echo Yii::t('strings','Phrase By Specialties')?></h1>
 
-<h2>Sections</h2>
+<h2><?php echo Yii::t('strings','Sections')?></h2>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

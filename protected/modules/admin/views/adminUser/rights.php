@@ -13,21 +13,21 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Users'=>array('index'),
+	Yii::t('strings','Users')=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List User', 'url'=>array('index')),
-	array('label'=>'Create User', 'url'=>array('create')),
-	array('label'=>'View User', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage User', 'url'=>array('admin')),
-	array('label'=>'User Rights', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','List User'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create User'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View User'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage User'), 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','User Rights'), 'url'=>array('view', 'id'=>$model->id)),
 );
 ?>
 
-<h1>User Rights for <?php echo $model->last_name; ?></h1>
+<h1><?php echo Yii::t('strings','User Rights for')?> <?php echo $model->last_name; ?></h1>
 
 <div class="form">
 
@@ -36,7 +36,7 @@ $this->menu=array(
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note"><?php echo Yii::t('strings','Fields with')?> <span class="required">*</span> <?php echo Yii::t('strings','are required')?>.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -64,7 +64,7 @@ $this->menu=array(
 ?>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Update Rights'); ?>
+		<?php echo CHtml::submitButton(Yii::t('strings','Update Rights')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

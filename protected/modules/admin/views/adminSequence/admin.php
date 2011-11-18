@@ -13,13 +13,13 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sequences'=>array('index'),
-	'Manage',
+	Yii::t('strings','Sequences')=>array('index'),
+	Yii::t('strings','Manage'),
 );
 
 $this->menu=array(
-	array('label'=>'List Sequence', 'url'=>array('index')),
-	array('label'=>'Create Sequence', 'url'=>array('create')),
+	array('label'=>Yii::t('strings','List Sequence'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Sequence'), 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -36,14 +36,14 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Sequences</h1>
+<h1><?php echo Yii::t('strings','Manage Sequences')?></h1>
 
 <p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+<?php echo Yii::t('strings','You may optionally enter a comparison operator')?> (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+<?php echo Yii::t('strings','or')?> <b>=</b>) <?php echo Yii::t('strings','at the beginning of each of your search values to specify how the comparison should be done')?>.
 </p>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<?php echo CHtml::link(Yii::t('strings','Advanced Search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,

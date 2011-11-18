@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Lettertemplates'=>array('index'),
-	'Create',
+	Yii::t('strings','Lettertemplates')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List Lettertemplate', 'url'=>array('index')),
-	array('label'=>'Manage Lettertemplate', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Lettertemplate'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage Lettertemplate'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Lettertemplate</h1>
+<h1><?php echo Yii::t('strings','Create Lettertemplate')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

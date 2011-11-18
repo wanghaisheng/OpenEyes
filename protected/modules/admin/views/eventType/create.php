@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Event Types'=>array('index'),
-	'Create',
+	Yii::t('strings','Event Types')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List EventType', 'url'=>array('index')),
-	array('label'=>'Manage EventType', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List EventType'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Manage EventType'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create EventType</h1>
+<h1><?php echo Yii::t('strings','Create EventType')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

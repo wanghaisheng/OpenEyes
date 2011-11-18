@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Letterphrases'=>array('index'),
+	Yii::t('strings','Letterphrases')=>array('index'),
 	$model->name=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List Letterphrase', 'url'=>array('index')),
-	array('label'=>'Create Letterphrase', 'url'=>array('create')),
-	array('label'=>'View Letterphrase', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Letterphrase', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Letterphrase'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Letterphrase'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View Letterphrase'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage Letterphrase'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Letterphrase <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update Letterphrase')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

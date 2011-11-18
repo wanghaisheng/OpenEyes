@@ -24,7 +24,7 @@ class AdminSequenceController extends BaseController
 	{
 		// Sample code to be used when RBAC is fully implemented.
 		if (!Yii::app()->user->checkAccess('admin')) {
-			throw new CHttpException(403, 'You are not authorised to perform this action.');
+			throw new CHttpException(403, Yii::t('strings','You are not authorised to perform this action').'.');
 		}
 
 		return parent::beforeAction($action);
@@ -127,7 +127,7 @@ class AdminSequenceController extends BaseController
 			// make really sure this thing has no bookings associated with it before we delete
 			$sequence = $this->loadModel($id);
 			if ($sequence->getAssociatedBookings() > 0) {
-				throw new CHttpException(400, 'This sequence has bookings associated with it and cannot be deleted.');
+				throw new CHttpException(400, Yii::t('strings','This sequence has bookings associated with it and cannot be deleted').'.');
 			}
 
 			// delete any sessions that are involved with this sequence first
@@ -143,7 +143,7 @@ class AdminSequenceController extends BaseController
 				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('strings','Invalid request').'. '.Yii::t('strings','Please do not repeat this request again').'.');
 	}
 
 	/**
@@ -194,7 +194,7 @@ class AdminSequenceController extends BaseController
 	{
 		$model=Sequence::model()->findByPk((int)$id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404, Yii::t('strings','The requested page does not exist').'.');
 		return $model;
 	}
 

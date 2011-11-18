@@ -20,7 +20,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note"><?php echo Yii::t('strings','Fields with')?> <span class="required">*</span> <?php echo Yii::t('strings','are required')?>.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -49,7 +49,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('strings','Create') : Yii::t('strings','Save')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

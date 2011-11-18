@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Event Types',
+	Yii::t('strings','Event Types'),
 );
 
 $this->menu=array(
-	array('label'=>'Create EventType', 'url'=>array('create')),
-	array('label'=>'Manage EventType', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','Create EventType'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Manage EventType'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Event Types</h1>
+<h1><?php echo Yii::t('strings','Event Types')?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

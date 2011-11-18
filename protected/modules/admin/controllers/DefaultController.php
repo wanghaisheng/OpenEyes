@@ -20,7 +20,7 @@ class DefaultController extends Controller
 	{
 		// Sample code to be used when RBAC is fully implemented.
 		if (!Yii::app()->user->checkAccess('admin')) {
-			throw new CHttpException(403, 'You are not authorised to perform this action.');
+			throw new CHttpException(403, Yii::t('strings','You are not authorised to perform this action').'.');
 		}
 
 		return parent::beforeAction($action);

@@ -13,20 +13,20 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
+	Yii::t('strings','Firms')=>array('index'),
 	$model->name,
 );
 
 $this->menu=array(
-	array('label'=>'List Firm', 'url'=>array('index')),
-	array('label'=>'Create Firm', 'url'=>array('create')),
-	array('label'=>'Update Firm', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Firm', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Firm', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Firm'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Firm'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Update Firm'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Delete Firm'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('strings','Are you sure you want to delete this item').'?')),
+	array('label'=>Yii::t('strings','Manage Firm'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Firm #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','View Firm')?> #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

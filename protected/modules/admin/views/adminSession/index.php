@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sessions',
+	Yii::t('strings','Sessions'),
 );
 
 $this->menu=array(
-	array('label'=>'Create Sessions', 'url'=>array('massCreate')),
-	array('label'=>'Manage Sessions', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','Create Sessions'), 'url'=>array('massCreate')),
+	array('label'=>Yii::t('strings','Manage Sessions'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Sessions</h1>
+<h1><?php echo Yii::t('strings','Sessions')?></h1>
 
 <?php
 	if (Yii::app()->user->hasFlash('notice')) { ?>

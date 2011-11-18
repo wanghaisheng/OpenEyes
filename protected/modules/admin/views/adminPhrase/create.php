@@ -13,15 +13,15 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Global phrases'=>array('index'),
-	'Create',
+	Yii::t('strings','Global phrases')=>array('index'),
+	Yii::t('strings','Create'),
 );
 
 $this->menu=array(
-	array('label'=>'List Phrase', 'url'=>array('index')),
+	array('label'=>Yii::t('strings','List Phrase'), 'url'=>array('index')),
 );
 ?>
 
-<h1>Create PhraseByFirm</h1>
+<h1><?php echo Yii::t('strings','Create PhraseByFirm')?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

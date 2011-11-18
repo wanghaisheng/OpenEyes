@@ -41,7 +41,7 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
+		<?php echo CHtml::submitButton(Yii::t('strings','Search')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

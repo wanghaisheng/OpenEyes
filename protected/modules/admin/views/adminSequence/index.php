@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sequences',
+	Yii::t('strings','Sequences'),
 );
 
 $this->menu=array(
-	array('label'=>'Create Sequence', 'url'=>array('create')),
-	array('label'=>'Manage Sequence', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','Create Sequence'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Manage Sequence'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Sequences</h1>
+<h1><?php echo Yii::t('strings','Sequences')?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

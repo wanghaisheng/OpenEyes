@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Lettertemplates'=>array('index'),
+	Yii::t('strings','Lettertemplates')=>array('index'),
 	$model->name=>array('view','id'=>$model->id),
-	'Update',
+	Yii::t('strings','Update'),
 );
 
 $this->menu=array(
-	array('label'=>'List Lettertemplate', 'url'=>array('index')),
-	array('label'=>'Create Lettertemplate', 'url'=>array('create')),
-	array('label'=>'View Lettertemplate', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Lettertemplate', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Lettertemplate'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Lettertemplate'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','View Lettertemplate'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage Lettertemplate'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Lettertemplate <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','Update Lettertemplate')?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

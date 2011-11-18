@@ -13,18 +13,18 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Phrase By Firm' => array('/admin/phraseByFirm/index'), 
+	Yii::t('strings','Phrase By Firm') => array('/admin/phraseByFirm/index'), 
 	$sectionName => array('firmIndex', 'section_id'=>$sectionId),
 	$firmName
 );
 $this->menu=array(
-	array('label'=>'Create a phrase for this firm', 'url'=> array('create', 'section_id'=>$sectionId, 'firm_id'=>$firmId)),
-	array('label'=>'Manage phrases for this firm', 'url'=>array('admin', 'section_id'=>$sectionId)),
+	array('label'=>Yii::t('strings','Create a phrase for this firm'), 'url'=> array('create', 'section_id'=>$sectionId, 'firm_id'=>$firmId)),
+	array('label'=>Yii::t('strings','Manage phrases for this firm'), 'url'=>array('admin', 'section_id'=>$sectionId)),
 );
 ?>
 
-<h1>Phrase By Firm</h1>
-<h2>Phrases for the section: <?php echo $sectionName; ?> and the firm: <?php echo $firmName; ?></h2>
+<h1><?php echo Yii::t('strings','Phrase By Firm')?></h1>
+<h2><?php echo Yii::t('strings','Phrases for the section')?>: <?php echo $sectionName; ?> <?php echo Yii::t('strings','and the firm')?>: <?php echo $firmName; ?></h2>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

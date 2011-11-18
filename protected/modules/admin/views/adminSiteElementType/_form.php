@@ -29,24 +29,24 @@ $form=$this->beginWidget('CActiveForm', array(
 	<div class="row">
 		<table>
 			<tr>
-				<td>Event type</td><td><?php echo $model->possibleElementType->eventType->name;?></td>
+				<td><?php echo Yii::t('strings','Event type')?></td><td><?php echo $model->possibleElementType->eventType->name;?></td>
 			</tr>
 			<tr>
-				<td>Element type</td><td><?php echo $model->possibleElementType->elementType->name;?></td>
+				<td><?php echo Yii::t('strings','Element type')?></td><td><?php echo $model->possibleElementType->elementType->name;?></td>
 			</tr>
 			<tr>
-				<td>Specialty</td><td><?php echo $model->specialty->name;?></td>
+				<td><?php echo Yii::t('strings','Specialty')?></td><td><?php echo $model->specialty->name;?></td>
 			</tr>
 			<tr>
-				<td>First in episode</td><td><?php if ($model->first_in_episode) {echo 'Yes';} else {echo 'No';} ?></td>
+				<td><?php echo Yii::t('strings','First in episode')?></td><td><?php if ($model->first_in_episode) {echo Yii::t('strings','Yes');} else {echo Yii::t('strings','No');} ?></td>
 			</tr>
 		</table>
 
 		<?php echo $form->hiddenField($model,'possible_element_type_id');?>
 	</div>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-			<p><b>Display order: </b><?php echo $model->possibleElementType->display_order;?></p>
+	<p class="note"><?php echo Yii::t('strings','Fields with')?> <span class="required">*</span> <?php echo Yii::t('strings','are required')?>.</p>
+			<p><b><?php echo Yii::t('strings','Display order')?>: </b><?php echo $model->possibleElementType->display_order;?></p>
 	<div class="row">
 		<?php echo $form->labelEx($model,'view_number'); ?>
 		<?php echo $form->dropDownList($model,'view_number',$model->getNumViewsArray()); ?>
@@ -62,7 +62,7 @@ $form=$this->beginWidget('CActiveForm', array(
 	<?php echo $form->hiddenField($model,'first_in_episode');?>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('strings','Create') : Yii::t('strings','Save')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

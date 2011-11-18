@@ -13,16 +13,16 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Global phrases' => array('/admin/phrase/index'), 
+	Yii::t('strings','Global phrases') => array('/admin/phrase/index'), 
 	$sectionName
 );
 $this->menu=array(
-	array('label'=>'Create a phrase in this section', 'url'=> array('create', 'section_id'=>$sectionId)),
+	array('label'=>Yii::t('strings','Create a phrase in this section'), 'url'=> array('create', 'section_id'=>$sectionId)),
 );
 ?>
 
-<h1>Global phrases</h1>
-<h2>Phrases for the section: <?php echo $sectionName; ?></h2>
+<h1><?php echo Yii::t('strings','Global phrases')?></h1>
+<h2><?php echo Yii::t('strings','Phrases for the section')?>: <?php echo $sectionName; ?></h2>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

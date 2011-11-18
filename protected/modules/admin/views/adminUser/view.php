@@ -8,25 +8,25 @@ OpenEyes is free software: you can redistribute it and/or modify it under the te
 OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
 _____________________________________________________________________________
-http://www.openeyes.org.uk   info@openeyes.org.uk
+http://www.openeyes.org.uk	 info@openeyes.org.uk
 --
 */
 
 $this->breadcrumbs=array(
-	'Users'=>array('index'),
+	Yii::t('strings','Users')=>array('index'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List User', 'url'=>array('index')),
-	array('label'=>'Create User', 'url'=>array('create')),
-	array('label'=>'Update User', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Manage User', 'url'=>array('admin')),
-	array('label'=>'User Rights', 'url'=>array('rights', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','List User'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create User'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Update User'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage User'), 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','User Rights'), 'url'=>array('rights', 'id'=>$model->id)),
 );
 ?>
 
-<h1>View User #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','View User')?> #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -40,26 +40,26 @@ $this->menu=array(
 			'name' => 'active',
 			'value' => CHtml::encode($model->getActiveText())
 		),
-                array(
-                        'name' => 'global_firm_rights',
-                        'value' => CHtml::encode($model->getGlobalFirmRightsText())
-                ),
+		array(
+			'name' => 'global_firm_rights',
+			'value' => CHtml::encode($model->getGlobalFirmRightsText())
+		),
 	),
 ));
 ?>
 <table class="detail-view" id="rights">
-<tr class="even"><th>Rights</th><td>
-<b>Services</b>
+<tr class="even"><th><?php echo Yii::t('strings','Rights')?></th><td>
+<b><?php echo Yii::t('strings','Services')?></b>
 <br />
 <?php
-        foreach ($rights as $service) {
+	foreach ($rights as $service) {
 		if ($service['checked']) {
 			echo $service['name'] . "<br />\n";
 		}
 	}
 ?>
 <br />
-<b>Firms</b>
+<b><?php echo Yii::t('strings','Firms')?></b>
 <br />
 <?php
 	foreach ($rights as $service) {
@@ -67,8 +67,8 @@ $this->menu=array(
 			if ($firm['checked']) {
 				echo $firm['name'] . ' (' . $service['name'] . ")<br />\n";
 			}
-                }
-        }
+								}
+				}
 ?>
 </td></tr>
 </table>

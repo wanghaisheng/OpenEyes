@@ -13,20 +13,20 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Common Ophthalmic Disorders'=>array('index'),
+	Yii::t('strings','Common Ophthalmic Disorders')=>array('index'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List CommonOphthalmicDisorder', 'url'=>array('index')),
-	array('label'=>'Create CommonOphthalmicDisorder', 'url'=>array('create')),
-	array('label'=>'Update CommonOphthalmicDisorder', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete CommonOphthalmicDisorder', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage CommonOphthalmicDisorder', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List CommonOphthalmicDisorder'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create CommonOphthalmicDisorder'), 'url'=>array('create')),
+	array('label'=>Yii::t('strings','Update CommonOphthalmicDisorder'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Delete CommonOphthalmicDisorder'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>Yii::t('strings','Manage CommonOphthalmicDisorder'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>View CommonOphthalmicDisorder #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','View CommonOphthalmicDisorder')?> #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

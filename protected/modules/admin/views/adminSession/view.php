@@ -13,19 +13,19 @@ http://www.openeyes.org.uk   info@openeyes.org.uk
 */
 
 $this->breadcrumbs=array(
-	'Sessions'=>array('index'),
+	Yii::t('strings','Sessions')=>array('index'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List Sessions', 'url'=>array('index')),
-	array('label'=>'Create Sessions', 'url'=>array('massCreate')),
-	array('label'=>'Update Session', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Manage Sessions', 'url'=>array('admin')),
+	array('label'=>Yii::t('strings','List Sessions'), 'url'=>array('index')),
+	array('label'=>Yii::t('strings','Create Sessions'), 'url'=>array('massCreate')),
+	array('label'=>Yii::t('strings','Update Session'), 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>Yii::t('strings','Manage Sessions'), 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Session #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('strings','View Session')?> #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
