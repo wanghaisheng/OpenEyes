@@ -346,46 +346,48 @@ class TheatreController extends BaseController
 					}
 				}
 
-				if (preg_match('/^consultant_([0-9]+)$/',$key,$m)) {
-					$session = Session::model()->findByPk($m[1]);
+				if (Yii::app()->user->checkAccess('purplerinse')) {
+					if (preg_match('/^consultant_([0-9]+)$/',$key,$m)) {
+						$session = Session::model()->findByPk($m[1]);
 
-					if (!empty($session)) {
-						$session->consultant = ($value == 'true' ? 1 : 0);
-						if (!$session->save()) {
-							throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+						if (!empty($session)) {
+							$session->consultant = ($value == 'true' ? 1 : 0);
+							if (!$session->save()) {
+								throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+							}
 						}
 					}
-				}
 
-				if (preg_match('/^paediatric_([0-9]+)$/',$key,$m)) {
-					$session = Session::model()->findByPk($m[1]);
+					if (preg_match('/^paediatric_([0-9]+)$/',$key,$m)) {
+						$session = Session::model()->findByPk($m[1]);
 
-					if (!empty($session)) {
-						$session->paediatric = ($value == 'true' ? 1 : 0);
-						if (!$session->save()) {
-							throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+						if (!empty($session)) {
+							$session->paediatric = ($value == 'true' ? 1 : 0);
+							if (!$session->save()) {
+								throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+							}
 						}
 					}
-				}
 
-				if (preg_match('/^anaesthetic_([0-9]+)$/',$key,$m)) {
-					$session = Session::model()->findByPk($m[1]);
+					if (preg_match('/^anaesthetic_([0-9]+)$/',$key,$m)) {
+						$session = Session::model()->findByPk($m[1]);
 
-					if (!empty($session)) {
-						$session->anaesthetist = ($value == 'true' ? 1 : 0);
-						if (!$session->save()) {
-							throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+						if (!empty($session)) {
+							$session->anaesthetist = ($value == 'true' ? 1 : 0);
+							if (!$session->save()) {
+								throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+							}
 						}
 					}
-				}
 
-				if (preg_match('/^available_([0-9]+)$/',$key,$m)) {
-					$session = Session::model()->findByPk($m[1]);
+					if (preg_match('/^available_([0-9]+)$/',$key,$m)) {
+						$session = Session::model()->findByPk($m[1]);
 
-					if (!empty($session)) {
-						$session->status= ($value == 'true' ? 0 : 1);
-						if (!$session->save()) {
-							throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+						if (!empty($session)) {
+							$session->status= ($value == 'true' ? 0 : 1);
+							if (!$session->save()) {
+								throw new SystemException('Unable to save session: '.print_r($session->getErrors(),true));
+							}
 						}
 					}
 				}
