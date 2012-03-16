@@ -394,6 +394,8 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 		$('#date-start').val(format_date(today));
 		$('#date-end').val(format_date(today));
 
+		setFilter({'date-filter':'today','date-start':$('#date-start').val(),'date-end':$('#date-end').val()});
+
 		return true;
 	});
 
@@ -401,8 +403,9 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 		today = new Date();
 
 		$('#date-start').val(format_date(today));
-
 		$('#date-end').val(format_date(returnDateWithInterval(today, 6)));
+
+		setFilter({'date-filter':'week','date-start':$('#date-start').val(),'date-end':$('#date-end').val()});
 
 		return true;
 	});
@@ -411,8 +414,9 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 		today = new Date();
 
 		$('#date-start').val(format_date(today));
-
 		$('#date-end').val(format_date(returnDateWithInterval(today, 29)));
+
+		setFilter({'date-filter':'month','date-start':$('#date-start').val(),'date-end':$('#date-end').val()});
 
 		return true;
 	});
@@ -435,9 +439,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			$('#date-start').val(format_date(returnDateWithIntervalFromString(sd, -7)));
 		}
 
-		setFilter('date-start');
-		setFilter('date-end');
-		setFilter('date-filter','');
+		setFilter({'date-filter':''});
 		$('input[type="radio"]').attr('checked','');
 
 		return false;
@@ -462,9 +464,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			$('#date-end').val(format_date(returnDateWithIntervalFromString(ed, 7)));
 		}
 
-		setFilter('date-start');
-		setFilter('date-end');
-		setFilter('date-filter','');
+		setFilter({'date-filter':''});
 		$('input[type="radio"]').attr('checked','');
 
 		return false;
@@ -515,15 +515,24 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 		return str.charAt(0).toUpperCase() + str.substr(1);
 	}
 
-	function setFilter(field, value) {
-		if (value == null) {
-			value = $('#'+field).val();
+	function setFilter(values) {
+		var data = '';
+		var load_theatres_and_wards = false;
+
+		for (var i in values) {
+			if (data.length >0) {
+				data += "&";
+			}
+			data += i + "=" + values[i];
+
+			var field = i;
+			var value = values[i];
 		}
 
 		$.ajax({
 			'url': '<?php echo Yii::app()->createUrl('theatre/setFilter')?>',
 			'type': 'POST',
-			'data': field+'='+value,
+			'data': data,
 			'success': function(html) {
 				if (field == 'site-id') {
 					loadTheatresAndWards(value);
@@ -548,31 +557,27 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 	}
 
 	$('select').change(function() {
-		setFilter($(this).attr('id'));
+		var hash = {};
+		hash[$(this).attr('id')] = $(this).val();
+		setFilter(hash);
 	});
 
 	$('#emergency_list').click(function() {
 		if ($(this).is(':checked')) {
-			setFilter('emergency_list',1);
+			setFilter({'emergency_list':1});
 		} else {
-			setFilter('emergency_list',0);
+			setFilter({'emergency_list':0});
 		}
 	});
 
-	$('input[type="radio"]').click(function() {
-		setFilter('date-filter',$(this).val());
-		setFilter('date-start');
-		setFilter('date-end');
-	});
-
 	$('#date-start').change(function() {
-		setFilter('date-start');
+		setFilter({'date-start':$(this).val()});
 		$('input[type="radio"]').attr('checked','');
 		$('#date-filter_3').attr('checked','checked');
 	});
 
 	$('#date-end').change(function() {
-		setFilter('date-end');
+		setFilter({'date-end':$(this).val()});
 		$('input[type="radio"]').attr('checked','');
 		$('#date-filter_3').attr('checked','checked');
 	});
