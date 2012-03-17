@@ -59,7 +59,7 @@ if (empty($theatres)) {?>
 									</div>
 									<div class="metadata">
 										<div<?php if(!$session_metadata['consultant']) {?> style="display: none;"<?php }?> id="consultant_icon_<?php echo $previousSessionId?>" class="consultant" title="Consultant Present">Consultant</div>
-										<div<?php if(!$session_metadata['anaesthetist']) {?> style="display: none;"<?php }?> id="anaesthetist_icon_<?php echo $previousSessionId?>" class="anaesthetist" title="Anaesthetist Present">Anaesthetist</div>
+										<div<?php if(!$session_metadata['anaesthetist']) {?> style="display: none;"<?php }?> id="anaesthetist_icon_<?php echo $previousSessionId?>" class="anaesthetist" title="Anaesthetist Present">Anaesthetist<?php if ($session_metadata['general_anaesthetic']) {?> (GA)<?php }?></div>
 										<div<?php if(!$session_metadata['paediatric']) {?> style="display: none;"<?php }?> id="paediatric_icon_<?php echo $previousSessionId?>" class="paediatric" title="Paediatric Session">Paediatric</div>
 									</div>
 								</th>
@@ -180,7 +180,7 @@ if (empty($theatres)) {?>
 							</tr>
 			<?php
 				// Session data is replicated in every "session" record so we need to capture the last one of each group for display in the footer. Now wash your hands...
-				$session_metadata = array_intersect_key($session, array('consultant'=>0,'anaesthetist'=>0,'paediatric'=>0));
+				$session_metadata = array_intersect_key($session, array('consultant'=>0,'anaesthetist'=>0,'paediatric'=>0,'general_anaesthetic'=>0));
 			}
 			?>
 						</tbody>
@@ -198,7 +198,7 @@ if (empty($theatres)) {?>
 									</div>
 									<div class="metadata">
 										<div<?php if(!$session_metadata['consultant']) {?> style="display: none;"<?php }?> id="consultant_icon_<?php echo $session['sessionId']?>" class="consultant" title="Consultant Present">Consultant</div>
-										<div<?php if(!$session_metadata['anaesthetist']) {?> style="display: none;"<?php }?> id="anaesthetist_icon_<?php echo $session['sessionId']?>" class="anaesthetist" title="Anaesthetist Present">Anaesthetist</div>
+										<div<?php if(!$session_metadata['anaesthetist']) {?> style="display: none;"<?php }?> id="anaesthetist_icon_<?php echo $session['sessionId']?>" class="anaesthetist" title="Anaesthetist Present">Anaesthetisti<?php if ($session_metadata['general_anaesthetic']) {?> (GA)<?php }?></div>
 										<div<?php if(!$session_metadata['paediatric']) {?> style="display: none;"<?php }?> id="paediatric_icon_<?php echo $session['sessionId']?>" class="paediatric" title="Paediatric Session">Paediatric</div>
 									</div>
 								</th>
@@ -272,6 +272,12 @@ if (empty($theatres)) {?>
 					$('#paediatric_icon_'+tbody_id).hide();
 				}
 
+				if ($('#general_anaesthetic_'+tbody_id).is(':checked')) {
+					$('#anaesthetist_icon_'+tbody_id).html('Anaesthetist (GA)');
+				} else {
+					$('#anaesthetist_icon_'+tbody_id).html('Anaesthetist');
+				}
+
 				if ($('#anaesthetic_'+tbody_id).is(':checked')) {
 					$('#anaesthetist_icon_'+tbody_id).show();
 				} else {
@@ -302,6 +308,12 @@ if (empty($theatres)) {?>
 					$('#paediatric_icon_'+tbody_id).show();
 				} else {
 					$('#paediatric_icon_'+tbody_id).hide();
+				}
+
+				if ($('#general_anaesthetic_'+tbody_id).val() == 1) {
+					$('#anaesthetist_icon_'+tbody_id).html('Anaesthetist (GA)');
+				} else {
+					$('#anaesthetist_icon_'+tbody_id).html('Anaesthetist');
 				}
 
 				if ($('#anaesthetic_'+tbody_id).val() == 1) {
