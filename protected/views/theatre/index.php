@@ -290,27 +290,47 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 
 		$('input[name^="consultant_"]').map(function() {
 			var id = $(this).attr('id').match(/[0-9]+/);
-			data["consultant_"+id] = $(this).is(':checked');
+			if ($(this).is(':checkbox')) {
+				data["consultant_"+id] = $(this).is(':checked');
+			} else {
+				data["consultant_"+id] = ($(this).val() == 1);
+			}
 		});
 
 		$('input[name^="paediatric_"]').map(function() {
 			var id = $(this).attr('id').match(/[0-9]+/);
-			data["paediatric_"+id] = $(this).is(':checked');
+			if ($(this).is(':checkbox')) {
+				data["paediatric_"+id] = $(this).is(':checked');
+			} else {
+				data["paediatric_"+id] = ($(this).val() == 1);
+			}
 		});
 
 		$('input[name^="anaesthetic_"]').map(function() {
 			var id = $(this).attr('id').match(/[0-9]+/);
-			data["anaesthetic_"+id] = $(this).is(':checked');
+			if ($(this).is(':checked')) {
+				data["anaesthetic_"+id] = $(this).is(':checked');
+			} else {
+				data["anaesthetic_"+id] = ($(this).val() == 1);
+			}
 		});
 
 		$('input[name^="general_anaesthetic_"]').map(function() {
 			var id = $(this).attr('id').match(/[0-9]+/);
-			data["general_anaesthetic_"+id] = $(this).is(':checked');
+			if ($(this).is(':checked')) {
+				data["general_anaesthetic_"+id] = $(this).is(':checked');
+			} else {
+				data["general_anaesthetic_"+id] = ($(this).val() == 1);
+			}
 		});
 
 		$('input[name^="available_"]').map(function() {
 			var id = $(this).attr('id').match(/[0-9]+/);
-			data["available_"+id] = $(this).is(':checked');
+			if ($(this).is(':checkbox')) {
+				data["available_"+id] = $(this).is(':checked');
+			} else {
+				data["available_"+id] = ($(this).val() == 1);
+			}
 		});
 
 		$.ajax({
