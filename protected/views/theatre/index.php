@@ -250,7 +250,9 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 
 		var ok = true;
 
-		$('input[name^="admitTime_"]').map(function() {
+		var selected_tbody_id = $(this).attr('id').match(/[0-9]+/);
+
+		$('tbody[id="tbody_'+selected_tbody_id+'"] tr td.session input[name^="admitTime_"]').map(function() {
 			var m = $(this).attr('id').match(/^admitTime_([0-9]+)_([0-9]+)$/);
 			var m2 = $(this).val().match(/^([0-9]{1,2}).*?([0-9]{2})$/);
 
@@ -276,62 +278,44 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 
 		if (!ok) return false;
 
-		$('textarea[name^="comments"]').map(function() {
-			var id = $(this).attr('id').match(/[0-9]+/);
-			data["comments_"+id] = $(this).val();
-		});
+		data["comments_"+selected_tbody_id] = $('#comments'+selected_tbody_id).val();
 
-		$('input[name^="confirm_"]').map(function() {
+		$('tbody[id="tbody_'+selected_tbody_id+'"] tr td.confirm input[name^="confirm_"]').map(function() {
 			if ($(this).attr('checked')) {
 				var id = $(this).attr('id').match(/[0-9]+/);
 				data["confirm_"+id] = $(this).val();
 			}
 		});
 
-		$('input[name^="consultant_"]').map(function() {
-			var id = $(this).attr('id').match(/[0-9]+/);
-			if ($(this).is(':checkbox')) {
-				data["consultant_"+id] = $(this).is(':checked');
-			} else {
-				data["consultant_"+id] = ($(this).val() == 1);
-			}
-		});
+		if ($('#consultant_'+selected_tbody_id).is(':checkbox')) {
+			data["consultant_"+selected_tbody_id] = $('#consultant_'+selected_tbody_id).is(':checked');
+		} else {
+			data["consultant_"+selected_tbody_id] = ($('#consultant_'+selected_tbody_id).val() == 1);
+		}
 
-		$('input[name^="paediatric_"]').map(function() {
-			var id = $(this).attr('id').match(/[0-9]+/);
-			if ($(this).is(':checkbox')) {
-				data["paediatric_"+id] = $(this).is(':checked');
-			} else {
-				data["paediatric_"+id] = ($(this).val() == 1);
-			}
-		});
+		if ($('#paediatric_'+selected_tbody_id).is(':checkbox')) {
+			data["paediatric_"+selected_tbody_id] = $('#paediatric_'+selected_tbody_id).is(':checked');
+		} else {
+			data["paediatric_"+selected_tbody_id] = ($('#paediatric_'+selected_tbody_id).val() == 1);
+		}
 
-		$('input[name^="anaesthetic_"]').map(function() {
-			var id = $(this).attr('id').match(/[0-9]+/);
-			if ($(this).is(':checked')) {
-				data["anaesthetic_"+id] = $(this).is(':checked');
-			} else {
-				data["anaesthetic_"+id] = ($(this).val() == 1);
-			}
-		});
+		if ($('#anaesthetic_'+selected_tbody_id).is(':checkbox')) {
+			data["anaesthetic_"+selected_tbody_id] = $('#anaesthetic_'+selected_tbody_id).is(':checked');
+		} else {
+			data["anaesthetic_"+selected_tbody_id] = ($('#anaesthetic_'+selected_tbody_id).val() == 1);
+		}
 
-		$('input[name^="general_anaesthetic_"]').map(function() {
-			var id = $(this).attr('id').match(/[0-9]+/);
-			if ($(this).is(':checked')) {
-				data["general_anaesthetic_"+id] = $(this).is(':checked');
-			} else {
-				data["general_anaesthetic_"+id] = ($(this).val() == 1);
-			}
-		});
+		if ($('#general_anaesthetic_'+selected_tbody_id).is(':checkbox')) {
+			data["general_anaesthetic_"+selected_tbody_id] = $('#general_anaesthetic_'+selected_tbody_id).is(':checked');
+		} else {
+			data["general_anaesthetic_"+selected_tbody_id] = ($('#general_anaesthetic_'+selected_tbody_id).val() == 1);
+		}
 
-		$('input[name^="available_"]').map(function() {
-			var id = $(this).attr('id').match(/[0-9]+/);
-			if ($(this).is(':checkbox')) {
-				data["available_"+id] = $(this).is(':checked');
-			} else {
-				data["available_"+id] = ($(this).val() == 1);
-			}
-		});
+		if ($('#available_'+selected_tbody_id).is(':checked')) {
+			data["available_"+selected_tbody_id] = $('#available_'+selected_tbody_id).is(':checked');
+		} else {
+			data["available_"+selected_tbody_id] = ($('#available_'+selected_tbody_id).val() == 1);
+		}
 
 		$.ajax({
 			'type': 'POST',
