@@ -32,10 +32,10 @@
 	<?php echo $patient->addressname?>
 	<br /><?php echo $patient->correspondAddress->letterhtml ?>
 </div>
-<div class="date"<?php if (isset($size)) {?> style="font-size: <?php echo $size?>"<?php }?>>
+<div class="date"<?php if (isset($size)) {?> style="font-size: <?php echo $size?>;"<?php }?>>
 	<?php echo date(Helper::NHS_DATE_FORMAT) ?>
 </div>
-<div class="content"<?php if (isset($size)) {?> style="font-size: <?php echo $size?>"<?php }?>>
+<div class="content"<?php if (isset($size)) {?> style="font-size: <?php echo $size?>;"<?php }?>>
 	<p>
 		<br />
 		Dear <?php echo $patient->salutationname ?>,
