@@ -198,9 +198,11 @@ class TransportController extends BaseController
 						throw new SystemException('Unable to save transport_list item: '.print_r($c->getErrors(),true));
 					}
 				} else {
+					/*
 					if (!$c->delete()) {
 						throw new SystemException('Unable to delete transport_list item: '.print_r($c->getErrors(),true));
 					}
+					*/
 				}
 			}
 		}
@@ -218,9 +220,11 @@ class TransportController extends BaseController
 						throw new SystemException('Unable to save transport_list item: '.print_r($c->getErrors(),true));
 					}
 				} else {
+					/*
 					if (!$c->delete()) {
 						throw new SystemException('Unable to delete transport_list item: '.print_r($c->getErrors(),true));
 					}
+					*/
 				}
 			}
 		}
