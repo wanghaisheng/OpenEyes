@@ -284,7 +284,11 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 				data["operation_"+m[2]] = m2[1]+":"+m2[2];
 			});
 
-			if (!ok) return false;
+			if (!ok) {
+				$('#loader2_'+selected_tbody_id).hide();
+				enableButtons();
+				return false;
+			}
 
 			data["comments_"+selected_tbody_id] = $('#comments'+selected_tbody_id).val();
 
