@@ -30,6 +30,14 @@ class m120312_114412_session_independence extends CDbMigration {
 			JOIN `session` s ON s.sequence_id = q.id
 		');
 		
+		// Fix broken base data
+		$s1 = $this->dbConnection->createCommand()->select('sequence_id')->from('sequence_firm_assignment')->where('id=:id', array(':id' => 3))->queryRow();
+		$s2 = $this->dbConnection->createCommand()->select('sequence_id')->from('sequence_firm_assignment')->where('id=:id', array(':id' => 7))->queryRow();
+
+		if ($s1['sequence_id'] == 3 && $s2['sequence_id'] == 3) {
+			$this->update('sequence_firm_assignment',array('sequence_id'=>7),'id=7');
+		}
+
 		// Enforce many to 1 between sequence and firm
 		$this->createIndex('sequence_firm_assignment_sequence_id','sequence_firm_assignment','sequence_id', true);
 		
