@@ -75,18 +75,23 @@ class Contact extends BaseActiveRecord {
 		return array(
 			'consultant' => array(self::HAS_ONE, 'Consultant', 'contact_id'),
 			'gp' => array(self::HAS_ONE, 'Gp', 'contact_id'),
-			'addresses' => array(self::HAS_MANY, 'Address', 'parent_id'),
+			'addresses' => array(self::HAS_MANY, 'Address', 'parent_id',
+				'on' => "parent_class = 'Contact'"
+			),
 			// Prefer H records for primary address, but fall back to others
 			'address' => array(self::HAS_ONE, 'Address', 'parent_id',
+				'on' => "parent_class = 'Contact'",
 				'order' => "FIELD(type,'H') DESC, date_start DESC"
 			),
 			// Prefer H records for home address, but fall back to others
 			'homeAddress' => array(self::HAS_ONE, 'Address', 'parent_id',
+				'on' => "parent_class = 'Contact'",
 				'order' => "FIELD(type,'H') DESC, date_start DESC"
 			),
 			// Prefer C records for correspond address, but fall back to others
 			// FIXME: PAS currently stating that only Home addresses are valid
 			'correspondAddress' => array(self::HAS_ONE, 'Address', 'parent_id',
+				'on' => "parent_class = 'Contact'",
 				//'order' => "FIELD(type,'C') DESC, date_start DESC"
 				'order' => "FIELD(type,'H') DESC, date_start DESC"
 		),
