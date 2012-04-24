@@ -1188,7 +1188,7 @@ class ElementOperation extends BaseElement
 						$contact['refuse'] = 'Paediatrics and Strabismus Admission Coordinator on 020 7566 2258';
 						$contact['health'] = '0207 566 2596 and ask to speak to a nurse';
 						break;
-					case 8: // Vitreo Retinal
+					case 16: // Vitreo Retinal
 						$contact['refuse'] .= '020 7566 2004';
 						break;
 					default:
