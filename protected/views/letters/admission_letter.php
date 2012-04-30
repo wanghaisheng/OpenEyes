@@ -24,11 +24,9 @@
 
 <?php
 	$booking = $operation->booking;
-	if($consultant = $firm->getConsultant()) {
-		$consultantName = $consultant->contact->title . ' ' . $consultant->contact->first_name . ' ' . $consultant->contact->last_name;
-	} else {
-		$consultantName = 'CONSULTANT';
-	}
+
+	$consultantName = $booking->session->FirmName;
+
 	$specialty = $firm->serviceSpecialtyAssignment->specialty;
 ?>
 <?php if ($patient->isChild()) {
