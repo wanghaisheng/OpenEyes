@@ -20,6 +20,8 @@
 <div id="no_gp_warning" class="alertBox" style="display: none;">One or more patients has no GP, please correct in PAS before printing GP letter.</div>
 <div id="waitingList" class="grid-view-waitinglist">
 <?php
+$p_bookings = array();
+
 if (empty($bookings)) { ?>
 <h2 class="theatre">No bookings have been made today.</h2>
 <?php
@@ -27,7 +29,7 @@ if (empty($bookings)) { ?>
 ?>
 	<table>
 		<tbody>
-    	<tr>
+			<tr>
 				<th>Hospital number</th>
 				<th>Patient</th>
 				<th>TCI date</th>
@@ -45,6 +47,8 @@ if (empty($bookings)) { ?>
 	$i = 0;
 	if ($bookings) {
 		foreach ($bookings as $id => $booking) {
+			$p_bookings[] = $booking;
+
 			if (isset($last_eoid) && $last_eoid == $booking['eoid']) continue;
 	?>
 
@@ -103,6 +107,47 @@ if (empty($bookings)) { ?>
 	}
 }
 ?>
+
+<div style="display: none;">
+	<div id="printable">
+		<table>
+			<thead>
+				<tr>
+					<th>Hospital number</th>
+					<th>Patient</th>
+					<th>TCI date</th>
+					<th>Admission time</th>
+					<th>Site</th>
+					<th>Ward</th>
+					<th>Method</th>
+					<th>Firm</th>
+					<th>Specialty</th>
+					<th>DTA</th>
+					<th>Priority</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($p_bookings as $id => $booking) {?>
+					<tr>
+						<td style="width: 53px;"><?php echo $booking['hos_num'] ?></td>
+						<td>
+							<?php echo "<b>" . trim($booking['last_name']) . '</b>, ' . trim($booking['first_name'])?>
+						</td>
+						<td style="width: 83px;"><?php echo date('j-M-Y',strtotime($booking['session_date']))?></td>
+						<td style="width: 73px;"><?php echo $booking['session_time']?></td>
+						<td style="width: 95px;"><?php echo $booking['location']?></td>
+						<td style="width: 170px;"><?php echo $booking['ward_name']?></td>
+						<td style="width: 53px;"><?php echo $booking['method']?></td>
+						<td style="width: 43px;"><?php echo $booking['firm'] ?></td>
+						<td style="width: 53px;"><?php echo $booking['specialty']?></td>
+						<td style="width: 80px;"><?php echo Helper::convertMySQL2NHS($booking['decision_date']) ?></td>
+						<td><?php echo ($booking['urgent']) ? 'Urgent' : 'Routine' ?></td>
+					</tr>
+				<?php }?>
+			</tbody>
+		</table>
+	</div>
+</div>
 
 <script type="text/javascript">
 $('#checkall').click(function() {
