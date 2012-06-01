@@ -71,6 +71,10 @@ class TransportController extends BaseController
 	public function getTCIEvents($from, $to, $include_bookings, $include_reschedules, $include_cancellations) {
 		$today = date('Y-m-d');
 
+		if (!$include_bookings && !$include_reschedules && !$include_cancellations) {
+			$include_bookings = $include_reschedules = $include_cancellations = 1;
+		}
+
 		if ($from && $to) {
 			$wheresql1 = " and session.date >= '$from' and session.date <= '$to' ";
 			$wheresql2 = " and cancelled_booking.date >= '$from' and cancelled_booking.date <= '$to' ";

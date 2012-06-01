@@ -68,9 +68,9 @@
 							Include:
 						</label>
 						&nbsp;
-						<input type="checkbox" name="include_bookings" value="1"<?php if (@$_POST['include_bookings']){?> checked="checked"<?php }?> /> Bookings
-						<input type="checkbox" name="include_reschedules" value="1"<?php if (@$_POST['include_reschedules']){?> checked="checked"<?php }?> /> Reschedules
-						<input type="checkbox" name="include_cancellations" value="1"<?php if (@$_POST['include_cancellations']){?> checked="checked"<?php }?> /> Cancellations
+						<input type="checkbox" name="include_bookings" class="filter" value="1"<?php if (@$_POST['include_bookings']){?> checked="checked"<?php }?> /> Bookings
+						<input type="checkbox" name="include_reschedules" class="filter" value="1"<?php if (@$_POST['include_reschedules']){?> checked="checked"<?php }?> /> Reschedules
+						<input type="checkbox" name="include_cancellations" class="filter" value="1"<?php if (@$_POST['include_cancellations']){?> checked="checked"<?php }?> /> Cancellations
 					</form>
 					<form id="csvform" method="post" action="/transport/downloadcsv">
 						<input type="hidden" name="date_from" value="<?php echo @$_POST['date_from']?>" />
@@ -160,8 +160,10 @@
 				success: function(html) {
 					if (html == "1") {
 						$('input:checked').map(function() {
-							$(this).parent().parent().attr('class','waitinglistGrey');
-							$(this).attr('checked',false);
+							if ($(this).attr('class') != 'filter') {
+								$(this).parent().parent().attr('class','waitinglistGrey');
+								$(this).attr('checked',false);
+							}
 						});
 					} else {
 						alert("Something went wrong trying to confirm the transport item.\n\nPlease try again or contact OpenEyes support.");
