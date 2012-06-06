@@ -443,8 +443,8 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 	$('#date-filter_0').click(function() {
 		today = new Date();
 		
-		$('#date-start').datepicker('setDate', format_date(today));
-		$('#date-end').datepicker('setDate', format_date(today));
+		$('#date-start').val(format_date(today));
+		$('#date-end').val(format_date(today));
 
 		$('#date-end').datepicker('option','minDate',$('#date-start').datepicker('getDate'));
 		$('#date-start').datepicker('option','maxDate',$('#date-end').datepicker('getDate'));
@@ -456,9 +456,9 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 
 	$('#date-filter_1').click(function() {
 		today = new Date();
-		
-		$('#date-start').datepicker('setDate', format_date(today));
-		$('#date-end').datepicker('setDate', format_date(returnDateWithInterval(today, 6)));
+
+		$('#date-start').val(format_date(today));
+		$('#date-end').val(format_date(returnDateWithInterval(today, 6)));
 		
 		$('#date-end').datepicker('option','minDate',$('#date-start').datepicker('getDate'));
 		$('#date-start').datepicker('option','maxDate',$('#date-end').datepicker('getDate'));
@@ -504,7 +504,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			$('#date-start').datepicker('setDate', format_date(returnDateWithIntervalFromString(sd, -7)));
 		}
 
-		setFilter({'date-filter':''});
+		setFilter({'date-filter':'custom','date-start':$('#date-start').val(),'date-end':$('#date-end').val()});
 		$('input[type="radio"]').attr('checked',true);
 		$('#date-start').trigger('change');
 		$('#date-end').trigger('change');
@@ -535,7 +535,7 @@ $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			}
 		}
 
-		setFilter({'date-filter':''});
+		setFilter({'date-filter':'custom','date-start':$('#date-start').val(),'date-end':$('#date-end').val()});
 		$('input[type="radio"]').attr('checked',true);
 		$('#date-start').trigger('change');
 		$('#date-end').trigger('change');
