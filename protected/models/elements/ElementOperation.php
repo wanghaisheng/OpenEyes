@@ -1036,12 +1036,7 @@ class ElementOperation extends BaseElement
 	}
 	
 	public function showPreopWarning() {
-		if(in_array($this->booking->session->theatre->code, array('CRZ','BRZ'))) { // Not Ozurdex
-			return false;
-		} else if($specialty->id == 13) {  // Not refractive laser
-			return false;
-		}
-		return true;
+		return (!in_array($this->booking->session->theatre->code, array('CRZ','BRZ'))); // Not Ozurdex
 	}
 	
 	public function showSeatingWarning() {
