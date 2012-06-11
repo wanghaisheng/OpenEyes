@@ -861,3 +861,5 @@ ul.ui-autocomplete li.ui-menu-item a:hover { background:#3665ff; color: #fff; bo
 .session_unavailable { color: #f00; }
 .toAddress {padding-left:7em;}
 .red { color: #f00; }
+
+div.transport_pagination { margin-top: 15px; margin-bottom: 10px; }
