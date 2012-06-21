@@ -319,7 +319,6 @@ class PatientService
 		$townFound = false;
 		$countyFound = false;
 		$address2 = '';
-		$town = '';
 
 		// Go through array looking for likely candidates for postcode, town/city and county
 		for ($index = 0; $index < count($addressLines); $index++) {
