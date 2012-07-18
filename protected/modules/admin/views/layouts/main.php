@@ -36,6 +36,7 @@
 	<?php Yii::app()->clientScript->registerCssFile('/css/style.css'); ?>
 	<?php Yii::app()->clientScript->registerCssFile('/css/admin.css'); ?>
   <script src="/js/libs/modernizr-2.0.6.min.js"></script>
+	<script src="/js/buttons.js"></script>
 </head>
 
 <body>
@@ -68,6 +69,7 @@
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				array('label'=>'Home', 'url'=>array('/site/index')),
+				array('label'=>'Audit', 'url'=>array('/admin/adminAudit/index')),
 				array('label'=>'Users', 'url'=>array('/admin/adminUser/index')),
 				array('label'=>'Firms', 'url'=>array('/admin/adminFirm/index')),
 				array('label'=>'Global phrases', 'url'=>array('/admin/adminPhrase/index')),

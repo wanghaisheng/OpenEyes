@@ -85,3 +85,5 @@ ul.yiiPager > li { display:inline-block; margin-right: 5px; }
 .form .row .field {
 	float: left;
 }
+
+#auditList { width: 1190px; }
