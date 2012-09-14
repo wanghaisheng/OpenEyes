@@ -81,6 +81,17 @@ class BaseActiveRecord extends CActiveRecord
 		} catch (Exception $e) {
 		}
 
+		if (Yii::app()->params['database_timestamp_timezone'] != ini_get('date.timezone')) {
+			if ($this->created_date) {
+				$this->created_date = $this->convertTimestamp($this->created_date,ini_get('date.timezone'),Yii::app()->params['database_timestamp_timezone']);
+			}
+			if ($this->last_modified_date) {
+				$this->last_modified_date = $this->convertTimestamp($this->last_modified_date,ini_get('date.timezone'),Yii::app()->params['database_timestamp_timezone']);
+			}
+		}
+
+		$now_timestamp = $this->getTimestamp();
+
 		if ($this->getIsNewRecord() || !isset($this->id)) {
 			if (!$allow_overriding || $this->created_user_id == 1) {
 				// Set creation properties
@@ -92,7 +103,7 @@ class BaseActiveRecord extends CActiveRecord
 				}
 			}
 			if (!$allow_overriding || $this->created_date == "1900-01-01 00:00:00") {
-				$this->created_date = date('Y-m-d H:i:s');
+				$this->created_date = $now_timestamp;
 			}
 		}
 
@@ -108,12 +119,41 @@ class BaseActiveRecord extends CActiveRecord
 				}
 			}
 			if (!$allow_overriding || $this->last_modified_date == "1900-01-01 00:00:00") {
-				$this->last_modified_date = date('Y-m-d H:i:s');
+				$this->last_modified_date = $now_timestamp;
 			}
 		} catch (Exception $e) {
 		}
 
 		return parent::save($runValidation, $attributes);
+	}
+
+	protected function afterSave() {
+		if (Yii::app()->params['database_timestamp_timezone'] != ini_get('date.timezone')) {
+			foreach (array('created_date','last_modified_date') as $field) {
+				if ($this->hasAttribute($field)) {
+					$this->$field = $this->convertTimestamp($this->$field,Yii::app()->params['database_timestamp_timezone'],ini_get('date.timezone'));
+				}
+			}
+		}
+	}
+
+	public function getTimestamp() {
+		if (Yii::app()->params['database_timestamp_timezone'] != ini_get('date.timezone')) {
+			$timestamp = $this->convertTimestamp(date('Y-m-d H:i:s'),ini_get('date.timezone'),Yii::app()->params['database_timestamp_timezone']);
+		} else {
+			$timestamp = date('Y-m-d H:i:s');
+		}
+		return $timestamp;
+	}
+
+	public function convertTimestamp($timestamp,$from_timezone,$to_timezone) {
+		$original_timezone = ini_get('date.timezone');
+		ini_set('date.timezone',$from_timezone);
+		$ts = strtotime($timestamp);
+		ini_set('date.timezone',$to_timezone);
+		$timestamp = date('Y-m-d H:i:s',$ts);
+		ini_set('date.timezone',$original_timezone);
+		return $timestamp;
 	}
 
 	/**
@@ -141,5 +181,19 @@ class BaseActiveRecord extends CActiveRecord
 		}
 
 		return serialize($attributes);
+	}
+
+	protected function afterFind() {
+		// Munge timestamps coming out of the database if they've been stored in a timezone other than the current date.timezone setting
+		if (Yii::app()->params['database_timestamp_timezone'] != ($current_timezone = ini_get('date.timezone'))) {
+			foreach (array('created_date','last_modified_date') as $field) {
+				if ($this->hasAttribute($field)) {
+					ini_set('date.timezone',Yii::app()->params['database_timestamp_timezone']);
+					$timestamp = strtotime($this->$field);
+					ini_set('date.timezone',$current_timezone);
+					$this->$field = date('Y-m-d H:i:s',$timestamp);
+				}
+			}
+		}
 	}
 }
