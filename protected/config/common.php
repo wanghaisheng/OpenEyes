@@ -114,9 +114,10 @@ $config = array(
 			'routes' => array(
 				// Normal logging
 				'application' => array(
-					'class' => 'CFileLogRoute',
+					'class' => 'OEFileLogRoute',
 					'levels' => 'info, warning, error',
 					'logFile' => 'application.log',
+					'logTimezone' => 'UTC',
 				),
 				// Development logging (application only)
 				'debug' => array(
