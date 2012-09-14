@@ -25,6 +25,15 @@
  */
 class BaseActiveRecord extends CActiveRecord
 {
+	public $timestampTimezone;
+
+	public function init() {
+		if (Yii::app()->params['database_timestamp_timezone']) {
+			$this->timestampTimezone = Yii::app()->params['database_timestamp_timezone'];
+		} else {
+			$this->timestampTimezone = ini_get('date.timezone');
+		}
+	}
 
 	/**
 	 * Audit log
@@ -81,12 +90,12 @@ class BaseActiveRecord extends CActiveRecord
 		} catch (Exception $e) {
 		}
 
-		if (Yii::app()->params['database_timestamp_timezone'] != ini_get('date.timezone')) {
+		if ($this->timestampTimezone != ini_get('date.timezone')) {
 			if ($this->created_date) {
-				$this->created_date = $this->convertTimestamp($this->created_date,ini_get('date.timezone'),Yii::app()->params['database_timestamp_timezone']);
+				$this->created_date = $this->convertTimestamp($this->created_date,ini_get('date.timezone'),$this->timestampTimezone);
 			}
 			if ($this->last_modified_date) {
-				$this->last_modified_date = $this->convertTimestamp($this->last_modified_date,ini_get('date.timezone'),Yii::app()->params['database_timestamp_timezone']);
+				$this->last_modified_date = $this->convertTimestamp($this->last_modified_date,ini_get('date.timezone'),$this->timestampTimezone);
 			}
 		}
 
@@ -128,18 +137,18 @@ class BaseActiveRecord extends CActiveRecord
 	}
 
 	protected function afterSave() {
-		if (Yii::app()->params['database_timestamp_timezone'] != ini_get('date.timezone')) {
+		if ($this->timestampTimezone != ini_get('date.timezone')) {
 			foreach (array('created_date','last_modified_date') as $field) {
 				if ($this->hasAttribute($field)) {
-					$this->$field = $this->convertTimestamp($this->$field,Yii::app()->params['database_timestamp_timezone'],ini_get('date.timezone'));
+					$this->$field = $this->convertTimestamp($this->$field,$this->timestampTimezone,ini_get('date.timezone'));
 				}
 			}
 		}
 	}
 
 	public function getTimestamp() {
-		if (Yii::app()->params['database_timestamp_timezone'] != ini_get('date.timezone')) {
-			$timestamp = $this->convertTimestamp(date('Y-m-d H:i:s'),ini_get('date.timezone'),Yii::app()->params['database_timestamp_timezone']);
+		if ($this->timestampTimezone != ini_get('date.timezone')) {
+			$timestamp = $this->convertTimestamp(date('Y-m-d H:i:s'),ini_get('date.timezone'),$this->timestampTimezone);
 		} else {
 			$timestamp = date('Y-m-d H:i:s');
 		}
@@ -185,10 +194,10 @@ class BaseActiveRecord extends CActiveRecord
 
 	protected function afterFind() {
 		// Munge timestamps coming out of the database if they've been stored in a timezone other than the current date.timezone setting
-		if (Yii::app()->params['database_timestamp_timezone'] != ($current_timezone = ini_get('date.timezone'))) {
+		if ($this->timestampTimezone != ($current_timezone = ini_get('date.timezone'))) {
 			foreach (array('created_date','last_modified_date') as $field) {
 				if ($this->hasAttribute($field)) {
-					ini_set('date.timezone',Yii::app()->params['database_timestamp_timezone']);
+					ini_set('date.timezone',$this->timestampTimezone);
 					$timestamp = strtotime($this->$field);
 					ini_set('date.timezone',$current_timezone);
 					$this->$field = date('Y-m-d H:i:s',$timestamp);
