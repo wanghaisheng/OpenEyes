@@ -21,13 +21,15 @@
  * This is the model class for table "Contact".
  *
  * The following are the available columns in table 'Contact':
- * @property string $id
+ * @property integer $id
  * @property string $nick_name
  * @property string $primary_phone
  * @property string $title
  * @property string $first_name
  * @property string $last_name
  * @property string $qualifications
+ * @property string $source
+ * @property boolean $archived
  * 
  * The following are the available model relations:
  * @property Gp $gp
