@@ -29,6 +29,7 @@
  * @property string $last_name
  * @property string $qualifications
  * @property string $source
+ * @property string $source_ref
  * @property boolean $archived
  * 
  * The following are the available model relations:
