@@ -68,8 +68,12 @@ class LoginForm extends CFormModel
 		{
 			$this->_identity=new UserIdentity($this->username,$this->password);
 			if(!$this->_identity->authenticate()) {
-				$this->addError('username', 'Invalid login.');
-				$this->addError('password','Invalid login.');
+				if ($this->_identity->errorCode == UserIdentity::ERROR_LDAP_DOWN) {
+					$this->addError('password','Active Directory could not be reached');
+				} else {
+					$this->addError('username', 'Invalid login.');
+					$this->addError('password','Invalid login.');
+				}
 			}
 		} else {
 			$this->clearErrors();

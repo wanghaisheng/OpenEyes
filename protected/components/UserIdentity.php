@@ -31,6 +31,7 @@ class UserIdentity extends CUserIdentity
 	 * New error code for users with active set to 0
 	 */
 	const ERROR_USER_INACTIVE = 3;
+	const ERROR_LDAP_DOWN = 999;
 
 	/**
 	 * Authenticates a user.
@@ -107,18 +108,31 @@ class UserIdentity extends CUserIdentity
 					$this->password
 				);
 			} catch (Exception $e){
-				/**
-				 * User not authenticated via LDAP
-				 */
-				$audit = new Audit;
-				$audit->action = "login-failed";
-				$audit->target_type = "login";
-				$audit->user_id = $user->id;
-				$audit->data = "Login failed for user {$this->username}: LDAP authentication failed: ".$e->getMessage().": ".$this->username;
-				$audit->save();
-				OELog::log("Login failed for user {$this->username}: LDAP authentication failed: ".$e->getMessage(),$this->username);
+				if (stristr($e->getMessage(),"Can't contact LDAP server")) {
+					$audit = new Audit;
+					$audit->action = "login-failed";
+					$audit->target_type = "login";
+					$audit->user_id = $user->id;
+					$audit->data = "Login failed for user {$this->username}: Unable to contact LDAP";
+					$audit->save();
+					OELog::log("Login failed for user {$this->username}: Unable to contact LDAP");
 
-				$this->errorCode = self::ERROR_USERNAME_INVALID;
+					$this->errorCode = self::ERROR_LDAP_DOWN;
+				} else {
+					/**
+					 * User not authenticated via LDAP
+					 */
+					$audit = new Audit;
+					$audit->action = "login-failed";
+					$audit->target_type = "login";
+					$audit->user_id = $user->id;
+					$audit->data = "Login failed for user {$this->username}: LDAP authentication failed: ".$e->getMessage().": ".$this->username;
+					$audit->save();
+					OELog::log("Login failed for user {$this->username}: LDAP authentication failed: ".$e->getMessage(),$this->username);
+
+					$this->errorCode = self::ERROR_USERNAME_INVALID;
+				}
+
 				return false;
 			}
 
