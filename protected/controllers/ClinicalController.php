@@ -30,6 +30,7 @@ class ClinicalController extends BaseController
 	public $editable;
 	public $event;
 	public $title;
+	public $deleting;
 
 	public function init()
 	{
@@ -638,6 +639,8 @@ class ClinicalController extends BaseController
 		if ($event->created_user_id != Yii::app()->session['user']->id || (time() - strtotime($event->created_date)) > 86400) {
 			return $this->redirect(array('patient/event/'.$event->id));
 		}
+
+		$this->deleting = true;
 
 		if (!empty($_POST) && @$_POST['event_id'] == $event->id) {
 			$event->deleted = 1;

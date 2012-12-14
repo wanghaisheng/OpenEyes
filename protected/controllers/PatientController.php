@@ -32,6 +32,7 @@ class PatientController extends BaseController
 	public $title;
 	public $event_type_id;
 	public $episode;
+	public $deleting;
 
 	public function filters()
 	{
