@@ -14,6 +14,7 @@ class BaseEventTypeController extends BaseController
 	public $assetPath;
 	public $episode;
 	public $print_css = true;
+	public $deleting;
 
 	public function actionIndex()
 	{
@@ -841,6 +842,8 @@ class BaseEventTypeController extends BaseController
 		if (!$this->event->canDelete()) {
 			return $this->redirect(array('default/view/'.$this->event->id));
 		}
+
+		$this->deleting = true;
 
 		if (!empty($_POST)) {
 			//if (isset($_POST['et_deleteevent'])) {

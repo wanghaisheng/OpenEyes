@@ -9,6 +9,12 @@
 			} else if (is_object($this->episode)) {?>
 				You can: <span class="aBtn view-event"><?php echo CHtml::link('View',array('/patient/episode/'.$this->episode->id),array('class'=>"view-episode"))?></span><span class="aBtn_inactive">Edit</span>
 			<?php }?>
+		<?php }else if (@$this->deleting) {
+			if ($this->event->eventType->class_name == 'OphTrOperation') {?>
+				You can: <span class="aBtn view-event"><?php echo CHtml::link('View',array('/patient/event/'.$this->event->id),array('class'=>"view-event"))?></span><?php if ($this->editable) {?><span class="aBtn edit-event"><?php echo CHtml::link('Edit',array('/clinical/update/'.$this->event->id),array('class'=>"edit-event"))?></span><?php }?><span class="aBtn_inactive">Delete</span>
+			<?php }else{?>
+				You can: <span class="aBtn view-event"><?php echo CHtml::link('View',array('/'.$this->event->eventType->class_name.'/default/view/'.$this->event->id),array('class'=>"view-event"))?></span><?php if ($this->editable) {?><span class="aBtn edit-event"><?php echo CHtml::link('Edit',array('/'.$this->event->eventType->class_name.'/default/update/'.$this->event->id),array('class'=>"edit-event"))?></span><?php }?><span class="aBtn_inactive">Delete</span>
+			<?php }?>
 		<?php }else{
 			if (is_object($this->event)) {
 				if ($this->event->eventType->class_name == 'OphTrOperation') {?>
