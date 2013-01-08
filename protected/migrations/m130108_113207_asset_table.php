@@ -7,6 +7,7 @@ class m130108_113207_asset_table extends CDbMigration
 		$this->createTable('asset',array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'name' => 'varchar(255) COLLATE utf8_bin NOT NULL',
+				'title' => 'varchar(255) COLLATE utf8_bin NOT NULL',
 				'description' => 'varchar(1024) COLLATE utf8_bin NOT NULL',
 				'mimetype' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 				'filesize' => 'int(10) unsigned NOT NULL DEFAULT 0',
