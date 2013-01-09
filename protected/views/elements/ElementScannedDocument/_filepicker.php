@@ -1,4 +1,5 @@
-<?php /**
+<?php
+/**
  * OpenEyes
  *
  * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
@@ -15,16 +16,31 @@
  * @copyright Copyright (c) 2011-2012, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+
+if (!empty($_POST)) {
+	$selected = @$_POST[get_class($element)]['asset_id'];
+} else {
+	$selected = $element->asset ? $element->asset->name : null;
+}
 ?>
 <div class="scan-thumbnails">
-	<?php foreach ($element->getScans($filetypes) as $i => $scan) {?>
+	<?php foreach ($element->getScans($filetypes) as $i => $scan) {
+		if ($element->asset && $element->asset->name == $scan) {
+			$thumbnail = Yii::app()->createUrl("/".Yii::app()->params['asset_path']."/thumbnail/$element->asset_id.jpg");
+			$preview = Yii::app()->createUrl("/".Yii::app()->params['asset_path']."/preview/$element->asset_id.jpg");
+			$filename = $element->asset_id;
+		} else {
+			$thumbnail = Yii::app()->createUrl("/$this->assetPath/$scan.thumbnail.jpg");
+			$preview = Yii::app()->createUrl("/$this->assetPath/$scan.preview.jpg");
+			$filename = $scan;
+		}?>
 		<?php if ($i >0 && ($i % 6) == 0) {?>
 			</div><div class="scan-thumbnails">
 		<?php }?>
-		<div class="scan-thumbnail" style="background-image:url('<?php echo $this->assetPath?>/img/scans/<?php echo $scan?>.thumbnail.jpg');<?php if (@$_POST[get_class($element)]['asset_id'] == $scan) {?> border: 2px solid #0b59da;<?php }?>" data-filename="<?php echo $scan?>">
+		<div class="scan-thumbnail" style="background-image:url('<?php echo $thumbnail?>');<?php if ($selected == $scan) {?> border: 2px solid #0b59da;<?php }?>" data-filename="<?php echo $filename?>">
 			<div class="scan-thumbnail-select-target"></div>
 			<div class="scan-thumbnail-preview-link">
-				<a href="<?php echo $this->assetPath?>/img/scans/<?php echo $scan?>.preview.jpg" rel="<?php echo $identifier.$i?>">
+				<a href="<?php echo $preview?>" rel="<?php echo $identifier.$i?>">
 					<button type="submit" class="classy blue mini preview-thumbnail"><span class="button-span button-span-blue">Preview</span></button>
 				</a>
 			</div>

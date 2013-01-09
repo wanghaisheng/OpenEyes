@@ -94,87 +94,91 @@ class ElementScannedDocument extends BaseEventTypeElement
 	public function getScans($mimetypes=false) {
 		$scans = array();
 
-		$assetPath = Yii::app()->getAssetManager()->publish(Yii::app()->params['scans_directory']);
+		$assetPath = Yii::app()->basePath."/..".Yii::app()->getAssetManager()->publish(Yii::app()->params['scans_directory']);
 
-die($assetPath);
-
-		$dir = Yii::app()->params['scans_directory'];
-
-		$assetPath = Yii::getPathOfAlias('application.modules.'.Yii::app()->getController()->getModule()->name.'.assets');
-
-		if (!file_exists("$assetPath/img/scans")) {
-			@mkdir("$assetPath/img/scans",0755);
+		if ($this->asset && (!$mimetypes || in_array($this->asset->mimetype,$mimetypes))) {
+			$scans[] = $this->asset->name;
 		}
 
-		foreach (Asset::get_files_by_modified_date($dir,$mimetypes) as $file) {
+		foreach (Asset::get_files_by_modified_date($assetPath,$mimetypes) as $file) {
 			$scans[] = $file;
 
-			$thumbnail = Asset::create_thumbnail($dir,$file);
-			$preview = Asset::create_preview($dir,$file);
-
-			if (!file_exists("$assetPath/img/scans/$thumbnail")) {
-				@copy("$dir/$thumbnail","$assetPath/img/scans/$thumbnail");
-			}
-
-			if (!file_exists("$assetPath/img/scans/$preview")) {
-				@copy("$dir/$preview","$assetPath/img/scans/$preview");
-			}
+			$thumbnail = Asset::create_thumbnail($assetPath,$file);
+			$preview = Asset::create_preview($assetPath,$file);
 		}
 
 		return $scans;
 	}
 
 	public function beforeSave() {
-		$dest_path = Yii::app()->basePath."/../".Yii::app()->params['asset_path'];
+		if (!ctype_digit($this->asset_id)) {
+			$dest_path = Yii::app()->basePath."/../".Yii::app()->params['asset_path'];
 
-		if (!file_exists($dest_path)) {
-			throw new Exception("Asset path does not exist: $dest_path");
+			if (!file_exists($dest_path)) {
+				throw new Exception("Asset path does not exist: $dest_path");
+			}
+
+			if (!file_exists($dest_path."/preview")) {
+				throw new Exception("Asset preview path does not exist: $dest_path/preview");
+			}
+
+			if (!file_exists($dest_path."/thumbnail")) {
+				throw new Exception("Asset thumbnail path does not exist: $dest_path/thumbnail");
+			}
+
+			$path = Yii::app()->params['scans_directory'].'/'.$_POST[get_class($this)]['asset_id'];
+
+			if (!file_exists($path)) {
+				throw new Exception("File doesn't exist: ".$path);
+			}
+
+			preg_match('/\.([a-zA-Z0-9]+)$/',$_POST[get_class($this)]['asset_id'],$extension);
+
+			$asset = new Asset;
+			$asset->name = $_POST[get_class($this)]['asset_id'];
+			$asset->title = $_POST[get_class($this)]['title'];
+			$asset->description = $_POST[get_class($this)]['description'];
+			$asset->mimetype = mime_content_type($path);
+			$asset->filesize = filesize($path);
+			$asset->extension = $extension[1];
+
+			if (!$asset->save()) {
+				throw new Exception("Unable to save asset: ".print_r($asset->getErrors(),true));
+			}
+
+			if (!@copy($path,"$dest_path/$asset->filename")) {
+				throw new Exception("Unable to copy asset into place ([$path] => [$dest_path/$asset->filename])");
+			}
+
+			if (!@unlink($path)) {
+				throw new Exception("Unable to delete file: ".$path);
+			}
+
+			$assetPath = Yii::app()->basePath."/..".Yii::app()->getAssetManager()->publish(Yii::app()->params['scans_directory']);
+			$assetFilePath = $assetPath."/".$asset->name;
+
+			if (!@unlink($assetFilePath)) {
+				throw new Exception("Unable to delete file: ".$assetFilePath);
+			}
+
+			if (!@copy($assetFilePath.'.preview.jpg',"$dest_path/preview/$asset->id.jpg")) {
+				throw new Exception("Unable to copy asset preview into place ([$assetFilePath.preview.jpg] => [$dest_path/preview/$asset->id.jpg])");
+			}
+
+			if (!@unlink($assetFilePath.'.preview.jpg')) {
+				throw new Exception("Unable to delete file: $assetFilePath.preview.jpg");
+			}
+
+			if (!@copy($assetFilePath.'.thumbnail.jpg',"$dest_path/thumbnail/$asset->id.jpg")) {
+				throw new Exception("Unable to copy asset thumbnail into place ([$assetFilePath.thumbnail.jpg] => [$dest_path/thumbnail/$asset->id.jpg])");
+			}
+
+			if (!@unlink($assetFilePath.'.thumbnail.jpg')) {
+				throw new Exception("Unable to delete file: $assetFilePath.thumbnail.jpg");
+			}
+
+			$this->asset_id = $asset->id;
 		}
-
-		if (!file_exists($dest_path."/preview")) {
-			throw new Exception("Asset preview path does not exist: $dest_path/preview");
-		}
-
-		if (!file_exists($dest_path."/thumbnail")) {
-			throw new Exception("Asset thumbnail path does not exist: $dest_path/thumbnail");
-		}
-
-		$path = Yii::app()->params['scans_directory'].'/'.$_POST[get_class($this)]['asset_id'];
-
-		if (!file_exists($path)) {
-			throw new Exception("File doesn't exist: ".$path);
-		}
-
-		$asset = new Asset;
-		$asset->name = $_POST[get_class($this)]['asset_id'];
-		$asset->title = $_POST[get_class($this)]['title'];
-		$asset->description = $_POST[get_class($this)]['description'];
-		$asset->mimetype = mime_content_type($path);
-		$asset->filesize = filesize($path);
-
-		if (!$asset->save()) {
-			throw new Exception("Unable to save asset: ".print_r($asset->getErrors(),true));
-		}
-
-		preg_match('/\.([a-zA-Z0-9]+)$/',$asset->name,$m);
-
-		if (!@copy($path,"$dest_path/$asset->id.{$m[1]}")) {
-			throw new Exception("Unable to copy asset into place ([$path] => [$dest_path/$asset->id.{$m[1]}])");
-		}
-
-		if (!@unlink($path)) {
-			throw new Exception("Unable to delete file: ".$path);
-		}
-
-		if (!@copy($path.'.preview.jpg',"$dest_path/preview/$asset->id.jpg")) {
-			throw new Exception("Unable to copy asset preview into place ([$path.preview.jpg] => [$dest_path/preview/$asset->id.jpg])");
-		}
-
-		if (!@copy($path.'.thumbnail.jpg',"$dest_path/thumbnail/$asset->id.jpg")) {
-			throw new Exception("Unable to copy asset thumbnail into place ([$path.thumbnail.jpg] => [$dest_path/thumbnail/$asset->id.jpg])");
-		}
-
-		$_POST[get_class($this)]['asset_id'] = $asset->id;
 
 		return parent::beforeSave();
 	}

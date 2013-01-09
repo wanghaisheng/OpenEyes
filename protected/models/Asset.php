@@ -116,4 +116,16 @@ class Asset extends BaseActiveRecord
 
 		return $file.'.preview.jpg';
 	}
+
+	public function getFilename() {
+		return $this->id.'.'.$this->extension;
+	}
+
+	public function getPreview() {
+		return Yii::app()->createUrl("/".Yii::app()->params['asset_path']."/preview/".$this->id.".jpg");
+	}
+
+	public function getPath() {
+		return Yii::app()->basePath."/../".Yii::app()->params['asset_path']."/$this->id.$this->extension";
+	}
 }

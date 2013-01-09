@@ -27,7 +27,11 @@
 	<?php echo $form->textField($element,'title')?>
 	<?php echo $form->textArea($element,'description',array('rows'=>8,'cols'=>60))?>
 
-	<input type="hidden" id="<?php echo get_class($element)?>_asset_id" name="<?php echo get_class($element)?>[asset_id]" value="<?php echo @$_POST[get_class($element)]['asset_id']?>" />
+	<?php if (!empty($_POST)) {?>
+		<input type="hidden" id="<?php echo get_class($element)?>_asset_id" name="<?php echo get_class($element)?>[asset_id]" value="<?php echo @$_POST[get_class($element)]['asset_id']?>" />
+	<?php }else{?>
+		<input type="hidden" id="<?php echo get_class($element)?>_asset_id" name="<?php echo get_class($element)?>[asset_id]" value="<?php echo $element->asset_id?>" />
+	<?php }?>
 
 	<h4 class="elementTypeName">Resources from imaging devices</h4>
 	<?php $this->renderPartial('//elements/ElementScannedDocument/_filepicker',array(

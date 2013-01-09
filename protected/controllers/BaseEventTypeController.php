@@ -259,7 +259,6 @@ class BaseEventTypeController extends BaseController
 			// processOutput is true so that the css/javascript from the event_header.php are processed when rendering the view
 			false, true
 		);
-
 	}
 
 	public function actionView($id) {
