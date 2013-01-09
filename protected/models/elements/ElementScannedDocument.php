@@ -94,6 +94,10 @@ class ElementScannedDocument extends BaseEventTypeElement
 	public function getScans($mimetypes=false) {
 		$scans = array();
 
+		$assetPath = Yii::app()->getAssetManager()->publish(Yii::app()->params['scans_directory']);
+
+die($assetPath);
+
 		$dir = Yii::app()->params['scans_directory'];
 
 		$assetPath = Yii::getPathOfAlias('application.modules.'.Yii::app()->getController()->getModule()->name.'.assets');
