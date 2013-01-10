@@ -67,56 +67,6 @@ class Asset extends BaseActiveRecord
 		);
 	}
 
-	static public function get_files_by_modified_date($dir,$mimetypes=false) {
-		$files = array();
-
-		$dh = opendir($dir);
-
-		while ($file = readdir($dh)) {
-			if (!preg_match('/^\.\.?$/',$file) && !preg_match('/\.thumbnail\.jpg$/',$file) && !preg_match('/\.preview\.jpg$/',$file)) {
-				if (is_file("$dir/$file")) {
-					$mimetype = mime_content_type("$dir/$file");
-
-					if (!$mimetypes || (is_array($mimetypes) && in_array($mimetype,$mimetypes))) {
-						$stat = stat("$dir/$file");
-
-						while (isset($files[$stat['mtime']])) {
-							$stat['mtime']++;
-						}
-
-						$files[$stat['mtime']] = $file;
-					}
-				}
-			}
-		}
-
-		closedir($dh);
-
-		ksort($files);
-
-		return array_reverse($files);
-	}
-
-	static public function create_thumbnail($dir,$file) {
-		$escaped = escapeshellarg("$dir/$file");
-
-		if (!file_exists("$dir/$file.thumbnail.jpg")) { 
-			`convert -flatten -antialias -scale 150x150 -raise 3 $escaped $escaped.thumbnail.jpg`;
-		}
-
-		return $file.'.thumbnail.jpg';
-	}
-
-	static public function create_preview($dir,$file) {
-		$escaped = escapeshellarg("$dir/$file");
-
-		if (!file_exists("$dir/$file.preview.jpg")) { 
-			`convert -flatten -antialias -scale 800x800 -raise 3 $escaped $escaped.preview.jpg`;
-		}
-
-		return $file.'.preview.jpg';
-	}
-
 	public function getFilename() {
 		return $this->id.'.'.$this->extension;
 	}
