@@ -93,7 +93,11 @@ class ElementScannedDocument extends BaseEventTypeElement
 
 	public function getScans($mimetypes=false) {
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("new = 1 or id = $this->asset_id");
+		if ($this->asset_id) {
+			$criteria->addCondition("new = 1 or id = $this->asset_id");
+		} else {
+			$criteria->addCondition("new = 1");
+		}
 		if (is_array($mimetypes)) {
 			$criteria->addInCondition("mimetype",$mimetypes);
 		}
