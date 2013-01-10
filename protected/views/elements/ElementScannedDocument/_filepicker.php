@@ -28,7 +28,7 @@ if (!empty($_POST)) {
 		<?php if ($i >0 && ($i % 6) == 0) {?>
 			</div><div class="scan-thumbnails">
 		<?php }?>
-		<div class="scan-thumbnail" style="background-image:url('<?php echo Yii::app()->createUrl('/asset/thumbnail/'.$asset->id)?>');<?php if ($selected == $asset->id) {?> border: 2px solid #0b59da;<?php }?>" data-id="<?php echo $asset->id?>">
+		<div class="scan-thumbnail" style="background-image:url('<?php echo Yii::app()->createUrl('/asset/thumbnail/'.$asset->id)?>');<?php if ($selected == $asset->id) {?> border: 4px solid #0b59ff;<?php }?>" data-id="<?php echo $asset->id?>">
 			<div class="scan-thumbnail-select-target"></div>
 			<div class="scan-thumbnail-date">
 				<?php echo date('j M Y H:i',$asset->fileModifiedDate)?>
@@ -43,8 +43,8 @@ if (!empty($_POST)) {
 </div>
 <script type="text/javascript">
 	$('div.scan-thumbnail-select-target').click(function() {
-		$('div.scan-thumbnail').css("border","2px solid #ccc");
-		$(this).parent().css("border","2px solid #0b59da");
+		$('div.scan-thumbnail').css("border","4px solid #ccc");
+		$(this).parent().css("border","4px solid #0b59ff");
 		$('#<?php echo get_class($element)?>_asset_id').val($(this).parent().attr('data-id'));
 		return false;
 	});
