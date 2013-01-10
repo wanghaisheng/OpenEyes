@@ -20,27 +20,18 @@
 if (!empty($_POST)) {
 	$selected = @$_POST[get_class($element)]['asset_id'];
 } else {
-	$selected = $element->asset ? $element->asset->name : null;
+	$selected = $element->asset ? $element->asset_id: null;
 }
 ?>
 <div class="scan-thumbnails">
-	<?php foreach ($element->getScans($filetypes) as $i => $scan) {
-		if ($element->asset && $element->asset->name == $scan) {
-			$thumbnail = Yii::app()->createUrl("/".Yii::app()->params['asset_path']."/thumbnail/$element->asset_id.jpg");
-			$preview = Yii::app()->createUrl("/".Yii::app()->params['asset_path']."/preview/$element->asset_id.jpg");
-			$filename = $element->asset_id;
-		} else {
-			$thumbnail = Yii::app()->createUrl("/$this->assetPath/$scan.thumbnail.jpg");
-			$preview = Yii::app()->createUrl("/$this->assetPath/$scan.preview.jpg");
-			$filename = $scan;
-		}?>
+	<?php foreach ($element->getScans($filetypes) as $i => $asset) {?>
 		<?php if ($i >0 && ($i % 6) == 0) {?>
 			</div><div class="scan-thumbnails">
 		<?php }?>
-		<div class="scan-thumbnail" style="background-image:url('<?php echo $thumbnail?>');<?php if ($selected == $scan) {?> border: 2px solid #0b59da;<?php }?>" data-filename="<?php echo $filename?>">
+		<div class="scan-thumbnail" style="background-image:url('<?php echo Yii::app()->createUrl('/asset/thumbnail/'.$asset->id)?>');<?php if ($selected == $asset->id) {?> border: 2px solid #0b59da;<?php }?>" data-id="<?php echo $asset->id?>">
 			<div class="scan-thumbnail-select-target"></div>
 			<div class="scan-thumbnail-preview-link">
-				<a href="<?php echo $preview?>" rel="<?php echo $identifier.$i?>">
+				<a href="<?php echo Yii::app()->createUrl('/asset/preview/'.$asset->id.'.jpg')?>" rel="<?php echo $identifier.$i?>">
 					<button type="submit" class="classy blue mini preview-thumbnail"><span class="button-span button-span-blue">Preview</span></button>
 				</a>
 			</div>
@@ -51,12 +42,12 @@ if (!empty($_POST)) {
 	$('div.scan-thumbnail-select-target').click(function() {
 		$('div.scan-thumbnail').css("border","2px solid #ccc");
 		$(this).parent().css("border","2px solid #0b59da");
-		$('#<?php echo get_class($element)?>_asset_id').val($(this).parent().attr('data-filename'));
+		$('#<?php echo get_class($element)?>_asset_id').val($(this).parent().attr('data-id'));
 		return false;
 	});
 </script>
 <?php
-foreach ($element->getScans($filetypes) as $i => $scan) {
+foreach ($element->getScans($filetypes) as $i => $asset) {
 	$this->widget('application.extensions.fancybox.EFancyBox', array(
 		'target' => 'a[rel='.$identifier.$i.']',
 		'config' => array(),

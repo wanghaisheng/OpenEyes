@@ -87,100 +87,41 @@ class ElementScannedDocument extends BaseEventTypeElement
 		$criteria->compare('asset_id', $this->asset_id);
 		
 		return new CActiveDataProvider(get_class($this), array(
-				'criteria' => $criteria,
-			));
+			'criteria' => $criteria,
+		));
 	}
 
 	public function getScans($mimetypes=false) {
-		$scans = array();
-
-		$assetPath = Yii::app()->basePath."/..".Yii::app()->getAssetManager()->publish(Yii::app()->params['scans_directory']);
-
-		if ($this->asset && (!$mimetypes || in_array($this->asset->mimetype,$mimetypes))) {
-			$scans[] = $this->asset->name;
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("new = 1 or id = $this->asset_id");
+		if (is_array($mimetypes)) {
+			$criteria->addInCondition("mimetype",$mimetypes);
 		}
-
-		foreach (Asset::get_files_by_modified_date($assetPath,$mimetypes) as $file) {
-			$scans[] = $file;
-
-			$thumbnail = Asset::create_thumbnail($assetPath,$file);
-			$preview = Asset::create_preview($assetPath,$file);
-		}
-
-		return $scans;
+		return Asset::model()->findAll($criteria);
 	}
 
 	public function beforeSave() {
-		if (!ctype_digit($this->asset_id)) {
-			$dest_path = Yii::app()->basePath."/../".Yii::app()->params['asset_path'];
+		$model = get_class($this);
+		$element = $model::model()->findByPk($this->id);
 
-			if (!file_exists($dest_path)) {
-				throw new Exception("Asset path does not exist: $dest_path");
-			}
-
-			if (!file_exists($dest_path."/preview")) {
-				throw new Exception("Asset preview path does not exist: $dest_path/preview");
-			}
-
-			if (!file_exists($dest_path."/thumbnail")) {
-				throw new Exception("Asset thumbnail path does not exist: $dest_path/thumbnail");
-			}
-
-			$path = Yii::app()->params['scans_directory'].'/'.$_POST[get_class($this)]['asset_id'];
-
-			if (!file_exists($path)) {
-				throw new Exception("File doesn't exist: ".$path);
-			}
-
-			preg_match('/\.([a-zA-Z0-9]+)$/',$_POST[get_class($this)]['asset_id'],$extension);
-
-			$asset = new Asset;
-			$asset->name = $_POST[get_class($this)]['asset_id'];
-			$asset->title = $_POST[get_class($this)]['title'];
-			$asset->description = $_POST[get_class($this)]['description'];
-			$asset->mimetype = mime_content_type($path);
-			$asset->filesize = filesize($path);
-			$asset->extension = $extension[1];
-
+		if ($element->asset_id != $this->asset_id) {
+			$asset = Asset::model()->findByPk($element->asset_id);
+			$asset->new = 1;
 			if (!$asset->save()) {
-				throw new Exception("Unable to save asset: ".print_r($asset->getErrors(),true));
+				throw new Exception("Unable to mark asset as new: ".print_r($asset->getErrors(),true));
 			}
-
-			if (!@copy($path,"$dest_path/$asset->filename")) {
-				throw new Exception("Unable to copy asset into place ([$path] => [$dest_path/$asset->filename])");
-			}
-
-			if (!@unlink($path)) {
-				throw new Exception("Unable to delete file: ".$path);
-			}
-
-			$assetPath = Yii::app()->basePath."/..".Yii::app()->getAssetManager()->publish(Yii::app()->params['scans_directory']);
-			$assetFilePath = $assetPath."/".$asset->name;
-
-			if (!@unlink($assetFilePath)) {
-				throw new Exception("Unable to delete file: ".$assetFilePath);
-			}
-
-			if (!@copy($assetFilePath.'.preview.jpg',"$dest_path/preview/$asset->id.jpg")) {
-				throw new Exception("Unable to copy asset preview into place ([$assetFilePath.preview.jpg] => [$dest_path/preview/$asset->id.jpg])");
-			}
-
-			if (!@unlink($assetFilePath.'.preview.jpg')) {
-				throw new Exception("Unable to delete file: $assetFilePath.preview.jpg");
-			}
-
-			if (!@copy($assetFilePath.'.thumbnail.jpg',"$dest_path/thumbnail/$asset->id.jpg")) {
-				throw new Exception("Unable to copy asset thumbnail into place ([$assetFilePath.thumbnail.jpg] => [$dest_path/thumbnail/$asset->id.jpg])");
-			}
-
-			if (!@unlink($assetFilePath.'.thumbnail.jpg')) {
-				throw new Exception("Unable to delete file: $assetFilePath.thumbnail.jpg");
-			}
-
-			$this->asset_id = $asset->id;
 		}
 
 		return parent::beforeSave();
 	}
+
+	public function afterSave() {
+		$asset = $this->asset;
+		$asset->new = 0;
+		if (!$asset->save()) {
+			throw new Exception("Unable to unmark asset as new: ".print_r($asset->getErrors(),true));
+		}
+
+		return parent::afterSave();
+	}
 }
-?>
