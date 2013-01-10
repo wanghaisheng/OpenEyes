@@ -124,4 +124,14 @@ class Asset extends BaseActiveRecord
 	public function getPath() {
 		return Yii::app()->basePath."/assets/$this->id.$this->extension";
 	}
+
+	public function getFileModifiedDate() {
+		if (!file_exists($this->path)) {
+			throw new Exception("Asset not found: $this->path");
+		}
+
+		$stat = stat($this->path);
+
+		return $stat['mtime'];
+	}
 }

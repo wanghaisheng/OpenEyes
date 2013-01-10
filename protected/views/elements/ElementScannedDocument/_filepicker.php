@@ -30,6 +30,9 @@ if (!empty($_POST)) {
 		<?php }?>
 		<div class="scan-thumbnail" style="background-image:url('<?php echo Yii::app()->createUrl('/asset/thumbnail/'.$asset->id)?>');<?php if ($selected == $asset->id) {?> border: 2px solid #0b59da;<?php }?>" data-id="<?php echo $asset->id?>">
 			<div class="scan-thumbnail-select-target"></div>
+			<div class="scan-thumbnail-date">
+				<?php echo date('j M Y H:i',$asset->fileModifiedDate)?>
+			</div>
 			<div class="scan-thumbnail-preview-link">
 				<a href="<?php echo Yii::app()->createUrl('/asset/preview/'.$asset->id.'.jpg')?>" rel="<?php echo $identifier.$i?>">
 					<button type="submit" class="classy blue mini preview-thumbnail"><span class="button-span button-span-blue">Preview</span></button>
