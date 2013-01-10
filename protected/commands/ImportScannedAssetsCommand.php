@@ -19,6 +19,10 @@
 
 class ImportScannedAssetsCommand extends CConsoleCommand {
 	public function run($args) {
+		if (!isset(Yii::app()->params['scans_directory'])) {
+			throw new Exception("scans_directory parameter isn't set.");
+		}
+
 		if (!$dh = opendir(Yii::app()->params['scans_directory'])) {
 			throw new Exception("Unable to access scans directory: ".Yii::app()->params['scans_directory']);
 		}
