@@ -108,7 +108,7 @@ class ElementScannedDocument extends BaseEventTypeElement
 		$model = get_class($this);
 		$element = $model::model()->findByPk($this->id);
 
-		if ($element->asset_id != $this->asset_id) {
+		if ($element && $element->asset_id != $this->asset_id) {
 			$asset = Asset::model()->findByPk($element->asset_id);
 			$asset->new = 1;
 			if (!$asset->save()) {
