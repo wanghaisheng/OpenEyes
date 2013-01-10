@@ -797,7 +797,7 @@ class BaseEventTypeController extends BaseController
 	 * @param integer $id event id
 	 * @param array $elements
 	 */
-	protected function printPDF($id, $elements) {
+	protected function printPDF($id, $elements, $template=null) {
 
 		// Remove any existing css
 		Yii::app()->getClientScript()->reset();
