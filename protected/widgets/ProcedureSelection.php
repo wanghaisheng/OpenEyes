@@ -29,19 +29,22 @@ class ProcedureSelection extends BaseCWidget {
 	public $total_duration = 0;
 	public $last;
 	public $short_version = true;
+	public $identifier = 'procs';
+	public $relation = 'procedures';
+	public $label = 'Procedures';
 
 	public function run() {
 		if (empty($_POST)) {
 			if (!$this->selected_procedures) {
-				$this->selected_procedures = $this->element->procedures;
+				$this->selected_procedures = $this->element->{$this->relation};
 				if ($this->durations) {
 					$this->total_duration = $this->element->total_duration;
 				}
 			}
 		} else {
 			$this->selected_procedures = array();
-			if (isset($_POST['Procedures']) && is_array($_POST['Procedures'])) {
-				foreach ($_POST['Procedures'] as $proc_id) {
+			if (isset($_POST['Procedures_'.$this->identifier]) && is_array($_POST['Procedures_'.$this->identifier])) {
+				foreach ($_POST['Procedures_'.$this->identifier] as $proc_id) {
 					$proc = Procedure::model()->findByPk($proc_id);
 					$this->selected_procedures[] = $proc;
 					if ($this->durations) {
@@ -73,7 +76,7 @@ class ProcedureSelection extends BaseCWidget {
 						$this->removed_stack[] = "{id: $proc_id, name: '$name'}";
 					}
 				} else {
-					if (!@$_POST['Procedures'] || !in_array($proc_id,$_POST['Procedures'])) {
+					if (!@$_POST['Procedures_'.$this->identifier] || !in_array($proc_id,$_POST['Procedures_'.$this->identifier])) {
 						$this->procedures[$proc_id] = $name;
 					} else {
 						$this->removed_stack[] = "{id: $proc_id, name: '$name'}";

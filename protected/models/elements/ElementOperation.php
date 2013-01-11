@@ -363,11 +363,11 @@ class ElementOperation extends BaseEventTypeElement
 		$operationId = $this->id;
 		$order = 1;
 
-		if (!empty($_POST['Procedures'])) {
+		if (!empty($_POST['Procedures_procs'])) {
 			// first wipe out any existing procedures so we start from scratch
 			OperationProcedureAssignment::model()->deleteAll('operation_id = :id', array(':id' => $operationId));
 
-			foreach ($_POST['Procedures'] as $id) {
+			foreach ($_POST['Procedures_procs'] as $id) {
 				$procedure = new OperationProcedureAssignment;
 				$procedure->operation_id = $operationId;
 				$procedure->proc_id = $id;
@@ -382,9 +382,14 @@ class ElementOperation extends BaseEventTypeElement
 		return parent::afterSave();
 	}
 
+	protected function beforeValidate() {
+		$this->total_duration = @$_POST['ElementOperation']['total_duration_procs'];
+		return parent::beforeValidate();
+	}
+
 	protected function afterValidate()
 	{
-		if (!empty($_POST['action']) && empty($_POST['Procedures'])) {
+		if (!empty($_POST['action']) && empty($_POST['Procedures_procs'])) {
 			$this->addError('procedures', 'At least one procedure must be entered');
 		}
 

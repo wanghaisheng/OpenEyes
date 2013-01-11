@@ -33,7 +33,7 @@ if (!$model->site_id) {
 <?php $form->widget('application.widgets.ProcedureSelection',array(
 	'element' => $model,
 	'newRecord' => $newRecord,
-	'durations' => true
+	'durations' => true,
 ));
 ?>
 
