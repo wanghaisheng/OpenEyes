@@ -32,6 +32,7 @@ class ProcedureSelection extends BaseCWidget {
 	public $identifier = 'procs';
 	public $relation = 'procedures';
 	public $label = 'Procedures';
+	public $headertext;
 
 	public function run() {
 		if (empty($_POST)) {

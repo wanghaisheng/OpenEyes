@@ -2,6 +2,9 @@
 	<div class="label"><?php echo $label?>:</div>
 	<div class="data split limitWidth">
 		<div class="left">
+			<?php if ($headertext) {?>
+				<h5 class="normal"><em><?php echo $headertext?></em></h5>
+			<?php }?>
 			<h5 class="normal"><em>Add a procedure:</em></h5>
 
 			<?php
