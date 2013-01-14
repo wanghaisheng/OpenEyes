@@ -164,7 +164,7 @@
 			<?php }?>
 		}
 
-		if (typeof(window.callbackAddProcedure) == 'function') {
+		if (typeof(window.callbackRemoveProcedure) == 'function') {
 			callbackRemoveProcedure(procedure_id);
 		}
 
@@ -247,6 +247,7 @@
 	
 	$('select[id^="select_procedure_id"]').unbind('change').change(function() {
 		var m = $(this).attr('id').match(/^select_procedure_id_(.*)$/);
+		var identifier = m[1];
 		var select = $(this);
 		var procedure = $('select[name=select_procedure_id_'+m[1]+'] option:selected').text();
 		if (procedure != 'Select a commonly used procedure') {
