@@ -33,6 +33,7 @@ class ProcedureSelection extends BaseCWidget {
 	public $relation = 'procedures';
 	public $label = 'Procedures';
 	public $headertext;
+	public $read_only = false;
 
 	public function run() {
 		if (empty($_POST)) {
@@ -92,7 +93,12 @@ class ProcedureSelection extends BaseCWidget {
 		}
 
 		$this->class = get_class($this->element);
-		parent::run();
+
+		if ($this->read_only) {
+			$this->render(get_class($this)."_readonly");
+		} else {
+			$this->render(get_class($this));
+		}
 	}
 }
 ?>
