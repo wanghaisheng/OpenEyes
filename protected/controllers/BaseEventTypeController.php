@@ -797,7 +797,7 @@ class BaseEventTypeController extends BaseController
 	 * @param integer $id event id
 	 * @param array $elements
 	 */
-	protected function printPDF($id, $elements, $template=null) {
+	protected function printPDF($id, $elements, $template='print') {
 
 		// Remove any existing css
 		Yii::app()->getClientScript()->reset();
@@ -806,7 +806,7 @@ class BaseEventTypeController extends BaseController
 		$pdf_print = new OEPDFPrint('Openeyes', 'PDF', 'PDF');
 		$oeletter = new OELetter();
 		$oeletter->setBarcode('E:'.$id);
-		$body = $this->render('print', array(
+		$body = $this->render($template, array(
 			'elements' => $elements,
 			'eventId' => $id,
 		), true);
