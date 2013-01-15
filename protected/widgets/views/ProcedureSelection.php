@@ -32,7 +32,7 @@
 						$.ajax({
 							'url': '" . Yii::app()->createUrl('procedure/autocomplete') . "',
 							'type':'GET',
-							'data':{'term': request.term},
+							'data':{'term': request.term, 'restrict': '$restrict'},
 							'success':function(data) {
 								data = $.parseJSON(data);
 

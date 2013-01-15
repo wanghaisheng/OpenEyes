@@ -34,6 +34,7 @@ class ProcedureSelection extends BaseCWidget {
 	public $label = 'Procedures';
 	public $headertext;
 	public $read_only = false;
+	public $restrict = false;
 
 	public function run() {
 		if (empty($_POST)) {
@@ -58,11 +59,15 @@ class ProcedureSelection extends BaseCWidget {
 		
 		$firm = Firm::model()->findByPk(Yii::app()->session['selected_firm_id']);
 		$subspecialty = $firm->serviceSubspecialtyAssignment->subspecialty;
-		$this->subsections = SubspecialtySubsection::model()->getList($subspecialty->id);
+		if ($this->restrict == 'unbooked') {
+			$this->subsections = array();
+		} else {
+			$this->subsections = SubspecialtySubsection::model()->getList($subspecialty->id);
+		}
 		$this->procedures = array();
 		$this->removed_stack = array();
 		if (empty($this->subsections)) {
-			foreach (Procedure::model()->getListBySubspecialty($subspecialty->id) as $proc_id => $name) {
+			foreach (Procedure::model()->getListBySubspecialty($subspecialty->id,($this->restrict=='unbooked')) as $proc_id => $name) {
 				if (empty($_POST)) {
 					$found = false;
 					if ($this->selected_procedures) {
