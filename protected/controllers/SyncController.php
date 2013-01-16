@@ -202,8 +202,8 @@ class SyncController extends Controller
 		}
 
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("datetime > '$timestamp'");
-		$criteria->order = "datetime asc";
+		$criteria->addCondition("last_modified_date > '$timestamp'");
+		$criteria->order = "last_modified_date asc";
 
 		foreach (Event::model()->findAll($criteria) as $event) {
 			$response['events'][] = $event->wrap();
