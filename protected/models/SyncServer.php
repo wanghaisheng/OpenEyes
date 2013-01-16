@@ -22,6 +22,8 @@
  */
 class SyncServer extends BaseActiveRecord
 {
+	public $messages = array();
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Firm the static model class
@@ -64,6 +66,70 @@ class SyncServer extends BaseActiveRecord
 			return 'Never';
 		}
 		return date('j M Y H:i',strtotime($this->last_sync));
+	}
+
+	public function push() {
+		$request = array(
+			'key' => $this->key,
+			'type' => 'PUSH',
+			'events' => array(),
+		);
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("datetime > '$this->last_sync'");
+		$criteria->order = "datetime asc";
+
+		foreach (Event::model()->findAll($criteria) as $event) {
+			$request['events'][] = $event->wrap();
+		}
+
+		if (empty($request['events'])) {
+			$this->messages[] = "pushed 0 events";
+			return true;
+		}
+
+		$json = json_encode($request);
+
+		$response = $this->request($json);
+
+		if (!$resp = @json_decode($response,true)) {
+			$this->messages[] = "Unable to parse server response";
+			return false;
+		}
+
+		if (@$resp['status'] == 'OK') {
+			$this->messages[] = "pushed ".count($request['events'])." event".(count($request['events'])==1 ? '' : 's');
+			return true;
+		}
+		$this->messages[] = $resp['message'];
+		return false;
+	}
+
+	public function pull() {
+		$response = $this->request(json_encode(array(
+			'key' => $this->key,
+			'timestamp' => $this->last_sync,
+			'type' => 'PULL',
+		)));
+
+		if (!$resp = @json_decode($response,true)) {
+			$this->messages[] = "Unable to parse server response";
+			return false;
+		}
+
+		if (@$resp['status'] == 'OK') {
+			Yii::app()->getController()->receiveEvents($resp['events']);
+
+			$this->last_sync = date('Y-m-d H:i:s');
+			$this->in_sync = true;
+			if (!$this->save()) {
+				throw new Exception("Unable to save server state: ".print_r($this->getErrors(),true));
+			}
+			$this->messages[] = "received ".count($resp['events'])." event".(count($resp['events'])==1 ? '' : 's');
+			return true;
+		}
+		$this->messages[] = $resp['message'];
+		return false;
 	}
 
 	public function request($json) {
