@@ -204,7 +204,16 @@ class BaseEventTypeElement extends BaseElement {
 		$data = Yii::app()->db->createCommand("select $table.*, '{event_id}' as event_id from $table where id = $this->id")->queryRow();
 
 		foreach ($relations as $table => $key) {
-			$data['_relations'][$table] = Yii::app()->db->createCommand("select $table.*, '{element_id}' as $key from $table where $key = $this->id")->queryAll();
+			if (is_array($key)) {
+				$data['_relations'][$table] = Yii::app()->db->createCommand("select $table.*, '{element_id}' as {$key['key']} from $table where {$key['key']} = $this->id")->queryAll();
+				foreach ($data['_relations'][$table] as $i => $item) {
+					foreach ($key['_relations'] as $table2 => $key2) {
+						$data['_relations'][$table][$i]['_relations'] = Yii::app()->db->createCommand("select $table2.*, '{parent_id}' as {$key2} from $table2 where {$key2} = {$item['id']}")->queryAll();
+					}
+				}
+			} else {
+				$data['_relations'][$table] = Yii::app()->db->createCommand("select $table.*, '{element_id}' as $key from $table where $key = $this->id")->queryAll();
+			}
 		}
 
 		return $data;
