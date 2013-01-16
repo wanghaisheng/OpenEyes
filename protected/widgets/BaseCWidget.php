@@ -45,6 +45,11 @@ class BaseCWidget extends CWidget
 		if (file_exists("protected/widgets/js/".get_class($this).".js")) {
 			$this->assetFolder = Yii::app()->getAssetManager()->publish('protected/widgets/js');
 		}
+
+		// this is necessary because if hidden is false in htmlOptions a text input will still be hidden
+		if (isset($this->htmlOptions) && isset($this->htmlOptions['hidden']) && !$this->htmlOptions['hidden']) {
+			unset($this->htmlOptions['hidden']);
+		}
 	}
 
 	public function render($view, $data=null, $return=false) {

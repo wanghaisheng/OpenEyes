@@ -80,6 +80,9 @@ class Procedure extends BaseActiveRecord
 			'specialties' => array(self::MANY_MANY, 'Subspecialty', 'proc_subspecialty_assignment(proc_id, subspecialty_id)'),
 			'subspecialtySubsections' => array(self::MANY_MANY, 'SubspecialtySubsection', 'proc_subspecialty_subsection_assignment(proc_id, subspecialty_subsection_id)'),
 			'opcsCodes' => array(self::MANY_MANY, 'OpcsCode', 'procedure_opcs_assignment(proc_id, opcs_code_id)'),
+			'additional' => array(self::MANY_MANY, 'Procedure', 'procedure_additional(proc_id, additional_proc_id)'),
+			'benefits' => array(self::MANY_MANY, 'Benefit', 'procedure_benefit(proc_id, benefit_id)'),
+			'complications' => array(self::MANY_MANY, 'Complication', 'procedure_complication(proc_id, complication_id)'),
 		);
 	}
 
@@ -125,16 +128,22 @@ class Procedure extends BaseActiveRecord
 	 *
 	 * @return array
 	 */
-	public static function getList($term)
+	public static function getList($term, $restrict=false)
 	{
 		$search = "%{$term}%";
 
 		$select = 'term, short_format, id, default_duration';
 
+		$where = 'term LIKE :term';
+
+		if ($restrict == 'unbooked') {
+			$where .= ' and unbooked=1';
+		}
+
 		$procedures = Yii::app()->db->createCommand()
 			->select($select)
 			->from('proc')
-			->where('term LIKE :term', array(':term'=>$search))
+			->where($where, array(':term'=>$search))
 			->order('term')
 			->queryAll();
 
@@ -156,13 +165,13 @@ class Procedure extends BaseActiveRecord
 		return $data;
 	}
 
-	public function getListBySubspecialty($subspecialtyId)
+	public function getListBySubspecialty($subspecialtyId, $unbooked=false)
 	{
 		$procedures = Yii::app()->db->createCommand()
 			->select('proc.id, proc.term')
 			->from('proc')
 			->join('proc_subspecialty_assignment psa', 'psa.proc_id = proc.id')
-			->where('psa.subspecialty_id = :id',
+			->where('psa.subspecialty_id = :id'.($unbooked ? ' and unbooked=1' : ''),
 				array(':id'=>$subspecialtyId))
 			->order('proc.term ASC')
 			->queryAll();
