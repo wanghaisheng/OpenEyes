@@ -253,7 +253,7 @@ class SyncController extends Controller
 					->select("f.id")
 					->from("firm f")
 					->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-					->where("ssa.subspecialty = ".$firm->serviceSubspecialtyAssignment->subspecialty_id)
+					->where("ssa.subspecialty_id = ".$firm->serviceSubspecialtyAssignment->subspecialty_id)
 					->queryAll() as $row) {
 					$firm_ids[] = $row['id'];
 				}
