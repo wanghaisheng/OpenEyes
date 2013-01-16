@@ -17,7 +17,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-class PopulateEventHashesCommand extends CConsoleCommand {
+class PopulateHashesCommand extends CConsoleCommand {
 	public function run($args) {
 		if (!isset(Yii::app()->params['sync_node_id'])) {
 			throw new Exception("Fatal: sync_node_id isn't set.");
@@ -25,22 +25,37 @@ class PopulateEventHashesCommand extends CConsoleCommand {
 
 		$server_id = Yii::app()->params['sync_node_id'];
 
+		foreach (Event::model()->findAll() as $event) {
+			if (!$event->hash) {
+				$hash = sha1(rand());
+
+				while (Event::model()->find('hash=?',array($hash))) {
+					$hash = sha1(rand());
+				}
+
+				Yii::app()->db->createCommand("update event set hash='$server_id-$hash' where id = {$event->id}")->query();
+
+				echo ".";
+			}
+		}
+
 		$hashes = array();
 
-		foreach (Event::model()->findAll() as $event) {
-			$hash = sha1(rand());
-
-			while (in_array($hash,$hashes)) {
+		foreach (Episode::model()->findAll() as $episode) {
+			if (!$episode->hash) {
 				$hash = sha1(rand());
+
+				while (Episode::model()->find('hash=?',array($hash))) {
+					$hash = sha1(rand());
+				}
+
+				Yii::app()->db->createCommand("update episode set hash='$server_id-$hash' where id = {$episode->id}")->query();
+
+				echo ".";
 			}
-
-			$hashes[] = $hash;
-
-			Yii::app()->db->createCommand("update event set hash='$server_id-$hash' where id = {$event->id}")->query();
-
-			echo ".";
 		}
 
 		echo "\n";
+
 	}
 }

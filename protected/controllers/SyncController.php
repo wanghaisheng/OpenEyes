@@ -73,10 +73,30 @@ class SyncController extends Controller
 			$request['events'][] = $event->wrap();
 		}
 
+		if (empty($request['events'])) {
+			echo json_encode(array(
+				'status' => 'OK',
+				'message' => 'No events to sync',
+			));
+			return;
+		}
+
 		$json = json_encode($request);
 
 		$response = $server->request($json);
 
-		echo "[$response]";
+		if (!$resp = @json_decode($response,true)) {
+			throw new Exception("Unable to parse response: $response");
+		}
+
+		if (@$resp['status'] == 'OK') {
+			$server->last_sync = date('Y-m-d H:i:s');
+			$server->in_sync = true;
+			if (!$server->save()) {
+				throw new Exception("Unable to save server state: ".print_r($server->getErrors(),true));
+			}
+		}
+
+		echo $response;
 	}
 }

@@ -63,7 +63,7 @@ class SyncServer extends BaseActiveRecord
 		if ($this->last_sync == '1900-01-01 00:00:00') {
 			return 'Never';
 		}
-		return date('j.M.Y H:i',strtotime($this->last_sync));
+		return date('j M Y H:i',strtotime($this->last_sync));
 	}
 
 	public function request($json) {
