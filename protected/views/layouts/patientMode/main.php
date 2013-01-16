@@ -76,6 +76,7 @@
 		<div id="header" class="clearfix">
 			<div id="brand" class="ir"><h1><?php echo CHtml::link('OpenEyes',array('site/'))?></h1></div>
 			<?php echo $this->renderPartial('//base/_form', array()); ?>
+			<?php echo $this->renderPartial('//base/_sync')?>
 			<div id="patientID">
 				<div class="i_patient">
 					<?php echo CHtml::link('Patient Summary',array('/patient/view/'.$this->patient->id),array('class'=>'small'))?>

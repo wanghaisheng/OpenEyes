@@ -1551,4 +1551,13 @@ class ElementOperation extends BaseEventTypeElement
 			}
 		}
 	}
+
+	public function wrap() {
+		return parent::wrap(array(
+			'operation_procedure_assignment' => 'operation_id',
+			'booking' => 'element_operation_id',
+			'cancelled_operation' => 'element_operation_id',
+			'cancelled_booking' => 'element_operation_id',
+		));
+	}
 }

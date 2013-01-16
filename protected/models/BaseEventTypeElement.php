@@ -198,4 +198,15 @@ class BaseEventTypeElement extends BaseElement {
 			}
 		}
 	}
+
+	public function wrap($relations=array()) {
+		$table = $this->tableName();
+		$data = Yii::app()->db->createCommand("select $table.*, '{event_id}' as event_id from $table where id = $this->id")->queryRow();
+
+		foreach ($relations as $table => $key) {
+			$data['_relations'][$table] = Yii::app()->db->createCommand("select $table.*, '{element_id}' as $key from $table where $key = $this->id")->queryAll();
+		}
+
+		return $data;
+	}
 }

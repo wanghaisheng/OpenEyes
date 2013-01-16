@@ -242,4 +242,45 @@ class Event extends BaseActiveRecord
 		if ($admin->id == Yii::app()->session['user']->id) {return true;}
 		return ($this->created_user_id == Yii::app()->session['user']->id && (time() - strtotime($this->created_date)) <= 86400);
 	}
+
+	public function wrap() {
+		$data = Yii::app()->db->createCommand()->select("*")->from("event")->where("id = $this->id")->queryRow();
+		$data['_elements'] = array();
+
+		foreach (ElementType::model()->findAll('event_type_id=?',array($this->event_type_id)) as $element_type) {
+			$class = $element_type->class_name;
+
+			if ($element = $class::model()->find('event_id=?',array($this->id))) {
+				$data['_elements'][$element_type->class_name] = $element->wrap();
+			}
+		}
+
+		return $this->strip_ids($data);
+	}
+
+	public function strip_ids($data) {
+		if (isset($data['id'])) unset($data['id']);
+
+		foreach ($data as $key => $value) {
+			if (is_array($value)) {
+				$data[$key] = $this->strip_ids($value);
+			}
+		}
+
+		return $data;
+	}
+
+	protected function beforeSave() {
+		if (!$this->hash && isset(Yii::app()->params['sync_node_id'])) {
+			$hash = Yii::app()->params['sync_node_id'].'-'.sha1(rand());
+
+			while (Event::model()->find('hash=?',array($hash))) {
+				$hash = Yii::app()->params['sync_node_id'].'-'.sha1(rand());
+			}
+
+			$this->hash = $hash;
+		}
+
+		return parent::beforeSave();
+	}
 }

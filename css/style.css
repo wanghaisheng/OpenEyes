@@ -1222,3 +1222,15 @@ input.diagnosis_eye { margin-left: 10px; }
 /*	in order to ensure consistant display scale on iphone and ipad the min-height needs adjusting  width:1230px; */
 	#content { min-height: 1230px !important; }
 }
+
+div.sync { position: absolute; top: 0.5em; left: 22.5em; }
+.sync a { border: none; }
+.syncing { width: 600px; height: 400px; }
+table.sync_list { margin-top: 30px; border: 1px solid #999; }
+.sync_list tr { border: 1px solid #999; }
+.sync_list th { text-align: left; padding: 10px; }
+.sync_list td { padding: 10px; }
+.sync_list td.in_sync { color: #0f0; }
+.sync_list td.out_of_sync { color: #f00; }
+.sync_up { color: #0f0; }
+.sync_down { color: #f00; }
