@@ -112,11 +112,15 @@ class SyncController extends Controller
 			$this->responseFail("Access denied");
 		}
 
-		if ($data['type'] == 'PUSH') {
-			$this->receiveEvents($data['events']);
+		switch ($data['type']) {
+			case 'PUSH':
+				$this->receiveEvents($data['events']);
+				$this->responseOK("Received ".count($data['events'])." events");
+				break;
+			case 'PULL':
+				$this->sendEvents($data['timestamp']);
+				break;
 		}
-
-		$this->responseOK("Received ".count($data['events'])." events");
 	}
 
 	public function responseFail($message) {
@@ -185,6 +189,27 @@ class SyncController extends Controller
 				}
 			}
 		}
+	}
+
+	public function sendEvents($timestamp) {
+		$response = array(
+			'status' => 'OK',
+			'events' => array(),
+		);
+
+		if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/',$timestamp)) {
+			throw new Exception("Invalid timestamp: $timestamp");
+		}
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("datetime > '$timestamp'");
+		$criteria->order = "datetime asc";
+
+		foreach (Event::model()->findAll($criteria) as $event) {
+			$response['events'][] = $event->wrap();
+		}
+
+		echo json_encode($response);
 	}
 
 	public function get_element_key($relations) {
