@@ -19,6 +19,8 @@
 
 class SyncController extends Controller
 {
+	public $substitution = array();
+
 	public function filters()
 	{
 		return array('accessControl');
@@ -26,6 +28,14 @@ class SyncController extends Controller
 
 	public function accessRules()
 	{
+		if (Yii::app()->getController()->action->id == 'request') {
+			return array(
+				array('allow',
+					'users'=>array('@','?'),
+				),
+			);
+		}
+
 		return array(
 			array('allow',
 				'users'=>array('@')
@@ -78,5 +88,186 @@ class SyncController extends Controller
 		$response = $server->request($json);
 
 		echo "[$response]";
+	}
+
+	public function actionRequest() {
+		if (!isset($_POST['data'])) {
+			$this->responseFail("Missing data");
+		}
+
+		if (!$data = @json_decode($_POST['data'],true)) {
+			$this->responseFail("Invalid request");
+		}
+
+		if (!isset(Yii::app()->params['sync_key_size'])) {
+			$this->responseFail("Must specify sync_key_size in params");
+		}
+
+		if (!isset(Yii::app()->params['sync_key']) || strlen(Yii::app()->params['sync_key']) != Yii::app()->params['sync_key_size']) {
+			$this->responseFail("Missing or invalid sync_key");
+		}
+
+		if (@$data['key'] != Yii::app()->params['sync_key']) {
+			$this->responseFail("Access denied");
+		}
+
+		if ($data['type'] == 'PUSH') {
+			$this->receiveEvents($data['events']);
+		}
+
+		$this->responseOK("Received ".count($data['events'])." events");
+	}
+
+	public function responseFail($message) {
+		echo json_encode(array(
+			'status' => 'FAIL',
+			'message' => $message,
+		));
+	}
+
+	public function responseOK($message) {
+		echo json_encode(array(
+			'status' => 'OK',
+			'message' => $message,
+		));
+	}
+
+	public function receiveEvents($events) {
+		foreach ($events as $event) {
+			$_episode = $this->findOrCreateRow('Episode',$event['_episode']);
+			$this->substitution['episode_id'] = $_episode->id;
+
+			$_event = $this->findOrCreateRow('Event',$event);
+			$this->substitution['event_id'] = $_event->id;
+
+			foreach ($event['_issues'] as $issue) {
+				$this->findOrCreateRow('EventIssue',$issue);
+			}
+
+			foreach ($event['_elements'] as $element_class => $element) {
+				$_element = $this->findOrCreateRow($element_class, $element);
+
+				if (isset($element['_relations'])) {
+					foreach ($element['_relations'] as $relation_class => $relations) {
+						if (!empty($relations)) {
+							$relation_table = $relation_class::model()->tableName();
+							$element_key = $this->get_element_key($relations);
+
+							if ($relation_table == 'ophdrprescription_item') {
+								foreach (Yii::app()->db->createCommand("select id from $relation_table where $element_key = $_element->id")->queryAll() as $row) {
+									Yii::app()->db->createCommand("delete from ophdrprescription_item_taper where item_id = {$row['id']}")->query();
+								}
+							}
+							Yii::app()->db->createCommand("delete from $relation_table where $element_key = $_element->id")->query();
+
+							foreach ($relations as $relation) {
+								$relation[$element_key] = $_element->id;
+								$_item = $this->findOrCreateRow($relation_class, $relation, true);
+
+								if (isset($relation['_relations'])) {
+									foreach ($relation['_relations'] as $relation_class2 => $relations2) {
+										if (!empty($relations2)) {
+											$relation_table2 = $relation_class2::model()->tableName();
+											$parent_key = $this->get_element_key($relations2);
+											Yii::app()->db->createCommand("delete from $relation_table2 where $parent_key = $_item->id")->query();
+
+											foreach ($relations2 as $relation2) {
+												$relation2[$parent_key] = $_item->id;
+												$this->findOrCreateRow($relation_class2, $relation2, true);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public function get_element_key($relations) {
+		foreach ($relations as $relation) {
+			foreach ($relation as $key => $value) {
+				if (preg_match('/^\{.*\}$/',$value)) {
+					return $key;
+				}
+			}
+		}
+		throw new Exception("Unable to find related key for relation: ".print_r($relations,true));
+	}
+
+	public function findOrCreateRow($model,$data,$just_create=false) {
+		$table = $model::model()->tableName();
+
+		$data = $this->stripDescendants($data);
+
+		foreach ($data as $key => $value) {
+			foreach ($this->substitution as $s_key => $s_value) {
+				if ($value == '{'.$s_key.'}') {
+					$data[$key] = $s_value;
+				}
+			}
+		}
+
+		if (!$just_create) {
+			$find_key = isset($data['hash']) ? 'hash' : 'event_id';
+
+			if ($object = $model::model()->find("$find_key=?",array($data[$find_key]))) {
+				$this->updateFromArray($table,$object->id,$data);
+				return $object;
+			}
+		}
+
+		Yii::app()->db->createCommand("insert into $table (".implode(',',array_keys($data)).") values (".$this->implodeValues($data).")")->query();
+
+		if ($model == 'OperationProcedureAssignment' || $model == 'ProcedureListProcedureAssignment') return null;
+
+		$criteria = new CDbCriteria;
+		$criteria->order = 'id desc';
+		$criteria->limit = 1;
+
+		return $model::model()->find($criteria);
+	}
+
+	public function stripDescendants($object) {
+		foreach ($object as $key => $value) {
+			if (preg_match('/^_/',$key)) {
+				unset($object[$key]);
+			}
+		}
+		return $object;
+	}
+
+	public function updateFromArray($table, $id, $data) {
+		$sql = "update $table set ";
+		$first = true;
+		foreach ($data as $key => $value) {
+			if (!preg_match('/^_/',$key)) {
+				if (!$first) $sql .= ", ";
+				$first = false;
+				$sql .= "$key = '".mysql_escape_string($value)."'";
+			}
+		}
+		Yii::app()->db->createCommand($sql." where id = $id")->query();
+	}
+
+	public function implodeValues($data) {
+		$first=true;
+		$return='';
+		foreach ($data as $key => $value) {
+			if (!$first) $return .= ",";
+			$first=false;
+			if (!$value) {
+				if (preg_match('/_id$/',$key)) {
+					$return .= "null";
+				} else {
+					$return .= "''";
+				}
+			} else {
+				$return .= "'".mysql_escape_string($value)."'";
+			}
+		}
+		return $return;
 	}
 }
