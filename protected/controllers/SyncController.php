@@ -218,6 +218,26 @@ class SyncController extends Controller
 				$this->updateFromArray($table,$object->id,$data);
 				return $object;
 			}
+
+			if ($model == 'Episode') {
+				// Only one episode per patient per subspecialty
+				$firm = Firm::model()->findByPk($data['firm_id']);
+
+				$firm_ids = array();
+				foreach (Yii::app()->db->createCommand()
+					->select("f.id")
+					->from("firm f")
+					->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
+					->where("ssa.subspecialty = ".$firm->serviceSubspecialtyAssignment->subspecialty_id)
+					->queryAll() as $row) {
+					$firm_ids[] = $row['id'];
+				}
+
+				if ($object = $model::model()->find('firm_id in ('.implode(',',$firm_ids).') and patient_id=?',array($data['patient_id']))) {
+					$this->updateFromArray($table,$object->id,$data);
+					return $object;
+				}
+			}
 		}
 
 		Yii::app()->db->createCommand("insert into $table (".implode(',',array_keys($data)).") values (".$this->implodeValues($data).")")->query();
