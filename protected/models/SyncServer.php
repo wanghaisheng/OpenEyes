@@ -77,8 +77,8 @@ class SyncServer extends BaseActiveRecord
 		);
 
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("datetime > '$this->last_sync'");
-		$criteria->order = "datetime asc";
+		$criteria->addCondition("last_modified_date > '$this->last_sync'");
+		$criteria->order = "last_modified_date asc";
 
 		foreach (Event::model()->findAll($criteria) as $event) {
 			$request['events'][] = $event->wrap();
