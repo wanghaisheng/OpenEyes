@@ -69,45 +69,26 @@ class SyncController extends Controller
 			throw new Exception("Unknown server: $id");
 		}
 
-		$request = array(
-			'key' => $server->key,
-			'type' => 'PUSH',
-			'events' => array(),
-		);
-
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("datetime > '$server->last_sync'");
-		$criteria->order = "datetime asc";
-
-		foreach (Event::model()->findAll($criteria) as $event) {
-			$request['events'][] = $event->wrap();
-		}
-
-		if (empty($request['events'])) {
+		if (!$response = $server->push()) {
 			echo json_encode(array(
-				'status' => 'OK',
-				'message' => 'No events to sync',
+				'status' => 'FAIL',
+				'message' => implode(', ',$server->messages),
 			));
 			return;
 		}
 
-		$json = json_encode($request);
-
-		$response = $server->request($json);
-
-		if (!$resp = @json_decode($response,true)) {
-			throw new Exception("Unable to parse response: $response");
+		if (!$response = $server->pull()) {
+			echo json_encode(array(
+				'status' => 'FAIL',
+				'message' => implode(', ',$server->messages),
+			));
+			return;
 		}
 
-		if (@$resp['status'] == 'OK') {
-			$server->last_sync = date('Y-m-d H:i:s');
-			$server->in_sync = true;
-			if (!$server->save()) {
-				throw new Exception("Unable to save server state: ".print_r($server->getErrors(),true));
-			}
-		}
-
-		echo $response;
+		echo json_encode(array(
+			'status' => 'OK',
+			'message' => implode(', ',$server->messages),
+		));
 	}
 
 	public function actionRequest() {
@@ -291,7 +272,11 @@ class SyncController extends Controller
 			if (!preg_match('/^_/',$key)) {
 				if (!$first) $sql .= ", ";
 				$first = false;
-				$sql .= "$key = '".mysql_escape_string($value)."'";
+				if (!$value && preg_match('/_id$/',$key)) {
+					$sql .= "$key = null";
+				} else {
+					$sql .= "$key = '".mysql_escape_string($value)."'";
+				}
 			}
 		}
 		Yii::app()->db->createCommand($sql." where id = $id")->query();
