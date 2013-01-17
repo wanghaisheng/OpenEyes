@@ -132,6 +132,17 @@ class SyncController extends Controller
 			case 'PULL':
 				$this->sendEvents($data['timestamp']);
 				break;
+			case 'STATUS':
+				if (Event::model()->find('last_modified_date > ?',array($data['timestamp']))) {
+					$this->responseOK("Out of sync",array(
+						'sync_status' => false,
+					));
+				} else {
+					$this->responseOK("In sync",array(
+						'sync_status' => true,
+					));
+				}
+				break;
 		}
 	}
 
@@ -142,11 +153,11 @@ class SyncController extends Controller
 		));
 	}
 
-	public function responseOK($message) {
-		echo json_encode(array(
+	public function responseOK($message, $params=array()) {
+		echo json_encode(array_merge(array(
 			'status' => 'OK',
 			'message' => $message,
-		));
+		),$params));
 	}
 
 	public function receiveEvents($events) {
