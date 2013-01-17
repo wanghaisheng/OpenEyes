@@ -39,8 +39,6 @@ class PopulateHashesCommand extends CConsoleCommand {
 			}
 		}
 
-		$hashes = array();
-
 		foreach (Episode::model()->findAll() as $episode) {
 			if (!$episode->hash) {
 				$hash = sha1(rand());
@@ -50,6 +48,20 @@ class PopulateHashesCommand extends CConsoleCommand {
 				}
 
 				Yii::app()->db->createCommand("update episode set hash='$server_id-$hash' where id = {$episode->id}")->query();
+
+				echo ".";
+			}
+		}
+
+		foreach (Asset::model()->findAll() as $asset) {
+			if (!$asset->hash) {
+				$hash = sha1(rand());
+
+				while (Asset::model()->find('hash=?',array($hash))) {
+					$hash = sha1(rand());
+				}
+
+				Yii::app()->db->createCommand("update asset set hash='$server_id-$hash' where id = {$asset->id}")->query();
 
 				echo ".";
 			}
