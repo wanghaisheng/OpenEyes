@@ -82,14 +82,14 @@ class SyncServer extends BaseActiveRecord
 		$criteria->addCondition("last_modified_date > '$this->last_sync'");
 		$criteria->order = "last_modified_date asc";
 
-		foreach (Event::model()->findAll($criteria) as $event) {
-			$request['events'][] = $event->wrap();
-			$this->processed_events[] = $event->hash;
-		}
-
 		foreach (Asset::model()->findAll($criteria) as $asset) {
 			$request['assets'][] = $asset->wrap();
 			$this->processed_assets[] = $asset->hash;
+		}
+
+		foreach (Event::model()->findAll($criteria) as $event) {
+			$request['events'][] = $event->wrap();
+			$this->processed_events[] = $event->hash;
 		}
 
 		if (empty($request['events'])) {
