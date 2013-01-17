@@ -338,7 +338,7 @@ class Episode extends BaseActiveRecord
 		return parent::beforeSave();
 	}
 
-	public function wrap() {
+	public function wrap($params=array()) {
 		return Yii::app()->db->createCommand()->select("*")->from("episode")->where("id = $this->id")->queryRow();
 	}
 }

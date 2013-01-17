@@ -243,7 +243,7 @@ class Event extends BaseActiveRecord
 		return ($this->created_user_id == Yii::app()->session['user']->id && (time() - strtotime($this->created_date)) <= 86400);
 	}
 
-	public function wrap() {
+	public function wrap($params=array()) {
 		$data = Yii::app()->db->createCommand()->select("*")->from("event")->where("id = $this->id")->queryRow();
 		$data['_elements'] = array();
 
