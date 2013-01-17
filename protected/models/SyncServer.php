@@ -140,6 +140,28 @@ class SyncServer extends BaseActiveRecord
 		return false;
 	}
 
+	public function inSync() {
+		$response = $this->request(json_encode(array(
+			'key' => $this->key,
+			'timestamp' => $this->last_sync,
+			'type' => 'STATUS',
+		)));
+
+		if (!$resp = @json_decode($response,true)) {
+			$this->messages[] = "Unable to parse server response";
+			return false;
+		}
+
+		if (!$resp['sync_status']) {
+			$server->sync_status = 0;
+			if (!$server->save()) {
+				throw new Exception("Unable to mark server out of sync: ".print_r($server->getErrors(),true));
+			}
+		}
+
+		return $resp['sync_status'];
+	}
+
 	public function request($json) {
 		$c = curl_init();
 		curl_setopt($c,CURLOPT_URL,"http://$this->hostname/sync/request");
