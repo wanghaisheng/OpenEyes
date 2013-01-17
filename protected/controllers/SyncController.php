@@ -105,23 +105,23 @@ class SyncController extends Controller
 
 	public function actionRequest() {
 		if (!isset($_POST['data'])) {
-			$this->responseFail("Missing data");
+			return $this->responseFail("Missing data");
 		}
 
 		if (!$data = @json_decode($_POST['data'],true)) {
-			$this->responseFail("Invalid request");
+			return $this->responseFail("Invalid request");
 		}
 
 		if (!isset(Yii::app()->params['sync_key_size'])) {
-			$this->responseFail("Must specify sync_key_size in params");
+			return $this->responseFail("Must specify sync_key_size in params");
 		}
 
 		if (!isset(Yii::app()->params['sync_key']) || strlen(Yii::app()->params['sync_key']) != Yii::app()->params['sync_key_size']) {
-			$this->responseFail("Missing or invalid sync_key");
+			return $this->responseFail("Missing or invalid sync_key");
 		}
 
 		if (@$data['key'] != Yii::app()->params['sync_key']) {
-			$this->responseFail("Access denied");
+			return $this->responseFail("Access denied");
 		}
 
 		switch ($data['type']) {
@@ -131,7 +131,7 @@ class SyncController extends Controller
 				$this->responseOK("Received ".count($data['events'])." events");
 				break;
 			case 'PULL':
-				$this->sendEvents($data['timestamp']);
+				$this->sendAssetsAndEvents($data['timestamp']);
 				break;
 			case 'STATUS':
 				if (Event::model()->find('last_modified_date > ?',array($data['timestamp']))) {
@@ -163,7 +163,7 @@ class SyncController extends Controller
 
 	public function receiveAssets($assets) {
 		foreach ($assets as $asset) {
-			$_asset = $thid->findOrCreateRow('Asset',$asset);
+			$_asset = $this->findOrCreateRow('Asset',$asset);
 			if (!@file_put_contents($_asset->path,base64_decode($asset['_data']))) {
 				throw new Exception("Failed to write asset to disk: $_asset->path");
 			}
@@ -230,9 +230,10 @@ class SyncController extends Controller
 		}
 	}
 
-	public function sendEvents($timestamp) {
+	public function sendAssetsAndEvents($timestamp) {
 		$response = array(
 			'status' => 'OK',
+			'assets' => array(),
 			'events' => array(),
 		);
 
@@ -243,6 +244,10 @@ class SyncController extends Controller
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("last_modified_date > '$timestamp'");
 		$criteria->order = "last_modified_date asc";
+
+		foreach (Asset::model()->findAll($criteria) as $asset) {
+			$response['assets'][] = $asset->wrap();
+		}
 
 		foreach (Event::model()->findAll($criteria) as $event) {
 			$response['events'][] = $event->wrap();
