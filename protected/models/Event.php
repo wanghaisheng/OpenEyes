@@ -290,4 +290,15 @@ class Event extends BaseActiveRecord
 
 		return parent::beforeSave();
 	}
+
+	protected function afterSave() {
+		foreach (SyncServer::model()->findAll() as $server) {
+			$server->in_sync = 0;
+			if (!$server->save()) {
+				throw new Exception("Unable to mark server as out of sync: ".print_r($server->getErrors(),true));
+			}
+		}
+
+		return parent::afterSave();
+	}
 }

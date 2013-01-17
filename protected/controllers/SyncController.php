@@ -51,16 +51,28 @@ class SyncController extends Controller
 		$this->renderPartial('/sync/index');
 	}
 
-	public function actionPing() {
-		if (!isset($_GET['hostname'])) {
-			throw new Exception("Missing hostname");
+	public function actionPing($id) {
+		if (!$server = SyncServer::model()->findByPk($id)) {
+			throw new Exception("Unknown server: $id");
 		}
 
-		if ($fp = @fsockopen($_GET['hostname'],80,$errCode,$errStr,3)) {
+		if ($fp = @fsockopen($server->hostname,80,$errCode,$errStr,3)) {
 			fclose($fp);
 			echo "UP";
 		} else {
 			echo "DOWN";
+		}
+	}
+
+	public function actionStatus($id) {
+		if (!$server = SyncServer::model()->findByPk($id)) {
+			throw new Exception("Unknown server: $id");
+		}
+
+		if ($server->InSync()) {
+			echo "INSYNC";
+		} else {
+			echo "OUTOFSYNC";
 		}
 	}
 
