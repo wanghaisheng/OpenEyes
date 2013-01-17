@@ -323,4 +323,22 @@ class Episode extends BaseActiveRecord
 		$audit->data = $this->getAuditAttributes();
 		$audit->save();
 	}
+
+	protected function beforeSave() {
+		if (!$this->hash && isset(Yii::app()->params['sync_node_id'])) {
+			$hash = Yii::app()->params['sync_node_id'].'-'.sha1(rand());
+
+			while (Episode::model()->find('hash=?',array($hash))) {
+				$hash = Yii::app()->params['sync_node_id'].'-'.sha1(rand());
+			}
+
+			$this->hash = $hash;
+		}
+
+		return parent::beforeSave();
+	}
+
+	public function wrap() {
+		return Yii::app()->db->createCommand()->select("*")->from("episode")->where("id = $this->id")->queryRow();
+	}
 }

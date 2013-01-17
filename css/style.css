@@ -1230,3 +1230,15 @@ div.scan-thumbnails { margin-bottom: 60px; }
 .scan-thumbnail-preview-link { height: 38px; }
 .scan-thumbnail-select-target { height: 150px; }
 .scan-thumbnail-date { margin-top: 4px; }
+
+div.sync { position: absolute; top: 0.5em; left: 22.5em; }
+.sync a { border: none; }
+.syncing { width: 600px; height: 400px; }
+table.sync_list { margin-top: 30px; border: 1px solid #999; }
+.sync_list tr { border: 1px solid #999; }
+.sync_list th { text-align: left; padding: 10px; }
+.sync_list td { padding: 10px; }
+.sync_list td.in_sync { color: #0f0; }
+.sync_list td.out_of_sync { color: #f00; }
+.sync_up { color: #0f0; }
+.sync_down { color: #f00; }
