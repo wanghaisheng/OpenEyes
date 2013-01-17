@@ -27,6 +27,12 @@ class ImportScannedAssetsCommand extends CConsoleCommand {
 			throw new Exception("Unable to access scans directory: ".Yii::app()->params['scans_directory']);
 		}
 
+		if (!isset(Yii::app()->params['sync_node_id'])) {
+			throw new Exception("Fatal: sync_node_id isn't set.");
+		}
+
+		$server_id = Yii::app()->params['sync_node_id'];
+
 		foreach (array(
 			Yii::app()->basePath."/assets",
 			Yii::app()->basePath."/assets/preview",
@@ -67,6 +73,12 @@ class ImportScannedAssetsCommand extends CConsoleCommand {
 			$asset->mimetype = mime_content_type(Yii::app()->params['scans_directory']."/$file");
 			$asset->filesize = filesize(Yii::app()->params['scans_directory']."/$file");
 			$asset->extension = $filename[2];
+
+			$asset->hash = "$server_id-".sha1(rand());
+
+			while (Asset::model()->find('hash=?',array($asset->hash))) {
+				$asset->hash = "$server_id-".sha1(rand());
+			}
 
 			if (!$asset->save()) {
 				throw new Exception("Failed to save asset: ".print_r($asset->getErrors(),true));
