@@ -292,7 +292,7 @@ class SyncController extends Controller
 			if (!preg_match('/^_/',$key)) {
 				if (!$first) $sql .= ", ";
 				$first = false;
-				if (!$value && (preg_match('/_id$/',$key) || preg_match('/_date$/',$key)) {
+				if (!$value && (preg_match('/_id$/',$key) || preg_match('/_date$/',$key))) {
 					$sql .= "$key = null";
 				} else {
 					$sql .= "$key = '".mysql_escape_string($value)."'";
