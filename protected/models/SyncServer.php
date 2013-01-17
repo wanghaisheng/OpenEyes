@@ -22,6 +22,7 @@
  */
 class SyncServer extends BaseActiveRecord
 {
+	public $processed = array();
 	public $messages = array();
 
 	/**
@@ -81,6 +82,7 @@ class SyncServer extends BaseActiveRecord
 
 		foreach (Event::model()->findAll($criteria) as $event) {
 			$request['events'][] = $event->wrap();
+			$this->processed[] = $event['hash'];
 		}
 
 		if (empty($request['events'])) {
@@ -118,6 +120,12 @@ class SyncServer extends BaseActiveRecord
 		}
 
 		if (@$resp['status'] == 'OK') {
+			foreach ($resp['events'] as $i => $event) {
+				if (in_array($event['hash'],$this->processed)) {
+					unset($resp['events'][$i]);
+				}
+			}
+
 			Yii::app()->getController()->receiveEvents($resp['events']);
 
 			$this->last_sync = date('Y-m-d H:i:s');
