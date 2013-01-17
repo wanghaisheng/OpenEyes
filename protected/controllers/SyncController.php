@@ -278,6 +278,12 @@ class SyncController extends Controller
 					$data[$key] = $s_value;
 				}
 			}
+			if (preg_match('/^\{asset:([0-9a-f\-]+)\}$/',$value,$m)) {
+				if (!$asset = Asset::model()->find('hash=?',array($m[1]))) {
+					throw new Exception("Asset not found: {$m[1]}");
+				}
+				$data[$key] = $asset->id;
+			}
 		}
 
 		if (!$just_create) {
