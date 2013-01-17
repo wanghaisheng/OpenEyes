@@ -105,23 +105,23 @@ class SyncController extends Controller
 
 	public function actionRequest() {
 		if (!isset($_POST['data'])) {
-			$this->responseFail("Missing data");
+			return $this->responseFail("Missing data");
 		}
 
 		if (!$data = @json_decode($_POST['data'],true)) {
-			$this->responseFail("Invalid request");
+			return $this->responseFail("Invalid request");
 		}
 
 		if (!isset(Yii::app()->params['sync_key_size'])) {
-			$this->responseFail("Must specify sync_key_size in params");
+			return $this->responseFail("Must specify sync_key_size in params");
 		}
 
 		if (!isset(Yii::app()->params['sync_key']) || strlen(Yii::app()->params['sync_key']) != Yii::app()->params['sync_key_size']) {
-			$this->responseFail("Missing or invalid sync_key");
+			return $this->responseFail("Missing or invalid sync_key");
 		}
 
 		if (@$data['key'] != Yii::app()->params['sync_key']) {
-			$this->responseFail("Access denied");
+			return $this->responseFail("Access denied");
 		}
 
 		switch ($data['type']) {
