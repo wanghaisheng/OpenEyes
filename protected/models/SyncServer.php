@@ -115,7 +115,11 @@ class SyncServer extends BaseActiveRecord
 		)));
 
 		if (!$resp = @json_decode($response,true)) {
-			$this->messages[] = "unable to parse server response";
+			if (preg_match('/Authorization Required/i',$response)) {
+				$this->messages[] = "http authorisation required";
+			} else {
+				$this->messages[] = "unable to parse server response";
+			}
 			return false;
 		}
 
