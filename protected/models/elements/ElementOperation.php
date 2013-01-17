@@ -383,7 +383,9 @@ class ElementOperation extends BaseEventTypeElement
 	}
 
 	protected function beforeValidate() {
-		$this->total_duration = @$_POST['ElementOperation']['total_duration_procs'];
+		if (isset($_POST['ElementOperation']['total_duration_procs'])) {
+			$this->total_duration = $_POST['ElementOperation']['total_duration_procs'];
+		}
 		return parent::beforeValidate();
 	}
 
