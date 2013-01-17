@@ -95,7 +95,7 @@ class SyncServer extends BaseActiveRecord
 		$response = $this->request($json);
 
 		if (!$resp = @json_decode($response,true)) {
-			$this->messages[] = "Unable to parse server response";
+			$this->messages[] = "unable to parse server response";
 			return false;
 		}
 
@@ -115,7 +115,7 @@ class SyncServer extends BaseActiveRecord
 		)));
 
 		if (!$resp = @json_decode($response,true)) {
-			$this->messages[] = "Unable to parse server response";
+			$this->messages[] = "unable to parse server response";
 			return false;
 		}
 
@@ -148,7 +148,7 @@ class SyncServer extends BaseActiveRecord
 		)));
 
 		if (!$resp = @json_decode($response,true)) {
-			$this->messages[] = "Unable to parse server response";
+			$this->messages[] = "unable to parse server response";
 			return false;
 		}
 
