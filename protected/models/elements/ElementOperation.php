@@ -1559,7 +1559,7 @@ class ElementOperation extends BaseEventTypeElement
 		}
 	}
 
-	public function wrap() {
+	public function wrap($params=array()) {
 		return parent::wrap(array(
 			'OperationProcedureAssignment' => 'operation_id',
 			'Booking' => 'element_operation_id',
