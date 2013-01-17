@@ -227,7 +227,7 @@
 					$('select[name=select_procedure_id_'+identifier+']').html(data);
 
 					// remove any items in the removed_stack
-					$('select[name=select_procedure_id_'+identifer+'] option').map(function() {
+					$('select[name=select_procedure_id_'+identifier+'] option').map(function() {
 						var obj = $(this);
 
 						$.each(window["removed_stack_"+identifier], function(key, value) {
