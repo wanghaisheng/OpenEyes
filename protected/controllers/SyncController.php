@@ -131,7 +131,7 @@ class SyncController extends Controller
 				$this->responseOK("Received ".count($data['events'])." events");
 				break;
 			case 'PULL':
-				$this->sendEvents($data['timestamp']);
+				$this->sendAssetsAndEvents($data['timestamp']);
 				break;
 			case 'STATUS':
 				if (Event::model()->find('last_modified_date > ?',array($data['timestamp']))) {
@@ -230,9 +230,10 @@ class SyncController extends Controller
 		}
 	}
 
-	public function sendEvents($timestamp) {
+	public function sendAssetsAndEvents($timestamp) {
 		$response = array(
 			'status' => 'OK',
+			'assets' => array(),
 			'events' => array(),
 		);
 
@@ -243,6 +244,10 @@ class SyncController extends Controller
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("last_modified_date > '$timestamp'");
 		$criteria->order = "last_modified_date asc";
+
+		foreach (Asset::model()->findAll($criteria) as $asset) {
+			$response['assets'][] = $asset->wrap();
+		}
 
 		foreach (Event::model()->findAll($criteria) as $event) {
 			$response['events'][] = $event->wrap();
