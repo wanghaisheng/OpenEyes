@@ -22,7 +22,8 @@
  */
 class SyncServer extends BaseActiveRecord
 {
-	public $processed = array();
+	public $processed_events = array();
+	public $processed_assets = array();
 	public $messages = array();
 
 	/**
@@ -74,6 +75,7 @@ class SyncServer extends BaseActiveRecord
 			'key' => $this->key,
 			'type' => 'PUSH',
 			'events' => array(),
+			'assets' => array(),
 		);
 
 		$criteria = new CDbCriteria;
@@ -82,11 +84,23 @@ class SyncServer extends BaseActiveRecord
 
 		foreach (Event::model()->findAll($criteria) as $event) {
 			$request['events'][] = $event->wrap();
-			$this->processed[] = $event['hash'];
+			$this->processed_events[] = $event->hash;
+		}
+
+		foreach (Asset::model()->findAll($criteria) as $asset) {
+			$request['assets'][] = $asset->wrap();
+			$this->processed_assets[] = $asset->hash;
 		}
 
 		if (empty($request['events'])) {
 			$this->messages[] = "pushed 0 events";
+		}
+
+		if (empty($request['assets'])) {
+			$this->messages[] = "pushed 0 assets";
+		}
+
+		if (empty($request['events']) && empty($request['assets'])) {
 			return true;
 		}
 
@@ -100,6 +114,7 @@ class SyncServer extends BaseActiveRecord
 		}
 
 		if (@$resp['status'] == 'OK') {
+			$this->messages[] = "pushed ".count($request['assets'])." asset".(count($request['assets'])==1 ? '' : 's');
 			$this->messages[] = "pushed ".count($request['events'])." event".(count($request['events'])==1 ? '' : 's');
 			return true;
 		}
@@ -124,12 +139,19 @@ class SyncServer extends BaseActiveRecord
 		}
 
 		if (@$resp['status'] == 'OK') {
+			foreach ($resp['assets'] as $i => $asset) {
+				if (in_array($asset['hash'],$this->processed_assets)) {
+					unset($resp['assets'][$i]);
+				}
+			}
+
 			foreach ($resp['events'] as $i => $event) {
-				if (in_array($event['hash'],$this->processed)) {
+				if (in_array($event['hash'],$this->processed_events)) {
 					unset($resp['events'][$i]);
 				}
 			}
 
+			Yii::app()->getController()->receiveAssets($resp['assets']);
 			Yii::app()->getController()->receiveEvents($resp['events']);
 
 			$this->last_sync = date('Y-m-d H:i:s');
@@ -137,6 +159,7 @@ class SyncServer extends BaseActiveRecord
 			if (!$this->save()) {
 				throw new Exception("Unable to save server state: ".print_r($this->getErrors(),true));
 			}
+			$this->messages[] = "received ".count($resp['assets'])." asset".(count($resp['assets'])==1 ? '' : 's');
 			$this->messages[] = "received ".count($resp['events'])." event".(count($resp['events'])==1 ? '' : 's');
 			return true;
 		}

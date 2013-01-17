@@ -75,6 +75,14 @@ class Asset extends BaseActiveRecord
 		return Yii::app()->basePath."/assets/$this->id.$this->extension";
 	}
 
+	public function getPreview() {
+		return Yii::app()->basePath."/assets/preview/$this->id.jpg";
+	}
+
+	public function getThumbnail() {
+		return Yii::app()->basePath."/assets/thumbnail/$this->id.jpg";
+	}
+
 	public function getFileModifiedDate() {
 		if (!file_exists($this->path)) {
 			throw new Exception("Asset not found: $this->path");
@@ -83,5 +91,14 @@ class Asset extends BaseActiveRecord
 		$stat = stat($this->path);
 
 		return $stat['mtime'];
+	}
+
+	public function wrap() {
+		$data = Yii::app()->db->createCommand()->select("*")->from("asset")->where("id = $this->id")->queryRow();
+		unset($data['id']);
+		$data['_data'] = base64_encode(file_get_contents($this->path));
+		$data['_preview'] = base64_encode(file_get_contents($this->preview));
+		$data['_thumbnail'] = base64_encode(file_get_contents($this->thumbnail));
+		return $data;
 	}
 }

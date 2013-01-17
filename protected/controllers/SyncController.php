@@ -126,6 +126,7 @@ class SyncController extends Controller
 
 		switch ($data['type']) {
 			case 'PUSH':
+				$this->receiveAssets($data['assets']);
 				$this->receiveEvents($data['events']);
 				$this->responseOK("Received ".count($data['events'])." events");
 				break;
@@ -158,6 +159,21 @@ class SyncController extends Controller
 			'status' => 'OK',
 			'message' => $message,
 		),$params));
+	}
+
+	public function receiveAssets($assets) {
+		foreach ($assets as $asset) {
+			$_asset = $thid->findOrCreateRow('Asset',$asset);
+			if (!@file_put_contents($_asset->path,base64_decode($asset['_data']))) {
+				throw new Exception("Failed to write asset to disk: $_asset->path");
+			}
+			if (!@file_put_contents($_asset->preview,base64_decode($asset['_preview']))) {
+				throw new Exception("Failed to write asset preview to disk: $_asset->preview");
+			}
+			if (!@file_put_contents($_asset->thumbnail,base64_decode($asset['_thumbnail']))) {
+				throw new Exception("Failed to write asset thumbnail to disk: $_asset->thumbnail");
+			}
+		}
 	}
 
 	public function receiveEvents($events) {
