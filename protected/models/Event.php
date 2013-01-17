@@ -255,6 +255,13 @@ class Event extends BaseActiveRecord
 			}
 		}
 
+		$data['_episode'] = $this->episode->wrap();
+		$data['episode_id'] = '{episode_id}';
+		$data['_issues'] = Yii::app()->db->createCommand()->select("*")->from("event_issue")->where("event_id = $this->id")->queryAll();
+		foreach ($data['_issues'] as $i => $issue) {
+			$data['_issues'][$i]['event_id'] = '{event_id}';
+		}
+
 		return $this->strip_ids($data);
 	}
 
