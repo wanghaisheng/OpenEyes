@@ -27,13 +27,13 @@ class PopulateHashesCommand extends CConsoleCommand {
 
 		foreach (Event::model()->findAll() as $event) {
 			if (!$event->hash) {
-				$hash = sha1(rand());
+				$hash = "$server_id-".sha1(rand());
 
 				while (Event::model()->find('hash=?',array($hash))) {
-					$hash = sha1(rand());
+					$hash = "$server_id-".sha1(rand());
 				}
 
-				Yii::app()->db->createCommand("update event set hash='$server_id-$hash' where id = {$event->id}")->query();
+				Yii::app()->db->createCommand("update event set hash='$hash' where id = {$event->id}")->query();
 
 				echo ".";
 			}
@@ -41,13 +41,13 @@ class PopulateHashesCommand extends CConsoleCommand {
 
 		foreach (Episode::model()->findAll() as $episode) {
 			if (!$episode->hash) {
-				$hash = sha1(rand());
+				$hash = "$server_id-".sha1(rand());
 
 				while (Episode::model()->find('hash=?',array($hash))) {
-					$hash = sha1(rand());
+					$hash = "$server_id-".sha1(rand());
 				}
 
-				Yii::app()->db->createCommand("update episode set hash='$server_id-$hash' where id = {$episode->id}")->query();
+				Yii::app()->db->createCommand("update episode set hash='$hash' where id = {$episode->id}")->query();
 
 				echo ".";
 			}
@@ -55,13 +55,13 @@ class PopulateHashesCommand extends CConsoleCommand {
 
 		foreach (Asset::model()->findAll() as $asset) {
 			if (!$asset->hash) {
-				$hash = sha1(rand());
+				$hash = "$server_id-".sha1(rand());
 
 				while (Asset::model()->find('hash=?',array($hash))) {
-					$hash = sha1(rand());
+					$hash = "$server_id-".sha1(rand());
 				}
 
-				Yii::app()->db->createCommand("update asset set hash='$server_id-$hash' where id = {$asset->id}")->query();
+				Yii::app()->db->createCommand("update asset set hash='$hash' where id = {$asset->id}")->query();
 
 				echo ".";
 			}
