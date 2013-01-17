@@ -134,7 +134,7 @@ class SyncController extends Controller
 				$this->sendAssetsAndEvents($data['timestamp']);
 				break;
 			case 'STATUS':
-				if (Event::model()->find('last_modified_date > ?',array($data['timestamp']))) {
+				if (Event::model()->find('last_modified_date > ?',array($data['timestamp'])) || Asset::model()->find('last_modified_date > ? ',array($data['timestamp']))) {
 					$this->responseOK("Out of sync",array(
 						'sync_status' => false,
 					));
