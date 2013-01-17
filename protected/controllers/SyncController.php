@@ -163,7 +163,7 @@ class SyncController extends Controller
 
 	public function receiveAssets($assets) {
 		foreach ($assets as $asset) {
-			$_asset = $thid->findOrCreateRow('Asset',$asset);
+			$_asset = $this->findOrCreateRow('Asset',$asset);
 			if (!@file_put_contents($_asset->path,base64_decode($asset['_data']))) {
 				throw new Exception("Failed to write asset to disk: $_asset->path");
 			}
