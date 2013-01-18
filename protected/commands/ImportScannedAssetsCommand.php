@@ -19,6 +19,14 @@
 
 class ImportScannedAssetsCommand extends CConsoleCommand {
 	public function run($args) {
+		$user = posix_getpwuid(posix_getuid());
+		$user = $user['name'];
+
+		if ($user != 'root' && $user != Yii::app()->params['apache_user']) {
+			echo "This script must be run as root or as the apache user (".Yii::app()->params['apache_user'].")\n";
+			exit;
+		}
+
 		if (!isset(Yii::app()->params['scans_directory'])) {
 			throw new Exception("scans_directory parameter isn't set.");
 		}
@@ -77,8 +85,13 @@ class ImportScannedAssetsCommand extends CConsoleCommand {
 				throw new Exception("Unable to move asset into place: [".Yii::app()->params['scans_directory']."/$file] => [".Yii::app()->basePath."/assets/$asset->id.$asset->extension]");
 			}
 
-			if (!@chmod(Yii::app()->basePath."/assets/$asset->filename",0666)) {
-				throw new Exception("Unable to chmod 666 copied file: ".Yii::app()->basePath."/assets/$asset->filename");
+			if ($user == 'root') {
+				if (!@chown(Yii::app()->basePath."/assets/$asset->filename",Yii::app()->params['apache_user'])) {
+					throw new Exception("Unable to chown file to apache_user: ".Yii::app()->basePath."/assets/$asset->filename");
+				}
+				if (!@chgrp(Yii::app()->basePath."/assets/$asset->filename",Yii::app()->params['apache_user'])) {
+					throw new Exception("Unable to chgrp file to apache_user: ".Yii::app()->basePath."/assets/$asset->filename");
+				}
 			}
 
 			shell_exec("convert -flatten -antialias -scale 150x150 -raise 3 \"".Yii::app()->basePath."/assets/$asset->filename\" \"".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg\" 2>&1");
@@ -87,8 +100,13 @@ class ImportScannedAssetsCommand extends CConsoleCommand {
 				throw new Exception("Failed to create thumbnail: ".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg");
 			}
 
-			if (!@chmod(Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg",0666)) {
-				throw new Exception("Unable to chmod 666 copied file: ".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg");
+			if ($user == 'root') {
+				if (!@chown(Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg",Yii::app()->params['apache_user'])) {
+					throw new Exception("Unable to chown file to apache_user: ".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg");
+				}
+				if (!@chgrp(Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg",Yii::app()->params['apache_user'])) {
+					throw new Exception("Unable to chgrp file to apache_user: ".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg");
+				}
 			}
 
 			shell_exec("convert -flatten -antialias -scale 800x800 -raise 3 \"".Yii::app()->basePath."/assets/$asset->filename\" \"".Yii::app()->basePath."/assets/preview/$asset->id.jpg\" 2>&1");
@@ -97,8 +115,13 @@ class ImportScannedAssetsCommand extends CConsoleCommand {
 				throw new Exception("Failed to create preview: ".Yii::app()->basePath."/assets/preview/$asset->id.jpg");
 			}
 
-			if (!@chmod(Yii::app()->basePath."/assets/preview/$asset->id.jpg")) {
-				throw new Exception("Unable to chmod 666 copied file: ".Yii::app()->basePath."/assets/preview/$asset->id.jpg");
+			if ($user == 'root') {
+				if (!@chown(Yii::app()->basePath."/assets/preview/$asset->id.jpg",Yii::app()->params['apache_user'])) {
+					throw new Exception("Unable to chown file to apache_user: ".Yii::app()->basePath."/assets/preview/$asset->id.jpg");
+				}
+				if (!@chgrp(Yii::app()->basePath."/assets/preview/$asset->id.jpg",Yii::app()->params['apache_user'])) {
+					throw new Exception("Unable to chgrp file to apache_user: ".Yii::app()->basePath."/assets/preview/$asset->id.jpg");
+				}
 			}
 
 			echo "OK\n";
