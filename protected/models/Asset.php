@@ -96,9 +96,9 @@ class Asset extends BaseActiveRecord
 	public function wrap() {
 		$data = Yii::app()->db->createCommand()->select("*")->from("asset")->where("id = $this->id")->queryRow();
 		unset($data['id']);
-		$data['_data'] = base64_encode(file_get_contents($this->path));
-		$data['_preview'] = base64_encode(file_get_contents($this->preview));
-		$data['_thumbnail'] = base64_encode(file_get_contents($this->thumbnail));
+		$data['_data'] = base64_encode(@file_get_contents($this->path));
+		$data['_preview'] = base64_encode(@file_get_contents($this->preview));
+		$data['_thumbnail'] = base64_encode(@file_get_contents($this->thumbnail));
 		return $data;
 	}
 }
