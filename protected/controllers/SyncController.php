@@ -167,20 +167,11 @@ class SyncController extends Controller
 			if (!@file_put_contents($_asset->path,base64_decode($asset['_data']))) {
 				throw new Exception("Failed to write asset to disk: $_asset->path");
 			}
-			if (!@chmod($_asset->path,0666)) {
-				throw new Exception("Failed to chmod 666: $_asset->path");
-			}
 			if (!@file_put_contents($_asset->preview,base64_decode($asset['_preview']))) {
 				throw new Exception("Failed to write asset preview to disk: $_asset->preview");
 			}
-			if (!@chmod($_asset->preview,0666)) {
-				throw new Exception("Failed to chmod 666: $_asset->preview");
-			}
 			if (!@file_put_contents($_asset->thumbnail,base64_decode($asset['_thumbnail']))) {
 				throw new Exception("Failed to write asset thumbnail to disk: $_asset->thumbnail");
-			}
-			if (!@chmod($_asset->thumbnail,0666)) {
-				throw new Exception("Failed to chmod 666: $_asset->thumbnail");
 			}
 		}
 	}
