@@ -256,10 +256,10 @@ class Event extends BaseActiveRecord
 		}
 
 		$data['_episode'] = $this->episode->wrap();
-		$data['episode_id'] = '{episode_id}';
+		$data['episode_id'] = '{Episode:'.$this->episode->hash.'}';
 		$data['_issues'] = Yii::app()->db->createCommand()->select("*")->from("event_issue")->where("event_id = $this->id")->queryAll();
 		foreach ($data['_issues'] as $i => $issue) {
-			$data['_issues'][$i]['event_id'] = '{event_id}';
+			$data['_issues'][$i]['event_id'] = '{Event:'.$this->hash.'}';
 		}
 
 		return $this->strip_ids($data);

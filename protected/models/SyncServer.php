@@ -104,6 +104,8 @@ class SyncServer extends BaseActiveRecord
 			return true;
 		}
 
+die("<pre>".print_r($request,true));
+
 		$json = json_encode($request);
 
 		$response = $this->request($json);

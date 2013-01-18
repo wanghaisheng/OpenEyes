@@ -278,11 +278,13 @@ class SyncController extends Controller
 					$data[$key] = $s_value;
 				}
 			}
-			if (preg_match('/^\{asset:([0-9a-f\-]+)\}$/',$value,$m)) {
-				if (!$asset = Asset::model()->find('hash=?',array($m[1]))) {
-					throw new Exception("Asset not found: {$m[1]}");
+
+			if (preg_match('/^\{([a-zA-Z]+):([a-f0-9\-]+)\}$/',$value,$m)) {
+				$_model = $m[1];
+				if (!$object = $_model::model()->find('hash=?',array($m[2]))) {
+					throw new Exception("Unable to find {$_model}: {$m[2]}");
 				}
-				$data[$key] = $asset->id;
+				$data[$key] = $object->id;
 			}
 		}
 
