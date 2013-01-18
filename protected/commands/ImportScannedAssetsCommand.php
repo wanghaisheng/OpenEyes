@@ -77,16 +77,28 @@ class ImportScannedAssetsCommand extends CConsoleCommand {
 				throw new Exception("Unable to move asset into place: [".Yii::app()->params['scans_directory']."/$file] => [".Yii::app()->basePath."/assets/$asset->id.$asset->extension]");
 			}
 
+			if (!@chmod(Yii::app()->basePath."/assets/$asset->filename",0666)) {
+				throw new Exception("Unable to chmod 666 copied file: ".Yii::app()->basePath."/assets/$asset->filename");
+			}
+
 			shell_exec("convert -flatten -antialias -scale 150x150 -raise 3 \"".Yii::app()->basePath."/assets/$asset->filename\" \"".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg\" 2>&1");
 
 			if (!file_exists(Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg")) {
 				throw new Exception("Failed to create thumbnail: ".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg");
 			}
 
+			if (!@chmod(Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg",0666)) {
+				throw new Exception("Unable to chmod 666 copied file: ".Yii::app()->basePath."/assets/thumbnail/$asset->id.jpg");
+			}
+
 			shell_exec("convert -flatten -antialias -scale 800x800 -raise 3 \"".Yii::app()->basePath."/assets/$asset->filename\" \"".Yii::app()->basePath."/assets/preview/$asset->id.jpg\" 2>&1");
 
 			if (!file_exists(Yii::app()->basePath."/assets/preview/$asset->id.jpg")) {
 				throw new Exception("Failed to create preview: ".Yii::app()->basePath."/assets/preview/$asset->id.jpg");
+			}
+
+			if (!@chmod(Yii::app()->basePath."/assets/preview/$asset->id.jpg")) {
+				throw new Exception("Unable to chmod 666 copied file: ".Yii::app()->basePath."/assets/preview/$asset->id.jpg");
 			}
 
 			echo "OK\n";
