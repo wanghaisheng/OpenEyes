@@ -201,7 +201,9 @@ class BaseEventTypeElement extends BaseElement {
 
 	public function wrap($relations=array()) {
 		$table = $this->tableName();
-		$data = Yii::app()->db->createCommand("select $table.*, '{event_id}' as event_id from $table where id = $this->id")->queryRow();
+		$data = Yii::app()->db->createCommand("select $table.* from $table where id = $this->id")->queryRow();
+
+		$data['event_id'] = '{Event:'.$this->event->hash.'}';
 
 		foreach ($relations as $class => $key) {
 			$table = $class::model()->tableName();
