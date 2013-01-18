@@ -42,13 +42,4 @@
 			'image/png',
 		),
 	))?>
-
-	<h4 class="elementTypeName">Available scans</h4>
-	<?php $this->renderPartial('//elements/ElementScannedDocument/_filepicker',array(
-		'identifier' => 'scans',
-		'element' => $element,
-		'filetypes' =>array(
-			'application/pdf',
-		),
-	))?>
 </div>
