@@ -81,9 +81,29 @@ class Procedure extends BaseActiveRecord
 			'subspecialtySubsections' => array(self::MANY_MANY, 'SubspecialtySubsection', 'proc_subspecialty_subsection_assignment(proc_id, subspecialty_subsection_id)'),
 			'opcsCodes' => array(self::MANY_MANY, 'OpcsCode', 'procedure_opcs_assignment(proc_id, opcs_code_id)'),
 			'additional' => array(self::MANY_MANY, 'Procedure', 'procedure_additional(proc_id, additional_proc_id)'),
-			'benefits' => array(self::MANY_MANY, 'Benefit', 'procedure_benefit(proc_id, benefit_id)'),
-			'complications' => array(self::MANY_MANY, 'Complication', 'procedure_complication(proc_id, complication_id)'),
 		);
+	}
+
+	public function getComplications() {
+		$firm = Firm::model()->findByPk(Yii::app()->session['selected_firm_id']);
+
+		$complications = array();
+		foreach (ProcedureComplication::model()->findAll('proc_id=? and service_id=?',array($this->id,$firm->serviceSubspecialtyAssignment->service_id)) as $pc) {
+			$complications[] = $pc->complication;
+		}
+
+		return $complications;
+	}
+
+	public function getBenefits() {
+		$firm = Firm::model()->findByPk(Yii::app()->session['selected_firm_id']);
+
+		$benefits = array();
+		foreach (ProcedureBenefit::model()->findAll('proc_id=? and service_id=?',array($this->id,$firm->serviceSubspecialtyAssignment->service_id)) as $pc) {
+			$benefits[] = $pc->benefit;
+		}
+
+		return $benefits;
 	}
 
 	/**
