@@ -35,18 +35,19 @@ class ImportComplicationsCommand extends CConsoleCommand {
 					$data[0] = 'Medical Retina';
 				}
 				if ($service = Service::model()->find('name=?',array($data[0].' Service'))) {
+					$ssa = ServiceSubspecialtyAssignment::model()->find('service_id=?',array($service->id));
 					foreach (preg_split('/,\s*/',$data[2]) as $complication) {
 						if (trim($complication)) {
 							if (!$_complication = Complication::model()->find('name=?',array(trim($complication)))) {
 								$_complication = new Complication;
-								$_complication->name = $complication;
+								$_complication->name = trim($complication);
 								$_complication->save();
 							}
 							if (!ProcedureComplication::model()->find('proc_id=? and complication_id=?',array($proc->id,$_complication->id))) {
 								$pc = new ProcedureComplication;
 								$pc->proc_id = $proc->id;
 								$pc->complication_id = $_complication->id;
-								$pc->service_id = $service->id;
+								$pc->subspecialty_id = $ssa->subspecialty_id;
 								$pc->save();
 							}
 						}
@@ -56,14 +57,14 @@ class ImportComplicationsCommand extends CConsoleCommand {
 						if (trim($benefit)) {
 							if (!$_benefit = Benefit::model()->find('name=?',array(trim($benefit)))) {
 								$_benefit = new Benefit;
-								$_benefit->name = $benefit;
+								$_benefit->name = trim($benefit);
 								$_benefit->save();
 							}
 							if (!ProcedureBenefit::model()->find('proc_id=? and benefit_id=?',array($proc->id,$_benefit->id))) {
 								$pb = new ProcedureBenefit;
 								$pb->proc_id = $proc->id;
 								$pb->benefit_id = $_benefit->id;
-								$pb->service_id = $service->id;
+								$pb->subspecialty_id = $ssa->subspecialty_id;
 								$pb->save();
 							}
 						}
