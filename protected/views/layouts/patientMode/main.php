@@ -45,6 +45,7 @@
 	<?php Yii::app()->getClientScript()->registerScriptFile(Yii::app()->createUrl('/js/buttons.js'))?>
 	<?php Yii::app()->getClientScript()->registerScriptFile(Yii::app()->createUrl('/js/events_and_episodes.js'))?>
 	<?php Yii::app()->getClientScript()->registerScriptFile(Yii::app()->createUrl('/js/script.js'))?>
+	<?php Yii::app()->getClientScript()->registerScriptFile(Yii::app()->createUrl('/js/jQueryRotate.2.2.js'))?>
 	<?php if (Yii::app()->params['google_analytics_account']) {?>
 		<script type="text/javascript">
 
