@@ -129,4 +129,8 @@ class ElementScannedDocument extends BaseEventTypeElement
 
 		return parent::afterSave();
 	}
+
+	public function getIssueText() {
+		return $this->title;
+	}
 }
