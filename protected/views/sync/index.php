@@ -17,7 +17,7 @@
 					<td><?php echo $server->lastSyncText?></td>
 					<td class="<?php echo $server->in_sync ? "in_sync" : "out_of_sync"?>"><?php echo $server->in_sync ? 'Yes' : 'No'?></td>
 					<td id="message<?php echo $server->id?>">Ready</td>
-					<td><a href="#" class="sync" rel="<?php echo $server->id?>"><img src="<?php echo Yii::app()->createUrl('/img/sync.png')?>" /></a></td>
+					<td class="syncImage"><a href="#" class="sync" rel="<?php echo $server->id?>"><img src="<?php echo Yii::app()->createUrl($server->in_sync ? '/img/_elements/icons/sync/syncbtn_green.png' : 'img/_elements/icons/sync/syncbtn_orange.png')?>" /></a></td>
 				</tr>
 			<?php }?>
 		</tbody>
@@ -29,6 +29,8 @@
 		var target = $(this).children('td.status');
 
 		var insync = target.next('td').next('td');
+		var syncImage = insync.next('td').children('a').children('img');
+
 		insync.html('<img src="'+baseUrl+'/img/ajax-loader.gif" />');
 
 		$.ajax({
@@ -50,19 +52,23 @@
 							'success': function(response) {
 								if (response == "INSYNC") {
 									insync.text("Yes");
+									syncImage.attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_green.png');
 								} else {
 									insync.removeClass('in_sync').addClass('out_of_sync');
 									insync.text("No");
+									syncImage.attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_orange.png');
 								}
 							}
 						});
 					} else {
 						insync.removeClass('in_sync').addClass('out_of_sync');
 						insync.text("No");
+						syncImage.attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_orange.png');
 					}
 				} else {
 					insync.removeClass('in_sync').addClass('out_of_sync');
 					insync.text("Unknown");
+					syncImage.attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_orange.png');
 				}
 			}
 		});
@@ -73,6 +79,7 @@
 		var server_id = $(this).attr('rel');
 
 		element.parent().prev('td').text('Syncing...');
+		element.children('img').attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_blue.png');
 
 		$.ajax({
 			'type': 'GET',
@@ -81,8 +88,10 @@
 			'success': function(response) {
 				if (response["status"] == "OK") {
 					$('td.out_of_sync').removeClass('out_of_sync').addClass('in_sync').text('Yes');
+					element.children('img').attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_green.png');
 				} else {
 					$('td.in_sync').removeClass('in_sync').addClass('out_of_sync').text('No');
+					element.children('img').attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_orange.png');
 				}
 
 				element.parent().prev('td').text(response["message"]);
