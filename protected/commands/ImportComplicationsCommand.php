@@ -23,6 +23,9 @@ class ImportComplicationsCommand extends CConsoleCommand {
 
 		fgetcsv($fp);
 
+		$complications = array();
+		$benefits = array();
+
 		while ($data = fgetcsv($fp)) {
 			if ($proc = Procedure::model()->find('term=?',array($data[1]))) {
 				if (in_array($data[0],array('External','Cornea'))) {
@@ -37,11 +40,15 @@ class ImportComplicationsCommand extends CConsoleCommand {
 				if ($service = Service::model()->find('name=?',array($data[0].' Service'))) {
 					$ssa = ServiceSubspecialtyAssignment::model()->find('service_id=?',array($service->id));
 					foreach (preg_split('/,\s*/',$data[2]) as $complication) {
-						if (trim($complication)) {
-							if (!$_complication = Complication::model()->find('name=?',array(trim($complication)))) {
-								$_complication = new Complication;
-								$_complication->name = trim($complication);
-								$_complication->save();
+						$complication = trim(lcfirst($complication));
+						if ($complication) {
+							if (!in_array($complication,$complications)) {
+								if (!$_complication = Complication::model()->find('name=?',array($complication))) {
+									$_complication = new Complication;
+									$_complication->name = $complication;
+									$_complication->save();
+									$complications[] = $complication;
+								}
 							}
 							if (!ProcedureComplication::model()->find('proc_id=? and complication_id=?',array($proc->id,$_complication->id))) {
 								$pc = new ProcedureComplication;
@@ -54,11 +61,15 @@ class ImportComplicationsCommand extends CConsoleCommand {
 					}
 
 					foreach (preg_split('/,\s*/',$data[3]) as $benefit) {
-						if (trim($benefit)) {
-							if (!$_benefit = Benefit::model()->find('name=?',array(trim($benefit)))) {
-								$_benefit = new Benefit;
-								$_benefit->name = trim($benefit);
-								$_benefit->save();
+						$benefit = trim(lcfirst($benefit));
+						if ($benefit) {
+							if (!in_array($benefit,$benefits)) {
+								if (!$_benefit = Benefit::model()->find('name=?',array($benefit))) {
+									$_benefit = new Benefit;
+									$_benefit->name = $benefit;
+									$_benefit->save();
+									$benefits[] = $benefit;
+								}
 							}
 							if (!ProcedureBenefit::model()->find('proc_id=? and benefit_id=?',array($proc->id,$_benefit->id))) {
 								$pb = new ProcedureBenefit;
