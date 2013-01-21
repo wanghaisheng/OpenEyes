@@ -1,0 +1,150 @@
+<?php
+/**
+ * OpenEyes
+ *
+ * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
+ * (C) OpenEyes Foundation, 2011-2012
+ * This file is part of OpenEyes.
+ * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package OpenEyes
+ * @link http://www.openeyes.org.uk
+ * @author OpenEyes <info@openeyes.org.uk>
+ * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
+ * @copyright Copyright (c) 2011-2012, OpenEyes Foundation
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
+class RelatedImportCommand extends CConsoleCommand {
+
+	const DATA_FOLDER = 'data/import';
+
+	public function getName() {
+		return 'Related Import Data Command.';
+	}
+
+	public function getHelp() {
+		return "Import data from csv that is related to data already defined in the database.\n";
+	}
+	
+	private $column_value_map = array();
+	
+	/**
+	 * Parse csv files from Google Docs, process them into the right format for MySQL import, and import them
+	 */
+	public function run($args) {
+
+		// Initialise db
+		$connection = Yii::app()->db;
+		$row_count = 0;
+
+		$path = Yii::app()->basePath . '/' . self::DATA_FOLDER . '/';
+		foreach(glob($path."*.relmap") as $map_path) {
+			$table = substr(basename($map_path), 0, -7);
+			echo "Importing $table data...\n";
+				
+			// Get mapping info
+			$map = file($map_path);
+			$import_file_path = $path . trim($map[0]);
+			$export_columns = explode(',',trim($map[1]));
+			$file = file($import_file_path);
+			
+			$row_count = 0;
+			$block_size = 1000;
+			$values = array();
+			foreach($file as $index => $line) {
+				if (!strlen(trim($line))) {
+					continue;
+				}
+				
+				if(!$index) {
+					$columns = str_getcsv($line, ',', '"');
+				} else {
+					$row_count++;
+					$output = array();
+					$record = str_getcsv($line, ',', '"');
+					foreach($export_columns as $column) {
+						$column_index = array_search($column, $columns);
+						$output[] = $record[$column_index];
+					}
+					$values[] = $output;
+					if(!($row_count % $block_size)) {
+						// Insert values in blocks to better handle very large tables
+						$this->insertBlock($table, $export_columns, $values);
+						$values = array();
+					}
+				}
+			}
+			if(!empty($values)) {
+				// Insert remaining values
+				$this->insertBlock($table, $export_columns, $values);
+			}
+			echo "imported $row_count records, done.\n";
+		}
+	}
+
+	/**
+	 * Insert a block of records into a table
+	 * @param string $table
+	 * @param array $columns
+	 * @param array $records
+	 */
+	protected function insertBlock($table, $columns, $records) {
+		$db = Yii::app()->db;
+		$insert_cols = array();
+		foreach($columns as &$column) {
+			if (preg_match('/^\[(.+)=(.+)\]/',$column, $matches) ) {
+				$insert_cols[] = array($db->quoteColumnName($matches[1]), $matches[2]);
+				$column = $db->quoteColumnName($matches[1]);
+			} else {
+				$insert_cols[] = array($db->quoteColumnName($column));
+				$column = $db->quoteColumnName($column);
+			}
+		}
+		
+		$insert = array();
+		foreach($records as $record) {
+			for ($i = 0; $i < count($insert_cols); $i++) {
+				if ($record[$i] != 'NULL') {
+					if (count($insert_cols[$i]) > 1) {
+						$record[$i] = $this->getTableVal($insert_cols[$i][1], $record[$i]);
+					}
+				}
+			}
+			foreach($record as &$field) {
+				if($field != 'NULL') {
+					$field = $db->quoteValue($field);
+				}
+			}
+			$insert[] = '('.implode(',', $record).')';
+		}
+		$query = "INSERT INTO ".$db->quoteTableName($table)." (".implode(',',$columns).") VALUES ".implode(',', $insert);
+		
+		$db->createCommand($query)->execute();
+	}
+
+	// TODO: handle NULL results appropriately
+	protected function _storeTableVal($col_spec, $value) {
+		// split the col spec on dot, do select and store
+		list($table, $column) = explode(".", $col_spec);
+		$db = Yii::app()->db;
+		$query = "SELECT id FROM " . $db->quoteTableName($table) . " WHERE " . $db->quoteColumnName($column) . " = "  . $db->quoteValue($value);
+		$res =  $db->createCommand($query)->query();
+		foreach ($res as $row) {
+			// we'll grab the last if there are multiple. 
+			$this->column_value_map[$col_spec][$value] = $row['id'];
+		}
+	}
+	
+	protected function getTableVal($col_spec, $value) {
+		// change this to check it's not set set it, and then at end return value (which may be null)
+		if (!isset($this->column_value_map[$col_spec]) || !isset($this->column_value_map[$col_spec][$value])) {
+			$this->_storeTableVal($col_spec, $value);
+		}
+		
+		return $this->column_value_map[$col_spec][$value];
+	}
+	
+}
