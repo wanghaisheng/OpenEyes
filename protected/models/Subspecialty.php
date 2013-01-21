@@ -118,8 +118,15 @@ class Subspecialty extends BaseActiveRecord
 	 * Fetch an array of subspecialty IDs and names
 	 * @return array
 	 */
-	public function getList()
+	public function getList($nonmedical = false)
 	{
+		if (!$nonmedical) {
+			error_log('boo-ya');
+			$list = Subspecialty::model()->with('specialty')->find('specialty.medical = :bool', array(':bool' => true));
+		}
+		else {
+			$list = Subspecialty::model()->findAll();
+		}
 		$list = Subspecialty::model()->findAll();
 		$result = array();
 

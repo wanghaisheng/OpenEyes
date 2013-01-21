@@ -262,17 +262,17 @@ class Patient extends BaseActiveRecord {
 	}
 
 	/**
-		* @return boolean Is patient a child?
-		*/
+	* @return boolean Is patient a child?
+	*/
 	public function isChild() {
 		$age_limit = (isset(Yii::app()->params['child_age_limit'])) ? Yii::app()->params['child_age_limit'] : self::CHILD_AGE_LIMIT;
 		return ($this->getAge() < $age_limit);
 	}
 
 	/**
-		* @param integer $drug_id
-		* @return boolean Is patient allergic?
-		*/
+	* @param integer $drug_id
+	* @return boolean Is patient allergic?
+	*/
 	public function hasAllergy($drug_id = null) {
 		if($drug_id) {
 			if($this->allergies) {
