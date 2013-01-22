@@ -76,7 +76,7 @@ class SyncController extends Controller
 			}
 
 			if (!isset($ip)) {
-				$res = trim(`host -W1 {$server->hostname} |grep 'had address' |head -n1`);
+				$res = trim(`host -W1 {$server->hostname} |grep 'has address' |head -n1`);
 				if (!$res) {
 					echo "DOWN";
 					return;
