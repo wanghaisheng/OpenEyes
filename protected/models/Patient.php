@@ -55,6 +55,8 @@ class Patient extends BaseActiveRecord {
 	const CHILD_AGE_LIMIT = 16;
 	
 	public $use_pas = TRUE;
+	private $_orderedepisodes;
+	
 	
 	/**
 		* Returns the static model of the specified AR class.
@@ -220,41 +222,46 @@ class Patient extends BaseActiveRecord {
 	 * @returns Array
 	 */
 	public function getOrderedEpisodes() {
-		$episodes = $this->episodes;
-		$by_specialty = array();
 		
-		// group
-		foreach ($episodes as $ep) {
-			$specialty = $ep->firm->serviceSubspecialtyAssignment->subspecialty->specialty;
-			$by_specialty[$specialty->code]['episodes'][] = $ep;
-			$by_specialty[$specialty->code]['specialty'] = $specialty;
-		}
-		
-		
-		$res = array();
-		if (count(array_keys($by_specialty)) > 1) {
-			// get specialties that are configured
-			if (isset(Yii::app()->params['specialty_sort'])) {
-				foreach (Yii::app()->params['specialty_sort'] as $code) {
-					if (isset($by_specialty[$code])) {
-						$res[] = $by_specialty[$code];
-						unset($by_specialty[$code]);
+		if (!isset($this->_orderedepisodes)) {
+			$episodes = $this->episodes;
+			$by_specialty = array();
+			
+			// group
+			foreach ($episodes as $ep) {
+				$specialty = $ep->firm->serviceSubspecialtyAssignment->subspecialty->specialty;
+				$by_specialty[$specialty->code]['episodes'][] = $ep;
+				$by_specialty[$specialty->code]['specialty'] = $specialty;
+			}
+			
+			
+			$res = array();
+			if (count(array_keys($by_specialty)) > 1) {
+				// get specialties that are configured
+				if (isset(Yii::app()->params['specialty_sort'])) {
+					foreach (Yii::app()->params['specialty_sort'] as $code) {
+						if (isset($by_specialty[$code])) {
+							$res[] = $by_specialty[$code];
+							unset($by_specialty[$code]);
+						}
 					}
 				}
-			}
-	
-			// sort the remainder
-			function cmp($a, $b) {
-				return strcasecmp($a['specialty']->name, $b['specialty']->name);
-			}
-			uasort($by_specialty, "cmp");
-		}
-		// either flattens, or gets the remainder
-		foreach ($by_specialty as $row) {
-			$res[] = $row;
-		}			
 		
-		return $res;
+				// sort the remainder
+				function cmp($a, $b) {
+					return strcasecmp($a['specialty']->name, $b['specialty']->name);
+				}
+				uasort($by_specialty, "cmp");
+			}
+			// either flattens, or gets the remainder
+			foreach ($by_specialty as $row) {
+				$res[] = $row;
+			}
+
+			$this->_orderedepisodes = $res;
+		}
+		
+		return $this->_orderedepisodes;
 	}
 	
 	public function getAge() {
