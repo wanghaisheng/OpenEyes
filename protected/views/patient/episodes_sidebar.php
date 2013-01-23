@@ -66,7 +66,7 @@
 	<?php } ?>
 	<?php if (is_array($ordered_episodes)) 
 		foreach ($ordered_episodes as $specialty_episodes) {?>
-			<h4><?php echo $specialty_episodes['specialty']->name ?></h4>
+			<div class="specialty"><?php echo $specialty_episodes['specialty']->name ?></div>
 			
 			<?php foreach ($specialty_episodes['episodes'] as $i => $episode) {?>
 			<div class="episode <?php echo empty($episode->end_date) ? 'closed' : 'open' ?> clearfix">
