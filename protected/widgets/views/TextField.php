@@ -5,6 +5,9 @@
 		<div class="label"><?php echo empty($htmlOptions['label']) ? CHtml::encode($element->getAttributeLabel($field)) : $htmlOptions['label']?>:</div>
 		<div class="data">
 			<?php echo CHtml::textField($name, $value, $htmlOptions)?>
+			<?php if (isset($htmlOptions['right_text'])) {
+				echo $htmlOptions['right_text'];
+			}?>
 		</div>
 	</div>
 <?php }?>
