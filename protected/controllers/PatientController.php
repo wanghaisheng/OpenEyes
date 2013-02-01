@@ -1055,7 +1055,14 @@ class PatientController extends BaseController
 			return array('patients'=>array());
 		}
 
-		$command = Yii::app()->db->createCommand()
+		if (!($db = Yii::app()->params['report_db'])) {
+			$db = 'db';
+		}
+
+		$date_from = date('Y-m-d',strtotime($params['date_from'])).' 00:00:00';
+		$date_to = date('Y-m-d',strtotime($params['date_to'])).' 23:59:59';
+
+		$command = Yii::app()->$db->createCommand()
 			->from("patient p")
 			->join("contact c","c.parent_class = 'Patient' and c.parent_id = p.id");
 
@@ -1065,7 +1072,7 @@ class PatientController extends BaseController
 				$command->join("eye eye_e_$i","eye_e_$i.id = e$i.eye_id");
 				$command->join("disorder disorder_e_$i","disorder_e_$i.id = e$i.disorder_id");
 				if ($i>0) $where .= ' and ';
-				$where .= "e$i.disorder_id = $disorder_id ";
+				$where .= "e$i.disorder_id = $disorder_id and e$i.last_modified_date >= '$date_from' and e$i.last_modified_date <= '$date_to'";
 				$select .= ", e$i.last_modified_date as episode{$i}_date, eye_e_$i.name as episode{$i}_eye, disorder_e_$i.term as episode{$i}_disorder";
 			}
 		}
@@ -1076,12 +1083,12 @@ class PatientController extends BaseController
 				$command->join("eye eye_sd_$i","eye_sd_$i.id = sd$i.eye_id");
 				$command->join("disorder disorder_sd_$i","disorder_sd_$i.id = sd$i.disorder_id");
 				if ($where) $where .= ' and ';
-				$where .= "sd$i.disorder_id = $disorder_id ";
+				$where .= "sd$i.disorder_id = $disorder_id and sd$i.date >= '$date_from' and sd$i.date <= '$date_to'";
 				$select .= ", sd$i.date as sd{$i}_date, sd$i.eye_id as sd{$i}_eye_id, eye_sd_$i.name as sd{$i}_eye, disorder_sd_$i.term as sd{$i}_disorder";
 			}
 		}
 
-		$results = array();
+		$results = array('patients'=>array());
 
 		foreach ($command->select($select)->where($where)->queryAll() as $row) {
 			$date = $this->reportEarliestDate($row);
