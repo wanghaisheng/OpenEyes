@@ -530,6 +530,13 @@ class BaseEventTypeController extends BaseController
 
 	public function header($editable=null) {
 		$episodes = $this->patient->episodes;
+		$ordered_episodes = $this->patient->getOrderedEpisodes();
+		/*
+		$ordered_episodes = array();
+		foreach ($episodes as $ep) {
+			$ordered_episodes[$ep->firm->serviceSubspecialtyAssignment->subspecialty->specialty->name][] = $ep;
+		}
+		*/
 		$legacyepisodes = $this->patient->legacyepisodes;
 
 		if($editable === null){
@@ -541,7 +548,7 @@ class BaseEventTypeController extends BaseController
 		}
 
 		$this->renderPartial('//patient/event_header',array(
-			'episodes'=>$episodes,
+			'ordered_episodes'=>$ordered_episodes,
 			'legacyepisodes'=>$legacyepisodes,
 			'eventTypes'=>EventType::model()->getEventTypeModules(),
 			'model'=>$this->patient,
