@@ -67,8 +67,9 @@ html { background-color: #d4d1cd; }
 body { width:1230px; margin:0 auto; }
 
 /* ====== STRUCTURE ====== */
-#container, #header, #content, #help, #footer { width:1230px; padding:0; margin:0; }
+#container, #miniheader, #header, #content, #help, #footer { width:1230px; padding:0; margin:0; }
 #container		{ background: url(../img/_structure/gradient_bg.jpg) #dae6f1 top left no-repeat; background-position: 0 0; border-left: 2px solid #b3b0ae; border-right: 2px solid #b3b0ae; }
+#miniheader		{ position:fixed; top:0; left:auto; z-index:8; }
 #header			{ height: 70px; position:relative; border-top:2px solid #b3b0ae; }
 #content		{ min-height: 400px; }
 #extendedhelp	{ min-height: 40px; background: url(../img/_structure/help_bg.jpg) #a5ddf1 top left repeat; }
@@ -77,12 +78,8 @@ body { width:1230px; margin:0 auto; }
 #footer	{-webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
 
 
-/* ====== HEADER PANELS ====== */
-#brand { width:240px; height:70px; background: url(../img/_structure/openeyes.png) top left no-repeat; }
-#user_panel { height:65px; width:500px; position: absolute; top:0; right:10px; }
-#patientID	{ height:65px; width:340px; position: absolute; top:0; right:540px; }
-#oesync		{ height:48px; width:31px; position: absolute; top:0; left:200px; }
-
+/* ====== BRAND ====== */
+#brand 	{ width:240px; height:70px; background: url(../img/_structure/openeyes.png) top left no-repeat; }
 /* special brand themes */
 #brand.olympic { background-image: url(../img/_structure/openeyes_olympic.png); }
 
@@ -160,7 +157,7 @@ a:active { border-bottom: thin solid #3665ff; }
 a.likebtn { background:#107be9; color:#fff; padding:2px 8px; border:none; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 a:visited.likebtn { background:#107be9; }
 a:hover.likebtn, a:active.likebtn { background:#145ea9; }
-/* SPRITES */
+/* anchor SPRITES */
 /* styled depending on usage */
 a.sprite { border-bottom:none; }
 a.sprite.showhide > span { display:inline-block; width:11px; height:11px; background:transparent url(../img/_elements/icons/_sprites/showhide_icon.png) no-repeat top left; }
@@ -189,8 +186,7 @@ a:hover.sprite.showhide > .show { background-position: bottom right; }
 
 /* === Very CLASSY CSS BUTTONS === */
 /* default, inactive */
-button.classy { height:32px; padding:0; margin:0; font-weight:normal; font-size:17px; letter-spacing:1px;
-color:#fff; text-shadow:-1px -1px 0 #999; white-space:nowrap; border:none; overflow:visible; background:#bbb; 
+button.classy, a.classy { height:32px; padding:0; margin:0; font-weight:normal; font-size:17px; letter-spacing:1px; text-align: center; color:#fff; text-shadow:-1px -1px 0 #999; white-space:nowrap; border:none; overflow:visible; background:#bbb; 
 background: -moz-linear-gradient(#cacacb, #aeaeaf);		 
 background: -ms-linear-gradient(#cacacb, #aeaeaf);	
 background: -webkit-linear-gradient(#cacacb, #aeaeaf); 
@@ -200,30 +196,37 @@ border-bottom:2px solid #929293;
 -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px; 
 -webkit-box-shadow:0 1px 4px rgba(0,0,0,0.3); -moz-box-shadow:0 1px 4px rgba(0,0,0,0.3); box-shadow:0 1px 4px rgba(0,0,0,0.3); 
 cursor:pointer; }
+/* anchors requires some tweaking - see belwo */
+a.classy { display:inline-block; height:30px; }
 /* widths */
-button.tall			{ width: 125px;	}
-button.grande		{ width: 154px; }
-button.venti		{ width: 210px; }
-button.flexi		{ width: auto; }
-button.flexi span	{ padding:0 22px; }
+.classy.tall		{ width: 125px;	}
+.classy.grande		{ width: 154px; }
+.classy.venti		{ width: 210px; }
+.classy.flexi		{ width: auto; }
+.classy.flexi span	{ padding:0 22px; }
 /* button text */
-button.classy span.btn			{  display:block; height:32px; line-height:31px; }
-button.classy span.btn.green	{  color:#fff; text-shadow: 1px 1px 0 #427d42, 2px 2px 0 #43727f; }
-button.classy span.btn.blue		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
-button.classy span.btn.red		{  color:#fff; text-shadow: 1px 1px 0 #9a091c, 2px 2px 0 #851616; }
+.classy span.btn			{  display:block; height:32px; line-height:31px; } 
+.classy span.btn.green	{  color:#fff; text-shadow: 1px 1px 0 #427d42, 2px 2px 0 #43727f; }
+.classy span.btn.blue		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
+.classy span.btn.red		{  color:#fff; text-shadow: 1px 1px 0 #9a091c, 2px 2px 0 #851616; }
 /* graphic elements */
-button.classy span.btn.plussign			{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:40px; }
-button.classy span.btn.leftarrow		{ background: transparent url(../img/_elements/btns/left-arrow.png) no-repeat top left; padding-left:35px; }
-button.classy span.btn.rightarrow		{ background: transparent url(../img/_elements/btns/right-arrow.png) no-repeat top right; padding-right:35px; }
-button.classy span.btn.crosssign		{ background: transparent url(../img/_elements/btns/cross-sign.png) no-repeat center left; padding-left:40px;} 
-/* mini - replace 'tall','grande' or 'venti' in button class */
-button.mini						{ height:24px; font-size:13px; width: auto; }
-button.mini span				{ padding:0 18px; }
-button.mini span.btn			{ display:block; height:24px; line-height:23px; } 
-button.mini span.btn.icon-only	{ padding:0 4px; }
+.classy span.btn.plussign			{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:40px; }
+.classy span.btn.leftarrow		{ background: transparent url(../img/_elements/btns/left-arrow.png) no-repeat top left; padding-left:35px; }
+.classy span.btn.rightarrow		{ background: transparent url(../img/_elements/btns/right-arrow.png) no-repeat top right; padding-right:35px; }
+.classy span.btn.crosssign		{ background: transparent url(../img/_elements/btns/cross-sign.png) no-repeat center left; padding-left:40px;} 
+/* mini - replace 'tall','grande' or 'venti' in class */
+.classy.mini					{ height:24px; font-size:13px; width: auto; }
+.classy.mini span				{ padding:0 18px; }
+.classy.mini span.btn			{ display:block; height:24px; line-height:23px; } 
+.classy.mini span.btn.icon-only	{ padding:0 4px; }
+
+/* tweak anchor to look identical to button styling */
+a.classy span.btn			{ line-height:30px;}
+a.classy.mini				{ height:22px; } 
+a.classy.mini span.btn 		{ line-height:24px; }
 
 /* background colours */
-button.classy.green {
+.classy.green {
 background: -moz-linear-gradient(#43a844, #55a256);		 
 background: -ms-linear-gradient(#43a844, #55a256);	
 background: -webkit-linear-gradient(#43a844, #55a256); 
@@ -231,7 +234,7 @@ background: -webkit-linear-gradient(#43a844, #55a256);
 background:	linear-gradient(#43a844, #55a256);
 border-bottom:2px solid #3fa522;	
 }
-button.classy.green:hover {
+.classy.green:hover {
 background: -moz-linear-gradient(#48bd27, #3fa522);		 
 background: -ms-linear-gradient(#48bd27, #3fa522);	
 background: -webkit-linear-gradient(#48bd27, #3fa522); 
@@ -239,7 +242,7 @@ background: -webkit-linear-gradient(#48bd27, #3fa522);
 background:	linear-gradient(#48bd27, #3fa522);
 border-bottom:2px solid #569b42; 
 }
-button.classy.green:active {
+.classy.green:active {
 background: -moz-linear-gradient(#458446, #396c39);		 
 background: -ms-linear-gradient(#458446, #396c39);	
 background: -webkit-linear-gradient(#458446, #396c39); 
@@ -247,7 +250,7 @@ background: -webkit-linear-gradient(#458446, #396c39);
 background:	linear-gradient(#458446, #396c39);
 border-bottom:2px solid #336234; 
 }
-button.classy.blue {
+.classy.blue {
 background: -moz-linear-gradient(#107be9, #1469bf);		 
 background: -ms-linear-gradient(#107be9, #1469bf);	
 background: -webkit-linear-gradient(#107be9, #1469bf); 
@@ -255,7 +258,7 @@ background: -webkit-linear-gradient(#107be9, #1469bf);
 background:	linear-gradient(#107be9, #1469bf);
 border-bottom:2px solid #105dae;	
 }
-button.classy.blue:hover {
+.classy.blue:hover {
 background: -moz-linear-gradient(#118afb, #1279e3);		 
 background: -ms-linear-gradient(#118afb, #1279e3);	
 background: -webkit-linear-gradient(#118afb, #1279e3); 
@@ -263,7 +266,7 @@ background: -webkit-linear-gradient(#118afb, #1279e3);
 background:	linear-gradient(#118afb, #1279e3);
 border-bottom:2px solid #1974d1; 
 }
-button.classy.blue:active {
+.classy.blue:active {
 background: -moz-linear-gradient(#145ea9, #104d8b);		 
 background: -ms-linear-gradient(#145ea9, #104d8b);	
 background: -webkit-linear-gradient(#145ea9, #104d8b); 
@@ -271,7 +274,7 @@ background: -webkit-linear-gradient(#145ea9, #104d8b);
 background:	linear-gradient(#145ea9, #104d8b);
 border-bottom:2px solid #0f467e; 
 }
-button.classy.red {
+.classy.red {
 background: -moz-linear-gradient(#cf0d27, #b8152b);		 
 background: -ms-linear-gradient(#cf0d27, #b8152b);	
 background: -webkit-linear-gradient(#cf0d27, #b8152b); 
@@ -279,7 +282,7 @@ background: -webkit-linear-gradient(#cf0d27, #b8152b);
 background:	linear-gradient(#cf0d27, #b8152b);
 border-bottom:2px solid #9a091c;	
 }
-button.classy.red:hover {
+.classy.red:hover {
 background: -moz-linear-gradient(#e81515, #e01a1a);		 
 background: -ms-linear-gradient(#e81515, #e01a1a);	
 background: -webkit-linear-gradient(#e81515, #e01a1a); 
@@ -287,7 +290,7 @@ background: -webkit-linear-gradient(#e81515, #e01a1a);
 background:	linear-gradient(#e81515, #e01a1a);
 border-bottom:2px solid #ad1515; 
 }
-button.classy.red:active {
+.classy.red:active {
 background: -moz-linear-gradient(#901828, #761421);		 
 background: -ms-linear-gradient(#901828, #761421);	
 background: -webkit-linear-gradient(#901828, #761421); 
@@ -295,7 +298,7 @@ background: -webkit-linear-gradient(#901828, #761421);
 background:	linear-gradient(#901828, #761421);
 border-bottom:2px solid #6b121e; 
 }
-button.classy.inactive {
+.classy.inactive {
 background: -moz-linear-gradient(#aaaaaa, #999999);
 background: -ms-linear-gradient(#aaaaaa, #999999);
 background: -webkit-linear-gradient(#aaaaaa, #999999);
@@ -305,6 +308,8 @@ border-bottom:2px solid #999999;
 }
 /* === BTN GROUP: handle layout of buttons  === */
 .btngroup { }
+
+/* positioning of buttons and surrounding space */
 .btngroup.right { text-align:right; }
 .btngroup.center { text-align:center; }
 .btngroup.pad { padding:20px 0; }
@@ -314,9 +319,9 @@ border-bottom:2px solid #999999;
 /* spacing of buttons */
 .btngroup > button { margin:0 5px; }
 .btngroup > a { margin:0 5px; }
-.btngroup.closeup button { margin:0 1px; }
-.btngroup.spaceout button { margin:0 20px; } /* clicking on the wrong one could be devasterous! */
-.btngroup.stack button { margin:0 0 10px 0; display:block; }
+.btngroup.closeup button, .btngroup.closeup a { margin:0 1px; }
+.btngroup.spaceout button, .btngroup.spaceout a { margin:0 20px; } /* clicking on the wrong one could be devasterous! */
+.btngroup.stack button, .btngroup.stack a { margin:0 0 10px 0; display:block; }
 .btngroup button:first-child { margin-left:0; }
 .btngroup button:last-child { margin-right:0; margin-bottom:0; } 
 
@@ -361,8 +366,8 @@ table tr.clickable:hover, table tr.dark.clickable:hover { background:#3665ff; co
 table tr:last-child { border-bottom: none; }
 
 /* GRID */
-table.grid { width:100%; } 
-table.grid th, table.grid tfoot td { text-align: left; vertical-align: middle; background:#ddd; color: #444; font-size: 11px; font-weight:bold; min-width:30px; padding:10px; border-right:1px solid #bbb;}
+table.grid { width:100%;} 
+table.grid th, table.grid tfoot td { text-align: left; vertical-align: middle; background:#ddd; color: #444; font-size: 11px; font-weight:bold; min-width:30px; padding:10px; border-right:1px solid #bbb; border-top:none;}
 table.grid td { text-align: left; padding:10px; border-right:1px solid #ccc; } 
 table.grid th:last-child, table.grid td:last-child { border-right: none; }
 table.grid td.nowrap { white-space: nowrap; }
@@ -537,34 +542,38 @@ div.pagefooter > .help { position:absolute; top:0; left:287px; width:660px; heig
 div.pagefooter > .help > .divider { padding:0 5px; color:#aaa; }
 
 /* ------------------------------------------------- HEADER MODULES  */
+
+/* ====== HEADER PANELS ====== */
+#brand 		{ width:240px; height:70px; background: url(../img/_structure/openeyes.png) top left no-repeat; }
+#user_panel { position: absolute; top:0; right:10px; height:75px; width:490px; }
+#patientID	{ position: absolute; top:0; left:320px; height:65px; width:340px; }
+#oesync		{ position: absolute; top:0; left:200px; height:48px; width:31px; }
+
 /* instance sync */
 .oesync { background: rgb(255,255,255); background: rgba(255,255,255,0.6); border:1px solid #fff; border-top:none; -webkit-border-bottom-right-radius: 6px; -webkit-border-bottom-left-radius: 6px; -moz-border-radius-bottomright: 6px; -moz-border-radius-bottomleft: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px;}
 .oesync a.syncbtn { position:absolute; bottom:5px; left:3px; }
 .oesync a.syncbtn:hover { border-bottom: none; }
 
-
 /* add border radius to header elements */
 .userpanel, .patientid, ul.usershortcuts a, ul.usershortcuts > li .selected  { -webkit-border-bottom-right-radius: 3px; -webkit-border-bottom-left-radius: 3px; -moz-border-radius-bottomright: 3px; -moz-border-radius-bottomleft: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
 
 /* ====== USER PANEL ====== */
-.userpanel { background: #dae6f1 url(../img/_elements/gradients/bg_user_panel.jpg) bottom left repeat-x; padding:0 10px 5px 10px; border-right:1px solid #b3b0ae; border-bottom:1px solid #b3b0ae; border-left:1px solid #b3b0ae;	 }
-.userpanel .user { float:left; padding-top:10px; color:#036; }
+.userpanel { background: #dae6f1 url(../img/_elements/icons/user/idcard_bg.png) top left no-repeat; padding:0 10px 5px 10px; border-right:1px solid #b3b0ae; border-bottom:1px solid #b3b0ae; border-left:1px solid #b3b0ae;	 }
 /* user shortcuts */
 ul.usershortcuts	{ float:right; padding:0; margin:0; }
 ul.usershortcuts > li { display:inline-block; margin: 0 0 8px 4px;}
 ul.usershortcuts > li a { display:inline-block; background: #cdd9e3; padding:10px 5px 3px 5px; border:none; }
 ul.usershortcuts > li a:hover { background: #fff; border:none; }
 ul.usershortcuts > li a:active { background: #eaffff; border:none; }
-ul.usershortcuts > li a.logout:hover { background: #d84945; color:#fff; }
-ul.usershortcuts > li a.logout:active { background: #ff5652; color:#fff; }
 ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; color:#fff; padding:10px 5px 3px 5px; border:none; }
+ul.usershortcuts a.logout:hover { background: #d84945 !important; color:#fff; }
+ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 /* customise showdatagroup */
-.userpanel .showdatagroup.selectfirm { position:relative; left:-8px; }
-.userpanel .showdatagroup.selectfirm label { margin-right:8px; }
+.userpanel .user { color:#036;white-space: nowrap; position:absolute; bottom:2px; right:12px; }
+.userpanel .showdatagroup.selectfirm { position:absolute; bottom:20px; right:5px; }
 
 /* ====== PATIENT ID ====== */
 .patientid { background: #fff2d7 url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; padding:0 10px; border-right:2px solid #ffb212; border-bottom:2px solid #ffb212; border-left:2px solid #ffb212; }
-.patientid > .patient.icon { position:absolute; right:5px; bottom:5px; }
 .patientid > .patient.reminder { padding-top:9px; }
 .patientid > .patient.reminder > .given		{ display:inline-block; font-size: 16px; }
 .patientid > .patient.reminder > .surname	{ display:inline-block; font-size: 16px; font-weight: bold; }
@@ -577,11 +586,39 @@ ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; col
 .patientid > .patient.details .info { display:inline-block; padding-right:2px; }
 .patientid > .patient.warningflag { position:absolute; left:5px; bottom:-20px; height:17px; line-height:17px; font-size:11px; letter-spacing:1px; padding:0 5px; color:#fff; background:#eb5911; border:2px solid #fff; border-top:none; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
 
+/* Patient icon  */
+.patientid > .patient.icon { position:absolute; right:5px; bottom:5px; height:30px; width:30px; background:transparent url(../img/_elements/icons/patient/patient-id_small.png) bottom left no-repeat; }
+.minipatientid > .patient.icon { position:absolute; right:5px; bottom:0px; height:30px; width:30px; background:transparent url(../img/_elements/icons/patient/patient-id_small.png) bottom left no-repeat; }
+.patient.icon.warning { background-image: url(../img/_elements/icons/patient/patient-id_small-warning.png); }
+
+
+/* ------------------------------------------------- MINI HEADER  */
+
+.miniheader { display:none; height:30px; padding:15px; background:#a0d7f8 url(../img/_structure/miniheader/bg_gradient.png) bottom left repeat-x; border-bottom:2px solid #b3b0ae; -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3); -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+/* position this  */
+.miniheader .usershortcuts { position:absolute; top:0; right:16px; height:30px; }
+.miniheader .minipatientid { position:absolute; top:0; left:180px; height:30px; width:480px; }
+/* patientid mini version */
+.miniheader .minipatientid { background: #fff2d7 url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; border-right:2px solid #ffb212; border-left:2px solid #ffb212; padding:0 10px; font-size: 14px; line-height:30px;  }
+.miniheader .minipatientid .patient { display:inline-block; height:30px; }
+.miniheader .minipatientid .patient.details { position:absolute; right:35px; top:auto; }
+.miniheader .minipatientid .patient.details.female {  background:transparent url(../img/_elements/icons/alerts/female_trans.png) center right no-repeat; padding-right:23px; } 
+.miniheader .minipatientid .patient.details.male { background:transparent url(../img/_elements/icons/alerts/male_trans.png) center right no-repeat; padding-right:23px; }
+.miniheader .minipatientid .patient.details .info { padding-left:5px; }
+/* warning flag */
+.miniheader .patient.warningflag { position:absolute; left:675px; top:0; height:17px; line-height:17px; font-size:11px; letter-spacing:1px; padding:0 5px; color:#fff; background:#eb5911; border:2px solid #fff; border-top:none; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
+/* select firm */
+.miniheader .showdatagroup.selectfirm { margin-top:1px;}
+
+
+
 
 
 /* ========================================================================= EPISODEs & EVENTs ====== */
 
 /* ====== EPISODE EVENT LIST ====== */
+/* Specialty group header */
+.episodelist > .specialty { color:#90886c; line-height:1.1; background: #eaddaf; padding:8px 2px 5px 5px; -webkit-border-top-right-radius: 3px;  -moz-border-radius-topright: 3px; ; border-top-right-radius: 3px; }
 /* Episodes can be 'open' or 'closed' */
 .episodelist > .episode.open   { background: #eaddaf; margin-bottom:5px; }
 .episodelist > .episode.closed { background: #dad3ba; margin-bottom:5px; }
@@ -620,7 +657,7 @@ ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; col
 .episode ul.events li a:hover { border-bottom: none; background: #3665ff url(../img/_elements/icons/event/event_open_arrow.png) right center no-repeat; color:#fff; }
 .episode ul.events li a:active	{ border-bottom: none; background: #315be6; color:#fff; }
 /* quicklook */
-.episode ul.events li .quicklook { display:none; position:absolute; left:140px; top:-5px; z-index:1; width:200px; padding:5px; border:1px solid #3665ff; background:#fff; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 2px 2px 2px 0 #999;  -webkit-box-shadow: 2px 2px 2px 0 #999;  box-shadow: 2px 2px 2px 0 #999;  }
+.episode ul.events li .quicklook { display:none; position:absolute; left:140px; top:-5px; z-index:5; width:200px; padding:5px; border:1px solid #3665ff; background:#fff; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 2px 2px 2px 0 #999;  -webkit-box-shadow: 2px 2px 2px 0 #999;  box-shadow: 2px 2px 2px 0 #999;  }
 .episode ul.events li .quicklook .event { display:block; font-weight: bold; padding-left:5px; padding-bottom:3px; }
 .episode ul.events li .quicklook .info	{ display:block; font-size:11px; padding-left:5px}
 .episode ul.events li .quicklook .issue	{ display:block; font-size:11px; color:#600; padding:5px 5px 5px 20px; margin-top:7px; background:#fdf2e5 url(../img/_elements/icons/event/status/alert.png) top left no-repeat;}
@@ -631,7 +668,7 @@ ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; col
 .episode ul.events li .viewing .type { background:transparent url(../img/_elements/icons/event/status/quicklook.png) top right no-repeat; }
 .episode ul.events li .viewing .type.statusflag { background:transparent url(../img/_elements/icons/event/status/alert-hover.png) top right no-repeat; }
 /* event focus - when user is working on an event: adding, editing, etc: replace episodelist with current single event  */
-.eventfocus { background:#fff; width:168px; padding:10px 0px 10px 5px; border-top:3px solid #a29d8a; border-right:3px solid #a29d8a; border-bottom:3px solid #a29d8a; border-left:2px solid #b3b0ae; }
+.eventfocus { background:#fff; width:168px; padding:10px 0px 0px 5px; border-top:3px solid #a29d8a; border-right:3px solid #a29d8a; border-bottom:3px solid #a29d8a; border-left:2px solid #b3b0ae; }
 .eventfocus.add { border-top-color: #69bd51; border-right-color: #69bd51; border-bottom-color: #69bd51; }
 .eventfocus .eventreminder { margin:5px 0 25px 0; }
 .eventfocus .eventreminder img { vertical-align:text-bottom; padding-right:3px; }
@@ -639,22 +676,26 @@ ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; col
 .episodelist > .episode, .episode .enav, .enav .episodesummary, .eventfocus  { -webkit-border-top-right-radius: 3px; -webkit-border-bottom-right-radius: 3px; -moz-border-radius-topright: 3px; -moz-border-radius-bottomright: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
 
 /* ====== EVENT WRAPPER: actions depend on user role ====== */
-.eventarea .eventwrapper { background: #eaddaf; border-bottom:5px solid #a29d8a; position:relative; }
-.eventarea .eventwrapper.footer { height:35px; border-top:1px solid #a29d8a; border-bottom: none; padding-top:10px; -webkit-border-bottom-left-radius: 8px; -webkit-border-bottom-right-radius: 8px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;}  
+.eventarea .eventwrapper { width:1050px; background: #eaddaf; border-bottom:5px solid #a29d8a; position:relative; }
+.eventarea .eventwrapper.footer { height:25px; border-top:1px solid #a29d8a; border-bottom: none; padding-top:10px; -webkit-border-bottom-left-radius: 8px; -webkit-border-bottom-right-radius: 8px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;}  
 .eventwrapper .workwith	{ display:inline-block; color:#fff; height:26px; line-height:26px; font-size:13px; margin:3px 0 0 3px; padding:0 10px; background: #a29d8a; -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; -moz-border-radius-topleft: 3px; -moz-border-radius-topright: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; }
-.eventwrapper .workwith.edit { background:#1e55c1; }
-.eventwrapper .workwith.add  { background:#58a859; }
-.eventwrapper .workoptions 			{ position:absolute; right:3px; bottom:2px; }
-.eventwrapper.footer .workoptions 	{ position:absolute; right:3px; top:0; }
-.eventwrapper .workoptions .youcan { display:inline-block; height:18px; margin-right:10px; color:#a29d8a; }
-/* customise tabbtn */
-.eventwrapper .workoptions .tabbtn { margin-left:8px; }
-.eventwrapper .workoptions .tabbtn.wrapper > a { background-color: #fffee7; }
-.eventwrapper .workoptions .tabbtn > span.inactive { color:#fff; background: #a29d8a; padding-bottom:3px; }
-.eventwrapper.footer .workoptions .tabbtn > span.inactive { padding-bottom:0; padding-top:4px; }
+.eventwrapper .workwith.edit { background-color:#a29d8a; } /* not sure about the blue: 1469bf */
+.eventwrapper .workwith.add  { background-color:#55a256; }
+.eventwrapper .workwith.view { background-color:#a29d8a; }
+/* tab buttons */
+.eventwrapper .tabbtn { margin-left:5px; }
+.eventwrapper .tabbtn > a { padding:1px 10px 1px 10px; } /* tweaked to align correctly */
+/* event buttons */
+.eventwrapper .workoptions 	 { position:absolute; right:3px; bottom:2px; }
+.eventwrapper.footer .workoptions 	 { position:absolute; right:3px; top:5px; }
+
+/* Make sticky: fixed position + padding-top = jquery sticky offset:  */
+.eventarea .eventwrapper.stuck { position:fixed; top:30px; left:auto; z-index:1; padding-top:15px; }
+/* jquery plugin creates this a div wrapper but it requires this fix to see the top colorband */
+.eventarea .sticky-wrapper { margin-bottom:5px; }
 
 /* ====== COLORBAND to show category ====== */
-.eventarea .colorband { height:5px; background:#a29d8a;  }
+.eventarea .colorband { height:5px; background:#a29d8a; }
 .eventarea .colorband.episode { background:#c2bca5;  }
 .eventarea .colorband.blank { background:#ccc;}
 .eventarea .colorband.treatment { background:#fd6892;}
@@ -699,19 +740,34 @@ ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; col
 
 /* ====== Element DETAIL ====== */
 .eventcontent .edetail { padding:10px; background:#dae6f1; position:relative; }
-.eventcontent .edetail:hover { background:#dfecf7;}
+.eventcontent .edetail.header { padding-top:0; border-top:1px solid #dae6f1; }
+.eventcontent .edetail:hover { background-color:#dfecf7;}
 /* add the clearfix to edetail to handle long labels that wrap over 2 lines */
 .eventcontent .edetail:before, .eventcontent .edetail:after { content: ""; display: table; }
 .eventcontent .edetail:after { clear: both; }
 .eventcontent .edetail { zoom: 1; }
-/* basic split - max width is 1010px  */
+/* add visual divider for data split - left right */
+.eventcontent .edetail.showsplit { background:#dae6f1 url(../img/_elements/gradients/bg_split-element.png) top center repeat-y; }
+.eventcontent .edetail.showsplit:hover { background-color:#dfecf7; }
+/* if edetail.showingsplit then tweak cols */
+.eventcontent .edetail.showsplit .cols > .left 	{ float: left; 	width: 49%; clear: left; position:relative; }
+.eventcontent .edetail.showsplit .cols > .right { float: right; width: 49%; clear: right; position:relative; }
+/* basic - max width is 1010px  */
 .eventcontent .edetail > .label { display:inline-block; width:170px; float:left; font-size:15px; }
 .eventcontent .edetail > .data {  display:inline-block; position:relative; }  /* width is controlled by label, with label = width:840px; */
-.eventcontent .edetail > .data.fullwidth { width:100%; } 
-.eventcontent .edetail > .data.fixwidth { width:840px; }
+.eventcontent .edetail > .data.fullwidth { width:100%; } /* push data to fill width */
+.eventcontent .edetail > .data.fixwidth { width:840px; } /* used with cols */
+/* header instead of label */
+.eventcontent .edetail > .header { position:relative; left:-10px; width:1010px; font-size:15px; color:#295073; background:#fafafa; padding:15px 10px 5px 10px; margin-bottom:10px; }
+.eventcontent .edetail.optional > .header { width:1005px; } /* stops header overlapping dotted line */
+.eventcontent .ondemand	.edetail > .header { width:995px; }	/* stops header overlapping surrounding line */
+.eventcontent .edetail > .header .parent { padding-right:25px; margin-right: 5px;  color: #afa6a6; background: transparent url(../img/_elements/icons/element-actions/parent-child-arrow.png) right center no-repeat;}
 /* increase label width */
 .eventcontent.widelabels .edetail > .label { width:230px;}
 .eventcontent.widelabels .edetail > .data.fixwidth { width:780px; }
+/* element actions, such as import, add children */
+.eventcontent .edetail > .header .elementactions { position:absolute; top:5px; right:40px; height:30px; display:block;}
+
 /* event comments - cancellations */
 .eventcontent ul.cancelnotes { font-size:12px; }
 .eventcontent ul.cancelnotes { list-style-type: none; padding:0; margin:10px 0 20px 10px; }
@@ -719,21 +775,33 @@ ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; col
 
 /* ====== ON-DEMAND ====== */
 /* wrapper for elements that appear 'on-demand' */
-.eventcontent .ondemand { position:relative; padding:2px 8px 5px 8px; margin:5px 0 3px 0; border:7px solid #c8d3dd; background: transparent; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; }
+.eventcontent .ondemand { position:relative; padding:0 2px 2px 2px; margin:5px 0 3px 0; border:5px solid #c8d3dd; background: transparent; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; }
 .eventcontent .ondemand h4 { border-top: none; }
-.ondemand > .demandreason { position:absolute; top:0; right:12px; color:#356897; font-size:11px; padding:2px 10px 4px 10px; 
+.ondemand > .demandreason { position:absolute; top:0; right:12px; color:#838a91; font-size:11px; padding:2px 10px 4px 10px; 
 background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bottom-left-radius: 6px; -moz-border-radius-bottomright: 6px; -moz-border-radius-bottomleft: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; }
 
 /* ====== OPTIONAL ====== */
 /* OPTIONAL elements hidden in place but re-styled slightly */
-.eventcontent .edetail.optional { border:2px dotted #8c949c; margin:2px 0; }
-.eventcontent .edetail.optional > .data.fixwidth { width:810px; } 
-.eventcontent .edetail.optional > .data.fullwidth { width:98%; }
+.eventcontent .edetail.optional { border:2px dotted #aab3bd; margin:2px 0; }
+.eventcontent .edetail.optional > .data { min-height:20px;}
+.eventcontent .edetail.optional > .data.fixwidth { width:810px; } /* allow for removeoptional */
 /* remove optional button & suboptional modify button */
 .edetail.optional .removeoptional { position:absolute; top:8px; right:4px; z-index:2; display:block; height:19px; width:24px; background: transparent url(../img/_elements/icons/event-optional/element-remove-blue.png) right center no-repeat; }
-.edetail.optional .elementsuboption { background:#e1eefa; text-align:center; padding:4px 0; margin-bottom:10px; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
+/* sub-element (split) uses sprite to show which half of patient */
+.edetail .subelementsplit { position:absolute; top:-5px; right:-2px; z-index:2; display:block; height:34px; width:34px; background:transparent url(../img/_elements/icons/_sprites/element_split.png) no-repeat top left; }
+.edetail .subelementsplit.left { background-position: top left; }
+.edetail .subelementsplit.right { background-position: top right; }
+/* optional subelement control via jquery */
+.edetail .subelementsplit.optional { background-image:url(../img/_elements/icons/_sprites/element_leftright_optional.png); }
+.edetail .subelementsplit.optional.left.remove { background-position: top left; }
+.edetail .subelementsplit.optional.right.remove { background-position: top right; }
+.edetail .subelementsplit.optional.left.add { background-position: bottom left; }
+.edetail .subelementsplit.optional.right.add { background-position: bottom right; }
+/* description of subelement to show when hidden */
+.edetail .subelementdescription { position:absolute; top:15px; right:40px; z-index:2; display:none; color:#838a91; }
 
-/* optional elements listed at bottom of event */
+
+/* ADD OPTIONAL elements listed at bottom of event */
 .eventcontent .optionalelements { margin:20px 0; padding-bottom:20px; border-top:2px dotted #8c949c; border-bottom:2px dotted #8c949c;}
 /* add remove multiple elements */
 .optionalelements > .bulkactions { font-size:12px; background:#dae6f1; border-bottom:1px dotted #fafafa; }
