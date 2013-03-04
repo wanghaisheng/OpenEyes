@@ -1,7 +1,7 @@
 /* Home Hub */
 
 /* User */
-.home .user { background:#036; border:1px dotted #ccc; color:#fff; padding:10px; margin-bottom:10px;}
+.home .user { background:#036 url(../../img/_elements/icons/user/idcard_bg.png) top right no-repeat; border:1px dotted #ccc; color:#fff; padding:10px; margin-bottom:10px;}
 /* user details */
 .home .user .userdetails {  margin-bottom:5px; }
 .home .user .userdetails h3 { font-size: 27px; font-weight: lighter; }
@@ -9,9 +9,9 @@
 .home .user .userdetails a:hover { border-bottom-color:#a0f3ff; }
 /* user edit profile */
 .home .user .userprofile { padding-top:10px; display:none; }
-table.subtle.editprofile { background:#005896; color:#fff; }
+table.subtle.editprofile { background:#003d7a; color:#fff; }
 table.subtle.editprofile tbody td:first-child { color:#d1d1ee; }
-table.subtle.editprofile tbody tr:hover { background-color: #41789f; }
+table.subtle.editprofile tbody tr:hover { background-color: #002f5d; }
 
 /* default grouping */
 .home .homegroup { margin-bottom:20px; }

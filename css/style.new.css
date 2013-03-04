@@ -206,9 +206,15 @@ a.classy { display:inline-block; height:30px; }
 .classy.flexi span	{ padding:0 22px; }
 /* button text */
 .classy span.btn			{  display:block; height:32px; line-height:31px; } 
-.classy span.btn.green	{  color:#fff; text-shadow: 1px 1px 0 #427d42, 2px 2px 0 #43727f; }
+.classy span.btn.green		{  color:#fff; text-shadow: 1px 1px 0 #427d42, 2px 2px 0 #43727f; }
 .classy span.btn.blue		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
 .classy span.btn.red		{  color:#fff; text-shadow: 1px 1px 0 #9a091c, 2px 2px 0 #851616; }
+.classy span.btn.white		{  color:#0b59da; text-shadow: 1px 1px 0 #dddddd, 2px 2px 0 #e2e2e2; }
+/* white button is blue text on white so text needs to change colour on rollover */
+.classy.white:hover span.btn.white,
+.classy.white:active span.btn.white		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
+
+
 /* graphic elements */
 .classy span.btn.plussign			{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:40px; }
 .classy span.btn.leftarrow		{ background: transparent url(../img/_elements/btns/left-arrow.png) no-repeat top left; padding-left:35px; }
@@ -298,6 +304,30 @@ background: -webkit-linear-gradient(#901828, #761421);
 background:	linear-gradient(#901828, #761421);
 border-bottom:2px solid #6b121e; 
 }
+.classy.white {
+background: -moz-linear-gradient(#ffffff, #fafafa);		 
+background: -ms-linear-gradient(#ffffff, #fafafa);	
+background: -webkit-linear-gradient(#ffffff, #fafafa); 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fafafa')"; 
+background:	linear-gradient(#ffffff, #fafafa);
+border-bottom:2px solid #fafafa; 
+}
+.classy.white:hover {
+background: -moz-linear-gradient(#118afb, #1279e3);		 
+background: -ms-linear-gradient(#118afb, #1279e3);	
+background: -webkit-linear-gradient(#118afb, #1279e3); 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#118afb', endColorstr='#1279e3')"; 
+background:	linear-gradient(#118afb, #1279e3);
+border-bottom:2px solid #1974d1; 
+}
+.classy.white:active {
+background: -moz-linear-gradient(#145ea9, #104d8b);		 
+background: -ms-linear-gradient(#145ea9, #104d8b);	
+background: -webkit-linear-gradient(#145ea9, #104d8b); 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#145ea9', endColorstr='#104d8b')"; 
+background:	linear-gradient(#145ea9, #104d8b);
+border-bottom:2px solid #0f467e; 
+}
 .classy.inactive {
 background: -moz-linear-gradient(#aaaaaa, #999999);
 background: -ms-linear-gradient(#aaaaaa, #999999);
@@ -373,6 +403,7 @@ table.grid th:last-child, table.grid td:last-child { border-right: none; }
 table.grid td.nowrap { white-space: nowrap; }
 table.grid td.icons > img {margin-right:4px; margin-bottom:4px; }
 /* customise */
+table.grid.width90 { width:90%; }
 table.grid.margintop { margin-top:10px; }
 table.grid.marginbottom { margin-bottom:10px; }
 table.grid.reduceheight td { padding-top:5px; padding-bottom:5px; }
@@ -569,7 +600,8 @@ ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; col
 ul.usershortcuts a.logout:hover { background: #d84945 !important; color:#fff; }
 ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 /* customise showdatagroup */
-.userpanel .user { color:#036;white-space: nowrap; position:absolute; bottom:2px; right:12px; }
+.userpanel .user { color:#666; white-space:nowrap; position:absolute; bottom:3px; left:12px; }
+.userpanel .userdetails { color:#999; white-space:nowrap; position:absolute; bottom:3px; right:12px; }
 .userpanel .showdatagroup.selectfirm { position:absolute; bottom:20px; right:5px; }
 
 /* ====== PATIENT ID ====== */
@@ -596,8 +628,12 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 
 .miniheader { display:none; height:30px; padding:15px; background:#a0d7f8 url(../img/_structure/miniheader/bg_gradient.png) bottom left repeat-x; border-bottom:2px solid #b3b0ae; -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3); -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
 /* position this  */
-.miniheader .usershortcuts { position:absolute; top:0; right:16px; height:30px; }
+.miniheader .miniuserpanel { position:absolute; top:0; right:10px; height:30px; width:495px; }
 .miniheader .minipatientid { position:absolute; top:0; left:180px; height:30px; width:480px; }
+/* userpanel mini version */
+.miniheader .miniuserpanel { background: #dae6f1 url(../img/_elements/icons/user/idcard_bg.png) center left no-repeat;; padding:0 5px; border-right:2px solid #b3b0ae; border-left:2px solid #b3b0ae; }
+.miniheader .miniuserpanel .user { color:#666; white-space:nowrap; position:absolute; top:8px; left:12px; }
+.miniheader .miniuserpanel .showdatagroup.selectfirm { margin-top:1px; float:right;}
 /* patientid mini version */
 .miniheader .minipatientid { background: #fff2d7 url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; border-right:2px solid #ffb212; border-left:2px solid #ffb212; padding:0 10px; font-size: 14px; line-height:30px;  }
 .miniheader .minipatientid .patient { display:inline-block; height:30px; }
@@ -607,8 +643,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .miniheader .minipatientid .patient.details .info { padding-left:5px; }
 /* warning flag */
 .miniheader .patient.warningflag { position:absolute; left:675px; top:0; height:17px; line-height:17px; font-size:11px; letter-spacing:1px; padding:0 5px; color:#fff; background:#eb5911; border:2px solid #fff; border-top:none; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
-/* select firm */
-.miniheader .showdatagroup.selectfirm { margin-top:1px;}
+
 
 
 
@@ -766,7 +801,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventcontent.widelabels .edetail > .label { width:230px;}
 .eventcontent.widelabels .edetail > .data.fixwidth { width:780px; }
 /* element actions, such as import, add children */
-.eventcontent .edetail > .header .elementactions { position:absolute; top:5px; right:40px; height:30px; display:block;}
+.eventcontent .edetail > .header .elementactions { position:absolute; top:5px; right:55px; height:30px; display:block;}
 
 /* event comments - cancellations */
 .eventcontent ul.cancelnotes { font-size:12px; }
@@ -786,7 +821,9 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 .eventcontent .edetail.optional > .data { min-height:20px;}
 .eventcontent .edetail.optional > .data.fixwidth { width:810px; } /* allow for removeoptional */
 /* remove optional button & suboptional modify button */
-.edetail.optional .removeoptional { position:absolute; top:8px; right:4px; z-index:2; display:block; height:19px; width:24px; background: transparent url(../img/_elements/icons/event-optional/element-remove-blue.png) right center no-repeat; }
+.edetail.optional .removeoptional { position:absolute; top:8px; right:4px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/event-optional/element-remove-blue.png) right center no-repeat; }
+.edetail.optional .removeoptional.inactive { background-image: url(../img/_elements/icons/event-optional/element-remove-inactive.png); }
+.edetail.optional .optionallocked { position:absolute; top:8px; right:25px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/event-optional/element-padlock.png) right center no-repeat; }
 /* sub-element (split) uses sprite to show which half of patient */
 .edetail .subelementsplit { position:absolute; top:-5px; right:-2px; z-index:2; display:block; height:34px; width:34px; background:transparent url(../img/_elements/icons/_sprites/element_split.png) no-repeat top left; }
 .edetail .subelementsplit.left { background-position: top left; }
@@ -806,13 +843,13 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 /* add remove multiple elements */
 .optionalelements > .bulkactions { font-size:12px; background:#dae6f1; border-bottom:1px dotted #fafafa; }
 .optionalelements > .bulkactions .bulkbtn { float:right; display:inline-block; height:28px; line-height:28px; padding-right:25px; margin-left:10px; }
-.optionalelements > .bulkactions .bulkbtn.add { background:transparent url(../img/_elements/icons/event-optional/element-added.png) center right no-repeat; }
-.optionalelements > .bulkactions .bulkbtn.remove { background:transparent url(../img/_elements/icons/event-optional/element-remove.png) center right no-repeat; }
+.optionalelements > .bulkactions .bulkbtn.add { background:transparent url(../img/_elements/icons/event-optional/optional-tick-blue.png) center right no-repeat; }
+.optionalelements > .bulkactions .bulkbtn.remove { background:transparent url(../img/_elements/icons/event-optional/optional-cross-blue.png) center right no-repeat; }
 /* selectelements states (listed at the bottom) */
-.optionalelements > .selectelement { font-size:12px; font-weight:bold; color:#fff; padding:8px 10px; margin:0; background:#8c949c url(../img/_elements/icons/event-optional/element-view.png) center right no-repeat; border-bottom:1px dotted #fafafa; }
+.optionalelements > .selectelement { font-size:12px; font-weight:bold; color:#fff; padding:8px 10px; margin:0; background:#8c949c url(../img/_elements/icons/event-optional/optional-add-white.png) center right no-repeat; border-bottom:1px dotted #fafafa; }
 .optionalelements > .selectelement:hover  { background-color: #3665ff; cursor: pointer; }
 .optionalelements > .selectelement:active { background-color: #55a256; }
-.optionalelements > .selectelement.added { color:#8c949c; background:#ddd url(../img/_elements/icons/event-optional/element-added.png) center right no-repeat; }
+.optionalelements > .selectelement.added { color:#8c949c; background:#ddd url(../img/_elements/icons/event-optional/optional-tick-grey.png) center right no-repeat; }
 .optionalelements > .selectelement.added:hover { color:#fff; background-color: #3665ff; cursor: default;}
 /* click hint add with jquery */
 .optionalelements > .selectelement.selectelement > .clickhint { font-weight: normal; float: right; padding-right:20px;	 }
