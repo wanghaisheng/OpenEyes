@@ -170,12 +170,18 @@ a:hover.sprite.showhide > .show { background-position: bottom right; }
 .tabbtn > a { display:inline-block; padding:0 10px; }
 .tabbtn.grey > a {background-color: #dadada; }
 .tabbtn.white > a {background-color: #fff; }
+.tabbtn.red > a { background-color: #cf0d27; color:#fff; }
 .tabbtn.tabdown > a, .tabbtn.tabdown > span.inactive  { -webkit-border-bottom-left-radius: 3px; -webkit-border-bottom-right-radius: 3px; -moz-border-radius-bottomleft: 3px; -moz-border-radius-bottomright: 3px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
 .tabbtn.tabup > a, .tabbtn.tabup > span.inactive { -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; -moz-border-radius-topleft: 3px; -moz-border-radius-topright: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; }
 .tabbtn.tabround > a, .tabbtn.tabround > span.inactive { -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 /* tab buttons are always blue on rollover: */ 
 .tabbtn > a:hover { border:none; color:#fff; background-color:#3665ff !important;  }
 .tabbtn > a:active { border:none; color:#fff; background-color:#2546b1 !important; }
+/* except red version */
+.tabbtn.red > a:hover { border:none; background-color:#e81515 !important;  }
+.tabbtn.red > a:active { border:none; background-color:#901828 !important; }
+
+
 /* inactive */
 .tabbtn > span.inactive { display:inline-block; padding:0 10px; color:#777; background: #fafafa;} 
 /* TAB TEXT - style like tabbtn */
@@ -723,6 +729,9 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 /* event buttons */
 .eventwrapper .workoptions 	 { position:absolute; right:3px; bottom:2px; }
 .eventwrapper.footer .workoptions 	 { position:absolute; right:3px; top:5px; }
+/* trash can tab needs tweaking */
+.eventwrapper .workoptions .tabbtn.red { position:relative; top:1px; margin-left:10px;}
+.eventwrapper .workoptions .tabbtn.red > a.trashcan { width:30px; padding-left:3px; padding-right:3px; background:#cf0d27 url(../img/_elements/icons/event/wrapper/trash-can.png) center center no-repeat;  }
 
 /* Make sticky: fixed position + padding-top = jquery sticky offset:  */
 .eventarea .eventwrapper.stuck { position:fixed; top:30px; left:auto; z-index:1; padding-top:15px; }
@@ -821,9 +830,9 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 .eventcontent .edetail.optional > .data { min-height:20px;}
 .eventcontent .edetail.optional > .data.fixwidth { width:810px; } /* allow for removeoptional */
 /* remove optional button & suboptional modify button */
-.edetail.optional .removeoptional { position:absolute; top:8px; right:4px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/event-optional/element-remove-blue.png) right center no-repeat; }
-.edetail.optional .removeoptional.inactive { background-image: url(../img/_elements/icons/event-optional/element-remove-inactive.png); }
-.edetail.optional .optionallocked { position:absolute; top:8px; right:25px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/event-optional/element-padlock.png) right center no-repeat; }
+.edetail.optional .removeoptional { position:absolute; top:8px; right:4px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/element-optional/element-remove-blue.png) right center no-repeat; }
+.edetail.optional .removeoptional.inactive { background-image: url(../img/_elements/icons/element-optional/element-remove-inactive.png); }
+.edetail.optional .optionallocked { position:absolute; top:8px; right:25px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/element-optional/element-padlock.png) right center no-repeat; }
 /* sub-element (split) uses sprite to show which half of patient */
 .edetail .subelementsplit { position:absolute; top:-5px; right:-2px; z-index:2; display:block; height:34px; width:34px; background:transparent url(../img/_elements/icons/_sprites/element_split.png) no-repeat top left; }
 .edetail .subelementsplit.left { background-position: top left; }
@@ -843,13 +852,13 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 /* add remove multiple elements */
 .optionalelements > .bulkactions { font-size:12px; background:#dae6f1; border-bottom:1px dotted #fafafa; }
 .optionalelements > .bulkactions .bulkbtn { float:right; display:inline-block; height:28px; line-height:28px; padding-right:25px; margin-left:10px; }
-.optionalelements > .bulkactions .bulkbtn.add { background:transparent url(../img/_elements/icons/event-optional/optional-tick-blue.png) center right no-repeat; }
-.optionalelements > .bulkactions .bulkbtn.remove { background:transparent url(../img/_elements/icons/event-optional/optional-cross-blue.png) center right no-repeat; }
+.optionalelements > .bulkactions .bulkbtn.add { background:transparent url(../img/_elements/icons/element-optional/optional-tick-blue.png) center right no-repeat; }
+.optionalelements > .bulkactions .bulkbtn.remove { background:transparent url(../img/_elements/icons/element-optional/optional-cross-blue.png) center right no-repeat; }
 /* selectelements states (listed at the bottom) */
-.optionalelements > .selectelement { font-size:12px; font-weight:bold; color:#fff; padding:8px 10px; margin:0; background:#8c949c url(../img/_elements/icons/event-optional/optional-add-white.png) center right no-repeat; border-bottom:1px dotted #fafafa; }
+.optionalelements > .selectelement { font-size:12px; font-weight:bold; color:#fff; padding:8px 10px; margin:0; background:#8c949c url(../img/_elements/icons/element-optional/optional-add-white.png) center right no-repeat; border-bottom:1px dotted #fafafa; }
 .optionalelements > .selectelement:hover  { background-color: #3665ff; cursor: pointer; }
 .optionalelements > .selectelement:active { background-color: #55a256; }
-.optionalelements > .selectelement.added { color:#8c949c; background:#ddd url(../img/_elements/icons/event-optional/optional-tick-grey.png) center right no-repeat; }
+.optionalelements > .selectelement.added { color:#8c949c; background:#ddd url(../img/_elements/icons/element-optional/optional-tick-grey.png) center right no-repeat; }
 .optionalelements > .selectelement.added:hover { color:#fff; background-color: #3665ff; cursor: default;}
 /* click hint add with jquery */
 .optionalelements > .selectelement.selectelement > .clickhint { font-weight: normal; float: right; padding-right:20px;	 }
