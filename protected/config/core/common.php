@@ -97,7 +97,6 @@ return array(
 					'levels' => 'info, warning, error',
 					'logFile' => 'application.log',
 					'maxLogFiles' => 30,
->>>>>>> release/1.4-moorfields
 				),
 				// Action log
 				'action' => array(
