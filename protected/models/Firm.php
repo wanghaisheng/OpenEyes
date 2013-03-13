@@ -228,13 +228,24 @@ class Firm extends BaseActiveRecord
 		return $data;
 	}
 
+	public function getCataractList() {
+		$specialty = Specialty::model()->find('code=?',array('OPH'));
+		$subspecialty = Subspecialty::model()->find('specialty_id=? and name=?',array($specialty->id,'Cataract'));
+		$ssa = ServiceSubspecialtyAssignment::model()->find('subspecialty_id=?',array($subspecialty->id));
+
+		$criteria = new CDbCriteria;
+		$criteria->compare('service_subspecialty_assignment_id',$ssa->id);
+		$criteria->order = 'name';
+
+		return CHtml::listData(Firm::model()->findAll($criteria),'id','name');
+	}
+
 	/**
 	 * Returns the consultant for the firm
 	 *
 	 * @return object
 	 */
-	public function getConsultant()
-	{
+	public function getConsultant() {
 		$result = Yii::app()->db->createCommand()
 			->select('cslt.id AS id')
 			->from('consultant cslt')
@@ -255,6 +266,13 @@ class Firm extends BaseActiveRecord
 		}
 	}
 
+	public function getConsultantName() {
+		if ($consultant = $this->consultant) {
+			return $consultant->contact->title . ' ' . $consultant->contact->first_name . ' ' . $consultant->contact->last_name;
+		}
+		return 'NO CONSULTANT';
+	}
+
 	public function getConsultantUser() {
 		$result = Yii::app()->db->createCommand()
 			->select('u.id as id')
@@ -273,6 +291,28 @@ class Firm extends BaseActiveRecord
 			return null;
 		} else {
 			return User::model()->findByPk($result['id']);
+		}
+	}
+
+	public function getReportDisplay() {
+		return $this->name.' ('.$this->serviceSubspecialtyAssignment->subspecialty->name.')';
+	}
+
+	public function getSpecialty() {
+		$result = Yii::app()->db->createCommand()
+			->select('su.specialty_id as id')
+			->from('subspecialty su')
+			->join('service_subspecialty_assignment svc_ass', 'svc_ass.subspecialty_id = su.id')
+			->join('firm f', 'f.service_subspecialty_assignment_id = svc_ass.id')
+			->where('f.id = :fid', array(
+				':fid' => $this->id
+			))
+			->queryRow();
+		
+		if (empty($result)) {
+			return null;
+		} else {
+			return Specialty::model()->findByPk($result['id']);
 		}
 	}
 }

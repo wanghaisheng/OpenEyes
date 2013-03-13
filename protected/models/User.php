@@ -258,6 +258,10 @@ class User extends BaseActiveRecord
 		return implode(' ', array($this->title, $this->first_name, $this->last_name));
 	}
 	
+	public function getFullNameAndTitleAndQualifications() {
+		return implode(' ', array($this->title, $this->first_name, $this->last_name)).($this->qualifications?' '.$this->qualifications:'');
+	}
+
 	public function getReversedFullNameAndTitle() {
 		return implode(' ', array($this->title, $this->last_name, $this->first_name));
 	}
@@ -288,5 +292,22 @@ class User extends BaseActiveRecord
 		}
 
 		return $users;
+	}
+
+	public function audit($target, $action, $data=null, $log=false, $properties=array()) {
+		$properties['user_id'] = $this->id;
+		return parent::audit($target, $action, $data, $log, $properties);
+	}
+
+	public function getListSurgeons() {
+		$criteria = new CDbCriteria;
+		$criteria->compare('is_doctor',1);
+		$criteria->compare('active',1);
+		$criteria->order = 'last_name,first_name asc';
+		return CHtml::listData(User::model()->findAll($criteria),'id','reversedFullName');
+	}
+
+	public function getReportDisplay() {
+		return $this->fullName;
 	}
 }

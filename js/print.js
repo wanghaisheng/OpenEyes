@@ -16,9 +16,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-/**
- * Load a PDF into an iframe to print it (print js is embedded in the pdf)
- */
+/*
 function printPDF(url, data) {
 	$('#print_pdf_iframe').remove();
 	var iframe = $('<iframe></iframe>');
@@ -28,6 +26,11 @@ function printPDF(url, data) {
 		style: 'display: none;'
 	});
 	$('body').append(iframe);
+	
+	// re-enable the buttons
+	$('#print_pdf_iframe').load(function() {
+		enableButtons();
+	});
 }
 
 $(document).ready(function() {
@@ -60,7 +63,43 @@ function printContent(csspath) {
 		overrideElementCSS : css,
 	});
 }
+*/
 
+/*
+ * creates an iframe in the current document, and populates with the given url and GET data
+ * 
+ * NOTE: the call to print the iFrame must be part of the document returned by the server. By having
+ * this in the $(document).ready() function, we can ensure that all the requisite objects (specifically
+ * eyedraw) are loaded before the print is attempted.
+ * 
+ * @param url - url of page to load
+ * @param data - associative array of GET values to append to URL
+ */
+function printIFrameUrl(url, data) {
+	if (data) {
+		url += '?' + $.param(data);
+	}
+	
+	$('#print_content_iframe').remove();
+	var iframe = $('<iframe></iframe>');
+	iframe.attr({
+		id: 'print_content_iframe',
+		name: 'print_content_iframe',
+		src: url,
+		style: 'display: none;',
+	});
+	$('body').append(iframe);
+	
+	// re-enable the buttons
+	$('#print_content_iframe').load(function() {
+		enableButtons();
+	});
+
+}
+
+/*
+ * DEPRECATED - should migrate to using printIFrameUrl
+ */
 function printUrl(url, data, csspath) {
 	$.post(url, data, function(content) {
 		$('#printable').html(content);

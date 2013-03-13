@@ -96,7 +96,6 @@ class Event extends BaseActiveRecord
 	}
 	
 	public function getEditable(){
-
 		if (!$this->episode->editable) {
 			return FALSE;
 		}
@@ -105,17 +104,9 @@ class Event extends BaseActiveRecord
 			return FALSE;
 		}
 
-		// Should not be able to edit cancelled operations
-		if ($this->event_type_id == 25) {
-			$operation = ElementOperation::model()->find('event_id = ?',array($this->id));
-			if ($operation->status == ElementOperation::STATUS_CANCELLED) {
-				return FALSE;
-			}
-		}
-
 		return TRUE;
 	}
-
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -238,7 +229,7 @@ class Event extends BaseActiveRecord
 	public function canDelete() {
 		if ($this->episode->patient->date_of_death) return false;
 
-		$admin = User::model()->find('username=?',array('admin'));   // these two lines should be replaced once we have rbac
+		$admin = User::model()->find('username=?',array('admin'));	 // these two lines should be replaced once we have rbac
 		if ($admin->id == Yii::app()->session['user']->id) {return true;}
 		return ($this->created_user_id == Yii::app()->session['user']->id && (time() - strtotime($this->created_date)) <= 86400);
 	}
@@ -300,5 +291,38 @@ class Event extends BaseActiveRecord
 		}
 
 		return parent::afterSave();
+	}
+	
+	/*
+	 * returns the latest event of this type in the event episode
+	 * 
+	 * @returns Event
+	 */
+	public function getLatestOfTypeInEpisode() {
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'episode_id = :e_id AND event_type_id = :et_id';
+		$criteria->limit = 1;
+		$criteria->order = 'created_date DESC';
+		$criteria->params = array(':e_id'=>$this->episode_id, ':et_id'=>$this->event_type_id);
+		
+		return Event::model()->find($criteria);
+	}
+	
+	/*
+	 * if this event is the most recent of its type in its episode, returns true. false otherwise
+	 * 
+	 * @returns boolean
+	 */
+	public function isLatestOfTypeInEpisode() {
+		$latest = $this->getLatestOfTypeInEpisode();
+		return ($latest->id == $this->id) ? true : false;
+	}
+
+	public function audit($target, $action, $data=null, $log=false, $properties=array()) {
+		$properties['event_id'] = $this->id;
+		$properties['episode_id'] = $this->episode_id;
+		$properties['patient_id'] = $this->episode->patient_id;
+
+		return parent::audit($target, $action, $data, $log, $properties);
 	}
 }

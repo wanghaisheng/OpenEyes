@@ -26,13 +26,7 @@ if (!empty($episode)) {
 		$diagnosis = 'No diagnosis';
 	}
 
-	$audit = new Audit;
-	$audit->action = "view";
-	$audit->target_type = "episode summary";
-	$audit->patient_id = $this->patient->id;
-	$audit->episode_id = $episode->id;
-	$audit->user_id = (Yii::app()->session['user'] ? Yii::app()->session['user']->id : null);
-	$audit->save();
+	$episode->audit('episode summary','view',false);
 ?>
 <div class="episodeSummary">
 	<h3>Summary</h3>
@@ -62,7 +56,7 @@ if (!empty($episode)) {
 	$form->widget('application.widgets.DiagnosisSelection',array(
 			'field' => 'disorder_id',
 			'options' => CommonOphthalmicDisorder::getList(Firm::model()->findByPk($this->selectedFirmId)),
-			'restrict' => 'ophthalmic',
+			'code' => 'OPH',
 			'layout' => 'episodeSummary',
 	));
 
@@ -237,36 +231,25 @@ if (!empty($episode)) {
 			return false;
 		});
 
-		$('#save_episode_status').unbind('click').click(function(e) {
-			if (!$(this).hasClass('inactive')) {
-				e.preventDefault();
-				disableButtons();
+		handleButton($('#save_episode_status'),function(e) {
+			$.ajax({
+				type: 'POST',
+				url: '<?php echo Yii::app()->createUrl('patient/setepisodestatus/'.$episode->id)?>',
+				data: 'episode_status_id='+$('#episode_status_id').val(),
+				success: function(html) {
+					window.location.href = '<?php echo Yii::app()->createUrl('patient/episodes/'.$this->patient->id)?>';
+				}
+			});
 
-				$.ajax({
-					type: 'POST',
-					url: '<?php echo Yii::app()->createUrl('patient/setepisodestatus/'.$episode->id)?>',
-					data: 'episode_status_id='+$('#episode_status_id').val(),
-					success: function(html) {
-						window.location.href = '<?php echo Yii::app()->createUrl('patient/episodes/'.$this->patient->id)?>';
-					}
-				});
-			}
-
-			return false;
+			e.preventDefault();
 		});
 
-		$('#episode_cancel').click(function() {
-			disableButtons();
-			$('img.loader').show();
+		handleButton($('#episode_cancel'),function(e) {
 			window.location.href = window.location.href.replace(/updateepisode/,'episode');
-			return false;
+			e.preventDefault();
 		});
 
-		$('#episode_save').click(function() {
-			disableButtons();
-			$('img.loader').show();
-			return true;
-		});
+		handleButton($('#episode_save'));
 	</script>
 <?php }?>
 </div>

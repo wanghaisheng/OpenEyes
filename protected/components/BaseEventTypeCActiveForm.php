@@ -31,9 +31,9 @@ class BaseEventTypeCActiveForm extends CActiveForm
 		$this->widget('application.widgets.DropDownListNoPost',array('id' => $id, 'options' => $options, 'selected_value' => $selected_value, 'htmlOptions' => $htmlOptions));
 	}
 
-	public function radioButtons($element,$field,$table,$selected_item=null, $maxwidth=false, $hidden=false, $no_element=false) {
+	public function radioButtons($element,$field,$table,$selected_item=null, $maxwidth=false, $hidden=false, $no_element=false, $label_above=false) {
 		$data = $element->getFormOptions($table);
-		$this->widget('application.widgets.RadioButtonList',array('element' => $element, 'name' => get_class($element)."[$field]", 'field' => $field, 'data' => $data, 'selected_item' => $selected_item, 'maxwidth' => $maxwidth, 'hidden' => $hidden, 'no_element' => $no_element));
+		$this->widget('application.widgets.RadioButtonList',array('element' => $element, 'name' => get_class($element)."[$field]", 'field' => $field, 'data' => $data, 'selected_item' => $selected_item, 'maxwidth' => $maxwidth, 'hidden' => $hidden, 'no_element' => $no_element, 'label_above' => $label_above));
 	}
 
 	public function radioBoolean($element,$field,$htmlOptions=array()) {
@@ -59,8 +59,8 @@ class BaseEventTypeCActiveForm extends CActiveForm
 		$this->widget('application.widgets.TextField',array('element' => $element, 'name' => get_class($element)."[$field]", 'field' => $field, 'htmlOptions' => $htmlOptions));
 	}
 
-	public function checkBox($element, $field, $options=false) {
-		$this->widget('application.widgets.CheckBox',array('element' => $element, 'field' => $field, 'options' => $options));
+	public function checkBox($element, $field, $options=false, $htmlOptions=array()) {
+		$this->widget('application.widgets.CheckBox',array('element' => $element, 'field' => $field, 'options' => $options, 'htmlOptions' => $htmlOptions));
 	}
 
 	public function checkBoxArray($element,$labeltext,$fields, $options=false) {
@@ -79,8 +79,8 @@ class BaseEventTypeCActiveForm extends CActiveForm
 		$this->widget('application.widgets.MultiDropDownTextSelection', array('element' => $element, 'field' => $text_field, 'options' => $options, 'htmlOptions' => $htmlOptions));
 	}
 
-	public function hiddenInput($element, $field, $value=false) {
-		$this->widget('application.widgets.HiddenField', array('element' => $element, 'field' => $field, 'value' => $value));
+	public function hiddenInput($element, $field, $value=false, $htmlOptions=array()) {
+		$this->widget('application.widgets.HiddenField', array('element' => $element, 'field' => $field, 'value' => $value, 'htmlOptions' => $htmlOptions));
 	}
 
 	public function slider($element, $field, $options) {

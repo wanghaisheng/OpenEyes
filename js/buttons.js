@@ -19,24 +19,40 @@
 var button_colours = ["red","blue","green"];
 var button_cache = {};
 
+function handleButton(button, callback) {
+	button.click(function(e) {
+		if (!button.hasClass('inactive')) {
+			disableButtons();
+			if (callback) {
+				callback(e,button);
+			}
+		} else {
+			e.preventDefault();
+		}
+	});
+}
+
 function disableButtons() {
 	for (var i in button_colours) {
 		var col = button_colours[i];
 		var selection = $('button.'+col);
 		selection.removeClass(col).addClass('inactive');
 		selection.children('span').removeClass('button-span-'+col).addClass('button-span-inactive');
+		selection.children('a').children('span').removeClass('button-span-'+col).addClass('button-span-inactive');
 		button_cache[col] = selection;
-		$('.loader').show();
 	}
+	$('.loader').show();
 }
 
 function enableButtons() {
 	for (var i in button_colours) {
 		var col = button_colours[i];
-		button_cache[col].removeClass('inactive').addClass(col);
-		button_cache[col].children('span').removeClass('button-span-inactive').addClass('button-span-'+col);
-		$('.loader').hide();
+		if (button_cache[col]) {
+			button_cache[col].removeClass('inactive').addClass(col);
+			button_cache[col].children('span').removeClass('button-span-inactive').addClass('button-span-'+col);
+		}
 	}
+	$('.loader').hide();
 }
 
 $(document).ready(function() {

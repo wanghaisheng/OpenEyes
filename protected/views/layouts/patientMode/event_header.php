@@ -36,18 +36,22 @@
 	<?php }?>
 	<link rel="icon" href="<?php echo Yii::app()->createUrl('favicon.ico')?>" type="image/x-icon" />
 	<link rel="shortcut icon" href="<?php echo Yii::app()->createUrl('favicon.ico')?>"/>
-	<?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/jui/js/jquery-ui.min.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/jquery.watermark.min.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/mustache.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/libs/modernizr-2.0.6.min.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/jquery.printElement.min.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/jquery.autosize-min.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/print.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/buttons.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/events_and_episodes.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('/js/jquery.textarea.js'))?>
-	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/jQueryRotate.2.2.js'))?>
+	<?php $cs = Yii::app()->clientScript; ?>
+	<?php $cs->registerCoreScript('jquery'); ?>
+	<?php $cs->registerCoreScript('jquery.ui')?>
+	<?php $cs->registerCSSFile($cs->getCoreScriptUrl().'/jui/css/base/jquery-ui.css', 'screen')?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.watermark.min.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/mustache.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/waypoints.min.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/waypoints-sticky.min.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/libs/modernizr-2.0.6.min.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.printElement.min.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.hoverIntent.min.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.autosize.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/print.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/buttons.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/events_and_episodes.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.textarea.js'))?>
 	<?php if (Yii::app()->params['google_analytics_account']) {?>
 		<script type="text/javascript">
 
@@ -69,31 +73,13 @@
 </head>
 
 <body>
-	<?php if (Yii::app()->user->checkAccess('admin')) {?>
-		<div class="h1-watermark-admin"><?php echo Yii::app()->params['watermark_admin']?></div>
-	<?php } else if (Yii::app()->params['watermark']) {?>
-		<div class="h1-watermark"><?php echo Yii::app()->params['watermark']?></div>
-	<?php }?>
+	<?php echo $this->renderPartial('//base/_banner_watermark',array())?>
 	<?php echo $this->renderPartial('//base/_debug',array())?>
 	<div id="container">
 		<div id="header" class="clearfix">
-			<div id="brand" class="ir"><h1><?php echo CHtml::link('OpenEyes',array('site/'))?></h1></div>
-			<?php echo $this->renderPartial('//base/_sync')?>
+			<?php echo $this->renderPartial('//base/_brand'); ?>
 			<?php echo $this->renderPartial('//base/_form', array()); ?>
-			<div id="patientID">
-				<div class="i_patient">
-					<?php echo CHtml::link('Patient Summary',array('/patient/view/'.$this->patient->id),array('class'=>'small'))?>
-					<img class="i_patient" src="<?php echo Yii::app()->createUrl('img/_elements/icons/patient_small.png')?>" alt="patient_small" width="26" height="30" />
-				</div>
-
-				<div class="patientReminder">
-					<?php echo $this->patient->getDisplayName()?>
-					<span class="number">Hospital number: <?php echo $this->patient->hos_num?></span>
-					<span class="number">NHS number: <?php echo $this->patient->nhsnum?></span>
-				</div>
-			</div> <!-- #patientID -->
-
+			<?php echo $this->renderPartial('//patient/_patient_id', array()); ?>
 		</div> <!-- #header -->
 
-		<script type="text/javascript"> var et_patient_id = <?php echo $this->patient->id?>; </script>
 		<div id="content">

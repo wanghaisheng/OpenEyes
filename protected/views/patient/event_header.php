@@ -23,8 +23,6 @@ if ($module = $this->getModule()) {
 	} else {
 		$assetpath = '/assets/';
 	}
-} else {
-	$module = 'OphTrOperation';
 }
 
 $this->renderPartial('//layouts/patientMode/event_header');
@@ -37,21 +35,11 @@ $this->renderPartial('//layouts/patientMode/event_header');
 				</div>
 			<?php }?>
 			<div id="episodesBanner">
-				<form>
-					<button tabindex="2" class="classy venti green" id="addNewEvent" type="submit" style="float: right; margin-right: 1px;"><span class="button-span button-span-green with-plussign">add new Event</span></button>
-				</form>
+				<?php $this->renderPartial('//patient/add_new_event',array('eventTypes'=>$eventTypes))?>
 				<p style="margin-bottom: 0px;">&nbsp;</p>
 			</div>
 			<?php $this->renderPartial('//patient/episodes_sidebar',array('ordered_episodes'=>$ordered_episodes, 'legacyepisodes'=>@$legacyepisodes))?>
 			<div id="event_display">
-				<?php $this->renderPartial('//patient/add_new_event',array('eventTypes'=>$eventTypes))?>
-				<div class="display_actions">
-					<div class="display_mode"><?php echo $this->title?></div>
-					<?php $this->renderPartial('//patient/edit_controls')?>
-				</div>
+				<?php $this->renderPartial('//patient/event_tabs')?>
 				<!-- EVENT CONTENT HERE -->
-				<?php if ($module == 'OphTrOperation') {?>
-					<div id="event_content" class="watermarkBox" style="background:#fafafa url(<?php echo Yii::app()->createUrl('img/_elements/icons/event/watermark/treatment_operation.png')?>) top left repeat-y;">
-				<?php } else {?>
-					<div id="event_content" class="watermarkBox" style="background:#fafafa url(<?php echo $assetpath.'img/watermark.png'?>) top left repeat-y;">
-				<?php }?>
+				<div id="event_content" class="watermarkBox clearfix">

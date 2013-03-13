@@ -17,12 +17,10 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-				</div>
-				<!-- #event_content -->
-				<div class="colorband "></div>
-				<div id="display_actions_footer" class="display_actions footer">
-					<?php $this->renderPartial('//patient/edit_controls')?>
-				</div>
+					<?php
+						if($this->action->id == 'view') { $this->renderPartial('//patient/event_metadata'); }
+					?>
+				</div><!-- #event_content -->
 			</div><!-- #event_display -->
 		</div> <!-- .fullWidth -->
 <?php $this->renderPartial('//layouts/patientMode/event_footer')?>

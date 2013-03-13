@@ -281,6 +281,10 @@ class EventTypeModuleCode extends BaseModuleCode // CCodeModel
 							$elements = $this->extraElementFieldWrangling_EyeDraw($elements, $number, $field_number, $fields_value);
 						}
 
+						if ($elements[$number]['fields'][$field_number]['type'] == 'EyeDraw2') {
+							$elements = $this->extraElementFieldWrangling_EyeDraw2($elements, $number, $field_number, $fields_value);
+						}
+
 						if ($elements[$number]['fields'][$field_number]['type'] == 'Multi select') {
 							$elements = $this->extraElementFieldWrangling_MultiSelect($elements, $number, $field_number, $fields_value);
 						}
@@ -551,6 +555,18 @@ class EventTypeModuleCode extends BaseModuleCode // CCodeModel
 		return $elements;
 	}
 
+	public function extraElementFieldWrangling_EyeDraw2($elements, $number, $field_number, $fields_value) {
+		$elements[$number]['fields'][$field_number]['eyedraw_class'] = @$_POST['eyedraw2Class'.$number.'Field'.$field_number];
+		$elements[$number]['fields'][$field_number]['eyedraw_size'] = @$_POST['eyedraw2Size'.$number.'Field'.$field_number];
+		$elements[$number]['add_selected_eye'] = true;
+
+		if (@$_POST['eyedraw2ExtraReport'.$number.'Field'.$field_number]) {
+			$elements[$number]['fields'][$field_number]['extra_report'] = true;
+		}
+
+		return $elements;
+	}
+
 	public function extraElementFieldWrangling_MultiSelect($elements, $number, $field_number, $fields_value) {
 		if (@$_POST['multiSelectMethod'.$number.'Field'.$field_number] == 0) {
 			$elements[$number]['fields'][$field_number]['method'] = 'Manual';
@@ -806,7 +822,9 @@ class EventTypeModuleCode extends BaseModuleCode // CCodeModel
 				$default = strlen($field['integer_default_value'])>0 ? " DEFAULT {$field['integer_default_value']}" : '';
 				return "int(10) unsigned NOT NULL$default";
 			case 'EyeDraw':
-				return "varchar(4096) COLLATE utf8_bin NOT NULL";
+				return "text COLLATE utf8_bin NOT NULL";
+			case 'EyeDraw2':
+				return "text COLLATE utf8_bin NOT NULL";
 			case 'Multi select':
 				return false;
 			case 'Slider':
@@ -849,7 +867,7 @@ class EventTypeModuleCode extends BaseModuleCode // CCodeModel
 	public function init() {
 		$this->mode = @$_POST['EventTypeModuleMode'] ? 'update' : 'create';
 
-		if (isset($_GET['ajax']) && preg_match('/^[a-zA-Z_]+$/',$_GET['ajax'])) {
+		if (isset($_GET['ajax']) && preg_match('/^[a-zA-Z0-9_]+$/',$_GET['ajax'])) {
 			if ($_GET['ajax'] == 'table_fields') {
 				EventTypeModuleCode::dump_table_fields($_GET['table']);
 			} else if ($_GET['ajax'] == 'field_unique_values') {
@@ -894,7 +912,6 @@ class EventTypeModuleCode extends BaseModuleCode // CCodeModel
 			$el = ElementType::model()->findall('event_type_id=:eventTypeId', array(':eventTypeId' => $event_type->id));
 			
 			if (count($el)) {
-				$test = ModuleAPI::getmodel($event_type->class_name, $el[0]->getAttribute('class_name')); 
 				$code = strtolower(substr($event_type->class_name, 0, 5));
 				if (!preg_match('/^et_'.$code.'([a-z0-9]+)_/', $test->tableName(), $m) ) {
 					die ("ERROR: cannot determine short name for event type " . $event_type->class_name);
@@ -1203,6 +1220,155 @@ class EventTypeModuleCode extends BaseModuleCode // CCodeModel
 			'.(@$field['extra_report'] ? 'echo $form->hiddenInput($element, \''.$field['name'].'2\');' : '').'
 		?>
 	</div>';
+			case 'EyeDraw2':
+				switch ($field['eyedraw_class']) {
+					case 'AnteriorSegment':
+						return '<?php'."\n".'		$this->widget(\'application.modules.eyedraw.OEEyeDrawWidget\', array(
+		\'doodleToolBarArray\' => array(\'NuclearCataract\',\'CorticalCataract\',\'PostSubcapCataract\',\'PCIOL\',\'ACIOL\',\'Bleb\',\'PI\',\'Fuchs\',\'RK\',\'LasikFlap\',\'CornealScar\'),
+		\'onReadyCommandArray\' => array(
+			array(\'addDoodle\', array(\'AntSeg\')),
+			array(\'deselectDoodles\', array()),
+		),
+		\'bindingArray\' => array(
+		),
+		\'listenerArray\' => array(
+		),
+		\'idSuffix\' => $element->getSelectedEye()->name.\'_\'.$element->elementType->id,
+		\'side\' => $element->getSelectedEye()->getShortName(),
+		\'mode\' => \'edit\',
+		\'width\' => '.$field['eyedraw_size'].',
+		\'height\' => '.$field['eyedraw_size'].',
+		\'model\' => $element,
+		\'attribute\' => \''.$field['name'].'\',
+	))?'.'>';
+					case 'Buckle':
+						return '';
+					case 'Cataract':
+						return '<?php'."\n".'		$this->widget(\'application.modules.eyedraw.OEEyeDrawWidget\', array(
+		\'doodleToolBarArray\' => array(
+			0 => array(\'PhakoIncision\',\'SidePort\',\'IrisHook\',\'PCIOL\',\'ACIOL\',\'PI\'),
+			1 => array(\'MattressSuture\',\'CapsularTensionRing\',\'CornealSuture\',\'ToricPCIOL\',\'LimbalRelaxingIncision\'),
+		),
+		\'onReadyCommandArray\' => array(
+			array(\'addDoodle\', array(\'AntSeg\')),
+			array(\'addDoodle\', array(\'PhakoIncision\')),
+			array(\'addDoodle\', array(\'PCIOL\')),
+			array(\'deselectDoodles\', array()),
+		),
+		\'bindingArray\' => array(
+		),
+		\'listenerArray\' => array(
+		),
+		\'idSuffix\' => \'Cataract\',
+		\'side\' => $element->getSelectedEye()->getShortName(),
+		\'mode\' => \'edit\',
+		\'width\' => '.$field['eyedraw_size'].',
+		\'height\' => '.$field['eyedraw_size'].',
+		\'model\' => $element,
+		\'attribute\' => \''.$field['name'].'\',
+		\'offsetX\' => 10,
+		\'offsetY\' => 10,
+		\'template\' => \'OEEyeDrawWidgetCataract\',
+	))?'.'>';
+					case 'Gonioscopy':
+						return '<?php'."\n".'		$this->widget(\'application.modules.eyedraw.OEEyeDrawWidget\', array(
+		\'doodleToolBarArray\' => array(\'AngleNV\',\'AntSynech\',\'AngleRecession\'),
+		\'onReadyCommandArray\' => array(
+			array(\'addDoodle\',array(\'Gonioscopy\')),
+			array(\'addDoodle\',array(\'AngleGradeNorth\')),
+			array(\'addDoodle\',array(\'AngleGradeEast\')),
+			array(\'addDoodle\',array(\'AngleGradeSouth\')),
+			array(\'addDoodle\',array(\'AngleGradeWest\')),
+			array(\'deselectDoodles\',array()),
+		),
+		\'bindingArray\' => array(
+		),
+		\'idSuffix\' => $element->getSelectedEye()->name.\'_\'.$element->elementType->id,
+		\'side\' => $element->getSelectedEye()->getShortName(),
+		\'mode\' => \'edit\',
+		\'width\' => \''.$field['eyedraw_size'].'\',
+		\'height\' => \''.$field['eyedraw_size'].'\',
+		\'model\' => $element,
+		\'attribute\' => \''.$field['name'].'\',
+))?'.'>';
+					case 'OpticDisc':
+						return '<?php'."\n".'		$this->widget(\'application.modules.eyedraw.OEEyeDrawWidget\', array(
+		\'doodleToolBarArray\' => array(\'PeripapillaryAtrophy\', \'DiscPallor\', \'DiscHaemorrhage\', \'NerveFibreDefect\', \'OpticDiscPit\', \'Papilloedema\'),
+		\'onReadyCommandArray\' => array(
+			array(\'addDoodle\', array(\'OpticDisc\', array(\'mode\' => \'Basic\'))),
+			array(\'deselectDoodles\', array()),
+		),
+		\'bindingArray\' => array(
+		),
+		\'idSuffix\' => $element->getSelectedEye()->name.\'_\'.$element->elementType->id,
+		\'side\' => $element->getSelectedEye()->getShortName(),
+		\'mode\' => \'edit\',
+		\'width\' => \''.$field['eyedraw_size'].'\',
+		\'height\' => \''.$field['eyedraw_size'].'\',
+		\'model\' => $element,
+		\'attribute\' => \''.$field['name'].'\',
+))?'.'>';
+					case 'PosteriorSegment':
+						return '<?php'."\n".'		$this->widget(\'application.modules.eyedraw.OEEyeDrawWidget\', array(
+		\'doodleToolBarArray\' => array(\'Geographic\',\'VitreousOpacity\',\'DiabeticNV\',\'CNV\',\'Circinate\',\'CystoidMacularOedema\',\'EpiretinalMembrane\',\'HardDrusen\',\'PRPPostPole\',\'MacularHole\'),
+		\'onReadyCommandArray\' => array(
+			array(\'addDoodle\', array(\'PostPole\')),
+			array(\'deselectDoodles\', array()),
+		),
+		\'bindingArray\' => array(
+		),
+		\'idSuffix\' => $element->getSelectedEye()->name.\'_\'.$element->elementType->id,
+		\'side\' => $element->getSelectedEye()->getShortName(),
+		\'mode\' => \'edit\',
+		\'width\' => \''.$field['eyedraw_size'].'\',
+		\'height\' => \''.$field['eyedraw_size'].'\',
+		\'model\' => $element,
+		\'attribute\' => \''.$field['name'].'\',
+))?'.'>';
+					case 'Refraction':
+						return '<?php'."\n".'		$this->widget(\'application.modules.eyedraw.OEEyeDrawWidget\', array(
+		\'doodleToolBarArray\' => array(),
+		\'toolbar\' => false,
+		\'onReadyCommandArray\' => array(
+			array(\'addDoodle\', array(\'TrialFrame\')),
+			array(\'addDoodle\', array(\'TrialLens\')),
+			array(\'deselectDoodles\', array()),
+		),
+		\'bindingArray\' => array(
+		),
+		\'idSuffix\' => $element->getSelectedEye()->name.\'_\'.$element->elementType->id,
+		\'side\' => $element->getSelectedEye()->getShortName(),
+		\'mode\' => \'edit\',
+		\'width\' => \''.$field['eyedraw_size'].'\',
+		\'height\' => \''.$field['eyedraw_size'].'\',
+		\'model\' => $element,
+		\'attribute\' => \''.$field['name'].'\',
+))?'.'>';
+					case 'SurgeonPosition':
+						return '<?php'."\n".'		$this->widget(\'application.modules.eyedraw.OEEyeDrawWidget\', array(
+		\'onReadyCommandArray\' => array(
+			array(\'addDoodle\', array(\'OperatingTable\')),
+			array(\'addDoodle\', array(\'Surgeon\')),
+			array(\'deselectDoodles\', array()),
+		),
+		\'syncArray\' => array(
+		),
+		\'idSuffix\' => \'Position\',
+		\'side\' => $element->getSelectedEye()->getShortName(),
+		\'mode\' => \'edit\',
+		\'width\' => '.$field['eyedraw_size'].',
+		\'height\' => '.$field['eyedraw_size'].',
+		\'model\' => $element,
+		\'attribute\' => \''.$field['name'].'\',
+		\'offsetX\' => 10,
+		\'offsetY\' => 10,
+		\'toolbar\' => false,
+		\'template\' => \'OEEyeDrawWidgetSurgeonPosition\',
+	))?'.'>';
+					case 'Vitrectomy':
+						return '';
+				}
+				break;
 			case 'Multi select':
 				return '<?php echo $form->multiSelectList($element, \'MultiSelect_'.$field['name'].'\', \''.@$field['multiselect_relation'].'\', \''.@$field['multiselect_field'].'\', CHtml::listData('.@$field['multiselect_lookup_class'].'::model()->findAll(array(\'order\'=>\''.$field['multiselect_order_field'].' asc\')),\'id\',\''.$field['multiselect_table_field_name'].'\'), $element->'.@$field['multiselect_lookup_table'].'_defaults, array(\'empty\' => \'- Please select -\', \'label\' => \''.$field['label'].'\'))?'.'>';
 			case 'Slider':

@@ -18,7 +18,8 @@
  */
 ?>
 	<div id="footer">
-		<h6>&copy; Copyright OpenEyes Foundation 2011&#x2013;2012 &nbsp;&nbsp;|<!--&nbsp;&nbsp; Terms of Use &nbsp;&nbsp;|&nbsp;&nbsp; Legals &nbsp;&nbsp;|-->&nbsp;&nbsp; <a href="<?php echo Yii::app()->createUrl('site/debuginfo')?>" id="support-info-link">served, with love, by <?php echo trim(`hostname`)?></a></h6>
+		<h6>&copy; Copyright OpenEyes Foundation 2011&#x2013;<?php echo date('Y'); ?>&nbsp;&nbsp;|&nbsp;&nbsp;
+			<a href="<?php echo Yii::app()->createUrl('site/debuginfo')?>" id="support-info-link">served, with love, by <?php echo trim(`hostname`)?></a></h6>
 		<div class="help">
 
 				<span><strong>Need Help?</strong></span>
@@ -35,8 +36,22 @@
 		</div>
 	</div> <!-- #footer -->
 
-<?php $this->widget('application.extensions.fancybox.EFancyBox', array(
-	'target'=>'#support-info-link',
-	'config'=>array()
-	));
-?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#support-info-link').live('click',function() {
+		var debug = $('<div></div>')
+		.html('<iframe style="border: 0px; " src="<?php echo Yii::app()->createUrl('site/debuginfo')?>" width="100%" height="100%"></iframe>')
+		.dialog({
+			'autoOpen': false,
+			'modal': true,
+			'height': 400,
+			'width': 350,
+			'title': 'Support Information',
+		});
+
+		debug.dialog('open');
+
+		return false;
+	});
+});
+</script>

@@ -37,6 +37,54 @@ class BaseEventTypeElement extends BaseElement {
 		return ElementType::model()->find('class_name=?', array(get_class($this)));
 	}
 
+	/**
+	 * Can this element be copied (cloned/duplicated)
+	 * Override to return true if you want an element to be copyable
+	 * @return boolean
+	 */
+	public function canCopy() {
+		return false;
+	}
+
+	/**
+	 * Fields which are copied by the loadFromExisting() method
+	 * By default these are taken from the "safe" scenario of the model rules, but
+	 * should be overridden for more complex requirements  
+	 * @return array:
+	 */
+	protected function copiedFields() {
+		$rules = $this->rules();
+		$fields = null;
+		foreach($rules as $rule) {
+			if($rule[1] == 'safe') {
+				$fields = $rule[0];
+				break;
+			}
+		}
+		$fields = explode(',', $fields);
+		$no_copy = array('event_id','id');
+		foreach($fields as $index => $field) {
+			if(in_array($field,$no_copy)) {
+				unset($fields[$index]);
+			} else {
+				$fields[$index] = trim($field);
+			}
+		}
+		return $fields;
+	}
+	
+	/**
+	 * Load an existing element's data into this one
+	 * The base implementation simply uses copiedFields(), but it may be
+	 * overridden to allow for more complex relationships
+	 * @param BaseEventTypeElement $element
+	 */
+	public function loadFromExisting($element) {
+		foreach($this->copiedFields() as $attribute) {
+			$this->$attribute = $element->$attribute;
+		}
+	}
+	
 	function render($action) {
 		$this->Controller->renderPartial();
 	}
@@ -165,26 +213,36 @@ class BaseEventTypeElement extends BaseElement {
 	 * Used by child objects to set defaults for forms on create
 	 */
 	public function setDefaultOptions() {
-		return null;
+	}
+
+	/**
+	 * Stubbed method to set update options
+	 * Used by child objects to override null values for forms on update
+	 */
+	public function setUpdateOptions() {
 	}
 
 	public function getInfoText() {
 	}
 
-	public function getCreate_view() {
+	public function getDefaultView() {
 		return get_class($this);
+	}
+
+	public function getCreate_view() {
+		return $this->getDefaultView();
 	}
 
 	public function getUpdate_view() {
-		return get_class($this);
+		return $this->getDefaultView();
 	}
 
 	public function getView_view() {
-		return get_class($this);
+		return $this->getDefaultView();
 	}
 
 	public function getPrint_view() {
-		return get_class($this);
+		return $this->getDefaultView();
 	}
 
 	public function isEditable() {

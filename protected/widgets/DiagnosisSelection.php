@@ -24,6 +24,8 @@ class DiagnosisSelection extends BaseCWidget {
 	public $form;
 	public $label;
 	public $restrict;
+	//specialty code to restrict diagnosis list by
+	public $code;
 	public $default = true;
 	public $layout = false;
 	public $callback = false;
@@ -38,12 +40,14 @@ class DiagnosisSelection extends BaseCWidget {
 					// It's a new event so fetch the most recent element_diagnosis
 					$firmId = Yii::app()->session['selected_firm_id'];
 					$firm = Firm::model()->findByPk($firmId);
-					$patientId = Yii::app()->getController()->patient->id;
-					$episode = Episode::getCurrentEpisodeByFirm($patientId, $firm);
-					if ($episode && $disorder = $episode->diagnosis) {
-						// There is a diagnosis for this episode
-						$this->value = $disorder->id;
-						$this->label = $disorder->term;
+					if (isset(Yii::app()->getController()->patient)) {
+						$patientId = Yii::app()->getController()->patient->id;
+						$episode = Episode::getCurrentEpisodeByFirm($patientId, $firm);
+						if ($episode && $disorder = $episode->diagnosis) {
+							// There is a diagnosis for this episode
+							$this->value = $disorder->id;
+							$this->label = $disorder->term;
+						}
 					}
 				}
 			} else {

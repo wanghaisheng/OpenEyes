@@ -120,7 +120,38 @@ class Helper {
 		}
 		return $age;
 	}
+
+	public static function getMonthText($month, $long=false) {
+		return date($long?'F':'M',mktime(0,0,0,$month,1,date('Y')));
+	}
 	
+	/**
+	 * generate string representation of a fuzzy date (fuzzy dates are strings of the format 
+	 * yyyy-mm-dd, where mm and dd can be 00 to indicate not being set)
+	 * 
+	 * @param string $value
+	 * @return string
+	 */
+	public static function formatFuzzyDate($value) {
+		$year = (integer)substr($value,0,4);
+		$mon = (integer)substr($value,5,2);
+		$day = (integer)substr($value,8,2);
+		
+		if ($year && $mon && $day) {
+			return self::convertMySQL2NHS($value);
+		}
+		
+		if ($year && $mon) {
+			return date('M Y',strtotime($year.'-'.$mon.'-01 00:00:00'));
+		}
+		
+		if ($year) {
+			return (string)$year;
+		}
+		
+		return 'Unknown';
+	}
+
 	/**
 	 * generate string representation of timestamp for the database
 	 *
@@ -130,5 +161,16 @@ class Helper {
 	public static function timestampToDB($timestamp) {
 		return date('Y-m-d H:i:s', $timestamp);
 	}
-	
+
+	public static function getWeekdayText($weekday) {
+		switch ($weekday) {
+			case 1: return 'Monday';
+			case 2: return 'Tuesday';
+			case 3: return 'Wednesday';
+			case 4: return 'Thursday';
+			case 5: return 'Friday';
+			case 6: return 'Saturday';
+			case 7: return 'Sunday';
+		}
+	}
 }

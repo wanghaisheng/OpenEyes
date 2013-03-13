@@ -210,30 +210,13 @@ class Episode extends BaseActiveRecord
 	public function getBookingsForToday() {
 		return Yii::app()->db->createCommand()
 			->select('b.id')
-			->from('booking b')
-			->join('element_operation eo','eo.id = b.element_operation_id')
+			->from('ophtroperationbooking_operation_booking b')
+			->join('et_ophtroperationbooking_operation eo','eo.id = b.element_id')
 			->join('event e','eo.event_id = e.id')
-			->join('session s','b.session_id = s.id')
+			->join('ophtroperationbooking_operation_session s','b.session_id = s.id')
 			->where('e.episode_id = :episode_id and s.date = :todaysDate', array(':episode_id' => $this->id,':todaysDate' => date('Y-m-d')))
 			->order('b.last_modified_date desc')
 			->queryAll();
-	}
-
-	public function getMostRecentBooking() {
-		if ($booking = Yii::app()->db->createCommand()
-			->select('b.id')
-			->from('booking b')
-			->join('element_operation eo','eo.id = b.element_operation_id')
-			->join('event e','eo.event_id = e.id')
-			->where('e.episode_id = :episode_id', array(':episode_id' => $this->id))
-			->limit(1)
-			->order('b.last_modified_date desc')
-			->queryRow()) {
-
-			return Booking::model()->findByPk($booking['id']);
-		}
-
-		return false;
 	}
 
 	public function getMostRecentEventByType($event_type_id) {
@@ -251,14 +234,7 @@ class Episode extends BaseActiveRecord
 
 		if (parent::save($runValidation, $attributes)) {
 			if ($previous && $previous->episode_status_id != $this->episode_status_id) {
-				$audit = new Audit;
-				$audit->action = "change-status";
-				$audit->target_type = "episode";
-				$audit->patient_id = $this->patient_id;
-				$audit->episode_id = $this->id;
-				$audit->user_id = (Yii::app()->session['user'] ? Yii::app()->session['user']->id : null);
-				$audit->data = $this->episode_status_id;
-				$audit->save();
+				$this->audit('episode','change-status',$this->episode_status_id);
 			}
 			return true;
 		}
@@ -314,14 +290,13 @@ class Episode extends BaseActiveRecord
 			throw new Exception('Unable to set episode principal diagnosis/eye: '.print_r($this->getErrors(),true));
 		}
 
-		$audit = new Audit;
-		$audit->action = "set-principal-diagnosis";
-		$audit->target_type = "episode";
-		$audit->episode_id = $this->id;
-		$audit->patient_id = $this->patient_id;
-		$audit->user_id = (Yii::app()->session['user'] ? Yii::app()->session['user']->id : null);
-		$audit->data = $this->getAuditAttributes();
-		$audit->save();
+		$this->audit('episode','set-principal-diagnosis');
+	}
+
+	public function audit($target, $action, $data=null, $log=false, $properties=array()) {
+		$properties['episode_id'] = $this->id;
+		$properties['patient_id'] = $this->patient_id;
+		return parent::audit($target, $action, $data, $log, $properties);
 	}
 
 	protected function beforeSave() {
