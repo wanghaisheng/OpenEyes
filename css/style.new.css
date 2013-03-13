@@ -739,8 +739,8 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventarea .sticky-wrapper { margin-bottom:5px; }
 
 /* ====== COLORBAND to show category ====== */
-.eventarea .colorband { height:5px; background:#a29d8a; }
-.eventarea .colorband.episode { background:#c2bca5;  }
+.eventarea .colorband { height:5px; background:#a29d8a;}
+.eventarea .colorband.episode { background:#c2bca5;}
 .eventarea .colorband.blank { background:#ccc;}
 .eventarea .colorband.treatment { background:#fd6892;}
 .eventarea .colorband.communication { background:#86cdff;}
@@ -866,8 +866,6 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 /* ====== INLINE ADMIN ====== */
 .inlineadmin { color:#003; font-size:11px; line-height:1.5; background:#ddd; border:4px solid #336; padding:5px 10px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px;}
 .inlineadmin * { font-size:11px; line-height:1.5; } 
-
-
 
 
 /* ==|== non-semantic helper classes ======================================== */

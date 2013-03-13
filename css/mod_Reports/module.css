@@ -1,0 +1,23 @@
+/* Reports */
+h2.reports { background:#666; color:#fff; border:1px solid #999; border-left:none; }
+
+/* reports listed */
+.reportsgroup { background: #fafafa url(../../img/_elements/icons/reports/watermark-small.png) top right no-repeat; ; }
+.reportsgroup h4 { color:#333; }
+.reportsgroup ul { list-style-type:none; padding:4px 0 0 0; margin:0; border-top:1px dotted #ccc; }
+.reportsgroup ul li { padding-right:10px; }
+.reportsgroup ul li a { display:block; height:25px; line-height:25px; background:#fff url(../../img/_elements/icons/reports/report-small.png) left center no-repeat; margin:0 2px 4px 0; padding-left:30px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;} 
+.reportsgroup ul li a:hover { border-bottom: none; background-color: #3665ff; background-image: url(../../img/_elements/icons/reports/report-small-no-bg.png); color:#fff; }
+.reportsgroup ul li a:active	{ border-bottom: none; background-color: #315be6; color:#fff; }
+
+/* report you are viewing in list */
+.reportsgroup ul li.active { background:transparent url(../../img/_elements/icons/reports/active-arrow.png) right center no-repeat;}
+.reportsgroup ul li .viewing { display:block; height:25px; line-height:25px; color:#333; background:#ccc url(../../img/_elements/icons/reports/report-small-no-bg.png) left center no-repeat; margin:0 2px 4px 0; padding-left:30px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;} 
+
+/* report area */
+.report { min-height: 200px; }
+
+
+
+
+
