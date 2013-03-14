@@ -92,9 +92,12 @@ class Patient extends BaseActiveRecord {
 		return array(
 			array('pas_key', 'length', 'max' => 10),
 			array('hos_num, nhs_num', 'length', 'max' => 40),
+			array('hos_num', 'unique'),
+			array('nhs_num', 'unique'),
 			array('gender', 'length', 'max' => 1),
 			array('dob, date_of_death, ethnic_group_id', 'safe'),
 			array('dob, hos_num, nhs_num, date_of_death', 'safe', 'on' => 'search'),
+			array('gender,hos_num, dob', 'required'),
 		);
 	}
 
@@ -155,6 +158,10 @@ class Patient extends BaseActiveRecord {
 			'ethnic_group_id' => 'Ethnic Group',
 			'hos_num' => 'Hospital Number',
 			'nhs_num' => 'NHS Number',
+			'primary_phone' => 'Telephone',
+			'country_id' => 'Country',
+			'hos_num' => 'Hospital no',
+			'nhs_num' => 'NHS no',
 		);
 	}
 
@@ -501,23 +508,45 @@ class Patient extends BaseActiveRecord {
 	}
 
 	public function getTitle() {
-		return $this->contact->title;
+		if (isset($this->spoof['title'])) {
+			return $this->spoof['title'];
+		}
+		return $this->contact ? $this->contact->title : '';
 	}
 
 	public function getFirst_name() {
-		return $this->contact->first_name;
+		if (isset($this->spoof['first_name'])) {
+			return $this->spoof['first_name'];
+		}
+		return $this->contact ? $this->contact->first_name : '';
 	}
 
 	public function getLast_name() {
-		return $this->contact->last_name;
+		if (isset($this->spoof['last_name'])) {
+			return $this->spoof['last_name'];
+		}
+		return $this->contact ? $this->contact->last_name : '';
 	}
 
 	public function getNick_name() {
-		return $this->contact->nick_name;
+		if (isset($this->spoof['nick_name'])) {
+			return $this->spoof['nick_name'];
+		}
+		return $this->contact ? $this->contact->nick_name : '';
 	}
 
 	public function getPrimary_phone() {
-		return $this->contact->primary_phone;
+		if (isset($this->spoof['primary_phone'])) {
+			return $this->spoof['primary_phone'];
+		}
+		return $this->contact ? $this->contact->primary_phone : '';
+	}
+
+	public function getCountry_id() {
+		if (isset($this->spoof['country_id'])) {
+			return $this->spoof['country_id'];
+		}
+		return $this->contact ? $this->contact->country_id : '';
 	}
 
 	public function getPre() {

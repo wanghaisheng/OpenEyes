@@ -25,6 +25,7 @@
  */
 class BaseActiveRecord extends CActiveRecord
 {
+	public $spoof = array();
 
 	/**
 	 * Audit log
@@ -147,5 +148,73 @@ class BaseActiveRecord extends CActiveRecord
 		}
 
 		Audit::add($target, $action, $data, $log, $properties);
+	}
+
+	function getFormOptions($table) {
+		$options = array();
+
+		$table_exists = false;
+
+		foreach (Yii::app()->db->createCommand("show tables;")->query() as $_table) {
+			foreach ($_table as $key => $value) {
+				if ("element_type_$table" == $value) {
+					$table_exists = true;
+					break;
+				}
+			}
+		}
+
+		if ($table_exists) {
+			foreach (Yii::app()->db->createCommand()
+					->select("$table.*")
+					->from($table)
+					->join("element_type_$table","element_type_$table.{$table}_id = $table.id")
+					->where("element_type_id = ".$this->getElementType()->id)
+					->order("display_order asc")
+					->queryAll() as $option) {
+
+				$options[$option['id']] = $option['name'];
+			}
+		} else {
+			foreach (Yii::app()->db->createCommand()
+					->select("$table.*")
+					->from($table)
+					->queryAll() as $option) {
+
+				$options[$option['id']] = $option['name'];
+			}
+		}
+
+		return $options;
+	}
+
+	public function validate($attributes=null, $clearErrors=true, $include_models=false) {
+		$result = parent::validate($attributes, $clearErrors);
+
+		if ($include_models) {
+			foreach ($include_models as $model) {
+				$obj = new $model;
+				$obj->loadFrom($_POST[get_class($this)]);
+
+				if (!$obj->validate()) {
+					foreach ($obj->getErrors() as $key => $value) {
+						$this->addError(get_class($this),$value[0]);
+					}
+					$result = false;
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	public function loadFrom($data) {
+		foreach ($data as $key => $value) {
+			if (in_array($key,$this->attributeNames())) {
+				$this->$key = $value;
+			} else {
+				$this->spoof[$key] = $value;
+			}
+		}
 	}
 }

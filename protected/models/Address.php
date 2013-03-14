@@ -61,6 +61,7 @@ class Address extends BaseActiveRecord {
 	public function rules() {
 		return array(
 			array('address1, address2, city, county', 'length', 'max' => 255),
+			array('address1, city, county, postcode', 'required'),
 			array('postcode', 'length', 'max' => 10),
 			array('email', 'length', 'max' => 255),
 			array('country_id, parent_class, parent_id, type, date_start, date_end', 'safe'),

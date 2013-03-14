@@ -90,4 +90,8 @@ class BaseEventTypeCActiveForm extends CActiveForm
 	public function sliderTable($element, $field, $data) {
 		$this->widget('application.widgets.SliderTable', array('element' => $element, 'field' => $field, 'data' => $data));
 	}
+
+	public function dateOfBirth($element, $field, $htmlOptions=array()) {
+		$this->widget('application.widgets.DateOfBirth', array('element' => $element, 'field' => $field, 'htmlOptions' => $htmlOptions));
+	}
 }

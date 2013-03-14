@@ -89,44 +89,6 @@ class BaseEventTypeElement extends BaseElement {
 		$this->Controller->renderPartial();
 	}
 
-	function getFormOptions($table) {
-		$options = array();
-
-		$table_exists = false;
-
-		foreach (Yii::app()->db->createCommand("show tables;")->query() as $_table) {
-			foreach ($_table as $key => $value) {
-				if ("element_type_$table" == $value) {
-					$table_exists = true;
-					break;
-				}
-			}
-		}
-
-		if ($table_exists) {
-			foreach (Yii::app()->db->createCommand()
-					->select("$table.*")
-					->from($table)
-					->join("element_type_$table","element_type_$table.{$table}_id = $table.id")
-					->where("element_type_id = ".$this->getElementType()->id)
-					->order("display_order asc")
-					->queryAll() as $option) {
-
-				$options[$option['id']] = $option['name'];
-			}
-		} else {
-			foreach (Yii::app()->db->createCommand()
-					->select("$table.*")
-					->from($table)
-					->queryAll() as $option) {
-
-				$options[$option['id']] = $option['name'];
-			}
-		}
-
-		return $options;
-	}
-
 	function getSetting($key) {
 		$element_type = ElementType::model()->find('class_name=?',array(get_class($this)));
 
