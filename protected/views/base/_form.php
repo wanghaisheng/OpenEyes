@@ -61,7 +61,7 @@ if (!Yii::app()->user->isGuest) {
 	</div>
 	<?php } ?>
 	<div id="user_id">
-		<span>You are logged in as:</span> <strong><?php echo $user->first_name ?> <?php echo $user->last_name; ?></strong>
+		<span>You are logged in as:</span> <strong><?php echo $user->first_name ?> <?php echo $user->last_name; ?> at <?php echo Site::model()->findByPk(Yii::app()->session['selected_site_id'])->name?></strong>
 	</div>
 </div>
 <?php } ?>
