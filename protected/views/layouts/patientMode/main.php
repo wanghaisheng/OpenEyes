@@ -50,6 +50,7 @@
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/buttons.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/events_and_episodes.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/script.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/jQueryRotate.2.2.js'))?>
 	<?php if (Yii::app()->params['google_analytics_account']) {?>
 		<script type="text/javascript">
 
@@ -78,6 +79,7 @@
 			<?php echo $this->renderPartial('//base/_brand'); ?>
 			<?php echo $this->renderPartial('//base/_form', array()); ?>
 			<?php echo $this->renderPartial('//patient/_patient_id', array()); ?>
+			<?php echo $this->renderPartial('//base/_sync', array()); ?>
 		</div> <!-- #header -->
 
 		<div id="content">

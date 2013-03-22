@@ -76,6 +76,7 @@
 		<div id="header" class="clearfix">
 			<?php echo $this->renderPartial('//base/_brand'); ?>
 			<?php echo $this->renderPartial('//base/_form', array()); ?>
+			<?php echo $this->renderPartial('//base/_sync', array()); ?>
 		</div> <!-- #header --> 
 		<!--div id="mainmenu">
 			<?php $this->widget('zii.widgets.CMenu',array(
