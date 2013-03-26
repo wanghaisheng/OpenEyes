@@ -95,9 +95,9 @@ class Patient extends BaseActiveRecord {
 			array('hos_num', 'unique'),
 			array('nhs_num', 'unique'),
 			array('gender', 'length', 'max' => 1),
-			array('dob, date_of_death, ethnic_group_id', 'safe'),
+			array('dob, date_of_death, ethnic_group_id, age_range', 'safe'),
 			array('dob, hos_num, nhs_num, date_of_death', 'safe', 'on' => 'search'),
-			array('gender,hos_num, dob', 'required'),
+			array('gender,hos_num', 'required'),
 		);
 	}
 
@@ -278,6 +278,9 @@ class Patient extends BaseActiveRecord {
 	}
 	
 	public function getAge() {
+		if ($this->age_range) {
+			return $this->age_range;
+		}
 		return Helper::getAge($this->dob, $this->date_of_death);
 	}
 

@@ -78,7 +78,7 @@ if (!empty($address)) {
 						<div class="data_row">
 							<div class="data_label">Date of Birth:</div>
 							<div class="data_value">
-								<?php echo ($this->patient->dob) ? $this->patient->NHSDate('dob') : 'Unknown' ?>
+								<?php echo ($this->patient->dob && $this->patient->dob != '0000-00-00') ? $this->patient->NHSDate('dob') : 'Unknown' ?>
 							</div>
 						</div>
 						<div class="data_row">
