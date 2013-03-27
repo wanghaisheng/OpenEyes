@@ -1,5 +1,19 @@
-	/* HTML5 ✰ Boilerplate
- * ==|== normalize ==========================================================
+/**
+ * OpenEyes
+ *
+ * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
+ * (C) OpenEyes Foundation, 2011-2013
+ * This file is part of OpenEyes.
+ * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package OpenEyes
+ * @link http://www.openeyes.org.uk
+ * @author OpenEyes <info@openeyes.org.uk>
+ * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
+ * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
@@ -214,7 +228,6 @@ em { font-style: italic; color:#333; }
 .curvybox.nomargin { margin:0; }
 .curvybox.margintop { margin-top:15px; }
 
-
 /* ====== ERRORs ====== */
 #content .errorMessage {	text-align:center; background:#ffe6b2; border:#ff8921 1px solid; padding:5px; margin-bottom: 15px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 
@@ -424,6 +437,22 @@ a:hover.simpleButton, a:active.simpleButton { background:#145ea9; }
 .overlay { z-index:9 !important; background:transparent; position:fixed; left:50%; top:50%; }
 .overlay .loading { background:#555; color:#ccc; text-align:center; padding:10px; width:300px; margin-left:-150px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; }
 
+.spaceOutButtons button { margin-right:40px; } 
+
+/* simpleButtons - make a look like a basic version of button  */
+a.simpleButton { background:#107be9; color:#fff; padding:2px 8px; border:none; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+a:visited.simpleButton { background:#107be9; }
+a:hover.simpleButton, a:active.simpleButton { background:#145ea9; }
+
+
+
+/* ====== OVERLAYS ====== */
+/* dim and de-activate other content */
+.dimBackground { height:100%; width:100%; min-width:1240px; position:fixed; left:0; top:0; z-index:1; background-color:#666; filter: alpha(opacity=50);
+-webkit-opacity: 0.50; -moz-opacity: 0.50; opacity: 0.50;		}
+/* overlay holder is centered unless otherwise styled */
+.overlay { z-index:9 !important; background:transparent; position:fixed; left:50%; top:50%; }
+.overlay .loading { background:#555; color:#ccc; text-align:center; padding:10px; width:300px; margin-left:-150px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; }
 
 /* ====== TABLES - GENERAL ====== */
 table		{ border-collapse: collapse; }
@@ -439,7 +468,6 @@ table tr:last-child { border-bottom: none; }
 .table_endRow{ background: #ddd; height:15px; }
 /* clickable table row	*/
 tr.clickable:hover { background:#3665ff; color:white; }
-
 
 /* SUBTLE WHITE - table structure used for layout but not too obvious */
 table.subtleWhite { width:100%; background:#fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom:20px;}
@@ -617,7 +645,6 @@ span.surname { font-weight: bold; }
 #login-form .row			{ width:350px; text-align: right; margin-top:30px; }
 #login-form .row label		{ margin-right: 5px;	}
 #login-form .row select		{ position: relative; top:-1px; width:180px; }
-
 
 /* ====== HOME HUB ====== */
 /* default grouping */
@@ -810,7 +837,6 @@ td.eventIcons > img { margin-bottom:10px; }
 #add-event-disabled-pop-up { display: none; position: absolute; width: 280px; padding: 10px;
 	background: #eeeeee; color: #000000; border: 1px solid #1a1a1a; font-size: 90%; z-index: 1000; left: 590px; }
 
-
 /* ====== ADD NEW EVENT (v2 - overlay) jQuery version ====== */
 .overlay.forAddEvent { top:150px; left:49%; }
 /* overlay content */
@@ -834,9 +860,6 @@ td.eventIcons > img { margin-bottom:10px; }
 .overlay .IM { width:500px; margin-left:-250px; margin-top:-100px; padding:50px 10px 15px 10px; background:#807c6d url(../img/_elements/icons/im/paperclip_notification.png) top right no-repeat; color:#fff; border:2px dotted #a29d8a; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 2px 2px 4px 3px #ccc; -webkit-box-shadow: 2px 2px 4px 3px #ccc;	box-shadow: 2px 2px 4px 3px #ccc; }
 .overlay .IM .autoMessage img  { float:left; }
 .overlay .IM .autoMessage .details { padding-left:50px; padding-top:5px; }
-
-
-
 
 /* ------------------------ NEW EVENT - Users selects a New Event to add, these are details needed */
 /* Green PlUS Graphic */
@@ -1143,9 +1166,6 @@ table.audit-list tr.hover{ background-color: #ffffdd; }
 	#content { min-height: 1230px !important; }
 }
 
-
-
-
 /* ==|== print styles ======================================================= */
  
 @media print {
@@ -1396,6 +1416,16 @@ table.grid td { text-align: left; padding:10px; border-right:1px solid #ccc; }
 table.grid th:last-child, table.grid td:last-child { border-right: none; }
 table.grid td.nowrap { white-space: nowrap; }
 table.grid td.icons > img {margin-right:4px; margin-bottom:4px; }
+
+ul.grid { width: 100%; list-style-type: none; padding: 0; }
+ul.grid li.header { text-align: left; vertical-align: middle; background:#ddd; color: #444; font-size: 11px; font-weight:bold; min-width:10px; padding:0px; border-right:1px solid #bbb; }
+ul.grid li.header span { text-align: left; vertical-align: middle; background:#ddd; color: #444; font-size: 11px; font-weight:bold; min-width:10px; padding:10px; border-right:1px solid #bbb; }
+ul.grid li.even { margin: 0; text-align: left; padding:0px; border-right:1px solid #ccc; }
+ul.grid li.even span { margin: 0; text-align: left; padding:10px; border-right:1px solid #ccc; }
+ul.grid li.odd { margin: 0; text-align: left; padding:0px; border-right:1px solid #ccc; }
+ul.grid li.odd span { margin: 0; text-align: left; padding:10px; border-right:1px solid #ccc; }
+ul.grid li:hover { cursor: pointer; }
+
 /* customise */
 table.grid.margintop { margin-top:10px; }
 table.grid.marginbottom { margin-bottom:10px; }
@@ -1459,3 +1489,43 @@ div.familyHistory .label { display: inline-block; width: 125px; }
 div.familyHistory .data { display: inline-block; }
 div.familyHistory { margin-bottom: 10px; }
 div.familyHistory #comments { width: 439px; }
+
+/* admin menu */
+.admingroup { background: #fafafa url(../img/watermark-small.png) top right no-repeat; ; }
+.admingroup h4 { color:#333; }
+.admingroup ul { list-style-type:none; padding:4px 0 0 0; margin:0; border-top:1px dotted #ccc; }
+.admingroup ul li { padding-right:10px; }
+.admingroup ul li a { display:block; height:25px; line-height:25px; background:#fff url(../img/report-small.png) left center no-repeat; margin:0 2px 4px 0; padding-left:30px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;}
+.admingroup ul li a:hover { border-bottom: none; background-color: #3665ff; background-image: url(../img/report-small-no-bg.png); color:#fff; }
+.admingroup ul li a:active  { border-bottom: none; background-color: #315be6; color:#fff; }
+
+/* admin item you are viewing in list */
+.admingroup ul li.active { background:transparent url(../img/active-arrow.png) right center no-repeat;}
+.admingroup ul li .viewing { display:block; height:25px; line-height:25px; color:#333; background:#ccc url(../img/report-small-no-bg.png) left center no-repeat; margin:0 2px 4px 0; padding-left:30px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;}
+
+h2.admin { background:#666; color:#fff; border:1px solid #999; border-left:none; }
+
+.reportInputs .newdrug { width: 730px; }
+.reportInputs .editdrug { width: 730px; }
+
+div.admin .label { display:inline-block; width:170px; float:left; font-size:15px; padding-bottom: 4px; margin-top: 6px; }
+div.admin .group { background: none !important; }
+
+div.admin input { margin: 2px; }
+div.admin #User_first_name { width: 250px; }
+div.admin #User_last_name { width: 250px; }
+div.admin #User_email { width: 300px; }
+div.admin #User_role { width: 300px; }
+div.admin #User_qualifications { width: 300px; }
+
+/* admin sections */
+#admin_users ul li { padding: 0; margin: 0; line-height: 15px; font-size: 11px; }
+#admin_users ul li .column_checkbox { width: 15px; display: inline-block; }
+#admin_users ul li .column_id { width: 15px; display: inline-block; }
+#admin_users ul li .column_username { width: 75px; display: inline-block; }
+#admin_users ul li .column_title { width: 25px; display: inline-block; }
+#admin_users ul li .column_firstname { width: 140px; display: inline-block; }
+#admin_users ul li .column_lastname { width: 140px; display: inline-block; }
+#admin_users ul li .column_role { width: 215px; display: inline-block; }
+#admin_users ul li .column_doctor { width: 35px; display: inline-block; }
+#admin_users ul li .column_active { width: 35px; display: inline-block; }

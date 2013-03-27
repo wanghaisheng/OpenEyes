@@ -3,7 +3,7 @@
  * OpenEyes
  *
  * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
- * (C) OpenEyes Foundation, 2011-2012
+ * (C) OpenEyes Foundation, 2011-2013
  * This file is part of OpenEyes.
  * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -13,7 +13,7 @@
  * @link http://www.openeyes.org.uk
  * @author OpenEyes <info@openeyes.org.uk>
  * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
- * @copyright Copyright (c) 2011-2012, OpenEyes Foundation
+ * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
@@ -140,6 +140,7 @@ class Patient extends BaseActiveRecord {
 			'practice' => array(self::BELONGS_TO, 'Practice', 'practice_id'),
 			'contactAssignments' => array(self::HAS_MANY, 'PatientContactAssignment', 'patient_id'),
 			'allergies' => array(self::MANY_MANY, 'Allergy', 'patient_allergy_assignment(patient_id, allergy_id)', 'order' => 'name'),
+			'secondarydiagnoses' => array(self::HAS_MANY, 'SecondaryDiagnosis', 'patient_id'),
 			'ethnic_group' => array(self::BELONGS_TO, 'EthnicGroup', 'ethnic_group_id'),
 			'previousOperations' => array(self::HAS_MANY, 'PreviousOperation', 'patient_id', 'order' => 'date'),
 			'medications' => array(self::HAS_MANY, 'Medication', 'patient_id', 'order' => 'created_date'),
@@ -647,7 +648,61 @@ class Patient extends BaseActiveRecord {
 			}
 		}
 	}
-
+	
+	/*
+	 * returns all disorder ids for the patient, aggregating the principal diagnosis for each patient episode, and any secondary diagnosis on the patient
+	*
+	* FIXME: some of this can be abstracted to a relation when we upgrade from yii 1.1.8, which has some problems with yii relations:
+	* 	http://www.yiiframework.com/forum/index.php/topic/26806-relations-through-problem-wrong-on-clause-in-sql-generated/
+	*
+	* @returns array() of disorder ids
+	*/
+	private function getAllDisorderIds() {
+		// Get all the secondary disorders
+		$criteria = new CDbCriteria;
+		$criteria->compare('patient_id', $this->id);
+		$sd = SecondaryDiagnosis::model()->findAll($criteria);
+		$disorder_ids = array();
+		foreach ($sd as $d) {
+			$disorder_ids[] = $d->disorder_id;
+		}
+		
+			
+		foreach ($this->episodes as $ep) {
+			//primary disorder for episode
+			if ($ep->disorder_id) {
+				$disorder_ids[] = $ep->disorder_id;
+			}
+		}
+		
+		return array_unique($disorder_ids);
+	}
+	
+	/*
+	 * returns all disorders for the patient.
+	 * 
+	 * FIXME: some of this can be abstracted to a relation when we upgrade from yii 1.1.8, which has some problems with yii relations:
+	 * 	http://www.yiiframework.com/forum/index.php/topic/26806-relations-through-problem-wrong-on-clause-in-sql-generated/
+	 *  
+	 * @returns array() of disorders
+	 */
+	public function getAllDisorders() {
+		return Disorder::model()->findAllByPk($this->getAllDisorderIds());
+	}
+	
+	/*
+	 * checks if the patient has a disorder that is defined as being within the SNOMED tree specified by the given $snomed id.
+	 * 
+	 * @returns bool
+	 */
+	public function hasDisorderTypeByIds($snomeds) {
+		$disorder_ids = $this->getAllDisorderIds();
+		if (count($disorder_ids)) {
+			return Disorder::model()->ancestorIdsMatch($disorder_ids, $snomeds);
+		}
+		return false;
+	}
+	
 	public function getSystemicDiagnoses() {
 		$criteria = new CDbCriteria;
 		$criteria->compare('patient_id', $this->id);
@@ -935,6 +990,97 @@ class Patient extends BaseActiveRecord {
 		}
 	}
 	
+	private function _getDRGrading() {
+		if ($episode = $this->getEpisodeForCurrentSubspecialty()) {
+			$event = $episode->getMostRecentEventByType(EventType::model()->find('class_name=?', array('OphCiExamination'))->id);
+			if ($dr = ModuleAPI::getmodel('OphCiExamination', 'Element_OphCiExamination_DRGrading')) {
+				return $dr->find('event_id=?', array($event->id));
+			}
+		}
+	}
+	
+	// DR function additions
+	/*
+	 * NSC right Retinopathy
+	 */
+	public function getNrr() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterDRRetinopathy($this,'right');
+		}
+	}
+	
+	/*
+	 * NSC left Retinopathy
+	*/
+	public function getNlr() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterDRRetinopathy($this,'left');
+		}
+	}
+	
+	/*
+	 * NSC right Maculopathy
+	*/
+	public function getNrm() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterDRMaculopathy($this,'right');
+		}
+	}
+	
+	/*
+	 * NSC left Maculopathy
+	*/
+	public function getNlm() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterDRMaculopathy($this,'left');
+		}
+	}
+	
+	// Clinical right DR Grade
+	public function getCrd() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterDRClinical($this,'right');
+		}
+	}
+	
+	// Clinical left DR Grade
+	public function getCld() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterDRClinical($this,'left');
+		}
+	}
+	
+	/*
+	* Type of diabetes mellitus
+	*/
+	public function getDmt() {
+		if ($this->hasDisorderTypeByIds(Disorder::$SNOMED_DIABETES_TYPE_I_SET) ) {
+			return Disorder::model()->findByPk(Disorder::SNOMED_DIABETES_TYPE_I)->term;
+		}
+		elseif ($this->hasDisorderTypeByIds(Disorder::$SNOMED_DIABETES_TYPE_II_SET)) {
+			return Disorder::model()->findByPk(Disorder::SNOMED_DIABETES_TYPE_II)->term;
+		}
+		return 'not diabetic';
+	}
+	
+	/*
+	 * Laser management plan
+	*/
+	public function getLmp() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterLaserManagementPlan($this);
+		}
+	}
+	
+	/*
+	 * Laser management comments
+	*/
+	public function getLmc() {
+		if ($api = Yii::app()->moduleAPI->get('OphCiExamination')) {
+			return $api->getLetterLaserManagementComments($this);
+		}
+	}
+	
 	/*
 	 * Follow up period
 	*/
@@ -944,6 +1090,8 @@ class Patient extends BaseActiveRecord {
 		}
 	}
 
+	
+	
 	public function audit($target, $action, $data=null, $log=false, $properties=array()) {
 		$properties['patient_id'] = $this->id;
 		return parent::audit($target, $action, $data, $log, $properties);
@@ -995,6 +1143,29 @@ class Patient extends BaseActiveRecord {
 
 		if (!$fh->save()) {
 			throw new Exception("Unable to save family history: ".print_r($fh->getErrors(),true));
+		}
+	}
+
+	public function getSdl() {
+		$criteria = new CDbCriteria;
+		$criteria->compare('patient_id',$this->id);
+		$criteria->order = 'created_date asc';
+
+		$diagnoses = array();
+
+		foreach (SecondaryDiagnosis::model()->findAll('patient_id=?',array($this->id)) as $i => $sd) {
+			if ($sd->disorder->specialty->code == 'OPH') {
+				$diagnoses[] = strtolower(($sd->eye ? $sd->eye->adjective.' ' : '').$sd->disorder->term);
+			}
+		}
+
+		if (count($diagnoses) >1) {
+			$last = array_pop($diagnoses);
+			return implode(', ',$diagnoses).' and '.$last;
+		}
+
+		if (!empty($diagnoses)) {
+			return array_pop($diagnoses);
 		}
 	}
 }
