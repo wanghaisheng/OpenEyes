@@ -171,4 +171,12 @@ class EventType extends BaseActiveRecord
 		}
 		return "The ".$this->name." module will be available in an upcoming release.";
 	}
+
+	static public function getOrbisList() {
+		$criteria = new CDbCriteria;
+		$criteria->addInCondition('name',array('Operation note','Examination','Injection'));
+		$criteria->order = 'name asc';
+
+		return CHtml::listData(EventType::model()->findAll($criteria),'id','name');
+	}
 }
