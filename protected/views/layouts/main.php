@@ -49,6 +49,7 @@
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/print.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/buttons.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/script.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/jQueryRotate.2.2.js'))?>
 	<?php if (Yii::app()->params['google_analytics_account']) {?>
 		<script type="text/javascript">
 
