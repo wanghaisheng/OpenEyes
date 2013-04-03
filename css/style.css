@@ -143,8 +143,8 @@ body {}
 #content .wrap.twocolumns .rightcolumn	{ width:600px; float:right; }
 #content .wrap.twocolumns .leftcolumn.wide		{ width:820px; }
 #content .wrap.twocolumns .rightcolumn.narrow 	{ width:360px; }
-#content .wrap.twocolumns .leftcolumn.narrow	{ width:186px; }
-#content .wrap.twocolumns .rightcolumn.wide 	{ width:998px; }
+#content .wrap.twocolumns .leftcolumn.narrow	{ width:290px; }
+#content .wrap.twocolumns .rightcolumn.wide 	{ width:890px; }
 /* maxwidth uses the full available content width */
 #content .maxwidth	{ width:1230px; margin-top:20px; position: relative; min-height:400px; }
 #content .maxwidth .episodelist	{ float:left; width:175px; }
@@ -198,8 +198,8 @@ em { font-style: italic; color:#333; }
 #content .patientBox	{ position: relative; padding:10px; background: transparent url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; border: 2px solid #ffb212; }
 #content .eventBox { background: #fafafa; padding:10px; }
 /* watermarked width 1050px - 20px padding = 1030px */
-#content .watermarkBox { width:1030px; background-color:#fafafa; background-repeat: repeat-y; background-position: top left;
-	padding:5px 5px 10px; border-width: 0 5px 5px; border-style: solid; border-color: #a29d8a; }
+#content .watermarkBox { width:1030px; background-color:#fafafa; background-position: -5px 0; background-repeat: repeat-y;
+	background-image: url(../img/_elements/icons/event/watermark/_episode.png); padding:5px 5px 10px; border-width: 0 5px 5px; border-style: solid; border-color: #a29d8a; }
 /* icons for boxes */
 #content .withIcon { padding-left: 40px; }
 #content .boxIcon { position: absolute; top:5px; left:0; }
@@ -740,7 +740,7 @@ span.surname { font-weight: bold; }
 /* Clinicians only info */
 .whiteBox.forClinicians { border:1px solid #999; position:relative;}
 .whiteBox.forClinicians h4 { display:inline-block; padding:5px 10px 5px 45px; font-size:12px; color:#fff; background:#999; margin-bottom: 0; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;}
-.whiteBox.forClinicians .icon_patientIssue { position:absolute; top:4px; left:10px; z-index:1; width:36px; height:35px; background:transparent url(../img/_elements/icons/patient-clinician-hd_flag.png) top left no-repeat;	}
+.whiteBox.forClinicians .icon_patientIssue { position:absolute; top:4px; left:10px; z-index:1; width:36px; height:35px; background:transparent url(../img/_elements/icons/patient/clinician-hd_flag.png) top left no-repeat;	}
 .whiteBox.forClinicians .fuzzyDate { font-family:Georgia Times sans-serif; font-style: italic;	color:#666; }
 
 /* for fullWidth Episode Summary, need to control the vertical spacing in case of 2+ rows */
@@ -1062,6 +1062,19 @@ ul.ui-autocomplete li.ui-menu-item a:hover { background:#3665ff; color: #fff; bo
 .action_options_alt .aBtn > a { display:inline-block; padding:4px 10px 3px 10px; background: #fff; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 .action_options_alt .aBtn > a:hover { border:none; color:#fff; background:#3665ff; }
 .action_options_alt .aBtn > a:hover { border:none; color:#fff; background:#2546b1; }
+
+/* aBtn SPRITES 11px */
+.aBtn a.sprite.showhide > span { display:inline-block; width:11px; height:11px; background:transparent url(../../../img/_elements/icons/_sprites/showhide_icon.png) no-repeat top left; }
+.aBtn a.sprite.showhide > .hide { background-position: top left; }
+.aBtn a:hover.sprite.showhide > .hide { background-position: top right; }
+.aBtn a.sprite.showhide > .show { background-position: bottom left; }
+.aBtn a:hover.sprite.showhide > .show { background-position: bottom right; }
+
+.aBtn a.sprite.showhide2 > span { display:inline-block; width:11px; height:11px; background:transparent url(../../../img/_elements/icons/_sprites/showhide_icon.png) no-repeat top left; }
+.aBtn a.sprite.showhide2 > .hide { background-position: top left; }
+.aBtn a:hover.sprite.showhide2 > .hide { background-position: top right; }
+.aBtn a.sprite.showhide2 > .show { background-position: bottom left; }
+.aBtn a:hover.sprite.showhide2 > .show { background-position: bottom right; }
 
 /* EVENT LIST showhide in Event List*/
 .episode_nav a.sprite { display:inline-block; padding:4px 5px 2px 5px; background: #fff; -webkit-border-bottom-left-radius: 3px; -webkit-border-bottom-right-radius: 3px; -moz-border-radius-bottomleft: 3px; -moz-border-radius-bottomright: 3px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
@@ -1512,11 +1525,14 @@ div.admin .label { display:inline-block; width:170px; float:left; font-size:15px
 div.admin .group { background: none !important; }
 
 div.admin input { margin: 2px; }
+div.admin select { margin-top: 4px; margin-left: 2px; margin-bottom: 4px; }
+
 div.admin #User_first_name { width: 250px; }
 div.admin #User_last_name { width: 250px; }
 div.admin #User_email { width: 300px; }
 div.admin #User_role { width: 300px; }
 div.admin #User_qualifications { width: 300px; }
+div.admin div.pagination .selected { background-color: #0b59da; color: #fff; padding-left: 2px; padding-right: 2px; }
 
 /* admin sections */
 #admin_users ul li { padding: 0; margin: 0; line-height: 15px; font-size: 11px; }
@@ -1529,3 +1545,11 @@ div.admin #User_qualifications { width: 300px; }
 #admin_users ul li .column_role { width: 215px; display: inline-block; }
 #admin_users ul li .column_doctor { width: 35px; display: inline-block; }
 #admin_users ul li .column_active { width: 35px; display: inline-block; }
+
+#admin_firms ul li { padding: 0; margin: 0; line-height: 15px; font-size: 11px; }
+#admin_firms ul li .column_id { width: 15px; display: inline-block; }
+#admin_firms ul li .column_pas_code { width: 52px; display: inline-block; }
+#admin_firms ul li .column_name { width: 200px; display: inline-block; }
+#admin_firms ul li .column_subspecialty { width: 200px; display: inline-block; }
+#admin_firms ul li .column_consultant { width: 200px; display: inline-block; }
+#div_Firm_consultant_id { margin-top: 2px; }

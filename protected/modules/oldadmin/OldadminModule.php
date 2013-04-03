@@ -17,24 +17,29 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-class WidgetController extends BaseController
-{
-	public $layout='column2';
+class OldadminModule extends CWebModule {
+	
+	public function init() {
+		// this method is called when the module is being created
+		// you may place code here to customize the module or the application
 
-	public function accessRules()
-	{
-		return array(
-			// Level 2 or above can do anything
-			array('allow',
-				'expression' => 'BaseController::checkUserLevel(2)',
-			),
-			// Deny anything else (default rule allows authenticated users)
-			array('deny'),
-		);
+		// import the module-level models and components
+		/*
+		$this->setImport(array(
+			'admin.models.*',
+			'admin.components.*',
+		));
+		*/
 	}
 
-	protected function beforeAction($action)
-	{
-		return parent::beforeAction($action);
+	public function beforeControllerAction($controller, $action) {
+		if(parent::beforeControllerAction($controller, $action)) {
+			// this method is called before any module controller action is performed
+			// you may place customized code here
+			return true;
+		}	else {
+			return false;
+		}
 	}
+	
 }

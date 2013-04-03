@@ -20,7 +20,7 @@
 ?>
 <div class="report curvybox white">
 	<div class="admin">
-		<h3 class="georgia">Edit user</h3>
+		<h3 class="georgia">Edit firm</h3>
 		<?php echo $this->renderPartial('_form_errors',array('errors'=>$errors))?>
 		<div>
 			<?php
@@ -30,24 +30,20 @@
 				'htmlOptions' => array('class'=>'sliding'),
 				'focus'=>'#username'
 			))?>
-			<?php echo $form->textField($user,'username')?>
-			<?php echo $form->textField($user,'title')?>
-			<?php echo $form->textField($user,'first_name')?>
-			<?php echo $form->textField($user,'last_name')?>
-			<?php echo $form->textField($user,'email')?>
-			<?php echo $form->textField($user,'role')?>
-			<?php echo $form->textField($user,'qualifications')?>
-			<?php echo $form->radioBoolean($user,'active')?>
-			<?php echo $form->radioBoolean($user,'global_firm_rights')?>
-			<?php echo $form->radioBoolean($user,'is_doctor')?>
-			<?php echo $form->passwordField($user,'password')?>
-			<div id="div_User_confirm" class="eventDetail">
-				<div class="label">Confirm:</div>
+			<?php echo $form->textField($firm,'pas_code')?>
+			<?php echo $form->textField($firm,'name')?>
+			<div id="div_Firm_subspecialty_id" class="eventDetail">
+				<div class="label">Subspecialty:</div>
 				<div class="data">
-					<?php echo CHtml::passwordField('User[password_repeat]','')?>
+					<?php echo CHtml::dropDownList('Firm[subspecialty_id]',$firm->serviceSubspecialtyAssignment->subspecialty_id,CHtml::listData(Subspecialty::model()->findAll(array('order'=>'name')),'id','name'))?>
 				</div>
 			</div>
-			<?php echo $form->dropDownList($user,'access_level',array(0=>'No access',1=>'Patient demographics',2=>'Read only',3=>'Edit but not prescribe',4=>'Full'))?>
+			<div id="div_Firm_consultant_id" class="eventDetail">
+				<div class="label">Consultant:</div>
+				<div class="data">
+					<?php echo CHtml::dropDownList('Firm[consultant_id]',$firm->getConsultantUser() ? $firm->getConsultantUser()->id : null,CHtml::listData(User::model()->findAll(array('order'=>'first_name,last_name')),'id','fullName'),array('empty'=>'- None -'))?>
+				</div>
+			</div>
 			<?php $this->endWidget()?>
 		</div>
 	</div>
