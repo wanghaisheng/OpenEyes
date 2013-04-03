@@ -4,6 +4,7 @@ class m130403_070819_new_family_history_options extends CDbMigration
 {
 	public function up()
 	{
+		$this->delete('family_history');
 		$this->delete('family_history_side');
 
 		$this->insert('family_history_side',array('id'=>1,'name'=>'N/A','display_order'=>1));
