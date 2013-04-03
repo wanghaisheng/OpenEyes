@@ -31,66 +31,68 @@
 								</tbody>
 							</table>
 							
-							<div align="center" style="margin-top:10px;">
-								<form><button id="btn-add_family_history" class="classy green mini" type="button"><span class="button-span button-span-green">Add family history</span></button></form>
-							</div>
-							<div id="add_family_history" style="display: none;">
-								<h5>Add family history</h5>	
-								<?php
-								$form = $this->beginWidget('CActiveForm', array(
-										'id'=>'add-family_history',
-										'enableAjaxValidation'=>false,
-										'htmlOptions' => array('class'=>'sliding'),
-										'action'=>array('patient/addFamilyHistory'),
-								))?>
-	
-								<input type="hidden" name="edit_family_history_id" id="edit_family_history_id" value="" />
-								<input type="hidden" name="patient_id" value="<?php echo $this->patient->id?>" />
-	
-								<div class="familyHistory">
-									<div class="label">
-										Relative:
-									</div>
-									<div class="data">
-										<?php echo CHtml::dropDownList('relative_id','',CHtml::listData(FamilyHistoryRelative::model()->findAll(array('order'=>'display_order')),'id','name'),array('style'=>'width: 125px;','empty'=>'- Select -'))?>
-									</div>
+							<?php if(BaseController::checkUserLevel(3)) { ?>
+								<div align="center" style="margin-top:10px;">
+									<form><button id="btn-add_family_history" class="classy green mini" type="button"><span class="button-span button-span-green">Add family history</span></button></form>
 								</div>
+								<div id="add_family_history" style="display: none;">
+									<h5>Add family history</h5>	
+									<?php
+									$form = $this->beginWidget('CActiveForm', array(
+											'id'=>'add-family_history',
+											'enableAjaxValidation'=>false,
+											'htmlOptions' => array('class'=>'sliding'),
+											'action'=>array('patient/addFamilyHistory'),
+									))?>
+		
+									<input type="hidden" name="edit_family_history_id" id="edit_family_history_id" value="" />
+									<input type="hidden" name="patient_id" value="<?php echo $this->patient->id?>" />
+		
+									<div class="familyHistory">
+										<div class="label">
+											Relative:
+										</div>
+										<div class="data">
+											<?php echo CHtml::dropDownList('relative_id','',CHtml::listData(FamilyHistoryRelative::model()->findAll(array('order'=>'display_order')),'id','name'),array('style'=>'width: 125px;','empty'=>'- Select -'))?>
+										</div>
+									</div>
 
-								<div class="familyHistory">
-									<div class="label">
-										Side:
+									<div class="familyHistory">
+										<div class="label">
+											Side:
+										</div>
+										<div class="data">
+											<?php echo CHtml::dropDownList('side_id','',CHtml::listData(FamilyHistorySide::model()->findAll(array('order'=>'display_order')),'id','name'),array('style'=>'width: 125px;'))?>
+										</div>
 									</div>
-									<div class="data">
-										<?php echo CHtml::dropDownList('side_id','',CHtml::listData(FamilyHistorySide::model()->findAll(array('order'=>'display_order')),'id','name'),array('style'=>'width: 125px;'))?>
-									</div>
-								</div>
 
-								<div class="familyHistory">
-									<div class="label">
-										Condition:
+									<div class="familyHistory">
+										<div class="label">
+											Condition:
+										</div>
+										<div class="data">
+											<?php echo CHtml::dropDownList('condition_id','',CHtml::listData(FamilyHistoryCondition::model()->findAll(array('order'=>'display_order')),'id','name'),array('style'=>'width: 125px;','empty'=>'- Select -'))?>
+										</div>
 									</div>
-									<div class="data">
-										<?php echo CHtml::dropDownList('condition_id','',CHtml::listData(FamilyHistoryCondition::model()->findAll(array('order'=>'display_order')),'id','name'),array('style'=>'width: 125px;','empty'=>'- Select -'))?>
-									</div>
-								</div>
 
-								<div class="familyHistory">
-									<div class="label">
-										Comments:
+									<div class="familyHistory">
+										<div class="label">
+											Comments:
+										</div>
+										<div class="data">
+											<?php echo CHtml::textField('comments','')?>
+										</div>
 									</div>
-									<div class="data">
-										<?php echo CHtml::textField('comments','')?>
-									</div>
-								</div>
 
-								<div align="right">
-									<img src="<?php echo Yii::app()->createUrl('/img/ajax-loader.gif')?>" class="add_family_history_loader" style="display: none;" />
-									<button class="classy green mini btn_save_family_history" type="submit"><span class="button-span button-span-green">Save</span></button>
-									<button class="classy red mini btn_cancel_family_history" type="submit"><span class="button-span button-span-red">Cancel</span></button>
-								</div>
-	
-								<?php $this->endWidget()?>
-							</div>	
+									<div align="right">
+										<img src="<?php echo Yii::app()->createUrl('/img/ajax-loader.gif')?>" class="add_family_history_loader" style="display: none;" />
+										<button class="classy green mini btn_save_family_history" type="submit"><span class="button-span button-span-green">Save</span></button>
+										<button class="classy red mini btn_cancel_family_history" type="submit"><span class="button-span button-span-red">Cancel</span></button>
+									</div>
+		
+									<?php $this->endWidget()?>
+								</div>	
+							<?php }?>
 						</div>
 					</div>
 
@@ -175,5 +177,44 @@
 		$('#btn-add_family_history span').removeClass('button-span-green').addClass('button-span-disabled');
 
 		e.preventDefault();
+	});
+
+	$('.removeFamilyHistory').live('click',function() {
+		$('#family_history_id').val($(this).attr('rel'));
+
+		$('#confirm_remove_family_history_dialog').dialog({
+			resizable: false,
+			modal: true,
+			width: 560
+		});
+
+		return false;
+	});
+
+	$('button.btn_remove_family_history').click(function() {
+		$("#confirm_remove_family_history_dialog").dialog("close");
+
+		$.ajax({
+			'type': 'GET',
+			'url': baseUrl+'/patient/removeFamilyHistory?patient_id=<?php echo $this->patient->id?>&family_history_id='+$('#family_history_id').val(),
+			'success': function(html) {
+				if (html == 'success') {
+					$('a.removeFamilyHistory[rel="'+$('#family_history_id').val()+'"]').parent().parent().remove();
+				} else {
+					alert("Sorry, an internal error occurred and we were unable to remove the family_history.\n\nPlease contact support for assistance.");
+				}
+			},
+			'error': function() {
+				console.log('error with remove call');
+				alert("Sorry, an internal error occurred and we were unable to remove the family_history.\n\nPlease contact support for assistance.");
+			}
+		});
+
+		return false;
+	});
+
+	$('button.btn_cancel_remove_family_history').click(function() {
+		$("#confirm_remove_family_history_dialog").dialog("close");
+		return false;
 	});
 </script>
