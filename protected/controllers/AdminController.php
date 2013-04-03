@@ -35,8 +35,8 @@ class AdminController extends BaseController
 	}
 
 	protected function beforeAction($action) {
-		Yii::app()->clientScript->registerCssFile("/css/admin.css");
-		Yii::app()->clientScript->registerScriptFile("/js/admin.js");
+		$this->registerCssFile('admin.css', Yii::app()->createUrl("css/admin.css"));
+		Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl("js/admin.js"));
 
 		$this->jsVars['items_per_page'] = $this->items_per_page;
 
@@ -176,7 +176,7 @@ class AdminController extends BaseController
 			$criteria->addSearchCondition("first_name",$_REQUEST['search'],true,'OR');
 			$criteria->addSearchCondition("last_name",$_REQUEST['search'],true,'OR');
 		}
-
+		
 		return array(
 			'items' => $params['model']::model()->findAll($criteria),
 			'page' => $page,

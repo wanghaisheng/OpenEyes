@@ -348,7 +348,7 @@ class User extends BaseActiveRecord
 
 		return $salt;
 	}
-
+	
 	public function getAccesslevelstring() {
 		switch ($this->access_level) {
 			case 0: return 'No access';
