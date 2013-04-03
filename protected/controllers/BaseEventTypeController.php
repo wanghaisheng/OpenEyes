@@ -1061,8 +1061,4 @@ class BaseEventTypeController extends BaseController
 
 		return parent::processJsVars();
 	}
-
-	public function canPrint() {
-		return true;
-	}
 }
