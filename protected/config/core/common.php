@@ -76,6 +76,7 @@ return array(
 			'rules' => array(
 				'' => 'site/index',
 				'patient/viewpas/<pas_key:\d+>' => 'patient/viewpas',
+				'asset/preview/<id:\d+>.jpg' => 'asset/preview',
 				'<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
 				'<controller:\w+>/<id:\d+>' => '<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
