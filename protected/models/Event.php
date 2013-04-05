@@ -92,6 +92,8 @@ class Event extends BaseActiveRecord
 			'eventType' => array(self::BELONGS_TO, 'EventType', 'event_type_id'),
 			'issues' => array(self::HAS_MANY, 'EventIssue', 'event_id'),
 			'element_operation' => array(self::HAS_ONE, 'ElementOperation', 'event_id'),
+			'lastModifiedSite' => array(self::BELONGS_TO, 'Site', 'last_modified_site_id'),
+			'createdSite' => array(self::BELONGS_TO, 'Site', 'created_site_id'),
 		);
 	}
 	
@@ -269,6 +271,11 @@ class Event extends BaseActiveRecord
 	}
 
 	protected function beforeSave() {
+		if (!$this->created_site_id) {
+			$this->created_site_id = Yii::app()->session['selected_site_id'];
+		}
+		$this->last_modified_site_id = Yii::app()->session['selected_site_id'];
+
 		if (!$this->hash && isset(Yii::app()->params['sync_node_id'])) {
 			$hash = Yii::app()->params['sync_node_id'].'-'.sha1(rand());
 

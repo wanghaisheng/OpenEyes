@@ -96,6 +96,8 @@ class Episode extends BaseActiveRecord
 			'status' => array(self::BELONGS_TO, 'EpisodeStatus', 'episode_status_id'),
 			'diagnosis' => array(self::BELONGS_TO, 'Disorder', 'disorder_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
+			'lastModifiedSite' => array(self::BELONGS_TO, 'Site', 'last_modified_site_id'),
+			'createdModifiedSite' => array(self::BELONGS_TO, 'Site', 'created_site_id'),
 		);
 	}
 	/**
@@ -308,6 +310,11 @@ class Episode extends BaseActiveRecord
 	}
 
 	protected function beforeSave() {
+		if (!$this->created_site_id) {
+			$this->created_site_id = Yii::app()->session['selected_site_id'];
+		}
+		$this->last_modified_site_id = Yii::app()->session['selected_site_id'];
+
 		if (!$this->hash && isset(Yii::app()->params['sync_node_id'])) {
 			$hash = Yii::app()->params['sync_node_id'].'-'.sha1(rand());
 
