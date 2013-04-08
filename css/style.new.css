@@ -69,7 +69,7 @@ body { width:1230px; margin:0 auto; }
 /* ====== STRUCTURE ====== */
 #container, #miniheader, #header, #content, #help, #footer { width:1230px; padding:0; margin:0; }
 #container		{ background: url(../img/_structure/gradient_bg.jpg) #dae6f1 top left no-repeat; background-position: 0 0; border-left: 2px solid #b3b0ae; border-right: 2px solid #b3b0ae; }
-#miniheader		{ position:fixed; top:0; left:auto; z-index:8; }
+#miniheader		{ position:fixed; top:0; left:auto; z-index:7; }
 #header			{ height: 70px; position:relative; border-top:2px solid #b3b0ae; }
 #content		{ min-height: 400px; }
 #extendedhelp	{ min-height: 40px; background: url(../img/_structure/help_bg.jpg) #a5ddf1 top left repeat; }
@@ -137,6 +137,7 @@ h2.admin { background:#333; color:#fff; }
 
 /* text */
 em { font-style: italic; color:#333; }
+.tiny	{ font-size: 9px; font-weight: normal; line-height:1; }
 .small	{ font-size: 11px; font-weight: normal; }
 .normal { font-size: 13px; font-weight: normal; }
 .large 	{ font-size: 14px; font-weight: normal; }
@@ -515,7 +516,7 @@ textarea {
 
 /* ====== OVERLAY ====== */
 /* dim and de-activate other content */
-.dimcontent { height:100%; width:100%; min-width:1240px; position:fixed; left:0; top:0; z-index:1; background-color:#666; filter: alpha(opacity=50);
+.dimcontent { height:100%; width:100%; min-width:1240px; position:fixed; left:0; top:0; z-index:8; background-color:#666; filter: alpha(opacity=50);
 -webkit-opacity: 0.50; -moz-opacity: 0.50; opacity: 0.50;   }
 /* overlay holder is centered on the top left */
 .overlay { z-index:9 !important; background:transparent; position:fixed; left:50%; top:50%; }
@@ -638,7 +639,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .miniheader .minipatientid { position:absolute; top:0; left:180px; height:30px; width:480px; }
 /* userpanel mini version */
 .miniheader .miniuserpanel { background: #dae6f1 url(../img/_elements/icons/user/idcard_bg.png) center left no-repeat;; padding:0 5px; border-right:2px solid #b3b0ae; border-left:2px solid #b3b0ae; }
-.miniheader .miniuserpanel .user { color:#666; white-space:nowrap; position:absolute; top:8px; left:12px; }
+.miniheader .miniuserpanel .user { color:#666; white-space:nowrap; position:absolute; top:2px; left:12px; }
 .miniheader .miniuserpanel .showdatagroup.selectfirm { margin-top:1px; float:right;}
 /* patientid mini version */
 .miniheader .minipatientid { background: #fff2d7 url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; border-right:2px solid #ffb212; border-left:2px solid #ffb212; padding:0 10px; font-size: 14px; line-height:30px;  }
@@ -734,7 +735,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventwrapper .workoptions .tabbtn.red > a.trashcan { width:30px; padding-left:3px; padding-right:3px; background:#cf0d27 url(../img/_elements/icons/event/wrapper/trash-can.png) center center no-repeat;  }
 
 /* Make sticky: fixed position + padding-top = jquery sticky offset:  */
-.eventarea .eventwrapper.stuck { position:fixed; top:30px; left:auto; z-index:1; padding-top:15px; }
+.eventarea .eventwrapper.stuck { position:fixed; top:30px; left:auto; z-index:6; padding-top:15px; }
 /* jquery plugin creates this a div wrapper but it requires this fix to see the top colorband */
 .eventarea .sticky-wrapper { margin-bottom:5px; }
 
@@ -742,6 +743,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventarea .colorband { height:5px; background:#a29d8a;}
 .eventarea .colorband.episode { background:#c2bca5;}
 .eventarea .colorband.blank { background:#ccc;}
+.eventarea .colorband.nursing { background:#d79e79;}
 .eventarea .colorband.treatment { background:#fd6892;}
 .eventarea .colorband.communication { background:#86cdff;}
 .eventarea .colorband.investigation { background:#a5a0a9;}
@@ -749,7 +751,10 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventarea .colorband.images { background:#5f5f5f;}
 .eventarea .colorband.clinical { background:#fdcc56;}
 .eventarea .colorband.drugs { background:#acad47;}
+.eventarea .colorband.misc { background:#e8eb91;}
 .eventarea .colorband.legacy { background:#b5b5b5;}
+
+
 
 
 /* ====== EVENT (& EPISODE) content ====== */
