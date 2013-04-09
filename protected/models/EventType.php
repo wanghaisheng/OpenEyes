@@ -179,4 +179,8 @@ class EventType extends BaseActiveRecord
 
 		return CHtml::listData(EventType::model()->findAll($criteria),'id','name');
 	}
+
+	public function getApi() {
+		return Yii::app()->moduleAPI->get($this->class_name);
+	}
 }
