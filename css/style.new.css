@@ -151,6 +151,7 @@ span.surname { font-weight: bold; }
 
 /* ====== CLICKABLE ====== */
 a:hover { border-bottom: thin dotted #002ec4; }
+a:hover.nohover { border-bottom:none; }
 a.push	{ border-bottom: thin dotted #002ec4; } 
 a:hover.push { border-bottom: thin solid #3665ff; }
 a:active { border-bottom: thin solid #3665ff; }
@@ -527,7 +528,7 @@ textarea {
 .overlay .dropshadow 	{ -moz-box-shadow: 2px 2px 2px 2px #666; -webkit-box-shadow: 2px 2px 2px 2px #666;  box-shadow: 2px 2px 2px 2px #666; }
 .overlay .whiteglow 	{ -moz-box-shadow: 0 0 4px 4px #fff; -webkit-box-shadow: 0 0 4px 4px #fff;  box-shadow: 0 0 4px 4px #fff; }
 /* add new event */
-.overlay.position.addevent { top:150px; left:49%; } /* needs positioning */
+.overlay.position.addevent { top:150px; left:49%; } /* position.addevent add via jquery */
 .overlay .addevent { width:580px; border:7px solid #69bd51; }
 .overlay .addevent .showallevents { margin-top:10px;} 
 .overlay .addevent .selectevent { margin-bottom:5px;}
@@ -546,6 +547,12 @@ textarea {
 .overlay .notifications .autoimsg { background:#6e6b5e; border:2px dotted #a29d8a; padding:5px; }
 .overlay .notifications .autoimsg .details { padding:5px 0 0 50px; } /*  allow for icon */
 .overlay .notifications .options { padding-top:20px; }
+/* Sync console */
+.overlay.position.syncconsole { top:70px; left:190px; } /* position.syncconsole add via jquery */
+.overlay .syncconsole { width:580px; border:3px solid #ccc; background:#f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top right no-repeat; }
+
+
+
 
 /* ====== IN-PAGE QUICK / HELP ====== */
 .quickhelp { display:inline-block; margin:0 5px 0 3px; vertical-align:bottom; }
@@ -650,8 +657,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .miniheader .minipatientid .patient.details .info { padding-left:5px; }
 /* warning flag */
 .miniheader .patient.warningflag { position:absolute; left:675px; top:0; height:17px; line-height:17px; font-size:11px; letter-spacing:1px; padding:0 5px; color:#fff; background:#eb5911; border:2px solid #fff; border-top:none; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
-
-
+/* sync */
 
 
 
