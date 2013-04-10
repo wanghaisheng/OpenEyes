@@ -78,6 +78,7 @@
 		<div id="header" class="clearfix">
 			<?php echo $this->renderPartial('//base/_brand'); ?>
 			<?php echo $this->renderPartial('//base/_form', array()); ?>
+			<?php echo $this->renderPartial('//base/_sync', array()); ?>
 			<?php echo $this->renderPartial('//patient/_patient_id', array()); ?>
 			<?php echo $this->renderPartial('//base/_sync', array()); ?>
 		</div> <!-- #header -->
