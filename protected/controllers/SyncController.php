@@ -47,7 +47,7 @@ class SyncController extends Controller
 	}
 
 	public function actionIndex() {
-		$this->renderPartial('/sync/index');
+		$this->renderPartial('/sync/index',array('server' => SyncServer::model()->find()));
 	}
 
 	public function actionPing($id) {

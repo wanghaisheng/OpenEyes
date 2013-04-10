@@ -1347,8 +1347,8 @@ table.sync_list { margin-top: 30px; border: 1px solid #999; }
 .sync_list tr { border: 1px solid #999; }
 .sync_list th { text-align: left; padding: 10px; }
 .sync_list td { padding: 10px; }
-.sync_list td.in_sync { color: #0f0; }
-.sync_list td.out_of_sync { color: #f00; }
+.syncconsole td.in_sync { color: #0f0; }
+.syncconsole td.out_of_sync { color: #f00; }
 .sync_up { color: #0f0; }
 .sync_down { color: #f00; }
 
@@ -1571,3 +1571,11 @@ div.familyHistory { margin-bottom: 10px; }
 div.familyHistory #comments { width: 439px; }
 
 div.episodeMetadata { margin-left: 10px; }
+
+.overlay { z-index: 9 !important; background: transparent; position: absolute; left: 50%; top: 50%; }
+.overlay.position.syncconsole { top: 15%; left: 25%; }
+.overlay .syncconsole { width: 580px; border: 3px solid #ccc; background: #f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top right no-repeat; }
+.overlay .dropshadow { -webkit-box-shadow: 2px 2px 2px 2px #666; box-shadow: 2px 2px 2px 2px #666; }
+.overlay .overlaybox { padding: 10px; -webkit-border-radius: 7px; border-radius: 7px; }
+
+img.syncimage { margin-right:20px; position:relative; top:-2px; }
