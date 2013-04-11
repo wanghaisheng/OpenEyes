@@ -548,9 +548,8 @@ textarea {
 .overlay .notifications .autoimsg .details { padding:5px 0 0 50px; } /*  allow for icon */
 .overlay .notifications .options { padding-top:20px; }
 /* Sync console */
-.overlay.position.syncconsole { top:70px; left:190px; } /* position.syncconsole add via jquery */
-.overlay .syncconsole { width:580px; border:3px solid #ccc; background:#f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top right no-repeat; }
-
+.overlay.position.syncconsole { top:70px; } /* position.syncconsole add via jquery */
+.overlay .syncconsole { width:580px; margin-left:-500px; border:3px solid #ccc; background:#f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top right no-repeat; }
 
 
 
