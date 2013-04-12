@@ -61,12 +61,12 @@ class ImportScannedAssetsCommand extends CConsoleCommand {
 				// ignore files modified under 60 seconds ago
 				$stat = stat(Yii::app()->params['scans_directory']."/$file");
 
-				if ((time() - $stat['mtime']) >= 60) {
-					while(isset($import[$stat['mtime']])) {
-						$stat['mtime']++;
-					}
-					$import[$stat['mtime']] = $file;
-				}
+#				if ((time() - $stat['mtime']) >= 60) {
+#					while(isset($import[$stat['mtime']])) {
+#						$stat['mtime']++;
+#					}
+					$import[] = $file;
+#				}
 			}
 		}
 
