@@ -171,7 +171,11 @@ class Procedure extends BaseActiveRecord
 		$session = Yii::app()->session['Procedures'];
 
 		foreach ($procedures as $procedure) {
-			$data[] = $procedure['term'];
+			$data[] = array(
+				'label' => $procedure['term'],
+				'value' => $procedure['term'],
+				'id' => $procedure['id'],
+			);
 			$id = $procedure['id'];
 			$session[$id] = array(
 				'term' => $procedure['term'],
