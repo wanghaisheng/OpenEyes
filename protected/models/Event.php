@@ -297,6 +297,19 @@ class Event extends BaseActiveRecord
 			}
 		}
 
+		if ($examination = EventType::model()->find('class_name=?',array('OphCiExamination'))) {
+			if ($this->event_type_id == $examination->id) {
+				$episode = $this->episode;
+
+				if (in_array($episode->status->name,array('New','Post-op'))) {
+					$episode->episode_status_id = EpisodeStatus::model()->find('name=?',array('Follow-up'))->id;
+					if (!$episode->save()) {
+						throw new Exception("Unable to set episode status: ".print_r($episode->getErrors(),true));
+					}
+				}
+			}
+		}
+
 		return parent::afterSave();
 	}
 	
