@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * OpenEyes
  *
@@ -16,16 +16,24 @@
  * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-?>
-<?php if (Yii::app()->user->checkAccess('admin')) {?>
+#}
+{% if App.user.checkAccess('admin') %}
 <div id="alert_banner">
-	<div class="banner-watermark admin"><?php echo (Yii::app()->params['watermark_admin']) ? Yii::app()->params['watermark_admin'] : 'You are logged in as admin' ?></div>
+	<div class="banner-watermark admin">
+		{{ App.params.watermark_admin ?: 'You are logged in as admin' }}
+	</div>
 </div>
-<?php } else if (Yii::app()->params['watermark']) {?>
+{% elseif App.params.watermark %}
 <div id="alert_banner">
-	<div class="banner-watermark"><?php echo Yii::app()->params['watermark']?></div>
+	<div class="banner-watermark">
+		{{ App.params.watermark }}
+	</div>
 </div>
-<?php }?>
-<?php if (@$description && Yii::app()->params['watermark_description']) {?>
-<div class="banner-watermark-description"><p><?php echo Yii::app()->params['watermark_description']?></p></div>
-<?php }?>
+{% endif %}
+{% if description and App.params.watermark_description %}
+<div class="banner-watermark-description">
+	<p>
+		{{ App.params.watermark_description }}
+	</p>
+</div>
+{% endif %}

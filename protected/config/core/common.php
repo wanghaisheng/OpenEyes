@@ -32,6 +32,7 @@ return array(
 		'application.components.*',
 		'application.components.summaryWidgets.*',
 		'application.extensions.tcpdf.*',
+		'application.extensions.yiiext-twig.*',
 		'application.services.*',
 		'application.modules.*',
 		'application.commands.*',
@@ -56,6 +57,10 @@ return array(
 
 	// Application components
 	'components' => array(
+		'viewRenderer' => array(
+			'class' => 'ETwigViewRenderer',
+			'fileExtension' => '.twig',
+		),
 		'mailer' => array(
 			'class' => 'Mailer',
 			'mode' => 'sendmail',
