@@ -1,0 +1,25 @@
+/* Admin CSS */
+/* theme Admin area */
+.Admin #brand 		{ width:290px; background-image: url(../../img/_structure/openeyes-admin.png); }
+.Admin #container { background: #bbb; border-left: 2px solid #999; border-right: 2px solid #999; }
+.Admin #header	  { border-top:2px solid #999; }
+.Admin div.pagefooter { background-color: #999; }
+.Admin div.pagefooter > .help { background-color:#c5c5c5; }
+
+/* user panel */
+.Admin #user_panel { position: absolute; top:0; right:10px; height:40px; width:590px; }
+.Admin .userpanel { background-color: #dfe2e5; background-image: none; }
+.Admin .userpanel .user { color:#444; white-space:nowrap; position:absolute; bottom:5px; left:12px; }
+
+/* dashboard */
+.Admin .group { display:block; float:left; width:32%; margin-left:1%; }
+.Admin .group .sub { background:#d5d5d5; padding:15px; margin:0 0 15px 0; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; -moz-box-shadow: inset 2px 2px 2px #999; -webkit-box-shadow: inset 2px 2px 2px #999; box-shadow: inset 2px 2px 2px #999; }
+.Admin .group .sub h3 { font-family:Georgia,Constantia,Lucida,Times,serif; font-size:17px; color:#888; position:relative; top:-5px; left:-5px; padding:0; margin:0 0 5px 0; }
+.Admin .group p { font-family:Georgia,Constantia,Lucida,Times,serif; color:#666; }
+
+/* form */
+.Admin .form { background-color:#ccc; background-image: none; border:2px solid #999; padding:5px 15px;}
+
+
+
+

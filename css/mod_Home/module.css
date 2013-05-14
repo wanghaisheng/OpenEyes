@@ -4,14 +4,17 @@
 .home .user { background:#036 url(../../img/_elements/icons/user/idcard_bg.png) top right no-repeat; border:1px dotted #ccc; color:#fff; padding:10px; margin-bottom:10px;}
 /* user details */
 .home .user .userdetails {  margin-bottom:5px; }
-.home .user .userdetails h3 { font-size: 27px; font-weight: lighter; }
+.home .user .userdetails h3 { font-size: 27px; font-weight:lighter; }
 .home .user .userdetails a { color:#a0f3ff; }
 .home .user .userdetails a:hover { border-bottom-color:#a0f3ff; }
 /* user edit profile */
 .home .user .userprofile { padding-top:10px; display:none; }
 table.subtle.editprofile { background:#003d7a; color:#fff; }
-table.subtle.editprofile tbody td:first-child { color:#d1d1ee; }
+table.subtle.editprofile tbody td:first-child { color:#d1d1ee; font-size:11px; }
 table.subtle.editprofile tbody tr:hover { background-color: #002f5d; }
+
+/* reports shortcuts */
+.home .curvybox.reports { background: #fafafa url(../../img/_elements/icons/reports/watermark-small.png) top right no-repeat;}
 
 /* default grouping */
 .home .homegroup { margin-bottom:20px; }
@@ -25,6 +28,19 @@ table.subtle.editprofile tbody tr:hover { background-color: #002f5d; }
 .home .notices .note h5 {  font-weight:normal; font-size:15px; margin:0; padding:2px 10px 2px 10px;  }
 .home .notices .note h5 .date { color:#999; font-style: italic; float:right; color:#048; }
 .home .notices .note p { font-size:13px; } 
+
+
+/* background-color:#e6ebed; border:1px solid #ced2d4; margin:0 50px 8px 10px; */
+
+.home .messages { padding:5px; margin-bottom:20px; border:3px solid #63b2d7; background:#e6ebed url(../../img/_elements/icons/messaging/messaging_watermark.png) top right no-repeat; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+.home .messages h4 { color:#558abf; font-family:Georgia,Constantia,Lucida,Times,serif; font-size:13px; font-style:italic; padding:5px 0 0 5px; }
+.home .messages .unread { background-color:#558abf; color:#fff; font-size:11px;  padding:2px 5px; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
+.home .messages table.grid tr { border-bottom:1px solid #d3d7d9;}
+.home .messages table.grid tr:last-child { border-bottom:none;}
+.home .messages table.grid tr:hover { background:#6592bf; } 
+
+
+
 
 /* notifications: internal messaging aka imsg */
 .home .notifications {  color:#fff; background:#807c6d url(../../img/_elements/icons/im/paperclip_notification.png) top right no-repeat; border:2px dotted #a29d8a; padding:5px 5px; margin-bottom:20px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
