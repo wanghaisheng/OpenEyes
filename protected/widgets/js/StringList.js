@@ -1,7 +1,9 @@
 $(document).ready(function() {
 	$('a.StringListRemove').die('click').live('click',function(e) {
 		e.preventDefault();
-		$(this).parent().remove();
+		if (!$(this).attr('disabled')) {
+			$(this).parent().remove();
+		}
 	});
 
 	$('button.StringListAdd').die('click').live('click',function(e) {

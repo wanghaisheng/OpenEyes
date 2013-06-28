@@ -9,6 +9,13 @@ $(document).ready(function() {
 				ml.children('div.MultiSelectListBasic').children('ul').removeAttr('disabled');
 				ml.children('div.MultiSelectListBasic').children('ul').children('li').children('a').removeAttr('disabled');
 			}
+			var sl = $(this).next('span').next('span.field').children('div.StringList');
+			if (sl.length >0) {
+				sl.children('ul').removeAttr('disabled');
+				sl.children('ul').children('li').children('input').removeAttr('disabled');
+				sl.children('ul').children('li').children('button').removeAttr('disabled').removeClass('inactive');
+				sl.children('ul').children('li').children('a').removeAttr('disabled');
+			}
 		} else {
 			$(this).next('span').addClass('notset');
 			$(this).next('span').next('span.field').children().attr('disabled','disabled');
@@ -17,6 +24,13 @@ $(document).ready(function() {
 				ml.children('select').attr('disabled','disabled');
 				ml.children('div.MultiSelectListBasic').children('ul').attr('disabled','disabled');
 				ml.children('div.MultiSelectListBasic').children('ul').children('li').children('a').attr('disabled','disabled');
+			}
+			var sl = $(this).next('span').next('span.field').children('div.StringList');
+			if (sl.length >0) {
+				sl.children('ul').attr('disabled','disabled');
+				sl.children('ul').children('li').children('input').attr('disabled','disabled');
+				sl.children('ul').children('li').children('button').attr('disabled','disabled').addClass('inactive');
+				sl.children('ul').children('li').children('a').attr('disabled','disabled');
 			}
 
 			var key = $(this).attr('name').replace(/^enabled_/,'');

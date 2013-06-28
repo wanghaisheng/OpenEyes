@@ -22,7 +22,7 @@
 	<ul class="StringList"<?php if ($disabled) {?> disabled="disabled"<?php }?>>
 		<?php foreach ($values as $value) {?>
 			<li>
-				<?php echo $value?> (<a href="#" class="StringListRemove">remove</a>)
+				<?php echo $value?> (<a href="#" class="StringListRemove"<?php if ($disabled) {?> disabled="disabled"<?php }?>>remove</a>)
 				<?php echo CHtml::hiddenField($field.'[]',$value)?>
 			</li>
 		<?php }?>
