@@ -62,6 +62,40 @@ class SettingsController extends BaseController
 			throw new Exception("name config group not found: $name");
 		}
 
+		if (!empty($_POST)) {
+			foreach ($_POST as $key => $value) {
+				if (preg_match('/^enabled_(.*)$/',$key,$m)) {
+					if ($value == '1') {
+						if (isset($_POST[$m[1]])) {
+							if (isset($_POST['group_id'])) {
+								$key = ConfigKey::model()->find('config_group_id = ? and module_name is null and name=?',array($_POST['group_id'],$m[1]));
+							} else {
+								$key = ConfigKey::model()->find('module_name = ? and name = ?',array($_POST['module'],$m[1]));
+							}
+							if (!$key) {
+								throw new Exception("config key not found: {$m[1]}");
+							}
+							$key->setValue($_POST[$m[1]]);
+						}
+					} else {
+						$criteria = new CDbCriteria;
+						if (isset($_POST['group_id'])) {
+							$criteria->addCondition('config_group_id = :config_group_id and module_name is null and name=:name');
+							$criteria->params[':config_group_id'] = $_POST['group_id'];
+							$criteria->params[':name'] = $m[1];
+							if ($key = ConfigKey::model()->find($criteria)) {
+								if ($value = $key->value) {
+									if (!$value->delete()) {
+										throw new Exception("Unable to delete config value: ".print_r($value->getErrors(),true));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		$criteria = new CDbCriteria;
 		$criteria->addCondition('config_group_id = :config_group_id');
 		$criteria->addCondition('module_name is null');
@@ -73,6 +107,7 @@ class SettingsController extends BaseController
 		$this->jsVars['OE_settings_module'] = 'core';
 
 		$this->render('/settings/list',array(
+			'group' => $group,
 			'title' => $group->name,
 			'keys' => $keys,
 		),false,true);
@@ -98,6 +133,7 @@ class SettingsController extends BaseController
 		$this->jsVars['OE_settings_module'] = $module;
 
 		$this->render('/settings/list',array(
+			'module' => $module,
 			'title' => $title,
 			'keys' => $keys,
 		),false,true);

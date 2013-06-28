@@ -160,6 +160,8 @@ class m130627_093913_database_settings extends CDbMigration
 			'default_value' => serialize(array()),
 			'display_order' => 40,
 			'sortable' => true,
+			'metadata1' => 'Specialty',
+			'metadata2' => 'name',
 		));
 
 		$this->insert('config_key',array(

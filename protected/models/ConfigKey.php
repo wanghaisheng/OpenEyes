@@ -118,7 +118,7 @@ class ConfigKey extends BaseActiveRecord
 		} elseif (Config::has($this->name)) {
 			$value = Config::get($this->name);
 		} else {
-			$value = $this->default_value;
+			$value = Config::formatValue($this->configType->name,$this->default_value);
 		}
 
 		return $value;
@@ -144,5 +144,35 @@ class ConfigKey extends BaseActiveRecord
 		arsort($modules);
 
 		return $modules;
+	}
+
+	public function getValue($create=false) {
+		if ($this->module_name) {
+			$config = Config::model()->find('config_key_id=? and module_name=?',array($this->id,$this->module_name));
+		} else {
+			$config = Config::model()->find('config_key_id=? and module_name is null',array($this->id));
+		}
+
+		if (!$config && $create) {
+			$config = new Config;
+			$config->config_key_id = $this->id;
+			$config->module_name = $this->module_name ? $this->module_name : null;
+		}
+
+		return $config;
+	}
+
+	public function setValue($value) {
+		$config = $this->getValue(true);
+
+		if (is_array($value)) {
+			$config->value = serialize($value);
+		} else {
+			$config->value = $value;
+		}
+
+		if (!$config->save()) {
+			throw new Exception("Unable to save config value: ".print_r($config->getErrors(),true));
+		}
 	}
 }

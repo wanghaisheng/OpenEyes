@@ -23,8 +23,15 @@
 		<h3 class="georgia"><?php echo $title?></h3>
 		<div>
 			<form id="settings" method="post" action="<?php echo $_SERVER['REQUEST_URI']?>">
+				<input type="hidden" name="YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken?>" />
+				<?php if (isset($group)) {?>
+					<input type="hidden" name="group_id" value="<?php echo $group->id?>" />
+				<?php }else if (isset($module)) {?>
+					<input type="hidden" name="module" value="<?php echo $module?>" />
+				<?php }?>
 				<?php foreach ($keys as $key) {?>
 					<div>
+						<?php echo CHtml::hiddenField('enabled_'.$key->name,0)?>
 						<?php echo CHtml::checkBox('enabled_'.$key->name,Config::has($key->name))?>
 						<span class="label<?php if (!Config::has($key->name)) {?> notset notsetorig<?php }?>"><?php echo $key->label?>:</span>
 						<span class="field">
