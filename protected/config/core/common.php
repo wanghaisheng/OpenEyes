@@ -91,6 +91,7 @@ return array(
 				'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
 				'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
 				'<controller:\w+>/<action:\w+>/<hospital_num:\d+>' => 'patient/results',
+				'settings/module/<module:\w+>' => 'settings/module',
 			),
 		),
 		'db' => array(
@@ -152,63 +153,6 @@ return array(
 			/*'cookieParams' => array(
 				'lifetime' => 300,
 			),*/
-		),
-	),
-	'params'=>array(
-		'pseudonymise_patient_details' => false,
-		'ab_testing' => false,
-		'auth_source' => 'BASIC', // Options are BASIC or LDAP.
-		// This is used in contact page
-		'alerts_email' => 'alerts@example.com',
-		'adminEmail' => 'webmaster@example.com',
-		'ldap_server' => '',
-		'ldap_port' => '',
-		'ldap_admin_dn' => '',
-		'ldap_password' => '',
-		'ldap_dn' => '',
-		'ldap_method' => 'native', // use 'zend' for the Zend_Ldap vendor module
-		'ldap_native_timeout' => 3,
-		'ldap_info_retries' => 3,
-		'ldap_info_retry_delay' => 1,
-		'ldap_update_name' => false,
-		'ldap_update_email' => true,
-		'environment' => 'dev',
-		'audit_trail' => false,
-		'watermark' => '',
-		'watermark_admin' => 'You are logged in as admin. So this is OpenEyes Goldenrod Edition',
-		'watermark_description' => '',
-		'helpdesk_email' => 'helpdesk@example.com',
-		'helpdesk_phone' => '12345678',
-		'google_analytics_account' => '',
-		'local_users' => array(),
-		'log_events' => true,
-		'urgent_booking_notify_hours' => 24,
-		'urgent_booking_notify_email' => array(),
-		'urgent_booking_notify_email_from' => 'OpenEyes <helpdesk@example.com>',
-		'default_site_code' => '',
-		'institution_code' => 'RP6',
-		'erod_lead_time_weeks' => 3,
-		// specifies which specialties are available in patient summary for diagnoses etc (use specialty codes)
-		'specialty_codes' => array(),
-		// specifies the order in which different specialties are laid out (use specialty codes)
-		'specialty_sort' => array(),
-		'hos_num_regex' => '/^([0-9]{1,9})$/',
-		'pad_hos_num' => '%07s',
-		'profile_user_can_edit' => true,
-		'profile_user_can_change_password' => true,
-		'menu_bar_items' => array(
-			'home' => array(
-			'title' => 'Home',
-			'uri' => '',
-			'position' => 1,
-			),
-			'logout' => array(
-			'title' => 'Logout',
-			'uri' => 'site/logout',
-			'position' => 9999,
-			),
-		),
-		'admin_menu' => array(
 		),
 	),
 );

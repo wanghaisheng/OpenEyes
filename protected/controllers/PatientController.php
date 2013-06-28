@@ -575,8 +575,8 @@ class PatientController extends BaseController
 				$contacts = User::model()->findAsContacts($term);
 				break;
 			case 'nonspecialty':
-				if (!$specialty = Specialty::model()->find('code=?',array(Yii::app()->params['institution_specialty']))) {
-					throw new Exception("Unable to find specialty: ".Yii::app()->params['institution_specialty']);
+				if (!$specialty = Specialty::model()->findByPk(Config::get('institution_specialty'))) {
+					throw new Exception("Unable to find specialty: ".Config::get('institution_specialty'));
 				}
 				$contacts = Contact::model()->findByLabel($term, $specialty->default_title, true);
 				break;
@@ -1424,7 +1424,7 @@ class PatientController extends BaseController
 	public function actionSendSiteMessage() {
 		$message = Yii::app()->mailer->newMessage();
 		$message->setFrom(array($_POST['newsite_from'] => User::model()->findByPk(Yii::app()->user->id)->fullName));
-		$message->setTo(array(Yii::app()->params['helpdesk_email']));
+		$message->setTo(array(Config::get('helpdesk_email')));
 		$message->setSubject($_POST['newsite_subject']);
 		$message->setBody($_POST['newsite_message']);
 		echo Yii::app()->mailer->sendMessage($message) ? '1' : '0';

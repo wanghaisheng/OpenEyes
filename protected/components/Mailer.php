@@ -115,16 +115,16 @@ class Mailer extends CComponent {
 	}
 
 	public function recipientForbidden($message) {
-		if (!empty(Yii::app()->params['restrict_email_domains'])) {
+		if (Config::has('restrict_email_domains')) {
 			foreach ($message->getTo() as $email => $name) {
 				$domain = preg_replace('/^.*?@/','',$email);
-				if (!in_array($domain,Yii::app()->params['restrict_email_domains'])) {
+				if (!in_array($domain,Config::get('restrict_email_domains'))) {
 					return true;
 				}
 			}
 			foreach ($message->getCc() as $email => $name) {
 				$domain = preg_replace('/^.*?@/','',$email);
-				if (!in_array($domain,Yii::app()->params['restrict_email_domains'])) {
+				if (!in_array($domain,Config::get('restrict_email_domains'))) {
 					return true;
 				}
 			}

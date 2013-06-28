@@ -1,0 +1,9 @@
+#settings div { display: block; }
+#settings span { float: none; }
+#settings .label { width: 310px; }
+#settings .notset { color: #999; }
+#settings input[disabled] { color: #999; }
+#settings span[disabled] { color: #999; }
+
+#content .wrap.twocolumns .leftcolumn.narrow { width: 185px; }
+#content .wrap.twocolumns .rightcolumn.wide { width: 1000px; }

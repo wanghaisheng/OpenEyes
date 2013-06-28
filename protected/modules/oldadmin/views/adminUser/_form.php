@@ -30,7 +30,7 @@
 	<?php echo $form->errorSummary($model); ?>
 
         <?php
-                if (Yii::app()->params['auth_source'] == 'BASIC') {
+                if (Config::get('auth_source') == 'BASIC') {
         ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'username'); ?>

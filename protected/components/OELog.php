@@ -19,7 +19,7 @@
 
 class OELog {
 	static public function log($msg, $username=false) {
-		if (Yii::app()->params['log_events']) {
+		if (Config::get('log_events')) {
 			if (!$username) {
 				if (Yii::app()->session['user']) {
 					$username = Yii::app()->session['user']->username;

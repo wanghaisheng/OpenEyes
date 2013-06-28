@@ -141,8 +141,8 @@ class EventType extends BaseActiveRecord
 	}
 
 	public function getDisabled() {
-		if (is_array(Yii::app()->params['modules_disabled'])) {
-			foreach (Yii::app()->params['modules_disabled'] as $module => $params) {
+		if (Config::has('modules_disabled')) {
+			foreach (Config::get('modules_disabled') as $module => $params) {
 				if (is_array($params)) {
 					if ($module == $this->class_name) {
 						return true;
@@ -159,15 +159,21 @@ class EventType extends BaseActiveRecord
 	}
 
 	public function getDisabled_title() {
-		if (isset(Yii::app()->params['modules_disabled'][$this->class_name]['title'])) {
-			return Yii::app()->params['modules_disabled'][$this->class_name]['title'];
+		if (Config::has('modules_disabled')) {
+			$disabled = Config::get('modules_disabled');
+			if (isset($disabled[$this->class_name]['title'])) {
+				return $disabled[$this->class_name]['title'];
+			}
 		}
 		return "This module is disabled";
 	}
 
 	public function getDisabled_detail() {
-		if (isset(Yii::app()->params['modules_disabled'][$this->class_name]['detail'])) {
-			return Yii::app()->params['modules_disabled'][$this->class_name]['detail'];
+		if (Config::has('modules_disabled')) {
+			$disabled = Config::get('modules_disabled');
+			if (isset($disabled[$this->class_name]['detail'])) {
+				return $disabled[$this->class_name]['detail'];
+			}
 		}
 		return "The ".$this->name." module will be available in an upcoming release.";
 	}
@@ -203,5 +209,38 @@ class EventType extends BaseActiveRecord
 		if (!$ps->save()) {
 			throw new Exception("Unable to save PatientShortcode: ".print_r($ps->getErrors(),true));
 		}
+	}
+
+	public function getConfig($key) {
+		if ($config = Config::model()->with('configKey')->find('t.module_name=? and configKey.name=?',array($this->class_name,$key))) {
+			return $config->returnValue;
+		}
+		return null;
+	}
+
+	public function setConfig($key, $value) {
+		if (!$_key = ConfigKey::model()->find('t.module_name=? and name=?',array($this->class_name,$key))) {
+			if (!$_key = ConfigKey::model()->find('name=?',array($key))) {
+				throw new Exception("config key not found: $key");
+			}
+		}
+
+		if (!$config = Config::model()->find('config_key_id=? and module_name=?',array($_key->id,$this->class_name))) {
+			$config = new Config;
+			$config->config_key_id = $_key->id;
+			$config->module_name = $this->class_name;
+		}
+
+		if (is_array($value)) {
+			$config->value = serialize($value);
+		} else {
+			$config->value = $value;
+		}
+
+		if (!$config->save()) {
+			throw new Exception("Unable to save config item: ".print_r($config->getErrors(),true));
+		}
+
+		return $_key->setConfig($value);
 	}
 }

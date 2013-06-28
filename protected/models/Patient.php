@@ -53,8 +53,6 @@
  */
 class Patient extends BaseActiveRecord {
 	
-	const CHILD_AGE_LIMIT = 16;
-	
 	public $use_pas = TRUE;
 	private $_orderedepisodes;
 	
@@ -227,8 +225,8 @@ class Patient extends BaseActiveRecord {
 			foreach ($episodes as $ep) {
 				if ($ep->firm) {
 					$specialty = $ep->firm->serviceSubspecialtyAssignment->subspecialty->specialty;
-					$by_specialty[$specialty->code]['episodes'][] = $ep;
-					$by_specialty[$specialty->code]['specialty'] = $specialty;
+					$by_specialty[$specialty->id]['episodes'][] = $ep;
+					$by_specialty[$specialty->id]['specialty'] = $specialty;
 				}
 			}
 			
@@ -236,11 +234,11 @@ class Patient extends BaseActiveRecord {
 			$res = array();
 			if (count(array_keys($by_specialty)) > 1) {
 				// get specialties that are configured
-				if (isset(Yii::app()->params['specialty_sort'])) {
-					foreach (Yii::app()->params['specialty_sort'] as $code) {
-						if (isset($by_specialty[$code])) {
-							$res[] = $by_specialty[$code];
-							unset($by_specialty[$code]);
+				if (Config::has('specialties')) {
+					foreach (Config::get('specialties') as $specialty_id) {
+						if (isset($by_specialty[$specialty_id])) {
+							$res[] = $by_specialty[$specialty_id];
+							unset($by_specialty[$specialty_id]);
 						}
 					}
 				}
@@ -270,7 +268,7 @@ class Patient extends BaseActiveRecord {
 	* @return boolean Is patient a child?
 	*/
 	public function isChild() {
-		$age_limit = (isset(Yii::app()->params['child_age_limit'])) ? Yii::app()->params['child_age_limit'] : self::CHILD_AGE_LIMIT;
+		$age_limit = Config::get('child_age_limit');
 		return ($this->getAge() < $age_limit);
 	}
 
@@ -341,7 +339,7 @@ class Patient extends BaseActiveRecord {
 
 	private function randomData($field)
 	{
-		if (!Yii::app()->params['pseudonymise_patient_details']) {
+		if (!Config::get('pseudonymise_patient_details')) {
 			return false;
 		}
 
@@ -597,10 +595,16 @@ class Patient extends BaseActiveRecord {
 	 */
 	public function getSpecialtyCodes() {
 		$codes = array();
-		if (isset(Yii::app()->params['specialty_codes'])) {
-			$codes = Yii::app()->params['specialty_codes'];
-		}
-		else {
+
+		if (Config::has('specialties')) {
+			foreach (Config::get('specialties') as $specialty_id) {
+				if ($specialty = Specialty::model()->findByPk($specialty_id)) {
+					$codes[] = $specialty->code;
+				} else {
+					throw new Exception("Specialty not found: $specialty_id");
+				}
+			}
+		} else {
 			// TODO: perform dynamic calculation of specialty codes based on the episodes and/or events assigned to patient
 		}
 		return $codes;

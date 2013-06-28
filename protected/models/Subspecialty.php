@@ -139,12 +139,12 @@ class Subspecialty extends BaseActiveRecord
 	}
 
 	public function findAllByCurrentSpecialty() {
-		if (!isset(Yii::app()->params['institution_specialty'])) {
-			throw new Exception("institution_specialty code is not set in params");
+		if (!Config::has('institution_specialty')) {
+			throw new Exception("institution_specialty is not set");
 		}
 
-		if (!$specialty = Specialty::model()->find('code=?',array(Yii::app()->params['institution_specialty']))) {
-			throw new Exception("Specialty not found: ".Yii::app()->params['institution_specialty']);
+		if (!$specialty = Specialty::model()->findByPk(Config::get('institution_specialty'))) {
+			throw new Exception("Specialty not found: ".Config::get('institution_specialty'));
 		}
 
 		$criteria = new CDbCriteria;

@@ -194,8 +194,8 @@ class Site extends BaseActiveRecord
 
 	public function getDefaultSite() {
 		$site = null;
-		if(Yii::app()->params['default_site_code']) {
-			$site = $this->findByAttributes(array('code' => Yii::app()->params['default_site_code']));
+		if (Config::has('default_site')) {
+			$site = Site::model()->findByPk(Config::get('default_site'));
 		}
 		if(!$site) {
 			$site = $this->find();
@@ -222,12 +222,12 @@ class Site extends BaseActiveRecord
 	}
 
 	public function getListForInstitution() {
-		if (empty(Yii::app()->params['institution_code'])) {
-			throw new Exception("Institution code is not set");
+		if (!Config::has('institution')) {
+			throw new Exception("Institution is not set");
 		}
 
-		if (!$institution = Institution::model()->find('remote_id=?',array(Yii::app()->params['institution_code']))) {
-			throw new Exception("Institution not found: ".Yii::app()->params['institution_code']);
+		if (!$institution = Institution::model()->findByPk(Config::get('institution'))) {
+			throw new Exception("Institution not found: ".Config::get('institution'));
 		}
 
 		$criteria = new CDbCriteria;

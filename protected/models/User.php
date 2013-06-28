@@ -76,7 +76,7 @@ class User extends BaseActiveRecord
 			array('username, first_name, last_name, email, active, global_firm_rights, is_doctor, title, qualifications, role, salt, access_level, password, is_clinical, is_consultant, is_surgeon, has_selected_firms', 'safe'),
 		);
 
-		if (Yii::app()->params['auth_source'] == 'BASIC') {
+		if (Config::get('auth_source') == 'BASIC') {
 			return array_merge(
 				$commonRules,
 				array(
@@ -91,7 +91,7 @@ class User extends BaseActiveRecord
 					array('password_repeat', 'safe'),
 				)
 			);
-		} else if (Yii::app()->params['auth_source'] == 'LDAP') {
+		} else if (Config::get('auth_source') == 'LDAP') {
 			return array_merge(
 				$commonRules,
 				array(
@@ -101,7 +101,7 @@ class User extends BaseActiveRecord
 				)
 			);
 		} else {
-			 throw new SystemException('Unknown auth_source: ' . Yii::app()->params['auth_source']);
+			 throw new SystemException('Unknown auth_source: ' . Config::get('auth_source'));
 		}
 	}
 
@@ -202,7 +202,7 @@ class User extends BaseActiveRecord
 	 */
 	public function save($runValidation = true, $attributes = null, $allow_overriding=false)
 	{
-		if (Yii::app()->params['auth_source'] == 'BASIC') {
+		if (Config::get('auth_source') == 'BASIC') {
 			/**
 			 * AUTH_BASIC requires creation of a salt. AUTH_LDAP doesn't.
 			 */
@@ -428,12 +428,12 @@ class User extends BaseActiveRecord
 	}
 
 	public function getNotSelectedSiteList() {
-		if (empty(Yii::app()->params['institution_code'])) {
-			throw new Exception("Institution code is not set");
+		if (!Config::has('institution')) {
+			throw new Exception("Institution is not set");
 		}
 
-		if (!$institution = Institution::model()->find('remote_id=?',array(Yii::app()->params['institution_code']))) {
-			throw new Exception("Institution not found: ".Yii::app()->params['institution_code']);
+		if (!$institution = Institution::model()->findByPk(Config::get('institution'))) {
+			throw new Exception("Institution not found: ".Config::get('institution'));
 		}
 
 		$site_ids = array();

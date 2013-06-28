@@ -18,8 +18,8 @@
  */
 ?>
 <?php
-	$helpdesk_phone = Yii::app()->params['helpdesk_phone'];
-	$helpdesk_email = Yii::app()->params['helpdesk_email'];
+	$helpdesk_phone = Config::get('helpdesk_phone');
+	$helpdesk_email = Config::get('helpdesk_email');
 	$this->layout = 'error';
 ?>
 <h3>Forbidden</h3>

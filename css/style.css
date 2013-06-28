@@ -1687,6 +1687,9 @@ a.profileLink { float: left; font-size: 13px; padding-bottom: 2px; margin-left: 
 a:hover.profileLink { background: url('../img/cog-highlight.png') left top no-repeat; }
 a.profileLink strong { float: left; margin-left: 20px; margin-top: 3px; }
 
+a.settingsLink { width: 16px; margin-left: 4px; margin-top: 6px; float: right; font-size: 13px; padding-bottom: 2px; border: 0; background: url('../img/cog.png') left top no-repeat; }
+a:hover.settingsLink { background: url('../img/cog-highlight.png') left top no-repeat; }
+
 #admin_data_sources ul li { padding: 0; margin: 0; line-height: 15px; font-size: 11px; }
 #admin_data_sources ul li .column_checkbox { width: 16px; display: inline-block; }
 #admin_data_sources ul li .column_name { width: 808px; display: inline-block; }

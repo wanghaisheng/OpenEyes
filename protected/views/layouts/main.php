@@ -28,7 +28,7 @@
  
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title> 
 	<meta name="viewport" content="width=device-width, initial-scale=0.62">
-	<?php if (Yii::app()->params['disable_browser_caching']) {?>
+	<?php if (Config::get('disable_browser_caching')) {?>
 		<meta http-equiv='cache-control' content='no-cache'>
 		<meta http-equiv='expires' content='0'>
 		<meta http-equiv='pragma' content='no-cache'>
@@ -50,11 +50,11 @@
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/print.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/buttons.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/script.js'))?>
-	<?php if (Yii::app()->params['google_analytics_account']) {?>
+	<?php if (Config::has('google_analytics_account')) {?>
 		<script type="text/javascript">
 
 			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', '<?php echo Yii::app()->params['google_analytics_account']?>']);
+			_gaq.push(['_setAccount', '<?php echo Config::get('google_analytics_account')?>']);
 			_gaq.push(['_trackPageview']);
 
 			(function() {

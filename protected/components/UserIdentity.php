@@ -44,8 +44,8 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
-		if (!in_array(Yii::app()->params['ldap_method'],array('native','zend'))) {
-			throw new Exception('Unsupported LDAP authentication method: '.Yii::app()->params['ldap_method'].', please use native or zend.');
+		if (!in_array(Config::get('ldap_method'),array('native','zend'))) {
+			throw new Exception('Unsupported LDAP authentication method: '.Config::get('ldap_method').', please use native or zend.');
 		}
 
 		Yii::app()->event->dispatch('user_before_login', array('username' => $this->username));
@@ -68,8 +68,10 @@ class UserIdentity extends CUserIdentity
 			return false;
 		}
 
-		if (in_array($user->username,Yii::app()->params['local_users'])) {
-			Yii::app()->params['auth_source'] = 'BASIC';
+		$auth_source = Config::get('auth_source');
+
+		if (in_array($user->username,Config::get('local_users'))) {
+			$auth_source = 'BASIC';
 		}
 
 		$this->password = utf8_decode($this->password);
@@ -77,11 +79,11 @@ class UserIdentity extends CUserIdentity
 		/**
 		 * Here we diverge depending on the authentication source.
 		 */
-		if (Yii::app()->params['auth_source'] == 'LDAP') {
+		if ($auth_source == 'LDAP') {
 			/**
 			 * Required for LDAP authentication
 			 */
-			if (Yii::app()->params['ldap_method'] == 'zend') {
+			if (Config::get('ldap_method') == 'zend') {
 				Yii::import('application.vendors.*');
 				require_once('Zend/Ldap.php');
 
@@ -89,11 +91,11 @@ class UserIdentity extends CUserIdentity
 				 * Check with LDAP for authentication
 				 */
 				$options = array(
-					'host'				=> Yii::app()->params['ldap_server'],
-					'port'				=> Yii::app()->params['ldap_port'],
-					'username'			=> Yii::app()->params['ldap_admin_dn'],
-					'password'			=> Yii::app()->params['ldap_password'],
-					'baseDn'			=> Yii::app()->params['ldap_admin_dn'],
+					'host'				=> Config::get('ldap_server'),
+					'port'				=> Config::get('ldap_port'),
+					'username'			=> Config::get('ldap_admin_dn'),
+					'password'			=> Config::get('ldap_password'),
+					'baseDn'			=> Config::get('ldap_admin_dn'),
 					'useStartTls'		=> false,
 				);
 
@@ -106,7 +108,7 @@ class UserIdentity extends CUserIdentity
 
 				try {
 					$ldap->bind(
-						"cn=" . $this->username . "," . Yii::app()->params['ldap_dn'],
+						"cn=" . $this->username . "," . Config::get('ldap_dn'),
 						$this->password
 					);
 				} catch (Exception $e){
@@ -129,18 +131,18 @@ class UserIdentity extends CUserIdentity
 				 * User is in LDAP, get their details.
 				 */
 				$info = $ldap->getEntry(
-					"cn=" . $this->username . "," . Yii::app()->params['ldap_dn'],
+					"cn=" . $this->username . "," . Config::get('ldap_dn'),
 					array('givenname', 'sn', 'mail')
 				);
 
 			} else {
-				if (!$link = ldap_connect(Yii::app()->params['ldap_server'])) {
+				if (!$link = ldap_connect(Config::get('ldap_server'))) {
 					throw new Exception('Unable to connect to LDAP server.');
 				}
 
-				ldap_set_option($link, LDAP_OPT_NETWORK_TIMEOUT, Yii::app()->params['ldap_native_timeout']);
+				ldap_set_option($link, LDAP_OPT_NETWORK_TIMEOUT, Config::get('ldap_native_timeout'));
 
-				if (!@ldap_bind($link, "cn=$this->username,".Yii::app()->params['ldap_dn'], $this->password)) {
+				if (!@ldap_bind($link, "cn=$this->username,".Config::get('ldap_dn'), $this->password)) {
 					$audit = new Audit;
 					$audit->action = "login-failed";
 					$audit->target_type = "login";
@@ -153,13 +155,13 @@ class UserIdentity extends CUserIdentity
 					return false;
 				}
 
-				$attempts = isset(Yii::app()->params['ldap_info_retries']) ? Yii::app()->params['ldap_info_retries'] : 1;
+				$attempts = Config::has('ldap_info_retries') ? Config::get('ldap_info_retries') : 1;
 
 				for ($i=0; $i<$attempts; $i++) {
-					if ($i >0 && isset(Yii::app()->params['ldap_info_retry_delay'])) {
-						sleep(Yii::app()->params['ldap_info_retry_delay']);
+					if ($i >0 && Config::has('ldap_info_retry_delay')) {
+						sleep(Config::get('ldap_info_retry_delay'));
 					}
-					$sr = ldap_search($link, "cn=$this->username,".Yii::app()->params['ldap_dn'], "cn=$this->username");
+					$sr = ldap_search($link, "cn=$this->username,".Config::get('ldap_dn'), "cn=$this->username");
 					$info = ldap_get_entries($link, $sr);
 
 					if (isset($info[0])) break;
@@ -174,7 +176,7 @@ class UserIdentity extends CUserIdentity
 			/**
 			 * Update user db record with details from LDAP.
 			 */
-			if (Yii::app()->params['ldap_update_name']) {
+			if (Config::get('ldap_update_name')) {
 				if (isset($info['givenname'][0])) {
 					$user->first_name = $info['givenname'][0];
 				}
@@ -182,7 +184,7 @@ class UserIdentity extends CUserIdentity
 					$user->last_name = $info['sn'][0];
 				}
 			}
-			if (Yii::app()->params['ldap_update_email']) {
+			if (Config::get('ldap_update_email')) {
 				if (isset($info['mail'][0])) {
 					$user->email = $info['mail'][0];
 				}
@@ -191,7 +193,7 @@ class UserIdentity extends CUserIdentity
 				$user->audit('login','login-failed',"Login failed for user {$this->username}: unable to update user with details from LDAP: ".print_r($user->getErrors(),true),true);
 				throw new SystemException('Unable to update user with details from LDAP: '.print_r($user->getErrors(),true));
 			}
-		} else if (Yii::app()->params['auth_source'] == 'BASIC') {
+		} else if ($auth_source == 'BASIC') {
 			if(!$user->validatePassword($this->password)) {
 				$this->errorCode = self::ERROR_PASSWORD_INVALID;
 				$user->audit('login','login-failed',"Login failed for user {$this->username}: invalid password",true);
@@ -201,8 +203,8 @@ class UserIdentity extends CUserIdentity
 			/**
 			 * Unknown auth_source, error
 			 */
-			$user->audit('login','login-failed',"Login failed for user {$this->username}: unknown auth source: " . Yii::app()->params['auth_source'],true);
-			throw new SystemException('Unknown auth_source: ' . Yii::app()->params['auth_source']);
+			$user->audit('login','login-failed',"Login failed for user {$this->username}: unknown auth source: " . $auth_source,true);
+			throw new SystemException('Unknown auth_source: ' . $auth_source);
 		}
 
 		$this->_id = $user->id;

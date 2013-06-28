@@ -42,7 +42,7 @@ class ProfileController extends BaseController
 	}
 
 	public function actionInfo() {
-		if (!Yii::app()->params['profile_user_can_edit']) {
+		if (!Config::get('profile_user_can_edit')) {
 			$this->redirect(array('/profile/password'));
 		}
 
@@ -51,7 +51,7 @@ class ProfileController extends BaseController
 		$user = User::model()->findByPk(Yii::app()->user->id);
 
 		if (!empty($_POST)) {
-			if (Yii::app()->params['profile_user_can_edit']) {
+			if (Config::get('profile_user_can_edit')) {
 				foreach (array('title','first_name','last_name','email','qualifications') as $field) {
 					if (isset($_POST['User'][$field])) {
 						$user->{$field} = $_POST['User'][$field];
@@ -72,7 +72,7 @@ class ProfileController extends BaseController
 	}
 
 	public function actionPassword() {
-		if (!Yii::app()->params['profile_user_can_change_password']) {
+		if (!Config::get('profile_user_can_change_password')) {
 			$this->redirect(array('/profile/sites'));
 		}
 
@@ -81,7 +81,7 @@ class ProfileController extends BaseController
 		$user = User::model()->findByPk(Yii::app()->user->id);
 
 		if (!empty($_POST)) {
-			if (Yii::app()->params['profile_user_can_change_password']) {
+			if (Config::get('profile_user_can_change_password')) {
 				if (empty($_POST['User']['password_old'])) {
 					$errors['Current password'] = array('Please enter your current password');
 				} else if ($user->password !== md5($user->salt.$_POST['User']['password_old'])) {
@@ -141,8 +141,8 @@ class ProfileController extends BaseController
 
 	public function actionAddSite() {
 		if (@$_POST['site_id'] == 'all') {
-			if (!$institution = Institution::model()->find('remote_id=?',array(Yii::app()->params['institution_code']))) {
-				throw new Exception("Can't find institution: ".Yii::app()->params['institution_code']);
+			if (!$institution = Institution::model()->findByPk(Config::get('institution'))) {
+				throw new Exception("Can't find institution: ".Config::get('institution'));
 			}
 			$sites = Site::model()->findAll('institution_id=?',array($institution->id));
 		} else {

@@ -18,18 +18,19 @@
  */
 
 /**
- * This is the model class for table "contact_label".
+ * This is the model class for table "config_type".
  *
- * The followings are the available columns in table 'contact_label':
- * @property string $id
+ * The followings are the available columns in table 'config_type':
+ * @property integer $id
  * @property string $name
- * @property integer $letter_template_only
+ * @property string $values
+ * @property integer $display_order
  */
-class ContactLabel extends BaseActiveRecord
+class ConfigType extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
-	 * @return ContactLabel the static model class
+	 * @return ConfigType the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -41,7 +42,7 @@ class ContactLabel extends BaseActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'contact_label';
+		return 'config_type';
 	}
 
 	/**
@@ -49,12 +50,13 @@ class ContactLabel extends BaseActiveRecord
 	 */
 	public function rules()
 	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
 		return array(
 			array('name', 'required'),
-			array('name', 'length', 'max'=>40),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, name, values, display_order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,58 +79,8 @@ class ContactLabel extends BaseActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'letter_template_only' => 'Letter Template Only',
+			'values' => 'Values',
+			'display_order' => 'Display order',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('letter_template_only', 0);
-
-		return new CActiveDataProvider(get_class($this), array(
-			'criteria'=>$criteria,
-		));
-	}
-
-	static public function staffType() {
-		if ($site = Site::model()->findByPk(Yii::app()->session['selected_site_id'])) {
-			return ($site->institution->short_name ? $site->institution->short_name : $site->institution->name) . ' staff';
-		}
-		return 'Staff';
-	}
-
-	static public function getList() {
-		$list = array();
-
-		if (Config::has('contact_labels')) {
-			foreach (Config::get('contact_labels') as $label) {
-				if ($label == 'Staff') {
-					$list['staff'] = 'Staff';
-				} else if (preg_match('/{SPECIALTY}/',$label)) {
-					if (!Config::has('institution_specialty')) {
-						throw new Exception("Institution specialty not configured");
-					}
-					if (!$specialty = Specialty::model()->findByPk(Config::get('institution_specialty'))) {
-						throw new Exception("Specialty not found: ".Config::get('institution_specialty'));
-					}
-					$list['nonspecialty'] = preg_replace('/{SPECIALTY}/',$specialty->adjective,$label);
-				} else {
-					$list[$label] = $label;
-				}
-			}
-		}
-
-		return $list;
 	}
 }

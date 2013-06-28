@@ -255,7 +255,7 @@ class BaseEventTypeController extends BaseController
 			throw new CHttpException(403, 'Invalid patient_id.');
 		}
 
-		if (is_array(Yii::app()->params['modules_disabled']) && in_array($this->event_type->class_name,Yii::app()->params['modules_disabled'])) {
+		if (Config::has('modules_disabled') && in_array($this->event_type->id,Config::get('modules_disabled'))) {
 			return $this->redirect(array('/patient/episodes/'.$this->patient->id));
 		}
 

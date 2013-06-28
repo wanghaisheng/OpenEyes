@@ -79,11 +79,11 @@
 			<?php $this->renderPartial('//base/_form', array()); ?>
 		</div>
 		<div id="content"> 
-			<h2 class="admin">Profile</h2>
+			<h2 class="admin">Settings</h2>
 			<div class="maxwidth nopadding curvybox blue clearfix">
 				<div class="wrap twocolumns clearfix">
 					<div class="leftcolumn narrow">
-						<?php $this->renderPartial('//profile/sidebar')?>
+						<?php $this->renderPartial('//settings/sidebar')?>
 					</div>
 					<div class="rightcolumn wide">
 						<?php echo $content?>

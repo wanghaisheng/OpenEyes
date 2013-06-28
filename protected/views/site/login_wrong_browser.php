@@ -23,5 +23,5 @@ $this->layout = 'simple';
 <h2 class="alert">Please login</h2>
 
 <div id="login-form" class="form_greyBox">
-	<p><?php echo str_replace("\n","<br/>",Yii::app()->params['required_user_agent_message'])?></p>
+	<p><?php echo str_replace("\n","<br/>",Config::get('required_user_agent_message'))?></p>
 </div>

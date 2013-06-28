@@ -27,8 +27,8 @@ class ModuleAdmin {
 		$module_classes = array();
 
 		foreach (EventType::model()->findAll(array('order'=>'name')) as $event_type) {
-			foreach (Yii::app()->params['admin_menu'] as $item => $uri) {
-				if (preg_match('/^\/'.$event_type->class_name.'\//',$uri)) {
+			if ($menu = $event_type->getConfig('admin_menu')) {
+				foreach ($menu as $item => $uri) {
 					$module_admin[$event_type->name][$item] = $uri;
 				}
 			}
@@ -37,8 +37,8 @@ class ModuleAdmin {
 
 		foreach (Yii::app()->modules as $module => $stuff) {
 			if (!in_array($module,$module_classes)) {
-				foreach (Yii::app()->params['admin_menu'] as $item => $uri) {
-					if (preg_match('/^\/'.$module.'\//',$uri)) {
+				if ($menu = $event_type->getConfig('admin_menu')) {
+					foreach ($menu as $item => $uri) {
 						$module_admin[$module][$item] = $uri;
 					}
 				}

@@ -200,7 +200,7 @@ class BaseController extends Controller
 	{
 		$app = Yii::app();
 
-		if (Yii::app()->params['ab_testing']) {
+		if (Config::get('ab_testing')) {
 			if (Yii::app()->user->isGuest) {
 				$identity=new UserIdentity('admin', 'admin');
 				$identity->authenticate();

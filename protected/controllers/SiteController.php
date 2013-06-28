@@ -83,7 +83,7 @@ class SiteController extends BaseController
 	
 			// Hospital number (assume a < 10 digit number is a hosnum)
 			if(preg_match('/^(H|Hosnum)\s*[:;]\s*([0-9a-zA-Z\-]+)$/i',$query,$matches)
-					|| preg_match(Yii::app()->params['hos_num_regex'],$query,$matches)) {
+					|| preg_match(Config::get('hos_num_regex'),$query,$matches)) {
 				$hosnum = (isset($matches[2])) ? $matches[2] : $matches[1];
 				$this->redirect(array('patient/search', 'hos_num' => $hosnum));
 				return;
@@ -123,6 +123,7 @@ class SiteController extends BaseController
 	 */
 	public function actionError() {
 		if($error = Yii::app()->errorHandler->error) {
+			die("<pre>".print_r($error,true));
 			if(Yii::app()->request->isAjaxRequest) {
 				echo $error['message'];
 			} else {
@@ -166,9 +167,9 @@ class SiteController extends BaseController
 			Yii::app()->end();
 		}
 
-		if (Yii::app()->params['required_user_agent'] && !preg_match(Yii::app()->params['required_user_agent'],@$_SERVER['HTTP_USER_AGENT'])) {
-			if (!Yii::app()->params['required_user_agent_message']) {
-				throw new Exception('You must define the required_user_agent_message parameter.');
+		if (Config::has('required_user_agent') && !preg_match(Config::get('required_user_agent'),@$_SERVER['HTTP_USER_AGENT'])) {
+			if (!Config::has('required_user_agent_message')) {
+				throw new Exception('You must set the user agent message');
 			}
 			return $this->render('login_wrong_browser');
 		}
@@ -188,9 +189,8 @@ class SiteController extends BaseController
 			}
 		}
 
-		// FIXME this needs more thought
-		if (isset(Yii::app()->params['institution_code'])) {
-			$institution = Institution::model()->find('source_id=? and remote_id=?',array(1,Yii::app()->params['institution_code']));
+		if (Config::has('institution')) {
+			$institution = Institution::model()->findByPk(Config::get('institution'));
 		} else {
 			$institution = Institution::model()->find('source_id=? and remote_id=?',array(1,'RP6'));
 		}

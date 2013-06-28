@@ -27,21 +27,21 @@
 				'enableAjaxValidation'=>false,
 				'htmlOptions' => array('class'=>'sliding'),
 			))?>
-			<?php if (!Yii::app()->params['profile_user_can_change_password']) {?>
+			<?php if (!Config::get('profile_user_can_change_password')) {?>
 				<div class="alertBox flash-alert">
 					User changing of passwords is administratively disabled.
 				</div>
 			<?php }?>
 			<?php $this->renderPartial('//base/_messages')?>
 			<?php $this->renderPartial('//elements/form_errors',array('errors'=>$errors))?>
-			<?php echo $form->passwordField($user,'password_old',array('readonly'=>!Yii::app()->params['profile_user_can_change_password']))?>
-			<?php echo $form->passwordField($user,'password_new',array('readonly'=>!Yii::app()->params['profile_user_can_change_password']))?>
-			<?php echo $form->passwordField($user,'password_confirm',array('readonly'=>!Yii::app()->params['profile_user_can_change_password']))?>
+			<?php echo $form->passwordField($user,'password_old',array('readonly'=>!Config::get('profile_user_can_change_password')))?>
+			<?php echo $form->passwordField($user,'password_new',array('readonly'=>!Config::get('profile_user_can_change_password')))?>
+			<?php echo $form->passwordField($user,'password_confirm',array('readonly'=>!Config::get('profile_user_can_change_password')))?>
 			<?php $this->endWidget()?>
 		</div>
 	</div>
 </div>
-<?php if (Yii::app()->params['profile_user_can_change_password']) {?>
+<?php if (Config::get('profile_user_can_change_password')) {?>
 	<div>
 		<?php echo EventAction::button('Save', 'save', array('colour' => 'blue'))->toHtml()?>
 		<img class="loader" src="<?php echo Yii::app()->createUrl('img/ajax-loader.gif')?>" alt="loading..." style="display: none;" />
