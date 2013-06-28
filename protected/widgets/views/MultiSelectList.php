@@ -27,7 +27,7 @@
 			<?php }?>
 		</select>
 		<div class="MultiSelectListBasic">
-			<ul class="sortable MultiSelectList"<?php if ($disabled) {?> disabled="disabled"<?php }?>>
+			<ul class="MultiSelectList"<?php if ($disabled) {?> disabled="disabled"<?php }?>>
 				<?php foreach ($selected_ids as $id) {
 					if (isset($options[$id])) {?>
 						<li>

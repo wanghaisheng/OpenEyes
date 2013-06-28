@@ -149,13 +149,13 @@ class SettingsController extends BaseController
 						case 'String':
 						case 'Email':
 						case 'Select':
+						case 'SelectFromTable':
 							if (isset($_POST[$m[1]])) {
 								$key->setValue($_POST[$m[1]]);
 							}
 							break;
 						case 'StringList':
 						case 'MultiSelectFromTable':
-						case 'SelectFromTable':
 						case 'Menu':
 							if (isset($_POST['select_'.$m[1]])) {
 								$key->setValue($_POST['select_'.$m[1]]);

@@ -69,6 +69,7 @@ class m130627_093913_database_settings extends CDbMigration
 				'sortable' => 'tinyint(1) unsigned NOT NULL DEFAULT 0',
 				'metadata1' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 				'metadata2' => 'varchar(64) COLLATE utf8_bin NOT NULL',
+				'metadata3' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT \'1\'',
 				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1900-01-01 00:00:00\'',
 				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT \'1\'',
@@ -465,6 +466,7 @@ class m130627_093913_database_settings extends CDbMigration
 			'relates_to_condition' => 'LDAP',
 			'metadata1' => 'User',
 			'metadata2' => 'fullName',
+			'metadata3' => 'first_name, last_name',
 		));
 
 		/* DEVELOPMENT */

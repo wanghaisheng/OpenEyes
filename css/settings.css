@@ -13,3 +13,9 @@
 #settings ul.MultiSelectList a { border: 0; }
 #settings ul.MultiSelectList a[disabled] { color: #999; }
 #settings ul[disabled] { color: #999; }
+
+#settings div.StringList { display: inline-block; margin-top: 8px; margin-bottom: 6px; }
+#settings ul.StringList { list-style-type: none; padding: 0; margin: 0; }
+#settings ul.StringList a { border: 0; }
+#settings ul.StringList a[disabled] { color: #999; }
+#settings ul[disabled] { color: #999; }
