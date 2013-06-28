@@ -25,26 +25,34 @@ class MultiSelectList extends BaseCWidget {
 	public $relation;
 	public $selected_ids = array();
 	public $relation_id_field;
+	public $basic = false;
+	public $disabled = false;
 
 	public function init() {
 		$this->filtered_options = $this->options;
 
 		if (empty($_POST)) {
-			if ($this->element->{$this->relation}) {
-				foreach ($this->element->{$this->relation} as $item) {
-					$this->selected_ids[] = $item->{$this->relation_id_field};
-					unset($this->filtered_options[$item->{$this->relation_id_field}]);
+			if ($this->basic) {
+				foreach ($this->selected_ids as $id) {
+					unset($this->filtered_options[$id]);
 				}
-			} else if (!$this->element->id) {
-				if (is_array($this->default_options)) {
-					$this->selected_ids = $this->default_options;
-					foreach ($this->default_options as $id) {
-						unset($this->filtered_options[$id]);
+			} else {
+				if ($this->element->{$this->relation}) {
+					foreach ($this->element->{$this->relation} as $item) {
+						$this->selected_ids[] = $item->{$this->relation_id_field};
+						unset($this->filtered_options[$item->{$this->relation_id_field}]);
+					}
+				} else if (!$this->element->id) {
+					if (is_array($this->default_options)) {
+						$this->selected_ids = $this->default_options;
+						foreach ($this->default_options as $id) {
+							unset($this->filtered_options[$id]);
+						}
 					}
 				}
 			}
 		} else {
-			if (isset($_POST[$this->field])) {
+			if (!$this->basic && isset($_POST[$this->field])) {
 				foreach ($_POST[$this->field] as $id) {
 					$this->selected_ids[] = $id;
 					unset($this->filtered_options[$id]);

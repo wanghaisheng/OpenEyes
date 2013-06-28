@@ -7,3 +7,9 @@
 
 #content .wrap.twocolumns .leftcolumn.narrow { width: 185px; }
 #content .wrap.twocolumns .rightcolumn.wide { width: 1000px; }
+
+#settings div.MultiSelectList { display: inline-block; margin-top: 8px; margin-bottom: 6px; }
+#settings ul.MultiSelectList { padding: 0; margin: 0; }
+#settings ul.MultiSelectList a { border: 0; }
+#settings ul.MultiSelectList a[disabled] { color: #999; }
+#settings ul[disabled] { color: #999; }

@@ -25,7 +25,12 @@ $(document).ready(function() {
 
 			var element_class = $(this).attr('name').replace(/\[.*$/,'');
 
-			var m = $(this).parent().parent().prev('input').attr('name').match(/\[MultiSelectList_(.*?)\]/);
+			if ($(this).parent().parent().prev('input').length >0) {
+				var m = $(this).parent().parent().prev('input').attr('name').match(/\[MultiSelectList_(.*?)\]/);
+			} else {
+				var m = $(this).parent().prev('input').attr('name').match(/\[MultiSelectList_(.*?)\]/);
+			}
+
 			var multiSelectField = m[1];
 
 			$(this).parent().children('div').children('ul').append('<input type="hidden" name="'+multiSelectField+'[]" value="'+selected.val()+'" />');
@@ -41,6 +46,8 @@ $(document).ready(function() {
 	$(this).undelegate('a.MultiSelectRemove','click').delegate('a.MultiSelectRemove','click',function(e) {
 		e.preventDefault();
 
+		if ($(this).attr('disabled')) return;
+
 		var value = $(this).parent().next().val();
 		var text = $(this).parent().text().trim().replace(/ \(.*$/,'');
 
@@ -52,7 +59,5 @@ $(document).ready(function() {
 
 		$(this).parent().next().remove();
 		$(this).parent().remove();
-
-		return false;
 	});
 });

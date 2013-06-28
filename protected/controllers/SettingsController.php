@@ -63,37 +63,7 @@ class SettingsController extends BaseController
 		}
 
 		if (!empty($_POST)) {
-			foreach ($_POST as $key => $value) {
-				if (preg_match('/^enabled_(.*)$/',$key,$m)) {
-					if ($value == '1') {
-						if (isset($_POST[$m[1]])) {
-							if (isset($_POST['group_id'])) {
-								$key = ConfigKey::model()->find('config_group_id = ? and module_name is null and name=?',array($_POST['group_id'],$m[1]));
-							} else {
-								$key = ConfigKey::model()->find('module_name = ? and name = ?',array($_POST['module'],$m[1]));
-							}
-							if (!$key) {
-								throw new Exception("config key not found: {$m[1]}");
-							}
-							$key->setValue($_POST[$m[1]]);
-						}
-					} else {
-						$criteria = new CDbCriteria;
-						if (isset($_POST['group_id'])) {
-							$criteria->addCondition('config_group_id = :config_group_id and module_name is null and name=:name');
-							$criteria->params[':config_group_id'] = $_POST['group_id'];
-							$criteria->params[':name'] = $m[1];
-							if ($key = ConfigKey::model()->find($criteria)) {
-								if ($value = $key->value) {
-									if (!$value->delete()) {
-										throw new Exception("Unable to delete config value: ".print_r($value->getErrors(),true));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			$this->handleSettingsChange();
 		}
 
 		$criteria = new CDbCriteria;
@@ -121,6 +91,10 @@ class SettingsController extends BaseController
 		$title = $module;
 		if ($event_type = EventType::model()->find('class_name=?',array($module))) {
 			$title = $event_type->name;
+		}
+
+		if (!empty($_POST)) {
+			$this->handleSettingsChange();
 		}
 
 		$criteria = new CDbCriteria;
@@ -154,4 +128,51 @@ class SettingsController extends BaseController
 		}
 		$this->renderPartial('/settings/_field_type_'.$key->configType->name,array('key'=>$key));
 	}
+
+	public function handleSettingsChange() {
+		foreach ($_POST as $key => $value) {
+			if (preg_match('/^enabled_(.*)$/',$key,$m)) {
+				if (isset($_POST['group_id'])) {
+					$key = ConfigKey::model()->find('config_group_id = ? and module_name is null and name=?',array($_POST['group_id'],$m[1]));
+				} else {
+					$key = ConfigKey::model()->find('module_name = ? and name = ?',array($_POST['module'],$m[1]));
+				}
+
+				if (!$key) {
+					throw new Exception("config key not found: {$m[1]}");
+				}
+
+				if ($value == '1') {
+					switch ($key->configType->name) {
+						case 'Boolean':
+						case 'Integer':
+						case 'String':
+						case 'Email':
+						case 'Select':
+							if (isset($_POST[$m[1]])) {
+								$key->setValue($_POST[$m[1]]);
+							}
+							break;
+						case 'StringList':
+						case 'MultiSelectFromTable':
+						case 'SelectFromTable':
+						case 'Menu':
+							if (isset($_POST['select_'.$m[1]])) {
+								$key->setValue($_POST['select_'.$m[1]]);
+							} else {
+								$key->setValue(array());
+							}
+							break;
+					}
+				} else {
+					if ($value = $key->value) {
+						if (!$value->delete()) {
+							throw new Exception("Unable to delete config value: ".print_r($value->getErrors(),true));
+						}
+					}
+				}
+			}
+		}
+	}
+
 }
