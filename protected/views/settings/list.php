@@ -26,7 +26,7 @@
 				<?php foreach ($keys as $key) {?>
 					<div>
 						<?php echo CHtml::checkBox('enabled_'.$key->name,Config::has($key->name))?>
-						<span class="label<?php if (!Config::has($key->name)) {?> notset<?php }?>"><?php echo $key->label?>:</span>
+						<span class="label<?php if (!Config::has($key->name)) {?> notset notsetorig<?php }?>"><?php echo $key->label?>:</span>
 						<span class="field">
 							<?php echo $this->renderPartial('/settings/_field_type_'.$key->configType->name,array('key'=>$key))?>
 						</span>
@@ -37,5 +37,7 @@
 	</div>
 </div>
 <div>
-	<?php //echo EventAction::button('Delete', 'delete', array('colour' => 'blue'))->toHtml()?>
+	<?php echo EventAction::button('Save', 'save', array('colour' => 'green'))->toHtml()?>
+	&nbsp;&nbsp;&nbsp;
+	<?php echo EventAction::button('Reset to defaults', 'reset', array('colour' => 'blue'))->toHtml()?>
 </div>

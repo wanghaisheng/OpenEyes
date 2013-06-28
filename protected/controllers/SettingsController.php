@@ -70,6 +70,8 @@ class SettingsController extends BaseController
 
 		$keys = ConfigKey::model()->findAll($criteria);
 
+		$this->jsVars['OE_settings_module'] = 'core';
+
 		$this->render('/settings/list',array(
 			'title' => $group->name,
 			'keys' => $keys,
@@ -93,9 +95,27 @@ class SettingsController extends BaseController
 
 		$keys = ConfigKey::model()->findAll($criteria);
 
+		$this->jsVars['OE_settings_module'] = $module;
+
 		$this->render('/settings/list',array(
 			'title' => $title,
 			'keys' => $keys,
 		),false,true);
+	}
+
+	public function actionReloadField() {
+		if (@$_GET['module'] == 'core') {
+			if (!$key = ConfigKey::model()->find('module_name is null and name = :name',array(':name'=>@$_GET['key']))) {
+				throw new Exception("key not found: ".@$_GET['key']);
+			}
+		} else {
+			if (!isset(Yii::app()->modules[@$_GET['module']])) {
+				throw new Exception("Module not enabled: ".@$_GET['module']);
+			}
+			if (!$key = ConfigKey::model()->find('module_name = :module_name and name = :name',array(':module_name'=>@$_GET['module'],':name'=>@$_GET['key']))) {
+				throw new Exception("key not found: ".@$_GET['key']);
+			}
+		}
+		$this->renderPartial('/settings/_field_type_'.$key->configType->name,array('key'=>$key));
 	}
 }
