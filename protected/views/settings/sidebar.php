@@ -18,7 +18,11 @@
 		<ul>
 			<?php foreach (ConfigKey::model()->moduleList() as $class => $module) {?>
 				<li>
-					<?php echo CHtml::link($module,array('/settings/module/'.$class))?>
+					<?php if (preg_match('/'.$class.'/',@$_SERVER['REQUEST_URI'])) {?>
+						<span class="viewing"><?php echo $module?></span>
+					<?php }else{?>
+						<?php echo CHtml::link($module,array('/settings/module/'.$class))?>
+					<?php }?>
 				</li>
 			<?php }?>
 		</ul>
