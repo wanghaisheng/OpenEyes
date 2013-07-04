@@ -68,11 +68,11 @@ body { width:1230px; margin:0 auto; }
 
 /* ====== STRUCTURE ====== */
 #container, #miniheader, #header, #content, #help, #footer { width:1230px; padding:0; margin:0; }
-#container		{ background: url(../img/_structure/gradient_bg.jpg) #dae6f1 top left no-repeat; border-left: 2px solid #b3b0ae; border-right: 2px solid #b3b0ae; }
+#container		{ background: url(../img/_structure/gradient_bg.jpg) #dae6f1 top left repeat-x; border-left: 2px solid #b3b0ae; border-right: 2px solid #b3b0ae; }
 #miniheader		{ position:fixed; top:0; left:auto; z-index:7; }
 #header			{ height: 70px; position:relative; border-top:2px solid #b3b0ae; }
 #content		{ min-height: 400px; }
-#extendedhelp	{ min-height: 40px; background: url(../img/_structure/help_bg.jpg) #a5ddf1 top left repeat; }
+#extendedhelp	{ min-height: 40px; background:#a6ddf1; }
 #footer			{ width: 1234px; } 	
 #container, #header { -webkit-border-top-right-radius: 5px; -webkit-border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-topleft: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; }
 #footer	{-webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
@@ -218,16 +218,20 @@ a.classy { display:inline-block; height:30px; }
 .classy span.btn.blue		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
 .classy span.btn.red		{  color:#fff; text-shadow: 1px 1px 0 #9a091c, 2px 2px 0 #851616; }
 .classy span.btn.white		{  color:#0b59da; text-shadow: 1px 1px 0 #dddddd, 2px 2px 0 #e2e2e2; }
+
 /* white button is blue text on white so text needs to change colour on rollover */
 .classy.white:hover span.btn.white,
 .classy.white:active span.btn.white		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
 
-
 /* graphic elements */
-.classy span.btn.plussign			{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:40px; }
-.classy span.btn.leftarrow		{ background: transparent url(../img/_elements/btns/left-arrow.png) no-repeat top left; padding-left:35px; }
-.classy span.btn.rightarrow		{ background: transparent url(../img/_elements/btns/right-arrow.png) no-repeat top right; padding-right:35px; }
+.classy span.btn.plussign		{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:30px; }
+.classy span.btn.leftarrow		{ background: transparent url(../img/_elements/btns/left-arrow.png) no-repeat center left; padding-left:35px; }
+.classy span.btn.rightarrow		{ background: transparent url(../img/_elements/btns/right-arrow.png) no-repeat center right; padding-right:35px; }
 .classy span.btn.crosssign		{ background: transparent url(../img/_elements/btns/cross-sign.png) no-repeat center left; padding-left:40px;} 
+.classy span.btn.search			{ background: transparent url(../img/_elements/btns/search.png) no-repeat center left; padding-left:35px;} 
+
+.classy span.btn.icononly		{  padding:0; width:35px; background-position-x: center; }
+
 /* mini - replace 'tall','grande' or 'venti' in class */
 .classy.mini					{ height:24px; font-size:13px; width: auto; }
 .classy.mini span				{ padding:0 18px; }
@@ -387,7 +391,7 @@ border-bottom:2px solid #999999;
 
 /* STICKYs - user comment area: general */
 .stickynote { font-family:Georgia,Constantia,Lucida,Times,serif; line-height:1.5; background:#fff0a0; border:1px solid #fee54f; padding:10px; }
-.stickynote > textarea { font-family:Georgia,Constantia,Lucida,Times,serif; line-height:1.5; }
+.stickynote > textarea { font-family:Georgia,Constantia,Lucida,Times,serif; line-height:1.5; border-color: #bbb075; }
 .stickynote h4.noteheader { font-size:12px; font-style: italic; color:#998a30; margin-top:-3px; padding:0; }
 
 /* ====== TABLES ====== */
@@ -417,6 +421,7 @@ table.grid.marginbottom { margin-bottom:10px; }
 table.grid.reduceheight td { padding-top:5px; padding-bottom:5px; }
 table.grid.nodivider td, table.grid.nodivider th { border-right:none; }
 table.grid.valignmiddle tr td { vertical-align:middle; }
+table.grid.valignbottom tr td { vertical-align:bottom; }
 /* table grid bottom grey border to match thead */
 div.tablegrid { background:#ddd; }
 div.tablegrid.end {  min-height:15px; }
@@ -465,10 +470,9 @@ table.subtle.noradiusbottom { -webkit-border-bottom-right-radius:0; -webkit-bord
 /* fix inputs widths */
 .form.iw200px input, .form.iw200px textarea, .form.iw200px select { width:200px; }
 /* defaults */
-label { font-size:15px; position:relative; top:2px; }
-select { position:relative; top:2px; }
-input { font-size:15px; padding:3px; background: #fcfcfc; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;	border:solid 1px #6b8aaa; }
-input:focus { background: #fff; border:solid 1px #19a8ea; }
+label { position:relative; top:1px; }
+input, textarea { font-size:15px; padding:3px; background: #fcfcfc; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;	border:solid 1px #6b8aaa; }
+input:focus, textarea:focus { background: #fff; border:solid 1px #19a8ea; }
 /* customise label */
 label.padright { margin-right:10px; }
 label.padleft { margin-left:10px; }
@@ -478,7 +482,7 @@ input:-moz-placeholder{color:#ccc}
 input:-ms-input-placeholder{color:#ccc}
 input:focus::-webkit-input-placeholder{color:transparent;} /* ios */
 /* big fields - can be used with form OR formrow */
-.biginput label 	{ font-size:17px; position:relative; top:4px; }
+.biginput label 	{ font-size:15px; position:relative; top:1px; }
 .biginput input 	{ font-size:17px; padding:5px; }
 .biginput textarea 	{ font-size:17px; padding:5px; }
 .biginput select 	{ font-size:17px; }
@@ -660,13 +664,22 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 /* ========================================================================= EPISODEs & EVENTs ====== */
 
 /* ====== EPISODE EVENT LIST ====== */
+/* replaces white bar where the 'add new event' button was: left here in case more spacing is required */
+.eventepisodedivider { height:3px; background: #dae6f1;}
+/* BUTTON : Add New EPISODE */
+.episodelist > .addnew.episode { background: #eaddaf; border:2px solid #cdc6af; border-left:none; padding:3px 5px 4px 5px; margin-bottom:10px; position:relative;  }
+.episodelist > .addnew.episode:after { content: ""; position: absolute; top:100%; left:80px; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid #cdc6af;}
 /* Specialty group header */
 .episodelist > .specialty { color:#90886c; line-height:1.1; background: #eaddaf; padding:8px 2px 5px 5px; -webkit-border-top-right-radius: 3px;  -moz-border-radius-topright: 3px; ; border-top-right-radius: 3px; }
-/* Episodes can be 'open' or 'closed' */
+/* Episodes can be 'open' or 'closed', there are also Legacy & Support Services styling */
 .episodelist > .episode.open   { background: #eaddaf; margin-bottom:5px; }
-.episodelist > .episode.closed { background: #dad3ba; margin-bottom:5px; }
+.episodelist > .episode.closed { background: #eaddaf; margin-bottom:5px; }  /* color too subtle? dad3ba leave same as open for now */
+.episodelist > .episode.open.supportservices { background-color:#c9d69c; }
+.episodelist > .episode.open.legacy { background-color:#ccc; }
 /* navigate events in episode */
 .episode .enav { width:172px; float:left; background:#fff; padding:5px 1px 10px 0px; margin:3px 1px 3px 0; position:relative; }
+.episode.supportservices .enav { background-color:#f0f2ea; }
+.episode.legacy .enav { background-color:#eee; }
 /* customise showhide sprite */
 .episode .enav .ebtn a.sprite { display:inline-block; padding:4px 5px 2px 5px; background: #fff; -webkit-border-bottom-left-radius: 3px; -webkit-border-bottom-right-radius: 3px; -moz-border-radius-bottomleft: 3px; -moz-border-radius-bottomright: 3px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
 .episode .enav .ebtn { position:absolute; top:0; right:2px;}
@@ -675,11 +688,17 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 /* episode details & summary */
 .episode .enav .startdate { margin-left:5px;}
 .episode .enav h4 { margin:5px 2px 3px 0; }
+.episode .enav h4.simple { margin-left:5px; }
 .episode .enav h4 .episodesummary { display:block; color:#000; padding:3px 0 15px 5px; border:none; }
 .episode .enav h4 .episodesummary.viewing { color:#fff; background:#aaa url(../img/_elements/icons/event/event_open_arrow.png) bottom right no-repeat; }
 .episode .enav h4 a.episodesummary { background:#fff url(../img/_elements/graphic/view-episode-summary.png) bottom right no-repeat; }
 .episode .enav h4 a:hover.episodesummary 	{ color:#fff; background-color:#3665ff; background-image: url(../img/_elements/icons/event/event_open_arrow.png); }
 .episode .enav h4 a:active.episodesummary 	{ color:#fff; background-color:#315be6; }
+/* BUTTON : Add New EVENT */
+.enav > .addnew.event { padding:1px 0 2px 5px; margin-bottom:3px;}
+.enav > .addnew.event .classy.mini.addnewevent { height:20px; font-size:11px; } /* tweak mini classy */
+.enav > .addnew.event .classy.mini.addnewevent span.btn { height:20px; line-height:19px; }
+.enav > .addnew.event span.btn.plussign	{ background-image: url(../img/_elements/btns/plus-sign-outline.png) }
 /* mini icons for collapsed state */
 .episode .enav .minievents { display:none; padding:2px 5px 2px 5px; }
 .episode .enav .minievents a { border:none; }
@@ -697,6 +716,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .episode ul.events .date .day { display:inline-block; width:20px; text-align:right; margin-right:5px;  }
 .episode ul.events .date .mth { display:inline-block; width:28px; }
 .episode ul.events li a { display:block; height:19px; margin-left:-5px; padding-left:8px; padding-right: 10px; -webkit-border-top-right-radius: 6px; -webkit-border-bottom-right-radius: 6px; -moz-border-radius-topright: 6px; -moz-border-radius-bottomright: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px;}
+.episode.legacy ul.events li a { color:#666; }
 .episode ul.events li a:hover { border-bottom: none; background: #3665ff url(../img/_elements/icons/event/event_open_arrow.png) right center no-repeat; color:#fff; }
 .episode ul.events li a:active	{ border-bottom: none; background: #315be6; color:#fff; }
 /* quicklook */
@@ -771,8 +791,10 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventcontent h3 { color:#333; padding:10px 10px 0 10px;} /* inherits margin-bottom: 10px */
 .eventcontent h3.sectiondivider { font-family:Georgia,Constantia,Lucida,Times,serif; font-size:14px; color:#444; background:#dae6f1; padding:15px 10px 12px 10px; margin-top: 10px; }
 .eventcontent h4 { color:#56a7f1; font-size:13px; padding:5px 10px; margin-bottom: 5px;}
-/* modify h4 headers when in edit or add mode */
+/* modify h4 & h5 headers when in edit or add mode */
 .eventcontent.edit h4, .eventcontent.add h4  { font-style: italic; border-top:1px dotted #97c6f1; padding:13px 10px 0 10px; margin-bottom: 10px; }
+.eventcontent.edit .edetail h5, .eventcontent.add .edetail h5 { font-style: italic; font-weight: normal; font-size:12px; color:#666; }
+.eventcontent .edetail h5.withdivider { border-top:1px dotted #bac5ce; padding-top:5px; margin-top:10px; }
 
 /* ====== HIGHLIGHT data ====== */
 .eventcontent .highlight { width:78%; padding:2px 5px; margin-bottom:10px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;}
@@ -792,7 +814,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventcontent .highlight.none > h4 { color:#999; font-size:13px; font-family:Georgia,Constantia,Lucida,Times,serif; font-style: italic; padding:5px 10px 3px 5px; } /* none - no data! */
 
 /* ====== Element DETAIL ====== */
-.eventcontent .edetail { padding:10px; background:#dae6f1; position:relative; }
+.eventcontent .edetail { padding:10px; background:#dae6f1; position:relative; }  /* background:rgba(218,230,241,0.9); */
 .eventcontent .edetail.header { padding-top:0; border-top:1px solid #dae6f1; }
 .eventcontent .edetail:hover { background-color:#dfecf7;}
 /* add the clearfix to edetail to handle long labels that wrap over 2 lines */
@@ -806,20 +828,21 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .eventcontent .edetail.showsplit .cols > .left 	{ float: left; 	width: 49%; clear: left; position:relative; }
 .eventcontent .edetail.showsplit .cols > .right { float: right; width: 49%; clear: right; position:relative; }
 /* basic - max width is 1010px  */
-.eventcontent .edetail > .label { display:inline-block; width:170px; float:left; font-size:15px; }
+.eventcontent .edetail > .label { display:inline-block; width:155px; float:left; font-size:15px; padding-left:15px; background: transparent url(../img/_elements/icons/element-actions/bullet-for-label.png) left center no-repeat;  }
 .eventcontent .edetail > .data {  display:inline-block; position:relative; }  /* width is controlled by label, with label = width:840px; */
 .eventcontent .edetail > .data.fullwidth { width:100%; } /* push data to fill width */
-.eventcontent .edetail > .data.fixwidth { width:840px; } /* used with cols */
+.eventcontent .edetail > .data.fullwidth.indented {width:840px; padding-left:170px;   }
+.eventcontent .edetail > .data.fixwidth { width:840px; } /* used with labels and cols */
 /* header instead of label */
-.eventcontent .edetail > .header { position:relative; left:-10px; width:1010px; font-size:15px; color:#295073; background:#fafafa; padding:15px 10px 5px 10px; margin-bottom:10px; }
-.eventcontent .edetail.optional > .header { width:1005px; } /* stops header overlapping dotted line */
-.eventcontent .ondemand	.edetail > .header { width:995px; }	/* stops header overlapping surrounding line */
+.eventcontent .edetail > .header { position:relative; left:-10px; width:1005px; font-size:15px; color:#295073; padding:10px 0px 10px 25px; margin-bottom:10px; background: #fafafa url(../img/_elements/icons/element-actions/bullet-for-header.png) left center no-repeat;}
+.eventcontent .edetail.optional > .header { width:1000px; } /* stops header overlapping dotted line */
+.eventcontent .ondemand	.edetail > .header { width:990px; }	/* stops header overlapping surrounding line */
 .eventcontent .edetail > .header .parent { padding-right:25px; margin-right: 5px;  color: #afa6a6; background: transparent url(../img/_elements/icons/element-actions/parent-child-arrow.png) right center no-repeat;}
 /* increase label width */
-.eventcontent.widelabels .edetail > .label { width:230px;}
+.eventcontent.widelabels .edetail > .label { width:185px;}
 .eventcontent.widelabels .edetail > .data.fixwidth { width:780px; }
 /* element actions, such as import, add children */
-.eventcontent .edetail > .header .elementactions { position:absolute; top:5px; right:55px; height:30px; display:block;}
+.eventcontent .edetail .elementactions { position:absolute; top:5px; right:55px; height:30px; display:block;}
 
 /* event comments - cancellations */
 .eventcontent ul.cancelnotes { font-size:12px; }
@@ -835,13 +858,15 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 
 /* ====== OPTIONAL ====== */
 /* OPTIONAL elements hidden in place but re-styled slightly */
-.eventcontent .edetail.optional { border:2px dotted #aab3bd; margin:2px 0; }
+.eventcontent .edetail.optional { border:2px dotted #c4ceda; margin:2px 0; }
+.eventcontent .edetail.optional.justadded { border-color:#0A0; } 
 .eventcontent .edetail.optional > .data { min-height:20px;}
 .eventcontent .edetail.optional > .data.fixwidth { width:810px; } /* allow for removeoptional */
 /* remove optional button & suboptional modify button */
 .edetail.optional .removeoptional { position:absolute; top:8px; right:4px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/element-optional/element-remove-blue.png) right center no-repeat; }
 .edetail.optional .removeoptional.inactive { background-image: url(../img/_elements/icons/element-optional/element-remove-inactive.png); }
 .edetail.optional .optionallocked { position:absolute; top:8px; right:25px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/element-optional/element-padlock.png) right center no-repeat; }
+.edetail.optional .addedtick { position:absolute; top:8px; right:25px; z-index:2; display:block; height:20px; width:24px; background: transparent url(../img/_elements/icons/element-optional/element-tick-green.png) right center no-repeat; }
 /* sub-element (split) uses sprite to show which half of patient */
 .edetail .subelementsplit { position:absolute; top:-5px; right:-2px; z-index:2; display:block; height:34px; width:34px; background:transparent url(../img/_elements/icons/_sprites/element_split.png) no-repeat top left; }
 .edetail .subelementsplit.left { background-position: top left; }
@@ -856,10 +881,12 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 .edetail .subelementdescription { position:absolute; top:15px; right:40px; z-index:2; display:none; color:#838a91; }
 
 /* ADD OPTIONAL elements listed at bottom of event */
-.eventcontent .optionalelements { margin:20px 0; padding-bottom:20px; border-top:2px dotted #8c949c; border-bottom:2px dotted #8c949c;}
+.eventcontent .optionalelements { margin:5px 0 15px 0; padding-bottom:5px; border-top:2px dotted #8c949c; }
 /* add remove multiple elements */
 .optionalelements > .bulkactions { font-size:12px; background:#dae6f1; border-bottom:1px dotted #fafafa; }
-.optionalelements > .bulkactions .bulkbtn { float:right; display:inline-block; height:28px; line-height:28px; padding-right:25px; margin-left:10px; }
+.optionalelements > .bulkactions .bulkbtn { float:right; display:inline-block; height:28px; line-height:28px; padding-right:0; margin-left:10px; }
+.optionalelements > .bulkactions .bulkbtn > a { padding-right:25px; }
+.optionalelements > .bulkactions .bulkbtn > a:hover { border-bottom:none; } 
 .optionalelements > .bulkactions .bulkbtn.add { background:transparent url(../img/_elements/icons/element-optional/optional-tick-blue.png) center right no-repeat; }
 .optionalelements > .bulkactions .bulkbtn.remove { background:transparent url(../img/_elements/icons/element-optional/optional-cross-blue.png) center right no-repeat; }
 /* selectelements states (listed at the bottom) */
@@ -869,7 +896,12 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 .optionalelements > .selectelement.added { color:#8c949c; background:#ddd url(../img/_elements/icons/element-optional/optional-tick-grey.png) center right no-repeat; }
 .optionalelements > .selectelement.added:hover { color:#fff; background-color: #3665ff; cursor: default;}
 /* click hint add with jquery */
-.optionalelements > .selectelement.selectelement > .clickhint { font-weight: normal; float: right; padding-right:20px; }
+.optionalelements > .selectelement > .clickhint { font-weight: normal; float: right; padding-right:20px; }
+/* show parent */
+.optionalelements > .selectelement .parent { padding-right:25px; margin-right: 5px;  color: #ccc; background: transparent url(../img/_elements/icons/element-actions/parent-child-arrow.png) right center no-repeat;}
+.optionalelements > .selectelement.added .parent { color:#b3b3b3; }
+.optionalelements > .selectelement.added:hover .parent { color:#ddd;}
+
 
 /* ====== MESSAGING (Alerts,Notifications,Chat,etc...) 6592bf ====== */
 /* conversation groups */
