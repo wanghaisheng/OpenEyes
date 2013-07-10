@@ -35,7 +35,13 @@
 						<?php echo CHtml::checkBox('enabled_'.$key->name,Config::has($key->name))?>
 						<span class="label<?php if (!Config::has($key->name)) {?> notset notsetorig<?php }?>"><?php echo $key->label?>:</span>
 						<span class="field">
-							<?php echo $this->renderPartial('/settings/_field_type_'.$key->configType->name,array('key'=>$key))?>
+							<?php
+							if (isset($module) and file_exists("protected/modules/$module/views/settings/_field_$key->name.php")) {
+								echo $this->renderInternal("protected/modules/$module/views/settings/_field_$key->name.php",array('key'=>$key));
+							} else {
+								echo $this->renderPartial('/settings/_field_type_'.$key->configType->name,array('key'=>$key));
+							}
+							?>
 						</span>
 					</div>
 				<?php }?>

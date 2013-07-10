@@ -126,7 +126,12 @@ class SettingsController extends BaseController
 				throw new Exception("key not found: ".@$_GET['key']);
 			}
 		}
-		$this->renderPartial('/settings/_field_type_'.$key->configType->name,array('key'=>$key));
+
+		if (@$_GET['module'] != 'core' && file_exists("protected/modules/{$_GET['module']}/views/settings/_field_$key->name.php")) {
+			$this->renderInternal("protected/modules/{$_GET['module']}/views/settings/_field_$key->name.php",array('key'=>$key));
+		} else {
+			$this->renderPartial('/settings/_field_type_'.$key->configType->name,array('key'=>$key));
+		}
 	}
 
 	public function handleSettingsChange() {
