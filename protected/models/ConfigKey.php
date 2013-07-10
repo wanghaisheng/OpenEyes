@@ -134,11 +134,13 @@ class ConfigKey extends BaseActiveRecord
 		$modules = array();
 
 		foreach (ConfigKey::model()->findAll($criteria) as $config_key) {
-			$module_name = $config_key->module_name;
-			if ($event_type = EventType::model()->find('class_name=?',array($module_name))) {
-				$module_name = $event_type->name;
+			if (isset(Yii::app()->modules[$config_key->module_name])) {
+				$module_name = $config_key->module_name;
+				if ($event_type = EventType::model()->find('class_name=?',array($module_name))) {
+					$module_name = $event_type->name;
+				}
+				$modules[$config_key->module_name] = $module_name;
 			}
-			$modules[$config_key->module_name] = $module_name;
 		}
 
 		arsort($modules);
