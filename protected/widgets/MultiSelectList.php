@@ -58,6 +58,14 @@ class MultiSelectList extends BaseCWidget {
 					unset($this->filtered_options[$id]);
 				}
 			}
+			// when the field being used contains the appropriate square brackets for defining the associative array, the original (above)
+			// approach for retrieving the posted value does not work. The following (more standard) approach does
+			else if(isset($_POST[get_class($this->element)][$this->relation])) {
+				foreach ($_POST[get_class($this->element)][$this->relation] as $id) {
+					$this->selected_ids[] = $id;
+					unset($this->filtered_options[$id]);
+				}
+			}
 		}
 
 		parent::init();

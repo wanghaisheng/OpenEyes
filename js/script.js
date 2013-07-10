@@ -183,13 +183,26 @@ function getMonthNumberByShortName(m) {
 	return months[m];
 }
 
+/**
+ * sort comparison function for html elements based on the inner html content, but will check for the presence of data-order attributes and
+ * sort on those if present
+ * 
+ * @param a
+ * @param b
+ * @returns
+ */
 function selectSort(a, b) {
 		if (a.innerHTML == rootItem) {
-				return -1;
+				return -1;		
 		}
 		else if (b.innerHTML == rootItem) {
-				return 1;
+				return 1;  
 		}
+		// custom ordering
+		if ($(a).data('order')) {
+			return ($(a).data('order') > $(b).data('order')) ? 1 : -1;
+		}
+
 		return (a.innerHTML > b.innerHTML) ? 1 : -1;
 };
 

@@ -17,16 +17,12 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-<?php if (!$nowrapper) {?>
-<div class="eventDetail" id="editDiagnosis">
-	<div class="data">
-<?php } ?>
-		<?php echo !empty($options) ? CHtml::dropDownList("{$class}[$field]", '', $options, array('empty' => 'Select a commonly used diagnosis', 'style' => 'width: 525px; margin-bottom:10px;')) : ""?>
+		<?php echo (!empty($options) || !empty($dropdownOptions)) ? CHtml::dropDownList("{$class}[$field]", $element->$field, $options, empty($dropdownOptions) ? array('empty' => '- Please Select -', 'style' => 'margin-bottom:10px;') : $dropdownOptions) : ""?> <a href="#" id="<?php echo $class . "_" . $field . "_search"?>">search</a>
 		<br />
 		<?php
 		$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-				'name' => "{$class}[$field]",
-				'id' => "{$class}_{$field}_0",
+				'name' => "ignore_{$class}[$field]",
+				'id' => "{$class}_{$field}_searchbox",
 				'value'=>'',
 				'source'=>"js:function(request, response) {
 					$.ajax({
@@ -58,31 +54,31 @@
 						'minLength'=>'3',
 						'select' => "js:function(event, ui) {
 							".($callback ? $callback."(ui.item.id, ui.item.value);" : '')."
-							$('#".$class."_".$field."_0').val('');
+							$('#".$class."_".$field."_searchbox').val('').addClass('hidden');
+							var matched = false;
 							$('#".$class."_".$field."').children('option').map(function() {
 								if ($(this).val() == ui.item.id) {
-									$(this).remove();
+									matched = true;
 								}
 							});
+							if (!matched) {
+								$('#".$class."_".$field."').append('<option value=\"' + ui.item.id + '\">'+ui.item.value+'</option>');
+							}
+							$('#".$class."_".$field."').val(ui.item.id).trigger('change');
 							return false;
 						}",
 				),
 				'htmlOptions' => array(
-						'style'=>'width: 520px;',
-						'placeholder' => $placeholder,
+						'class' => 'hidden',
+						'placeholder' => 'search for diagnosis',
 				),
 		));
 		?>
-<?php if (!$nowrapper) {?>
-	</div>
-</div>
-<?php } ?>
 <script type="text/javascript">
-	<?php if ($callback) {?>
-		$('#<?php echo $class?>_<?php echo $field?>').change(function() {
-			<?php echo $callback?>($(this).children('option:selected').val(), $(this).children('option:selected').text());
-			$(this).children('option:selected').remove();
-			$('#<?php echo $class?>_<?php echo $field?>').val('');
-		});
-	<?php }?>
+	$(document).ready(function() {
+		$('#<?php echo $class . "_" . $field . "_search"?>').live('click', function(e) {
+			$('#<?php echo $class . "_" . $field . "_searchbox"?>').removeClass('hidden').focus();
+			e.preventDefault();
+		}); 
+	});
 </script>

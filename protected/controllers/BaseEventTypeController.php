@@ -694,7 +694,9 @@ class BaseEventTypeController extends BaseController
 				if (isset($data[$elementClassName])) {
 					$element->attributes = Helper::convertNHS2MySQL($data[$elementClassName]);
 				}
-
+				
+				$this->setPOSTManyToMany($element);
+				
 				if (!$element->validate()) {
 					$valid = false;
 				} else {
@@ -767,6 +769,7 @@ class BaseEventTypeController extends BaseController
 			}
 
 			if ($needsValidation) {
+				$this->setPOSTManyToMany($element);
 				if (!$element->validate()) {
 					$success = false;
 				}

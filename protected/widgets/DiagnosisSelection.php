@@ -20,6 +20,7 @@
 class DiagnosisSelection extends BaseCWidget {
 	public $selectedFirmId;
 	public $options;
+	public $dropdownOptions;
 	public $class;
 	public $form;
 	public $label;
@@ -31,7 +32,10 @@ class DiagnosisSelection extends BaseCWidget {
 	public $callback = false;
 	public $selected = array();
 	public $loader = false;
-
+	public $nowrapper = false;
+	// text in diagnosis search box
+	public $placeholder = 'or type the first few characters of a diagnosis';
+	
 	public function run() {
 		$this->class = get_class($this->element);
 		if (empty($_POST) || !array_key_exists($this->class, $_POST)) {
@@ -56,7 +60,7 @@ class DiagnosisSelection extends BaseCWidget {
 					$this->label = $this->element->disorder->term;
 				}
 			}
-		} else {
+		} elseif (array_key_exists($this->field, $_POST[$this->class])) {
 			if (preg_match('/[^\d]/', $_POST[$this->class][$this->field])) {
 				if ($disorder = Disorder::model()->find('term=? and specialty_id is not null',array($_POST[$this->class][$this->field]))) {
 					$this->value = $disorder->id;

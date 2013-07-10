@@ -191,12 +191,13 @@ class AdminController extends BaseController
 		$criteria->offset = ($page-1) * $this->items_per_page;
 		$criteria->limit = $this->items_per_page;
 
+
 		if (!empty($_REQUEST['search'])) {
 			$criteria->addSearchCondition("username",$_REQUEST['search'],true,'OR');
 			$criteria->addSearchCondition("first_name",$_REQUEST['search'],true,'OR');
 			$criteria->addSearchCondition("last_name",$_REQUEST['search'],true,'OR');
 		}
-
+		
 		return array(
 			'items' => $params['model']::model()->findAll($criteria),
 			'page' => $page,
@@ -453,6 +454,10 @@ class AdminController extends BaseController
 					throw new Exception("Unable to save institution address: ".print_r($address->getErrors(),true));
 				}
 				$institution->addAddress($address);
+
+				if (!$institution->contact->save()) {
+					throw new Exception("Institution contact could not be saved: " . print_r($institution->contact->getErrors(), true));
+				}
 								
 				$this->redirect(array('/admin/editInstitution?institution_id='.$institution->id));
 			}

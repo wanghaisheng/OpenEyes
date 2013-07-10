@@ -18,22 +18,17 @@
  */
 
 /**
- * This is the model class for table "eye".
+ * This is the model class for table "audit_ipaddr".
  *
- * The followings are the available columns in table 'eye':
+ * The followings are the available columns in table 'audit_ipaddr':
  * @property string $id
  * @property string $name
- * @property string $ShortName
  */
-class Eye extends BaseActiveRecord
+class AuditIPAddr extends BaseActiveRecord
 {
-	const LEFT = 1;
-	const RIGHT = 2;
-	const BOTH = 3;
-	
 	/**
 	 * Returns the static model of the specified AR class.
-	 * @return Firm the static model class
+	 * @return AuditIPAddr the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -45,7 +40,7 @@ class Eye extends BaseActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'eye';
+		return 'audit_ipaddr';
 	}
 
 	/**
@@ -56,6 +51,10 @@ class Eye extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('name', 'safe'),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('id, name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,19 +63,39 @@ class Eye extends BaseActiveRecord
 	 */
 	public function relations()
 	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
 		return array(
-			'elementTypes' => array(self::HAS_MANY, 'ElementTypeEye', 'eye_id'),
 		);
 	}
-	
-	public function getShortName() {
-		return substr($this->name, 0, 1);
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'name' => 'Name',
+		);
 	}
 
-	public function getAdjective() {
-		if ($this->id == Eye::BOTH) {
-			return 'Bilateral';
-		}
-		return $this->name;
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id,true);
+		$criteria->compare('name',$this->name,true);
+
+		return new CActiveDataProvider(get_class($this), array(
+			'criteria'=>$criteria,
+		));
 	}
 }

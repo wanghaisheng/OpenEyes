@@ -232,7 +232,6 @@ em { font-style: italic; color:#333; }
 .curvybox.nomargin { margin:0; }
 .curvybox.margintop { margin-top:15px; }
 
-
 /* ====== ERRORs ====== */
 #content .errorMessage {	text-align:center; background:#ffe6b2; border:#ff8921 1px solid; padding:5px; margin-bottom: 15px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; height: auto; }
 
@@ -442,6 +441,22 @@ a:hover.simpleButton, a:active.simpleButton { background:#145ea9; }
 .overlay { z-index:9 !important; background:transparent; position:fixed; left:50%; top:50%; }
 .overlay .loading { background:#555; color:#ccc; text-align:center; padding:10px; width:300px; margin-left:-150px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; }
 
+.spaceOutButtons button { margin-right:40px; } 
+
+/* simpleButtons - make a look like a basic version of button  */
+a.simpleButton { background:#107be9; color:#fff; padding:2px 8px; border:none; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+a:visited.simpleButton { background:#107be9; }
+a:hover.simpleButton, a:active.simpleButton { background:#145ea9; }
+
+
+
+/* ====== OVERLAYS ====== */
+/* dim and de-activate other content */
+.dimBackground { height:100%; width:100%; min-width:1240px; position:fixed; left:0; top:0; z-index:1; background-color:#666; filter: alpha(opacity=50);
+-webkit-opacity: 0.50; -moz-opacity: 0.50; opacity: 0.50;		}
+/* overlay holder is centered unless otherwise styled */
+.overlay { z-index:9 !important; background:transparent; position:fixed; left:50%; top:50%; }
+.overlay .loading { background:#555; color:#ccc; text-align:center; padding:10px; width:300px; margin-left:-150px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; }
 
 /* ====== TABLES - GENERAL ====== */
 table		{ border-collapse: collapse; }
@@ -457,7 +472,6 @@ table tr:last-child { border-bottom: none; }
 .table_endRow{ background: #ddd; height:15px; }
 /* clickable table row	*/
 tr.clickable:hover { background:#3665ff; color:white; }
-
 
 /* SUBTLE WHITE - table structure used for layout but not too obvious */
 table.subtleWhite { width:100%; background:#fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom:20px;}
@@ -638,7 +652,6 @@ span.surname { font-weight: bold; }
 #login-form .row			{ width:350px; text-align: right; margin-top:30px; }
 #login-form .row label		{ margin-right: 5px;	}
 #login-form .row select		{ position: relative; top:-1px; width:180px; }
-
 
 /* ====== HOME HUB ====== */
 /* default grouping */
@@ -836,7 +849,6 @@ td.eventIcons > img { margin-bottom:10px; }
 #add-event-disabled-pop-up { display: none; position: absolute; width: 280px; padding: 10px;
 	background: #eeeeee; color: #000000; border: 1px solid #1a1a1a; font-size: 90%; z-index: 1000; left: 590px; }
 
-
 /* ====== ADD NEW EVENT (v2 - overlay) jQuery version ====== */
 .overlay.forAddEvent { top:150px; left:49%; }
 /* overlay content */
@@ -860,9 +872,6 @@ td.eventIcons > img { margin-bottom:10px; }
 .overlay .IM { width:500px; margin-left:-250px; margin-top:-100px; padding:50px 10px 15px 10px; background:#807c6d url(../img/_elements/icons/im/paperclip_notification.png) top right no-repeat; color:#fff; border:2px dotted #a29d8a; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 2px 2px 4px 3px #ccc; -webkit-box-shadow: 2px 2px 4px 3px #ccc;	box-shadow: 2px 2px 4px 3px #ccc; }
 .overlay .IM .autoMessage img  { float:left; }
 .overlay .IM .autoMessage .details { padding-left:50px; padding-top:5px; }
-
-
-
 
 /* ------------------------ NEW EVENT - Users selects a New Event to add, these are details needed */
 /* Green PlUS Graphic */
@@ -1188,9 +1197,6 @@ table.audit-list tr.hover{ background-color: #ffffdd; }
 /*	in order to ensure consistant display scale on iphone and ipad the min-height needs adjusting  width:1230px; */
 	#content { min-height: 1230px !important; }
 }
-
-
-
 
 /* ==|== print styles ======================================================= */
  
