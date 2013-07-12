@@ -32,5 +32,4 @@
 	<?php echo CHtml::encode($data->subspecialty->name); ?>
 	<br />
 
-
 </div>

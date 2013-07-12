@@ -18,7 +18,7 @@
  */
 
 $this->breadcrumbs=array(
-	'Phrase By Specialties' => array('/admin/adminPhraseBySubspecialty/index'), 
+	'Phrase By Specialties' => array('/admin/adminPhraseBySubspecialty/index'),
 	$sectionName
 );
 $this->menu=array(
@@ -31,4 +31,4 @@ $this->menu=array(
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_subspecialtyview'
-)); ?>
+));

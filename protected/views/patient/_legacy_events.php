@@ -32,7 +32,6 @@ if ($legacyletters && !$legacyletters->disabled && is_array($legacyepisodes)) fo
 			</div>
 			<h4 class="legacy" style="margin-left: 8px;">Legacy events</h4>
 
-
 			<ul class="events"<?php if ((!$this->event || $this->event->eventType->class_name != 'OphLeEpatientletter') && !@Yii::app()->session['episode_hide_status']['legacy']) { ?> style="display: none;"<?php } ?>>
 				<?php
 				foreach ($episode->events as $event) {
@@ -72,4 +71,4 @@ if ($legacyletters && !$legacyletters->disabled && is_array($legacyepisodes)) fo
 			</ul>
 		</div>
 	</div>
-<?php }?>
+<?php }

@@ -75,4 +75,4 @@ $this->menu=array(
 		),
 		'bookingCount',
 	),
-)); ?>
+));

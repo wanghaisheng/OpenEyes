@@ -44,4 +44,4 @@ $this->widget('zii.widgets.CDetailView', array(
 		'display_order',
 		array('name' => 'firm_id', 'value' => $model->firm->name),
 	),
-)); ?>
+));

@@ -37,4 +37,4 @@
 								<?php if (!@$htmlOptions['nowrapper']) {?>
 							</div>
 						</div>
-					<?php }?>
+					<?php }

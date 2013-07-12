@@ -50,4 +50,4 @@ $this->menu=array(
 			'value' => CHtml::encode($model->getCcText())
 		),
 	),
-)); ?>
+));

@@ -48,4 +48,4 @@ $this->header();
 	<?php $this->endWidget(); ?>
 </div>
 
-<?php $this->footer() ?>
+<?php $this->footer()

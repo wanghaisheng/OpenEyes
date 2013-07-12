@@ -33,4 +33,4 @@ $this->menu=array(
 
 <h1>Update Episode Status <?php echo $model->id; ?></h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model, 'firm'=>$firm)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model, 'firm'=>$firm));

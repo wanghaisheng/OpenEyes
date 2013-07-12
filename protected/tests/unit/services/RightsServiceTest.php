@@ -17,7 +17,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-
 class RightsServiceTest extends CDbTestCase
 {
 	public $fixtures = array(
@@ -61,7 +60,7 @@ class RightsServiceTest extends CDbTestCase
 	public function testSaveRights()
 	{
 		$_POST['Rights']['firm'][1] = 1;
-		
+
 		$_POST['Rights']['service'][1] = 1;
 
 		$result = $this->service->saveRights();
@@ -111,7 +110,7 @@ class RightsServiceTest extends CDbTestCase
                                 'checked' => false
                         );
                 }
-	
+
 		return $rights;
 	}
 }

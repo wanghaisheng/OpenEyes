@@ -33,7 +33,6 @@ class EpisodeTest extends CDbTestCase
 		'events' => 'Event',
 	);
 
-
 	public function testGetBySpecialtyAndPatient_InvalidParameters_ReturnsFalse()
 	{
 		$specialtyId = 9278589128;

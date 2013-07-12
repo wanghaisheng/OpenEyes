@@ -43,5 +43,4 @@
 	<?php echo CHtml::encode($data->getCcText()); ?>
 	<br />
 
-
 </div>

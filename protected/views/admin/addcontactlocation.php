@@ -77,7 +77,6 @@
 		});
 	});
 
-	
 	handleButton($('#et_cancel'),function(e) {
 		e.preventDefault();
 		window.location.href = baseUrl+'/admin/editContact?contact_id=<?php echo $contact->id?>';
@@ -88,16 +87,17 @@
 		$('#adminform').submit();
 	});
 
-	function sort_selectbox(element) {
+	public function sort_selectbox(element)
+	{
 		rootItem = element.children('option:first').text();
 		element.append(element.children('option').sort(selectSort));
 	}
 
-	function selectSort(a, b) {
+	public function selectSort(a, b)
+	{
 		if (a.innerHTML == rootItem) {
 			return -1;
-		}
-		else if (b.innerHTML == rootItem) {
+		} elseif (b.innerHTML == rootItem) {
 			return 1;
 		}
 		return (a.innerHTML > b.innerHTML) ? 1 : -1;

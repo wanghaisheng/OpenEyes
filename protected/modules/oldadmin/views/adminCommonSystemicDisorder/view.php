@@ -42,4 +42,4 @@ $this->menu=array(
 			'value' => CHtml::encode($model->disorder->term)
 		)
 	),
-)); ?>
+));

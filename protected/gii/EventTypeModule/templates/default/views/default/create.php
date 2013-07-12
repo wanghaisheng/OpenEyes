@@ -31,7 +31,7 @@
 			'enableAjaxValidation'=>false,
 			'htmlOptions' => array('class'=>'sliding'),
 	));
-	
+
 	$this->event_actions[] = EventAction::button('Save', 'save', array('colour' => 'green'));
 	$this->renderPartial('//patient/event_actions');
 	<?php echo "?>\n"?>
@@ -45,4 +45,4 @@
 	<?php echo '<?php'?> $this->endWidget()<?php echo "?>\n"?>
 </div>
 
-<?php echo '<?php'?> $this->footer()<?php echo "?>\n"?>
+<?php echo '<?php'?> $this->footer()<?php echo "?>\n"

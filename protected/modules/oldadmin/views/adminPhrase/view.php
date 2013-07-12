@@ -41,4 +41,4 @@ $this->widget('zii.widgets.CDetailView', array(
 		array('name' => 'section_id', 'value' => $model->section->name),
 		'display_order',
 	),
-)); ?>
+));

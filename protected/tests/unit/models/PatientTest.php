@@ -99,7 +99,6 @@ class PatientTest extends CDbTestCase
 		$this->assertEquals($expectedResults, $data);
 	}
 
-
 	/**
 	 * @dataProvider dataProvider_Pseudo
 	 */

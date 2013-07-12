@@ -46,4 +46,4 @@ $this->menu=array(
 			'value' => CHtml::encode($model->subspecialty->name)
 		),
 	),
-)); ?>
+));

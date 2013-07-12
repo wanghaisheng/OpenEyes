@@ -21,7 +21,7 @@
 					<?php foreach ($_POST as $key => $value) {
 						if (preg_match('/^elementName([0-9]+)$/',$key,$m)) {
 							echo $this->renderPartial('element',array('element_num'=>$m[1]));
-						} else if (preg_match('/^elementId([0-9]+)$/',$key,$m)) {
+						} elseif (preg_match('/^elementId([0-9]+)$/',$key,$m)) {
 							echo $this->renderPartial('elementfields',array('element_num'=>$m[1]));
 						}
 					}

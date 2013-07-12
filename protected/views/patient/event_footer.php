@@ -17,10 +17,10 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-					<?php if($this->action->id == 'view') {
+					<?php if ($this->action->id == 'view') {
 						$this->renderEventMetadata();
 					} ?>
 				</div><!-- #event_content -->
 			</div><!-- #event_display -->
 		</div> <!-- .fullWidth -->
-<?php $this->renderPartial('//layouts/patientMode/event_footer')?>
+<?php $this->renderPartial('//layouts/patientMode/event_footer')

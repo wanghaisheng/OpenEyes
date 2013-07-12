@@ -18,7 +18,7 @@
  */
 
 $this->breadcrumbs=array(
-	'Phrase By Firm' => array('/admin/phraseByFirm/index'), 
+	'Phrase By Firm' => array('/admin/phraseByFirm/index'),
 	$sectionName => array('firmIndex', 'section_id'=>$sectionId),
 	$firmName
 );
@@ -34,4 +34,4 @@ $this->menu=array(
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view'
-)); ?>
+));

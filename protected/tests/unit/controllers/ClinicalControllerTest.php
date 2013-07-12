@@ -351,7 +351,6 @@ class ClinicalControllerTest extends CDbTestCase
 
 		$specialties = Specialty::model()->findAll();
 
-
 		$mockController = $this->getMock('ClinicalController', array('renderPartial', 'getUserId'), array('ClinicalController'));
 
 		$mockService = $this->getMock('ClinicalService',

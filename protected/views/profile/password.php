@@ -46,4 +46,4 @@
 		<?php echo EventAction::button('Save', 'save', array('colour' => 'blue'))->toHtml()?>
 		<img class="loader" src="<?php echo Yii::app()->createUrl('img/ajax-loader.gif')?>" alt="loading..." style="display: none;" />
 	</div>
-<?php }?>
+<?php }

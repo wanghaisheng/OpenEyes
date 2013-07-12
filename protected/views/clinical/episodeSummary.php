@@ -190,4 +190,4 @@ if (!empty($episode)) {
 			return false;
 		});
 	</script>
-<?php }?>
+<?php }

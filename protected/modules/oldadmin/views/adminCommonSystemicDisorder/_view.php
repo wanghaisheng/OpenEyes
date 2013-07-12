@@ -28,5 +28,4 @@
 	<?php echo CHtml::encode($data->disorder->term); ?>
 	<br />
 
-
 </div>

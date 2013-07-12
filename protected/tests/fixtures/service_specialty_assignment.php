@@ -17,7 +17,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-
 return array(
 	'servicespecialtyassignment1' => array(
 		'service_id' => 1,
@@ -36,4 +35,3 @@ return array(
 		'specialty_id' => 4,
 	),
 );
-

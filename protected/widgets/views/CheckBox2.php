@@ -27,4 +27,4 @@
 		<?php if (!@$options['nowrapper']) {?>
 		</div>
 	</div>
-<?php }?>
+<?php }

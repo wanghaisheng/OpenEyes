@@ -48,4 +48,4 @@ $this->menu=array(
 		'pas_code',
 		'name',
 	),
-)); ?>
+));

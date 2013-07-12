@@ -31,4 +31,4 @@
 	<div class="cleartall"></div>
 </div>
 
-<?php echo '<?php'?> $this->footer()<?php echo '?>'?>
+<?php echo '<?php'?> $this->footer()<?php echo '?>'

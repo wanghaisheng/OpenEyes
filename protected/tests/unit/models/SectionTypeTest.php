@@ -33,7 +33,6 @@ class SectionTypeTest extends CDbTestCase
 		'phraseNames'	=> 'PhraseName',
 	);
 
-
 	public function testGet_InvalidParameters_ReturnsFalse()
 	{
 		$fakeId = 9999;

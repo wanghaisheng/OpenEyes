@@ -39,4 +39,4 @@ $this->menu=array(
 		'id',
 		'name'
 	),
-)); ?>
+));

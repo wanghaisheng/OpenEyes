@@ -17,7 +17,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-<?php 
+<?php
 	$this->widget('SiteAndFirmWidget', array(
 		'returnUrl' => $returnUrl,
 		'subspecialty' => @$subspecialty,
@@ -25,4 +25,3 @@
 		'patient' => @$patient,
 		'title' => 'Select a new Site and/or Firm',
 	));
-?>

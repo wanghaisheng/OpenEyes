@@ -49,4 +49,4 @@ $this->menu=array(
 		),
 		'display_order',
 	),
-)); ?>
+));

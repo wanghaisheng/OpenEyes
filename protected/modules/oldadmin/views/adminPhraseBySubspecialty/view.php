@@ -44,4 +44,4 @@ $this->widget('zii.widgets.CDetailView', array(
 		'display_order',
 		array('name' => 'subspecialty_id', 'value' => $model->subspecialty->name),
 	),
-)); ?>
+));

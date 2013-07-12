@@ -46,4 +46,4 @@ $this->header();
 	<?php echo CHtml::endForm(); ?>
 </div>
 
-<?php $this->footer() ?>
+<?php $this->footer()

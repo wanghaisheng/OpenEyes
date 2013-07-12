@@ -17,7 +17,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-
 return array(
 	'phraseName1' => array('id' => 1, 'name' => 'Congenital Cataract'),
 	'phraseName2' => array('id' => 2, 'name' => 'unnatural cataract'),

@@ -30,4 +30,4 @@ $this->header();
 	<div class="cleartall"></div>
 </div>
 
-<?php $this->footer() ?>
+<?php $this->footer()

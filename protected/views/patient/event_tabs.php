@@ -19,9 +19,9 @@
 ?>
 <div class="event_tabs clearfix"<?php if ($hidden) {?> style="display: none;"<?php }?>>
 	<ul>
-		<?php foreach($this->event_tabs as $tab) { ?>
-		<li<?php if(@$tab['active']) { ?> class="active"<?php } ?>>
-			<?php if(@$tab['href']) { ?>
+		<?php foreach ($this->event_tabs as $tab) { ?>
+		<li<?php if (@$tab['active']) { ?> class="active"<?php } ?>>
+			<?php if (@$tab['href']) { ?>
 			<a href="<?php echo $tab['href'] ?>"><span><?php echo $tab['label'] ?></span></a>
 			<?php } else { ?>
 			<span><?php echo $tab['label'] ?></span>
@@ -34,4 +34,4 @@
 	<div>
 		<button class="classy blue mini addEpisode" type="button"><span class="button-span button-span-blue">Add episode</span></button>
 	</div>
-<?php }?>
+<?php }

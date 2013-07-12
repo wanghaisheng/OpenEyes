@@ -48,4 +48,4 @@
 	<?php echo '<?php'?> $this->endWidget()<?php echo "?>\n"?>
 </div>
 
-<?php echo '<?php'?> $this->footer()<?php echo '?>'?>
+<?php echo '<?php'?> $this->footer()<?php echo '?>'

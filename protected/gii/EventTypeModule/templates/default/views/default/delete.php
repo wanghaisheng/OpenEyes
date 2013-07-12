@@ -49,4 +49,4 @@
 	<?php echo '<?php'?> echo CHtml::endForm()<?php echo "?>\n"?>
 </div>
 
-<?php echo '<?php'?> $this->footer()<?php echo '?>'?>
+<?php echo '<?php'?> $this->footer()<?php echo '?>'

@@ -43,4 +43,4 @@ $this->menu=array(
 		),
 		'order'
 	),
-)); ?>
+));

@@ -3,7 +3,6 @@
 use Behat\Behat\Extension\Extension;
 use Behat\Behat\Console\Processor\LocatorProcessor;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

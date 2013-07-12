@@ -34,7 +34,6 @@ class PhraseByFirmTest extends CDbTestCase
 		'phraseNames'	=> 'PhraseName'
 	);
 
-
 	public function testGet_InvalidParameters_ReturnsFalse()
 	{
 		$fakeId = 9999;
@@ -99,6 +98,6 @@ class PhraseByFirmTest extends CDbTestCase
 		$this->assertTrue(is_array($overrideable));
 		foreach ($overrideable as $o) {
 			$this->assertEquals('unnatural cataract', $o->name);
-		}	
+		}
 	}
 }
