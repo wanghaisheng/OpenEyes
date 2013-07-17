@@ -228,7 +228,8 @@ a.classy { display:inline-block; height:30px; }
 .classy span.btn.leftarrow		{ background: transparent url(../img/_elements/btns/left-arrow.png) no-repeat center left; padding-left:35px; }
 .classy span.btn.rightarrow		{ background: transparent url(../img/_elements/btns/right-arrow.png) no-repeat center right; padding-right:35px; }
 .classy span.btn.crosssign		{ background: transparent url(../img/_elements/btns/cross-sign.png) no-repeat center left; padding-left:40px;} 
-.classy span.btn.search			{ background: transparent url(../img/_elements/btns/search.png) no-repeat center left; padding-left:35px;} 
+.classy span.btn.search			{ background: transparent url(../img/_elements/btns/search.png) no-repeat center left; padding-left:35px;}
+.classy span.btn.trash			{ background: transparent url(../img/_elements/btns/trash-can.png) no-repeat center left; padding-left:35px;} 
 
 .classy span.btn.icononly		{  padding:0; width:35px; background-position-x: center; }
 
@@ -378,9 +379,10 @@ border-bottom:2px solid #999999;
 .curvybox.addevent 	{ padding:1px 2px 1px 10px; line-height:32px; height:32px; }
 .curvybox.singleline { padding:1px 10px; line-height:32px; height:32px; }
 /* info boxes */
+.curvybox.info    { background:#e2e2e2 url(../img/_elements/icons/box/info.png) top left no-repeat; border:1px solid #bbb; padding-left:50px; }
 .curvybox.alert   { background:#ffe6b2 url(../img/_elements/icons/box/warning.png) top left no-repeat; border:1px solid #fc621f; padding-left:50px; }
 .curvybox.issue   { background:#fdf2e5 url(../img/_elements/icons/box/issue.png) top left no-repeat; border:1px solid #f3c160; padding-left:50px; }
-.curvybox.info    { background:#e0f2db url(../img/_elements/icons/box/info.png) top left no-repeat; border:1px solid #9c9; padding-left:50px; }
+.curvybox.tick    { background:#e0f2db url(../img/_elements/icons/box/tick.png) top left no-repeat; border:1px solid #9c9; padding-left:50px; }
 .curvybox.patient { background:transparent url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; border: 2px solid #ffb212; }
 .curvybox.warning { background: #eb5911 url(../img/_elements/icons/box/issue.png) top left no-repeat;; color:#FFF; border:2px solid #fff; padding-left:50px;}
 /* customise */
@@ -441,6 +443,8 @@ div.tablekey .keys.inline .key { display:inline-block; margin-top:0; }
 /* key colours - specific colours are set in module.css */
 div.tablekey .key .icon { display:inline-block; margin-right:5px; }
 div.tablekey .key .colorbox { display:inline-block; height:10px; width:15px; background:#eee; border:1px solid #999; position: relative; top:1px; margin-right:5px; }
+/* specialty group header */
+table.grid td.specialty { color:#69634f; background:#eae4ce; line-height:1.1; padding:12px 0 8px 10px; }
 
 /* SUBTLE - table structure used for layout... but not too obvious */
 table.subtle { width:100%; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom:20px; }
@@ -524,16 +528,28 @@ textarea {
 .dimcontent { height:100%; width:100%; min-width:1240px; position:fixed; left:0; top:0; z-index:8; background-color:#666; filter: alpha(opacity=50);
 -webkit-opacity: 0.50; -moz-opacity: 0.50; opacity: 0.50;   }
 /* overlay holder is centered on the top left */
-.overlay { z-index:9 !important; background:transparent; position:fixed; left:50%; top:50%; }
-.overlay .loading { background:#555; color:#ccc; text-align:center; padding:10px; width:300px; margin-left:-150px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; }
-/* ====== OVERLAYS ====== */
+.overlay { z-index:9 !important; background:transparent; position:fixed; left:50%; top:25%; }
 /* general setup */
-.overlay .overlaybox 	{ background:#fff; padding:10px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;  }
+.overlay .overlaybox { background:#fff; padding:10px; width:500px; margin-left:-250px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; }
+/* visually float */
 .overlay .dropshadow 	{ -moz-box-shadow: 2px 2px 2px 2px #666; -webkit-box-shadow: 2px 2px 2px 2px #666;  box-shadow: 2px 2px 2px 2px #666; }
 .overlay .whiteglow 	{ -moz-box-shadow: 0 0 4px 4px #fff; -webkit-box-shadow: 0 0 4px 4px #fff;  box-shadow: 0 0 4px 4px #fff; }
+
+/* POSITIONING... */
+/* CSS Classes added to overlay wrapper via jquery */
+.overlay.position.addevent, .overlay.position.addepisode { top:120px; } 
+.overlay.position.startchat { top:100px; }
+.overlay.position.syncconsole { top:70px; }
+
+/* close / cancel by clicking on background */
+.overlay .bigcross { position:absolute; top:2px; right:-40px; display:block; width:34px; height:34px; background:transparent url(../img/_elements/btns/overlay/big-cross.png) top left no-repeat; }
+
+/* confirm details */
+.overlay .confirmdetails { border:3px solid #118afb; background:#f1f1f1; }
+/* add new episode */
+.overlay .addepisode { width:580px; margin-left:-305px; border:7px solid #69bd51; background:#f1f1f1; }
 /* add new event */
-.overlay.position.addevent { top:150px; left:49%; } /* position.addevent add via jquery */
-.overlay .addevent { width:580px; border:7px solid #69bd51; }
+.overlay .addevent { width:580px; margin-left:-305px; border:7px solid #69bd51; }
 .overlay .addevent .showallevents { margin-top:10px;} 
 .overlay .addevent .selectevent { margin-bottom:5px;}
 .overlay .addevent .selectevent img { vertical-align:bottom; margin-right: 10px; }
@@ -541,16 +557,13 @@ textarea {
 .overlay .addevent .selectevent a:hover { border:none; color:#fff; background:#69bd51; }
 .overlay .addevent .selectevent a:active { border:none; color:#fff; background:#5da748; }
 /* delete event */
-.overlay .deleteevent { width:500px; margin-left:-250px; margin-top:-75px; border:7px solid #F00; }
+.overlay .deleteevent { border:7px solid #F00; }
 .overlay .deleteevent p { margin-bottom:8px; margin-top:4px; font-weight: bold;}
 /* start new conversation on event */
-.overlay.position.startchat { top:100px; } /* position.startchat add via jquery */
-.overlay .startchat { width:800px; margin-left:-400px; border:2px solid #63b2d7; background:#e6ebed url(../img/_elements/icons/messaging/messaging_watermark.png) top right no-repeat; }
-
-
+.overlay .startchat { width:800px; margin-left:-400px; border:3px solid #63b2d7; background:#e6ebed url(../img/_elements/icons/messaging/messaging_watermark.png) top right no-repeat; }
 /* Sync console */
-.overlay.position.syncconsole { top:70px; } /* position.syncconsole add via jquery */
-.overlay .syncconsole { width:580px; margin-left:-500px; border:3px solid #ccc; background:#f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top right no-repeat; }
+.overlay .syncconsole { width:580px; margin-left:-500px; border:3px solid #ccc; background:#f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top left no-repeat; }
+.overlay .syncconsole > h3 { margin-left:30px; }
 
 
 
@@ -647,7 +660,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .userpanel.mini, .patientid.mini  { -webkit-border-bottom-right-radius:0; -webkit-border-bottom-left-radius:0; -moz-border-radius-bottomright:0; -moz-border-radius-bottomleft:0; border-bottom-right-radius:0; border-bottom-left-radius:0;}
 /* position this  */
 .miniheader .oelogo { padding-top:5px; }
-.miniheader .userpanel.mini { position:absolute; top:0; right:10px; height:40px; width:495px; }
+.miniheader .userpanel.mini { position:absolute; top:0; right:10px; height:40px; width:498px; }
 .miniheader .patientid.mini { position:absolute; top:0; left:180px; height:40px; width:480px; }
 /* userpanel mini version */
 .userpanel.mini { background: #dae6f1; padding:0 5px; border-right:2px solid #b3b0ae; border-left:2px solid #b3b0ae; }
