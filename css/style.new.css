@@ -224,10 +224,10 @@ a.classy { display:inline-block; height:30px; }
 .classy.white:active span.btn.white		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
 
 /* graphic elements */
-.classy span.btn.plussign		{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:30px; }
+.classy span.btn.plus			{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:30px; }
 .classy span.btn.leftarrow		{ background: transparent url(../img/_elements/btns/left-arrow.png) no-repeat center left; padding-left:35px; }
 .classy span.btn.rightarrow		{ background: transparent url(../img/_elements/btns/right-arrow.png) no-repeat center right; padding-right:35px; }
-.classy span.btn.crosssign		{ background: transparent url(../img/_elements/btns/cross-sign.png) no-repeat center left; padding-left:40px;} 
+.classy span.btn.cross			{ background: transparent url(../img/_elements/btns/cross-sign.png) no-repeat center left; padding-left:40px;} 
 .classy span.btn.search			{ background: transparent url(../img/_elements/btns/search.png) no-repeat center left; padding-left:35px;}
 .classy span.btn.trash			{ background: transparent url(../img/_elements/btns/trash-can.png) no-repeat center left; padding-left:35px;} 
 
@@ -334,6 +334,30 @@ background:	linear-gradient(#118afb, #1279e3);
 border-bottom:2px solid #1974d1; 
 }
 .classy.white:active {
+background: -moz-linear-gradient(#145ea9, #104d8b);		 
+background: -ms-linear-gradient(#145ea9, #104d8b);	
+background: -webkit-linear-gradient(#145ea9, #104d8b); 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#145ea9', endColorstr='#104d8b')"; 
+background:	linear-gradient(#145ea9, #104d8b);
+border-bottom:2px solid #0f467e; 
+}
+.classy.tan {
+background: -moz-linear-gradient(#eae6d8, #eae1c2);		 
+background: -ms-linear-gradient(#eae6d8, #eae1c2);	
+background: -webkit-linear-gradient(#eae6d8, #eae1c2); 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#eae6d8', endColorstr='#eae1c2')"; 
+background:	linear-gradient(#eae6d8, #eae1c2);
+border-bottom:2px solid #eae1c2; 
+}
+.classy.tan:hover {
+background: -moz-linear-gradient(#eae1c2, #e0d7b9);		 
+background: -ms-linear-gradient(#eae1c2, #e0d7b9);	
+background: -webkit-linear-gradient(#eae1c2, #e0d7b9); 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#eae1c2', endColorstr='#e0d7b9')"; 
+background:	linear-gradient(#eae1c2, #e0d7b9);
+border-bottom:2px solid #e0d7b9; 
+}
+.classy.tan:active {
 background: -moz-linear-gradient(#145ea9, #104d8b);		 
 background: -ms-linear-gradient(#145ea9, #104d8b);	
 background: -webkit-linear-gradient(#145ea9, #104d8b); 
@@ -470,6 +494,7 @@ table.subtle.noradiusbottom { -webkit-border-bottom-right-radius:0; -webkit-bord
 /* ====== FORMS - GENERAL ====== */
 .form { background:#e2dfdb  url(../img/_elements/gradients/bg_form.jpg) top left repeat-x; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; border:2px solid #666; padding:15px; margin-bottom:10px; }
 .form.bigpad { padding:30px; }
+.form.smallpad { padding:5px 10px; }
 .form.nomargin { margin-bottom:0; }
 /* fix inputs widths */
 .form.iw200px input, .form.iw200px textarea, .form.iw200px select { width:200px; }
@@ -711,7 +736,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .enav > .addnew.event { padding:1px 0 2px 5px; margin-bottom:3px;}
 .enav > .addnew.event .classy.mini.addnewevent { height:20px; font-size:11px; } /* tweak mini classy */
 .enav > .addnew.event .classy.mini.addnewevent span.btn { height:20px; line-height:19px; }
-.enav > .addnew.event span.btn.plussign	{ background-image: url(../img/_elements/btns/plus-sign-outline.png) }
+.enav > .addnew.event span.btn.plus	{ background-image: url(../img/_elements/btns/plus-sign-outline.png) }
 /* mini icons for collapsed state */
 .episode .enav .minievents { display:none; padding:2px 5px 2px 5px; }
 .episode .enav .minievents a { border:none; }
@@ -744,9 +769,9 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .episode ul.events li .viewing .type { background:transparent url(../img/_elements/icons/event/status/quicklook.png) top right no-repeat; }
 .episode ul.events li .viewing .type.statusflag { background:transparent url(../img/_elements/icons/event/status/alert-hover.png) top right no-repeat; }
 /* event focus - when user is working on an event: adding, editing, etc: replace episodelist with current single event  */
-.eventfocus { background:#fff; width:168px; padding:10px 0px 0px 5px; border-top:3px solid #a29d8a; border-right:3px solid #a29d8a; border-bottom:3px solid #a29d8a; border-left:2px solid #b3b0ae; }
+.eventfocus { background:#fff; width:168px; padding:5px 0px 5px 5px; border-top:3px solid #a29d8a; border-right:3px solid #a29d8a; border-bottom:3px solid #a29d8a; border-left:2px solid #b3b0ae; }
 .eventfocus.add { border-top-color: #69bd51; border-right-color: #69bd51; border-bottom-color: #69bd51; }
-.eventfocus .eventreminder { margin:5px 0 25px 0; }
+.eventfocus .eventreminder { margin:5px 0 15px 0; }
 .eventfocus .eventreminder img { vertical-align:text-bottom; padding-right:3px; }
 /*  add soft corner...  */
 .episodelist > .episode, .episode .enav, .enav .episodesummary, .eventfocus  { -webkit-border-top-right-radius: 3px; -webkit-border-bottom-right-radius: 3px; -moz-border-radius-topright: 3px; -moz-border-radius-bottomright: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
