@@ -111,6 +111,7 @@ body { width:1230px; margin:0 auto; }
 .cols > .fifth 	{ float: left; width:20%; }
 /* customise */
 .cols.padbottom { padding-bottom:20px; }
+.cols.padtop { padding-top:20px; }
 
 /* ====== Misc. ====== */
 .clickable 	{ cursor: pointer; }
@@ -217,11 +218,10 @@ a.classy { display:inline-block; height:30px; }
 .classy span.btn.green		{  color:#fff; text-shadow: 1px 1px 0 #427d42, 2px 2px 0 #43727f; }
 .classy span.btn.blue		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
 .classy span.btn.red		{  color:#fff; text-shadow: 1px 1px 0 #9a091c, 2px 2px 0 #851616; }
-.classy span.btn.white		{  color:#0b59da; text-shadow: 1px 1px 0 #dddddd, 2px 2px 0 #e2e2e2; }
+.classy span.btn.linktext		{  color:#0b59da; text-shadow: 1px 1px 0 #dddddd, 2px 2px 0 #e2e2e2; }
 
 /* white button is blue text on white so text needs to change colour on rollover */
-.classy.white:hover span.btn.white,
-.classy.white:active span.btn.white		{  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
+.classy:hover span.btn.linktext, .classy:active span.btn.linktext {  color:#fff; text-shadow: 1px 1px 0 #105dae, 2px 2px 0 #5c0faa; }
 
 /* graphic elements */
 .classy span.btn.plus			{ background: transparent url(../img/_elements/btns/plus-sign.png) no-repeat center left; padding-left:30px; }
@@ -317,6 +317,8 @@ background: -webkit-linear-gradient(#901828, #761421);
 background:	linear-gradient(#901828, #761421);
 border-bottom:2px solid #6b121e; 
 }
+
+/* same hover active states for white and tan */
 .classy.white {
 background: -moz-linear-gradient(#ffffff, #fafafa);		 
 background: -ms-linear-gradient(#ffffff, #fafafa);	
@@ -325,7 +327,15 @@ background: -webkit-linear-gradient(#ffffff, #fafafa);
 background:	linear-gradient(#ffffff, #fafafa);
 border-bottom:2px solid #fafafa; 
 }
-.classy.white:hover {
+.classy.tan {
+background: -moz-linear-gradient(#eae2c7, #eadcb2);		 
+background: -ms-linear-gradient(#eae2c7, #eadcb2);	
+background: -webkit-linear-gradient(#eae2c7, #eadcb2); 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#eae2c7', endColorstr='#eadcb2')"; 
+background:	linear-gradient(#eae2c7, #eadcb2);
+border-bottom:2px solid #eadcb2; 
+}
+.classy.white:hover, .classy.tan:hover {
 background: -moz-linear-gradient(#118afb, #1279e3);		 
 background: -ms-linear-gradient(#118afb, #1279e3);	
 background: -webkit-linear-gradient(#118afb, #1279e3); 
@@ -333,7 +343,7 @@ background: -webkit-linear-gradient(#118afb, #1279e3);
 background:	linear-gradient(#118afb, #1279e3);
 border-bottom:2px solid #1974d1; 
 }
-.classy.white:active {
+.classy.white:active, .classy.tan:active {
 background: -moz-linear-gradient(#145ea9, #104d8b);		 
 background: -ms-linear-gradient(#145ea9, #104d8b);	
 background: -webkit-linear-gradient(#145ea9, #104d8b); 
@@ -341,29 +351,11 @@ background: -webkit-linear-gradient(#145ea9, #104d8b);
 background:	linear-gradient(#145ea9, #104d8b);
 border-bottom:2px solid #0f467e; 
 }
-.classy.tan {
-background: -moz-linear-gradient(#eae6d8, #eae1c2);		 
-background: -ms-linear-gradient(#eae6d8, #eae1c2);	
-background: -webkit-linear-gradient(#eae6d8, #eae1c2); 
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#eae6d8', endColorstr='#eae1c2')"; 
-background:	linear-gradient(#eae6d8, #eae1c2);
-border-bottom:2px solid #eae1c2; 
-}
-.classy.tan:hover {
-background: -moz-linear-gradient(#eae1c2, #e0d7b9);		 
-background: -ms-linear-gradient(#eae1c2, #e0d7b9);	
-background: -webkit-linear-gradient(#eae1c2, #e0d7b9); 
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#eae1c2', endColorstr='#e0d7b9')"; 
-background:	linear-gradient(#eae1c2, #e0d7b9);
-border-bottom:2px solid #e0d7b9; 
-}
-.classy.tan:active {
-background: -moz-linear-gradient(#145ea9, #104d8b);		 
-background: -ms-linear-gradient(#145ea9, #104d8b);	
-background: -webkit-linear-gradient(#145ea9, #104d8b); 
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#145ea9', endColorstr='#104d8b')"; 
-background:	linear-gradient(#145ea9, #104d8b);
-border-bottom:2px solid #0f467e; 
+
+
+
+
+
 }
 .classy.inactive {
 background: -moz-linear-gradient(#aaaaaa, #999999);
@@ -408,7 +400,7 @@ border-bottom:2px solid #999999;
 .curvybox.issue   { background:#fdf2e5 url(../img/_elements/icons/box/issue.png) top left no-repeat; border:1px solid #f3c160; padding-left:50px; }
 .curvybox.tick    { background:#e0f2db url(../img/_elements/icons/box/tick.png) top left no-repeat; border:1px solid #9c9; padding-left:50px; }
 .curvybox.patient { background:transparent url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; border: 2px solid #ffb212; }
-.curvybox.warning { background: #eb5911 url(../img/_elements/icons/box/issue.png) top left no-repeat;; color:#FFF; border:2px solid #fff; padding-left:50px;}
+.curvybox.warning { background: #eb5911 url(../img/_elements/icons/box/patient-warning.png) top left no-repeat;; color:#FFF; border:2px solid #fff; padding-left:50px;}
 /* customise */
 .curvybox.dulltext { color:#4d5155; }
 .curvybox.nopadding { padding:0; }
@@ -523,7 +515,8 @@ input:focus::-webkit-input-placeholder{color:transparent;} /* ios */
 /* help */
 .form .formrow .inputhelp, 	.forminputhelp	{ display:block; font-size:11px; margin-top:6px; color: #777; }
 .form .formrow .labelhelp,	.formlabelhelp	{ display:block; font-size:11px; margin-top:4px; color: #777; }	
-.form .formrow .required, 	.formrequired	{ display:block; font-size:11px; margin-top:4px; color: #b33;}
+/* add red asterisk */
+.requiredinput { position:relative; left:-9px; padding-left:9px; background:transparent url(../img/_elements/icons/forms/required-asterisk.png) top left no-repeat;}
 
 /* ====== sort out textarea sizing ====== */
 textarea { 
@@ -628,7 +621,7 @@ div.pagefooter > .help > .divider { padding:0 5px; color:#aaa; }
 
 /* ====== HEADER PANELS ====== */
 #brand 		{ width:240px; height:70px; background:transparent url(../img/_structure/openeyes.png) top left no-repeat; }
-#user_panel { position: absolute; top:0; right:10px; height:88px; width:490px; }
+#user_panel { position: absolute; top:0; right:8px; height:92px; width:490px; }
 #patientID	{ position: absolute; top:0; left:300px; height:70px; width:360px; }
 #oesync		{ position: absolute; top:0; left:200px; height:48px; width:31px; }
 
@@ -641,7 +634,7 @@ div.pagefooter > .help > .divider { padding:0 5px; color:#aaa; }
 .userpanel, .patientid, ul.usershortcuts a, ul.usershortcuts > li .selected  { -webkit-border-bottom-right-radius: 3px; -webkit-border-bottom-left-radius: 3px; -moz-border-radius-bottomright: 3px; -moz-border-radius-bottomleft: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
 
 /* ====== USER PANEL ====== */
-.userpanel { background: #dae6f1 url(../img/_elements/icons/user/idcard_bg.png) top left no-repeat; padding:0 10px 0px 10px; border-right:1px solid #b3b0ae; border-bottom:1px solid #b3b0ae; border-left:1px solid #b3b0ae;	 }
+.userpanel { background: #dae6f1 url(../img/_elements/icons/user/idcard_bg.png) top right no-repeat; padding:0 10px 0px 10px; border-right:1px solid #b3b0ae; border-bottom:1px solid #b3b0ae; border-left:1px solid #b3b0ae; }
 /* user shortcuts */
 ul.usershortcuts	{ float:right; padding:0; margin:0; }
 ul.usershortcuts > li { display:inline-block; margin: 0 0 8px 4px;}
@@ -651,28 +644,29 @@ ul.usershortcuts > li a:active { background: #eaffff; border:none; }
 ul.usershortcuts > li .selected { display:inline-block; background: #1e55c1; color:#fff; padding:10px 5px 3px 5px; border:none; }
 ul.usershortcuts a.logout:hover { background: #d84945 !important; color:#fff; }
 ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
-/* customise showdatagroup */
-.userpanel .user { color:#888; white-space:nowrap; position:absolute; bottom:3px; right:12px; }
-.userpanel .userfirm { color:#444; font-size:12px; padding:2px; }
-.userpanel .userfirm span:first-child { display:inline-block; width:25px; color:#666; }
-.userpanel .userfirm > a { margin-left:5px;} 
-.userpanel .usersite { color:#444; font-size:12px; padding:2px; }
-.userpanel .usersite span:first-child { display:inline-block; width:25px; color:#666; }
+.userpanel .userrole { color:#888; white-space:nowrap; position:absolute; bottom:5px; right:12px; }
+.userpanel .userinfo { position:absolute; top:37px; left:10px;}
+.userpanel .userinfo .userdetails { color:#444; font-size:12px; padding-bottom:1px; margin-bottom:2px; border-bottom:1px dotted #c2cdd7; }
+.userpanel .userinfo .userdetails:last-child { border-bottom:none;}
+.userpanel .userinfo .userdetails span:first-child { display:inline-block; width:25px; color:#666; }
+.userpanel .userinfo .userdetails a.profile { padding-right:20px; background:transparent url(../img/_elements/btns/user/profile-cog.png) center right no-repeat; } 
 
 /* ====== PATIENT ID ====== */
 .patientid { background: #fff2d7 url(../img/_elements/gradients/bg_patientID.jpg) bottom left repeat-x; padding:0 10px; border-right:2px solid #ffb212; border-bottom:2px solid #ffb212; border-left:2px solid #ffb212; }
 .patientid > .patient.reminder { padding-top:9px; }
-.patientid > .patient.reminder > .given		{ display:inline-block; font-size: 16px; }
+.patientid > .patient.reminder > .given		{ display:inline-block; font-size: 14px; }
 .patientid > .patient.reminder > .surname	{ display:inline-block; font-size: 16px; font-weight: bold; }
 .patientid > .patient.reminder > .numbers 	{ margin-top:2px; }
 .patientid > .patient.reminder > .numbers > .number	{ display:inline-block; font-size: 12px; margin-top:1px; }
 .patientid > .patient.reminder > .numbers > .nhs	{ display:inline-block; font-size: 12px; color:#fff; background: #107ebd url(../img/_elements/icons/nhs_tiny.png) center left no-repeat;  margin-left:5px; padding:1px 4px 1px 35px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 .patientid > .patient.summary { position:absolute; left:10px; bottom:4px; }
-.patientid > .patient.details { position:absolute; right:5px; bottom:2px; height:23px; line-height:23px; padding:0 23px 0 5px; color:#444; }
+.patientid > .patient.details { position:absolute; right:5px; bottom:4px; height:17px; padding:0 20px 0 5px; color:#444; font-size:11px; }
 .patientid > .patient.details.female { background:transparent url(../img/_elements/icons/alerts/female_trans.png) center right no-repeat;  }
-.patientid > .patient.details.male { background:#ffb212 url(../img/_elements/icons/alerts/male_trans.png) center right no-repeat; }
-.patientid > .patient.details .info { display:inline-block; padding-right:2px; }
-.patientid > .patient.warningflag { position:absolute; left:5px; bottom:-20px; height:17px; line-height:17px; font-size:11px; letter-spacing:1px; white-space: nowrap; padding:0 5px; color:#fff; background:#eb5911; border:2px solid #fff; border-top:none; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
+.patientid > .patient.details.male { background:transparent url(../img/_elements/icons/alerts/male_trans.png) center right no-repeat; }
+.patientid > .patient.details .icons { display:inline-block; }
+.patientid > .patient.details .icons > img { padding-right:2px; } 
+.patientid > .patient.warningflag { position:absolute; z-index:5; right:5px; bottom:-25px; height:17px; line-height:17px; font-size:11px; letter-spacing:1px; white-space: nowrap; padding:0 5px; color:#fff; background:#eb5911; border:2px solid #fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;}
+.patientid > .patient.warningflag:after { content: ""; position: absolute; top:-6px; left:43%; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 5px solid #fff;}
 
 /* Patient icon - same position for mini version  */
 .patientid > .patient.icon { position:absolute; right:5px; top:5px; height:30px; width:30px; background:transparent url(../img/_elements/icons/patient/patient-id_small.png) bottom left no-repeat; }
@@ -685,19 +679,20 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .userpanel.mini, .patientid.mini  { -webkit-border-bottom-right-radius:0; -webkit-border-bottom-left-radius:0; -moz-border-radius-bottomright:0; -moz-border-radius-bottomleft:0; border-bottom-right-radius:0; border-bottom-left-radius:0;}
 /* position this  */
 .miniheader .oelogo { padding-top:5px; }
-.miniheader .userpanel.mini { position:absolute; top:0; right:10px; height:40px; width:498px; }
-.miniheader .patientid.mini { position:absolute; top:0; left:180px; height:40px; width:480px; }
+.miniheader .userpanel.mini { position:absolute; top:0; right:7px; height:40px; width:500px; }
+.miniheader .patientid.mini { position:absolute; top:0; left:300px; height:40px; width:360px; }
 /* userpanel mini version */
-.userpanel.mini { background: #dae6f1; padding:0 5px; border-right:2px solid #b3b0ae; border-left:2px solid #b3b0ae; }
+.userpanel.mini { background-position-y: center; padding:0 5px; border-right:2px solid #b3b0ae; border-left:2px solid #b3b0ae; }
 .userpanel.mini .userfirm { margin-top:2px;}
+.userpanel.mini .userinfo { top:4px; }
 /* patientid mini version */
 .patientid.mini { border:none; border-right:2px solid #ffb212; border-left:2px solid #ffb212; padding:0 10px; font-size: 14px; }
-.patientid.mini > .patient.reminder { padding-top:4px; }
-.patientid.mini > .patient.reminder > .given	{ font-size: 14px; }
+.patientid.mini > .patient.reminder { padding-top:3px; }
+.patientid.mini > .patient.reminder > .given	{ font-size: 12px; }
 .patientid.mini > .patient.reminder > .surname	{ font-size: 14px; }
-.patientid.mini > .patient.reminder > .numbers 	{ margin-top:0; }
-.patientid.mini > .patient.details { right:35px; bottom:8px }
-.patientid.mini > .patient.warningflag { left:230px; bottom:0; border-top:2px solid #fff; -webkit-border-top-right-radius: 5px; -webkit-border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-topleft: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px;}
+.patientid.mini > .patient.reminder > .numbers 	{ margin-top:2px; }
+.patientid.mini > .patient.details { right:32px; bottom:11px }
+.patientid.mini > .patient.warningflag { right:33px; bottom:-18px; }
 
 /* ========================================================================= EPISODEs & EVENTs ====== */
 
@@ -793,10 +788,7 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 
 /* event buttons */
 .eventwrapper .workoptions 	 { position:absolute; right:3px; bottom:2px; }
-.eventwrapper.footer .workoptions 	 { position:absolute; right:3px; top:5px; }
-/* trash can tab needs tweaking */
-.eventwrapper .workoptions .tabbtn.red { position:relative; top:1px; margin-left:10px;}
-.eventwrapper .workoptions .tabbtn.red > a.trashcan { width:30px; padding-left:3px; padding-right:3px; background:#cf0d27 url(../img/_elements/icons/event/wrapper/trash-can.png) center center no-repeat;  }
+.eventwrapper.footer .extraoptions 	 { position:absolute; right:3px; top:5px; }
 
 /* Make sticky: fixed position + padding-top = jquery sticky offset:  */
 .eventarea .eventwrapper.stuck { position:fixed; top:35px; left:auto; z-index:6; padding-top:15px; }
