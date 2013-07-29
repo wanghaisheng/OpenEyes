@@ -292,6 +292,8 @@ class UserIdentity extends CUserIdentity
 
 		if ($site = Site::model()->findByPk(@$_POST['LoginForm']['siteId'])) {
 			$app->session['selected_site_id'] = $site->id;
+		} else if ($force) {
+			$app->session['selected_site_id'] = 1;
 		}
 
 		$user->audit('login','login-successful',"User ".strtoupper($this->username)." logged in",true);
