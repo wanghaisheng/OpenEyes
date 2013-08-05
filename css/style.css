@@ -1827,3 +1827,9 @@ a.profileLink strong { float: left; margin-left: 20px; margin-top: 3px; }
 #admin_data_sources ul li { padding: 0; margin: 0; line-height: 15px; font-size: 11px; }
 #admin_data_sources ul li .column_checkbox { width: 16px; display: inline-block; }
 #admin_data_sources ul li .column_name { width: 808px; display: inline-block; }
+
+.overlay { z-index: 9 !important; background: transparent; position: absolute; left: 50%; top: 50%; }
+.overlay.position.syncconsole { top: 15%; left: 25%; }
+.overlay .syncconsole { width: 580px; border: 3px solid #ccc; background: #f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top right no-repeat; }
+.overlay .dropshadow { -webkit-box-shadow: 2px 2px 2px 2px #666; box-shadow: 2px 2px 2px 2px #666; }
+.overlay .overlaybox { padding: 10px; -webkit-border-radius: 7px; border-radius: 7px; }

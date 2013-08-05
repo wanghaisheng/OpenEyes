@@ -308,4 +308,29 @@ class BaseEventTypeElement extends BaseElement
 	public function textWithLineBreaks($field) {
 		return str_replace("\n","<br/>",$this->$field);
 	}
+
+	public function wrap($relations=array()) {
+		$table = $this->tableName();
+		$data = Yii::app()->db->createCommand("select $table.* from $table where id = $this->id")->queryRow();
+
+		$data['event_id'] = '{Event:'.$this->event->hash.'}';
+
+		foreach ($relations as $class => $key) {
+			$table = $class::model()->tableName();
+
+			if (is_array($key)) {
+				$data['_relations'][$class] = Yii::app()->db->createCommand("select $table.*, '{element_id}' as {$key['key']} from $table where {$key['key']} = $this->id")->queryAll();
+				foreach ($data['_relations'][$class] as $i => $item) {
+					foreach ($key['_relations'] as $class2 => $key2) {
+						$table2 = $class2::model()->tableName();
+						$data['_relations'][$class][$i]['_relations'][$class2] = Yii::app()->db->createCommand("select $table2.*, '{parent_id}' as {$key2} from $table2 where {$key2} = {$item['id']}")->queryAll();
+					}
+				}
+			} else {
+				$data['_relations'][$class] = Yii::app()->db->createCommand("select $table.*, '{element_id}' as $key from $table where $key = $this->id")->queryAll();
+			}
+		}
+
+		return $data;
+	}
 }

@@ -301,4 +301,37 @@ class Event extends BaseActiveRecord
 		parent::audit($target, $action, $data, $log, $properties);
 	}
 
+	public function wrap($params=array()) {
+		$data = Yii::app()->db->createCommand()->select("*")->from("event")->where("id = $this->id")->queryRow();
+		$data['_elements'] = array();
+
+		foreach (ElementType::model()->findAll('event_type_id=?',array($this->event_type_id)) as $element_type) {
+			$class = $element_type->class_name;
+
+			if ($element = $class::model()->find('event_id=?',array($this->id))) {
+				$data['_elements'][$element_type->class_name] = $element->wrap();
+			}
+		}
+
+		$data['_episode'] = $this->episode->wrap();
+		$data['episode_id'] = '{Episode:'.$this->episode->hash.'}';
+		$data['_issues'] = Yii::app()->db->createCommand()->select("*")->from("event_issue")->where("event_id = $this->id")->queryAll();
+		foreach ($data['_issues'] as $i => $issue) {
+			$data['_issues'][$i]['event_id'] = '{Event:'.$this->hash.'}';
+		}
+
+		return $this->strip_ids($data);
+	}
+
+	public function strip_ids($data) {
+		if (isset($data['id'])) unset($data['id']);
+
+		foreach ($data as $key => $value) {
+			if (is_array($value)) {
+				$data[$key] = $this->strip_ids($value);
+			}
+		}
+
+		return $data;
+	}
 }

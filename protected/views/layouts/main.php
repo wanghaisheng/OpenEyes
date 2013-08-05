@@ -47,6 +47,7 @@
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/libs/modernizr-2.0.6.min.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.printElement.min.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.hoverIntent.min.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jQueryRotate.2.2.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/print.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/buttons.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/util.js'))?>
@@ -79,6 +80,7 @@
 		<div id="header" class="clearfix">
 			<?php $this->renderPartial('//base/_brand'); ?>
 			<?php $this->renderPartial('//base/_form', array()); ?>
+			<?php $this->renderPartial('//base/_sync', array()); ?>
 		</div> <!-- #header -->
 		<div id="content">
 			<?php echo $content; ?>

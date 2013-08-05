@@ -325,4 +325,8 @@ class Episode extends BaseActiveRecord
 		$properties['patient_id'] = $this->patient_id;
 		parent::audit($target, $action, $data, $log, $properties);
 	}
+
+	public function wrap($params=array()) {
+		return Yii::app()->db->createCommand()->select("*")->from("episode")->where("id = $this->id")->queryRow();
+	}
 }
