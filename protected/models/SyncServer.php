@@ -70,13 +70,28 @@ class SyncServer extends BaseActiveRecord
 		return date('j M Y H:i',strtotime($this->last_sync));
 	}
 
-	public function push() {
+	public function sync() {
 		$request = array(
 			'key' => $this->key,
 			'type' => 'PUSH',
+			'tables' => array(),
 			'events' => array(),
-			'assets' => array(),
+			'protected_files' => array(),
 		);
+
+		OELog::log("Preparing to sync ...");
+
+		foreach ($this->getCoreTableListInSyncOrder() as $table) {
+			if (!in_array($table,array('event','episode','protected_file'))) {
+				$changed = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($this->last_sync))->order("last_modified_date asc")->queryAll();
+
+				if (!empty($changed)) {
+					OELog::log("[$table] pushing ...");
+					$count = $this->push($table, $changed);
+					OELog::log("[$table] pushed $count rows");
+				}
+			}
+		}
 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("last_modified_date > '$this->last_sync'");
@@ -126,6 +141,15 @@ class SyncServer extends BaseActiveRecord
 		}
 		$this->messages[] = $resp['message'];
 		return false;
+	}
+
+	public function push($table, $data) {
+		$resp = $this->request(array(
+			'key' => $this->key,
+			'type' => 'PUSH',
+			'table' => $table,
+			'data' => $data,
+		));
 	}
 
 	public function pull() {
@@ -199,14 +223,72 @@ class SyncServer extends BaseActiveRecord
 		$c = curl_init();
 		curl_setopt($c,CURLOPT_URL,"http://$this->hostname/sync/csrf");
 		curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($c,CURLOPT_COOKIEJAR,"X");
 		$csrf = trim(curl_exec($c));
 
 		curl_setopt($c,CURLOPT_URL,"http://$this->hostname/sync/request");
 		curl_setopt($c,CURLOPT_POST,true);
-		curl_setopt($c,CURLOPT_POSTFIELDS,"data=".rawurlencode($json)."&YII_CSRF_TOKEN=".$csrf);
+		curl_setopt($c,CURLOPT_POSTFIELDS,"data=".rawurlencode(json_encode($request))."&YII_CSRF_TOKEN=".$csrf);
+
 		if (isset(Yii::app()->params['sync_http_username']) && isset(Yii::app()->params['sync_http_password'])) {
 			curl_setopt($c,CURLOPT_USERPWD,Yii::app()->params['sync_http_username'].":".Yii::app()->params['sync_http_password']);
 		}
-		return curl_exec($c);
+
+		$data = curl_exec($c);
+
+		if (!$resp = @json_decode($data,true)) {
+			if (preg_match('/Authorization Required/i',$resp)) {
+				die("http authorisation required");
+			} else {
+				die("unable to parse server response");
+			}
+		}
+
+		return $resp;
+	}
+
+	public function getCoreTableListInSyncOrder() {
+		$tables = array('user');
+
+		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
+			if (!preg_match('/^et_oph/',$table->name) && !preg_match('/^oph/',$table->name)) {
+				if (!in_array($table->name,$tables)) {
+					foreach ($this->getDependencies($table,$tables) as $deptable) {
+						if (!in_array($deptable,$tables)) {
+							$tables[] = $deptable;
+						}
+					}
+					if (!in_array($table->name,$tables)) {
+						$tables[] = $table->name;
+					}
+				}
+			}
+		}
+
+		return $tables;
+	}
+
+	public function getDependencies($table, $ignore) {
+		$deps = array();
+
+		foreach ($table->foreignKeys as $key) {
+			if (!in_array($key[0],$deps) && !in_array($key[0],$ignore)) {
+				$deps[] = $key[0];
+
+				if ($table->name != $key[0]) {
+					foreach ($this->getDependencies($this->getTableObject($key[0]),$ignore) as $deptable) {
+						if (!in_array($deptable,$deps)) {
+							$deps[] = $deptable;
+						}
+					}
+				}
+			}
+		}
+
+		return $deps;
+	}
+
+	public function getTableObject($table) {
+		return Yii::app()->db->getSchema()->getTable($table);
 	}
 }

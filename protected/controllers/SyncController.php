@@ -121,7 +121,14 @@ class SyncController extends Controller
 			throw new Exception("Unknown server: $id");
 		}
 
-		if (!$response = $server->push()) {
+		if (!$response = $server->sync()) {
+			echo json_encode(array(
+				'status' => 'FAIL',
+				'message' => implode(', ',$server->message),
+			));
+		}
+
+		/*if (!$response = $server->push()) {
 			echo json_encode(array(
 				'status' => 'FAIL',
 				'message' => implode(', ',$server->messages),
@@ -135,7 +142,7 @@ class SyncController extends Controller
 				'message' => implode(', ',$server->messages),
 			));
 			return;
-		}
+		}*/
 
 		echo json_encode(array(
 			'status' => 'OK',
@@ -170,9 +177,11 @@ class SyncController extends Controller
 
 		switch ($data['type']) {
 			case 'PUSH':
-				$this->receiveAssets($data['assets']);
+				/*$this->receiveAssets($data['assets']);
 				$this->receiveEvents($data['events']);
 				$this->responseOK("Received ".count($data['events'])." events");
+				*/
+				echo count($data['data']);
 				break;
 			case 'PULL':
 				$this->sendAssetsAndEvents($data['timestamp']);
