@@ -28,7 +28,7 @@ class SyncController extends Controller
 
 	public function accessRules()
 	{
-		if (Yii::app()->getController()->action->id == 'request') {
+		if (in_array(Yii::app()->getController()->action->id,array('request','csrf'))) {
 			return array(
 				array('allow',
 					'users'=>array('@','?'),
