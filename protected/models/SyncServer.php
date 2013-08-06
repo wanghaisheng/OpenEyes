@@ -203,7 +203,7 @@ class SyncServer extends BaseActiveRecord
 
 		curl_setopt($c,CURLOPT_URL,"http://$this->hostname/sync/request");
 		curl_setopt($c,CURLOPT_POST,true);
-		curl_setopt($c,CURLOPT_POSTFIELDS,"data=".rawurlencode($json)."&YII_CSRF_TOKEN=".YII_CSRF_TOKEN);
+		curl_setopt($c,CURLOPT_POSTFIELDS,"data=".rawurlencode($json)."&YII_CSRF_TOKEN=".$csrf);
 		if (isset(Yii::app()->params['sync_http_username']) && isset(Yii::app()->params['sync_http_password'])) {
 			curl_setopt($c,CURLOPT_USERPWD,Yii::app()->params['sync_http_username'].":".Yii::app()->params['sync_http_password']);
 		}
