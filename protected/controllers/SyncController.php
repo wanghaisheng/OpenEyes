@@ -181,6 +181,7 @@ class SyncController extends Controller
 				$this->receiveEvents($data['events']);
 				$this->responseOK("Received ".count($data['events'])." events");
 				*/
+				$this->receiveItems($data['table'],$data['data']);
 				echo count($data['data']);
 				break;
 			case 'PULL':
@@ -424,5 +425,21 @@ class SyncController extends Controller
 			}
 		}
 		return $return;
+	}
+
+	public function receiveItems($table,$data) {
+		foreach ($data as $item) {
+			$id = $item['id'];
+
+			if ($local = Yii::app()->db->createCommand()->select("*")->from($table)->where("id = :id",array('id'=>$item['id']))->queryRow()) {
+				if (strtotime($item['last_modified_date']) > strtotime($item['last_modified_date'])) {
+					unset($data['id']);
+
+					Yii::app()->db->createCommand()->update($table, $data, "id = :id", array(":id" => $id));
+				}
+			} else {
+				Yii::app()->db->createCommand()->insert($table, $data);
+			}
+		}
 	}
 }
