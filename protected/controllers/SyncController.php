@@ -30,19 +30,13 @@ class SyncController extends Controller
 	{
 		if (in_array(Yii::app()->getController()->action->id,array('request','csrf'))) {
 			return array(
-				array('allow',
-					'users'=>array('@','?'),
-				),
+				array('allow', 'users'=>array('@','?')),
 			);
 		}
 
 		return array(
-			array('allow',
-				'users'=>array('@')
-			),
-			array('deny',
-				'users'=>array('?')
-			),
+			array('allow', 'users'=>array('@')),
+			array('deny', 'users'=>array('?')),
 		);
 	}
 
@@ -156,44 +150,46 @@ class SyncController extends Controller
 
 	public function actionRequest() {
 		if (!isset($_POST['data'])) {
-			return $this->responseFail("Missing data");
+			return $this->response("fail","Missing data");
 		}
 
 		if (!$data = @json_decode($_POST['data'],true)) {
-			return $this->responseFail("Invalid request");
+			return $this->response("fail","Invalid request");
 		}
 
 		if (!isset(Yii::app()->params['sync_key_size'])) {
-			return $this->responseFail("Must specify sync_key_size in params");
+			return $this->response("fail","Must specify sync_key_size in params");
 		}
 
 		if (!isset(Yii::app()->params['sync_key']) || strlen(Yii::app()->params['sync_key']) != Yii::app()->params['sync_key_size']) {
-			return $this->responseFail("Missing or invalid sync_key");
+			return $this->response("fail","Missing or invalid sync_key");
 		}
 
 		if (@$data['key'] != Yii::app()->params['sync_key']) {
-			return $this->responseFail("Access denied");
+			return $this->response("fail","Access denied");
 		}
 
 		switch ($data['type']) {
 			case 'PUSH':
-				/*$this->receiveAssets($data['assets']);
-				$this->receiveEvents($data['events']);
-				$this->responseOK("Received ".count($data['events'])." events");
-				*/
-				$this->receiveItems($data['table'],$data['data']);
-				echo count($data['data']);
+				$resp = $this->receiveItems($data['table'],$data['data']);
+
+				return $this->response('ok',array(
+					'received' => count($data['data']),
+					'inserted' => $resp['i'],
+					'updated' => $resp['u'],
+					'not-modified' => $resp['nm'],
+				));
 				break;
 			case 'PULL':
 				$this->sendAssetsAndEvents($data['timestamp']);
 				break;
 			case 'STATUS':
 				if (Event::model()->find('last_modified_date > ?',array($data['timestamp'])) || Asset::model()->find('last_modified_date > ? ',array($data['timestamp']))) {
-					$this->responseOK("Out of sync",array(
+					$this->response("ok","Out of sync",array(
 						'sync_status' => false,
 					));
 				} else {
-					$this->responseOK("In sync",array(
+					$this->response("ok","In sync",array(
 						'sync_status' => true,
 					));
 				}
@@ -201,18 +197,11 @@ class SyncController extends Controller
 		}
 	}
 
-	public function responseFail($message) {
+	public function response($status, $data) {
 		echo json_encode(array(
-			'status' => 'FAIL',
-			'message' => $message,
+			'status' => $status,
+			'message' => $data,
 		));
-	}
-
-	public function responseOK($message, $params=array()) {
-		echo json_encode(array_merge(array(
-			'status' => 'OK',
-			'message' => $message,
-		),$params));
 	}
 
 	public function receiveAssets($assets) {
@@ -428,18 +417,43 @@ class SyncController extends Controller
 	}
 
 	public function receiveItems($table,$data) {
+		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
+
+		if ($table == 'proc_opcs_assignment') {
+			return $this->receiveItems_proc_opcs_assignment($table,$data);
+		}
+
 		foreach ($data as $item) {
-			$id = $item['id'];
+			$id = @$item['id'];
 
-			if ($local = Yii::app()->db->createCommand()->select("*")->from($table)->where("id = :id",array('id'=>$item['id']))->queryRow()) {
+			if ($id && $local = Yii::app()->db->createCommand()->select("*")->from($table)->where("id = :id",array('id'=>$id))->queryRow()) {
 				if (strtotime($item['last_modified_date']) > strtotime($item['last_modified_date'])) {
-					unset($data['id']);
+					unset($item['id']);
 
-					Yii::app()->db->createCommand()->update($table, $data, "id = :id", array(":id" => $id));
+					Yii::app()->db->createCommand()->update($table, $item, "id = :id", array(":id" => $id));
+					$resp['u']++;
+				} else {
+					$resp['nm']++;
 				}
 			} else {
-				Yii::app()->db->createCommand()->insert($table, $data);
+				Yii::app()->db->createCommand()->insert($table, $item);
+				$resp['i']++;
 			}
 		}
+
+		return $resp;
+	}
+
+	public function receiveItems_proc_opcs_assignment($table,$data) {
+		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
+
+		foreach ($data as $item) {
+			if (!$local = Yii::app()->db->createCommand()->select("*")->from($table)->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
+				Yii::app()->db->createCommand()->insert($table, $item);
+				$resp['i']++;
+			}
+		}
+
+		return $resp;
 	}
 }
