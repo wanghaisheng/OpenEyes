@@ -419,8 +419,11 @@ class SyncController extends Controller
 	public function receiveItems($table,$data) {
 		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
 
-		if ($table == 'proc_opcs_assignment') {
-			return $this->receiveItems_proc_opcs_assignment($table,$data);
+		switch ($table) {
+			case 'proc_opcs_assignment':
+				return $this->receiveItems_proc_opcs_assignment($data);
+			case 'delete_log':
+				return $this->receiveItems_delete_log($data);
 		}
 
 		foreach ($data as $item) {
@@ -435,7 +438,7 @@ class SyncController extends Controller
 				} else {
 					$resp['nm']++;
 				}
-			} else {
+			} else if (!$this->wasMoreRecentlyDeleted($table, $item)) {
 				Yii::app()->db->createCommand()->insert($table, $item);
 				$resp['i']++;
 			}
@@ -444,13 +447,44 @@ class SyncController extends Controller
 		return $resp;
 	}
 
-	public function receiveItems_proc_opcs_assignment($table,$data) {
+	public function wasMoreRecentlyDeleted($table, $item) {
+		if ($dl = DeleteLog::model()->find('item_table=? and item_id=?',array($table,$item['id']))) {
+			if (strtotime($dl->created_date) > strtotime($item->last_modified_date)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function receiveItems_proc_opcs_assignment($data) {
 		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
 
 		foreach ($data as $item) {
-			if (!$local = Yii::app()->db->createCommand()->select("*")->from($table)->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
+			if (!$local = Yii::app()->db->createCommand()->select("*")->from('proc_opcs_assignment')->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
 				Yii::app()->db->createCommand()->insert($table, $item);
 				$resp['i']++;
+			}
+		}
+
+		return $resp;
+	}
+
+	public function receiveItems_delete_log($data) {
+		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
+
+		foreach ($data as $item) {
+			if ($local = Yii::app()->db->createCommand()->select("*")->from($item['item_table'])->where("id=:id",array(":id"=>$item['item_id']))->queryRow()) {
+				if (strtotime($local['last_modified_date']) <= strtotime($item['created_date'])) {
+					Yii::app()->db->createCommand()->delete($item['item_table'],"id=:id",array(":id"=>$item['item_id']));
+				}
+			}
+
+			if (!$local = Yii::app()->db->createCommand()->select("*")->from('delete_log')->where('id=:id',array(':id'=>$item['id']))->queryRow()) {
+				Yii::app()->createCommand()->insert('delete_log',$item);
+				$resp['i']++;
+			} else {
+				$resp['nm']++;
 			}
 		}
 
