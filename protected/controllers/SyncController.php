@@ -173,7 +173,14 @@ class SyncController extends Controller
 			case 'PUSH':
 				return $this->response('ok',$this->receiveItems($data['table'],$data['data']));
 			case 'PULL':
-				$items = $this->sendItems($data['table'], $data['last_sync']);
+				switch ($data['table']) {
+					case 'event':
+						$items = $this->sendItems_event($data['last_sync']);
+						break;
+					default:
+						$items = $this->sendItems($data['table'], $data['last_sync']);
+						break;
+				}
 
 				return $this->response('ok',array(
 					'data' => $items,
@@ -577,5 +584,8 @@ class SyncController extends Controller
 
 	public function sendItems($table, $last_sync) {
 		return Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
+	}
+
+	public function sendItems_event($last_sync) {
 	}
 }
