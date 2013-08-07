@@ -180,11 +180,15 @@ class BaseActiveRecord extends CActiveRecord
 		$dl->item_table = $model::model()->tableName();
 		$dl->item_id = $this->id;
 
-		if (!$dl->save()) {
-			throw new Exception("Unable to save delete_log item: ".print_r($dl->getErrors(),true));
+		if (parent::delete()) {
+			if (!$dl->save()) {
+				throw new Exception("Unable to save delete_log item: ".print_r($dl->getErrors(),true));
+			}
+
+			return true;
 		}
 
-		return parent::delete();
+		return false;
 	}
 
 	public function deleteAll($condition='', $params=array()) {
@@ -196,16 +200,27 @@ class BaseActiveRecord extends CActiveRecord
 			$items = $model::model()->findAll($condition,$params);
 		}
 
-		foreach ($items as $item) {
-			$dl = new DeleteLog;
-			$dl->item_table = $model::model()->tableName();
-			$dl->item_id = $item->id;
+		$to_log = array();
 
-			if (!$dl->save()) {
-				throw new Exception("Unable to save delete_log item: ".print_r($dl->getErrors(),true));
+		foreach ($items as $item) {
+			$to_log[] = array(
+				'table' => $model::model()->tableName(),
+				'id' => $item->id,
+			);
+		}
+
+		if (($i = parent::deleteAll($condition, $params)) >0) {
+			foreach ($to_log as $item) {
+				$dl = new DeleteLog;
+				$dl->item_table = $item['table'];
+				$dl->item_id = $item['id'];
+
+				if (!$dl->save()) {
+					throw new Exception("Unable to save delete_log item: ".print_r($dl->getErrors(),true));
+				}
 			}
 		}
 
-		return parent::deleteAll($condition, $params);
+		return $i;
 	}
 }
