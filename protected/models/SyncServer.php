@@ -150,6 +150,12 @@ class SyncServer extends BaseActiveRecord
 			'table' => $table,
 			'data' => $data,
 		));
+
+		if ($resp['status'] != 'ok') {
+			die("Failed: {$resp['message']}\n");
+		}
+
+		return $resp['message'];
 	}
 
 	public function pull() {
@@ -219,11 +225,10 @@ class SyncServer extends BaseActiveRecord
 		return $resp['sync_status'];
 	}
 
-	public function request($json) {
+	public function request($request) {
 		$c = curl_init();
 		curl_setopt($c,CURLOPT_URL,"http://$this->hostname/sync/csrf");
 		curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
-		curl_setopt($c,CURLOPT_COOKIEJAR,"X");
 		$csrf = trim(curl_exec($c));
 
 		curl_setopt($c,CURLOPT_URL,"http://$this->hostname/sync/request");
@@ -237,9 +242,10 @@ class SyncServer extends BaseActiveRecord
 		$data = curl_exec($c);
 
 		if (!$resp = @json_decode($data,true)) {
-			if (preg_match('/Authorization Required/i',$resp)) {
+			if (preg_match('/Authorization Required/i',$data)) {
 				die("http authorisation required");
 			} else {
+				die($data);
 				die("unable to parse server response");
 			}
 		}
@@ -249,16 +255,17 @@ class SyncServer extends BaseActiveRecord
 
 	public function getCoreTableListInSyncOrder() {
 		$tables = array('user');
+		$exclude = array('authitem','authitemchild','authassignment');
 
 		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
 			if (!preg_match('/^et_oph/',$table->name) && !preg_match('/^oph/',$table->name)) {
 				if (!in_array($table->name,$tables)) {
 					foreach ($this->getDependencies($table,$tables) as $deptable) {
-						if (!in_array($deptable,$tables)) {
+						if (!in_array($deptable,$tables) && !in_array($deptable,$exclude)) {
 							$tables[] = $deptable;
 						}
 					}
-					if (!in_array($table->name,$tables)) {
+					if (!in_array($table->name,$tables) && !in_array($table->name,$exclude)) {
 						$tables[] = $table->name;
 					}
 				}

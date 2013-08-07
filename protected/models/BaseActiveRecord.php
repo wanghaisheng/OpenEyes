@@ -172,4 +172,40 @@ class BaseActiveRecord extends CActiveRecord
 
 		return $object;
 	}
+
+	public function delete() {
+		$model = get_class($this);
+
+		$dl = new DeleteLog;
+		$dl->item_table = $model::model()->tableName();
+		$dl->item_id = $this->id;
+
+		if (!$dl->save()) {
+			throw new Exception("Unable to save delete_log item: ".print_r($dl->getErrors(),true));
+		}
+
+		return parent::delete();
+	}
+
+	public function deleteAll($condition='', $params=array()) {
+		$model = get_class($this);
+
+		if (is_object($condition) && get_class($condition) == 'CDbCriteria') {
+			$items = $model::model()->findAll($condition);
+		} else {
+			$items = $model::model()->findAll($condition,$params);
+		}
+
+		foreach ($items as $item) {
+			$dl = new DeleteLog;
+			$dl->item_table = $model::model()->tableName();
+			$dl->item_id = $item->id;
+
+			if (!$dl->save()) {
+				throw new Exception("Unable to save delete_log item: ".print_r($dl->getErrors(),true));
+			}
+		}
+
+		return parent::deleteAll($condition, $params);
+	}
 }
