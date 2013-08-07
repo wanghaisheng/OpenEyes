@@ -495,42 +495,84 @@ class SyncController extends Controller
 
 	public function receiveItems_event($resp, $data) {
 		foreach ($data as $event) {
-			// Stuff that the event points to
-			!empty($event['related']) && $this->processRelatedData($event['related'], 'foreign');
+			OELog::log(print_r($event,true));
 
-			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
-				if (strtotime($event['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
-					Yii::app()->db->createCommand()->update("event",$event['data'],"id=:id",array(":id"=>$event['id']));
-					$resp['updated']++;
-				} else {
-					$resp['not-modified']++;
+			$_data = $event;
+			foreach ($_data as $key => $value) {
+				if ($key[0] == '_') {
+					unset($_data[$key]);
 				}
-			} else {
-				Yii::app()->db->createCommand()->insert("event",$event['data']);
-				$resp['inserted']++;
 			}
 
-			// Stuff that points to the event
-			!empty($event['related']) && $this->processRelatedData($event['related'], 'reverse');
+			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
+				if (strtotime($_data['last_modified_date']) > strtotime($local['last_modified_date'])) {
+					Yii::app()->db->createCommand()->update("event",$_data,"id=:id",array(":id"=>$event['id']));
+					$resp['updated']++;
+					OELog::log("Updating event {$event['id']}");
+				} else {
+					$resp['not-modified']++;
+					OELog::log("Not updating event {$event['id']}");
+				}
+			} else {
+				Yii::app()->db->createCommand()->insert("event",$_data);
+				$resp['inserted']++;
+				OELog::log("Creating event {$_data['id']}");
+			}
+
+			$this->processRelatedData($event['_elements']);
+			$this->processDeletes($event['_deletes']);
+		}
+
+		return $resp;
+	}
+
+	public function processRelatedData($related, $type=null) {
+		foreach ($related as $item) {
+			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'foreign' : $type));
+
+			if (@$item['type'] == $type) {
+				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['table'])->where("id=:id",array(":id"=>$item['data']['id']))->queryRow()) {
+					if (strtotime($item['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
+						Yii::app()->db->createCommand()->update($item['table'],$item['data'],"id=:id",array(":id"=>$item['data']['id']));
+						OELog::log("Updating {$item['table']} {$item['data']['id']}: ".print_r($item['data'],true));
+					}
+				} else {
+					Yii::app()->db->createCommand()->insert($item['table'],$item['data']);
+					OELog::log("Inserting {$item['table']}: ".print_r($item['data'],true));
+				}
+			} else {
+				OELog::log("Related data type {$item['type']} != $type");
+			}
+
+			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'reverse' : $type));
 		}
 	}
 
-	public function processRelatedData($related, $type) {
-		foreach ($related as $item) {
-			!empty($item['related']) && $this->processForeignRelatedData($related['related'], $type);
-
-			if ($item['type'] == $type) {
-				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['table'])->where("id=:id",array(":id"=>$item['data']['id']))->queryRow()) {
-					if (strtotime($item['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
-						Yii::app()->createCommand()->update($item['table'],$item['data'],"id=:id",array(":id"=>$item['data']['id']));
-					}
-				} else {
-					Yii::app()->createCommand()->insert($item['table'],$item['data']);
+	public function processDeletes($deletes) {
+		foreach ($deletes as $delete) {
+			if ($local = Yii::app()->db->createCommand()->select("*")->from($delete['table'])->where("id=:id",array(":id"=>$delete['id']))->queryRow()) {
+				if (strtotime($delete['datetime']) > strtotime($local['last_modified_date'])) {
+					$this->nuke($delete['table'],$delete['id']);
 				}
 			}
-
-			!empty($item['related']) && $this->processRelatedData($related['related'], $type);
 		}
+	}
+
+	// Delete row and anything that points to it recursively
+	public function nuke($table, $id) {
+		foreach (Yii::app()->db->getSchema()->getTables() as $_table) {
+			if ($_table->name != $table) {
+				foreach ($_table->foreignKeys as $field => $key) {
+					if ($key[0] == $table) {
+						foreach (Yii::app()->db->createCommand()->select("*")->from($_table->name)->where("$field = :$field",array(":$field" => $id))->queryAll() as $row) {
+							$this->nuke($_table->name,$row['id']);
+						}
+					}
+				}
+			}
+		}
+
+		Yii::app()->db->createCommand()->delete($table,"id=:id",array(":id"=>$id));
 	}
 
 	public function sendItems($table, $last_sync) {
