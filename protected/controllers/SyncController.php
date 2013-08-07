@@ -171,15 +171,7 @@ class SyncController extends Controller
 
 		switch ($data['type']) {
 			case 'PUSH':
-				$resp = $this->receiveItems($data['table'],$data['data']);
-
-				return $this->response('ok',array(
-					'received' => count($data['data']),
-					'inserted' => $resp['i'],
-					'updated' => $resp['u'],
-					'not-modified' => $resp['nm'],
-				));
-				break;
+				return $this->response('ok',$this->receiveItems($data['table'],$data['data']));
 			case 'PULL':
 				$this->sendAssetsAndEvents($data['timestamp']);
 				break;
@@ -417,13 +409,18 @@ class SyncController extends Controller
 	}
 
 	public function receiveItems($table,$data) {
-		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
+		$resp = array(
+			'received' => count($data),
+			'inserted' => 0,
+			'updated' => 0,
+			'not-modified' => 0,
+		);
 
 		switch ($table) {
 			case 'proc_opcs_assignment':
-				return $this->receiveItems_proc_opcs_assignment($data);
+				return $this->receiveItems_proc_opcs_assignment($resp, $data);
 			case 'delete_log':
-				return $this->receiveItems_delete_log($data);
+				return $this->receiveItems_delete_log($resp, $data);
 		}
 
 		foreach ($data as $item) {
@@ -434,13 +431,13 @@ class SyncController extends Controller
 					unset($item['id']);
 
 					Yii::app()->db->createCommand()->update($table, $item, "id = :id", array(":id" => $id));
-					$resp['u']++;
+					$resp['updated']++;
 				} else {
-					$resp['nm']++;
+					$resp['not-modified']++;
 				}
 			} else if (!$this->wasMoreRecentlyDeleted($table, $item)) {
 				Yii::app()->db->createCommand()->insert($table, $item);
-				$resp['i']++;
+				$resp['inserted']++;
 			}
 		}
 
@@ -457,22 +454,18 @@ class SyncController extends Controller
 		return false;
 	}
 
-	public function receiveItems_proc_opcs_assignment($data) {
-		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
-
+	public function receiveItems_proc_opcs_assignment($resp, $data) {
 		foreach ($data as $item) {
 			if (!$local = Yii::app()->db->createCommand()->select("*")->from('proc_opcs_assignment')->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
 				Yii::app()->db->createCommand()->insert($table, $item);
-				$resp['i']++;
+				$resp['inserted']++;
 			}
 		}
 
 		return $resp;
 	}
 
-	public function receiveItems_delete_log($data) {
-		$resp = array('i' => 0, 'u' => 0, 'nm' => 0);
-
+	public function receiveItems_delete_log($resp, $data) {
 		foreach ($data as $item) {
 			if ($local = Yii::app()->db->createCommand()->select("*")->from($item['item_table'])->where("id=:id",array(":id"=>$item['item_id']))->queryRow()) {
 				if (strtotime($local['last_modified_date']) <= strtotime($item['created_date'])) {
@@ -482,9 +475,9 @@ class SyncController extends Controller
 
 			if (!$local = Yii::app()->db->createCommand()->select("*")->from('delete_log')->where('id=:id',array(':id'=>$item['id']))->queryRow()) {
 				Yii::app()->createCommand()->insert('delete_log',$item);
-				$resp['i']++;
+				$resp['inserted']++;
 			} else {
-				$resp['nm']++;
+				$resp['not-modified']++;
 			}
 		}
 
