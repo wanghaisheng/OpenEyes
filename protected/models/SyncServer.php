@@ -255,7 +255,7 @@ class SyncServer extends BaseActiveRecord
 
 	public function getCoreTableListInSyncOrder() {
 		$tables = array('user');
-		$exclude = array('authitem','authitemchild','authassignment');
+		$exclude = array('authitem','authitemchild','authassignment','event','episode','protected_file','user_session','tbl_migration');
 
 		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
 			if (!preg_match('/^et_oph/',$table->name) && !preg_match('/^oph/',$table->name)) {
