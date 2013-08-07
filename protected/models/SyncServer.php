@@ -72,7 +72,7 @@ class SyncServer extends BaseActiveRecord
 
 	public function sync() {
 		$request = array(
-			'key' => $this->key,
+			//'key' => $this->key,
 			'type' => 'PUSH',
 			'tables' => array(),
 			'events' => array(),
@@ -143,9 +143,14 @@ class SyncServer extends BaseActiveRecord
 		return false;
 	}
 
-	public function push($table, $data) {
+	public function push($table) {
+		$data = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($this->last_sync))->order("last_modified_date asc")->queryAll();
+
+		if (empty($data)) {
+			return array('received'=>0,'inserted'=>0,'updated'=>0,'not-modified'=>0);
+		}
+
 		$resp = $this->request(array(
-			'key' => $this->key,
 			'type' => 'PUSH',
 			'table' => $table,
 			'data' => $data,
@@ -158,7 +163,23 @@ class SyncServer extends BaseActiveRecord
 		return $resp['message'];
 	}
 
-	public function pull() {
+	public function pull($table) {
+		$resp = $this->request(array(
+			'type' => 'PULL',
+			'table' => $table,
+		));
+
+		if ($resp['status'] != 'ok') {
+			die("Failed: {$resp['message']}\n");
+		}
+
+		$s = new SyncController(null);
+		$resp = $s->receiveItems($table, $resp['message']['data']);
+
+		return $resp;
+	}
+
+	public function pull2() {
 		$response = $this->request(json_encode(array(
 			'key' => $this->key,
 			'timestamp' => $this->last_sync,
@@ -226,6 +247,9 @@ class SyncServer extends BaseActiveRecord
 	}
 
 	public function request($request) {
+		$request['key'] = $this->key;
+		$request['last_sync'] = $this->last_sync;
+
 		$c = curl_init();
 		curl_setopt($c,CURLOPT_URL,"http://$this->hostname/sync/csrf");
 		curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
