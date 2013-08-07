@@ -181,7 +181,12 @@ class SyncController extends Controller
 				));
 				break;
 			case 'PULL':
-				$this->sendAssetsAndEvents($data['timestamp']);
+				$items = $this->sendItems($data['table'], $data['last_sync']);
+
+				return $this->response('ok',array(
+					'data' => $items,
+				));
+
 				break;
 			case 'STATUS':
 				if (Event::model()->find('last_modified_date > ?',array($data['timestamp'])) || Asset::model()->find('last_modified_date > ? ',array($data['timestamp']))) {
@@ -489,5 +494,9 @@ class SyncController extends Controller
 		}
 
 		return $resp;
+	}
+
+	public function sendItems($table, $last_sync) {
+		return Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
 	}
 }
