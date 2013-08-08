@@ -63,10 +63,61 @@ class SyncServer extends BaseActiveRecord
 		);
 	}
 
-	public function getLastSyncText() {
+	public function getLastSyncText()
+	{
 		if ($this->last_sync == '1900-01-01 00:00:00') {
 			return 'Never';
 		}
 		return date('j M Y H:i',strtotime($this->last_sync));
+	}
+
+	public function up()
+	{
+		if (!($ping = trim(`which ping`))) {
+			throw new Exception("Unable to find path to the ping binary");
+		}
+
+		if (preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/',$this->hostname)) {
+			$ip = $this->hostname;
+		} else {
+			if (file_exists("/etc/hosts")) {
+				foreach (@file("/etc/hosts") as $line) {
+					$line = substr($line,0,strlen($line)-1);
+					if (preg_match('/^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})[\s\t]+([a-z][a-zA-Z0-9\.\-_]+)$/',$line,$m)) {
+						if (strtolower($m[2]) == strtolower($this->hostname)) {
+							$ip = $m[1];
+							break;
+						}
+					}
+				}
+			}
+
+			if (!isset($ip)) {
+				$res = trim(`host -W1 {$this->hostname} |grep 'has address' |head -n1`);
+				if (!$res) {
+					return false;
+				}
+				$e = explode(' ',$res);
+				$ip = $e[3];
+			}
+		}
+
+		$platform = trim(`uname`);
+
+		if ($platform == 'Darwin') {
+			if (`$ping -t3 -c1 -W3 $ip 2>/dev/null |grep '1 packets received'`) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if ($platform == 'Linux') {
+			if (`$ping -c1 -w3 $ip 2>/dev/null |grep '1 received'`) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			throw new Exception("Unsupported platform: $platform");
+		}
 	}
 }

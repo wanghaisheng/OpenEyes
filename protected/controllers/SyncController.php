@@ -40,61 +40,21 @@ class SyncController extends Controller
 		);
 	}
 
-	public function actionIndex() {
+	public function actionIndex()
+	{
 		$this->renderPartial('/sync/index',array('server' => SyncServer::model()->find()));
 	}
 
-	public function actionPing($id) {
+	public function actionPing($id)
+	{
 		if (!$server = SyncServer::model()->findByPk($id)) {
 			throw new Exception("Unknown server: $id");
 		}
 
-		if (!($ping = trim(`which ping`))) {
-			throw new Exception("Unable to find path to the ping binary");
-		}
-
-		if (preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/',$server->hostname)) {
-			$ip = $server->hostname;
+		if ($server->up()) {
+			echo "UP";
 		} else {
-			if (file_exists("/etc/hosts")) {
-				foreach (@file("/etc/hosts") as $line) {
-					$line = substr($line,0,strlen($line)-1);
-					if (preg_match('/^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})[\s\t]+([a-z][a-zA-Z0-9\.\-_]+)$/',$line,$m)) {
-						if (strtolower($m[2]) == strtolower($server->hostname)) {
-							$ip = $m[1];
-							break;
-						}
-					}
-				}
-			}
-
-			if (!isset($ip)) {
-				$res = trim(`host -W1 {$server->hostname} |grep 'has address' |head -n1`);
-				if (!$res) {
-					echo "DOWN";
-					return;
-				}
-				$e = explode(' ',$res);
-				$ip = $e[3];
-			}
-		}
-
-		$platform = trim(`uname`);
-
-		if ($platform == 'Darwin') {
-			if (`$ping -t3 -c1 -W3 $ip 2>/dev/null |grep '1 packets received'`) {
-				echo "UP";
-			} else {
-				echo "DOWN";
-			}
-		} else if ($platform == 'Linux') {
-			if (`$ping -c1 -w3 $ip 2>/dev/null |grep '1 received'`) {
-				echo "UP";
-			} else {
-				echo "DOWN";
-			}
-		} else {
-			throw new Exception("Unsupported platform: $platform");
+			echo "DOWN";
 		}
 	}
 
@@ -206,43 +166,5 @@ class SyncController extends Controller
 			'status' => $status,
 			'message' => $data,
 		));
-	}
-
-	public function receiveItems($table,$data) {
-		$resp = array(
-			'received' => count($data),
-			'inserted' => 0,
-			'updated' => 0,
-			'not-modified' => 0,
-		);
-
-		switch ($table) {
-			case 'proc_opcs_assignment':
-				return $this->receiveItems_proc_opcs_assignment($resp, $data);
-			case 'delete_log':
-				return $this->receiveItems_delete_log($resp, $data);
-			case 'event':
-				return $this->receiveItems_event($resp, $data);
-		}
-
-		foreach ($data as $item) {
-			$id = @$item['id'];
-
-			if ($id && $local = Yii::app()->db->createCommand()->select("*")->from($table)->where("id = :id",array('id'=>$id))->queryRow()) {
-				if (strtotime($item['last_modified_date']) > strtotime($item['last_modified_date'])) {
-					unset($item['id']);
-
-					Yii::app()->db->createCommand()->update($table, $item, "id = :id", array(":id" => $id));
-					$resp['updated']++;
-				} else {
-					$resp['not-modified']++;
-				}
-			} else if (!$this->wasMoreRecentlyDeleted($table, $item)) {
-				Yii::app()->db->createCommand()->insert($table, $item);
-				$resp['inserted']++;
-			}
-		}
-
-		return $resp;
 	}
 }
