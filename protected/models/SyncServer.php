@@ -163,6 +163,100 @@ class SyncServer extends BaseActiveRecord
 		return $resp['message'];
 	}
 
+	public function pushEvents() {
+		$events = Yii::app()->db->createCommand()->select("*")->from("event")->where("last_modified_date > ?",array($this->last_sync))->order("last_modified_date asc")->queryAll();
+
+		if (empty($events)) {
+			return array('received'=>0,'inserted'=>0,'updated'=>0,'not-modified'=>0);
+		}
+
+		foreach ($events as $i => $event) {
+			$events[$i]['_elements'] = $this->wrapElements($event);
+		}
+
+		$resp = $this->request(array(
+			'type' => 'PUSH',
+			'table' => 'event',
+			'data' => $events,
+		));
+
+		if ($resp['status'] != 'ok') {
+			die("Failed: {$resp['message']}\n");
+		}
+
+		return $resp['message'];
+	}
+
+	public function wrapElements($event) {
+		$elements = array();
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('event_type_id=:event_type_id');
+		$criteria->params[':event_type_id'] = $event['event_type_id'];
+		$criteria->order = 'display_order asc';
+
+		foreach (ElementType::model()->findAll($criteria) as $element_type) {
+			$class = $element_type->class_name;
+			$table = $class::model()->tableName();
+
+			if ($element = Yii::app()->db->createCommand()->select("*")->from($table)->where("event_id = :event_id",array(":event_id"=>$event['id']))->queryRow()) {
+				$elements[] = $this->wrapElement($table, $element);
+			}
+		}
+
+		return $elements;
+	}
+
+	public function wrapElement($table, $element) {
+		return array(
+			'table' => $table,
+			'data' => $element,
+			'related' => $this->getRelatedItems($table, $element),
+		);
+	}
+
+	public function getRelatedItems($table, $element) {
+		$related = array();
+
+		if (preg_match('/^et_/',$table)) {
+			foreach (Yii::app()->db->getSchema()->getTables() as $_table) {
+				foreach ($_table->foreignKeys as $field => $key) {
+					if ($key[0] == $table) {
+						$data = Yii::app()->db->createCommand()->select("*")->from($_table->name)->where("$field = :$field",array(":$field"=>$element['id']))->queryAll();
+
+						if (!empty($data)) {
+							foreach ($data as $item) {
+								$related[] = array(
+									'type' => 'reverse',
+									'table' => $_table->name,
+									'data' => $item,
+									'related' => $this->getRelatedItems($_table->name, $item),
+								);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		foreach (Yii::app()->db->getSchema()->getTable($table)->foreignKeys as $field => $key) {
+			if (preg_match('/^oph/',$key[0])) {
+				if ($element[$field] !== null) {
+					if ($relatedItem = Yii::app()->db->createCommand()->select("*")->from($key[0])->where("id=?",array($element[$field]))->queryRow()) {
+						$related[] = array(
+							'type' => 'foreign',
+							'table' => $key[0],
+							'item' => $relatedItem,
+							'related' => $this->getRelatedItems($key[0], $relatedItem),
+						);
+					}
+				}
+			}
+		}
+
+		return $related;
+	}
+
 	public function pull($table) {
 		$resp = $this->request(array(
 			'type' => 'PULL',

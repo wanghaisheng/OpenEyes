@@ -472,17 +472,19 @@ class SyncController extends Controller
 
 	public function receiveItems_delete_log($resp, $data) {
 		foreach ($data as $item) {
-			if ($local = Yii::app()->db->createCommand()->select("*")->from($item['item_table'])->where("id=:id",array(":id"=>$item['item_id']))->queryRow()) {
-				if (strtotime($local['last_modified_date']) <= strtotime($item['created_date'])) {
-					Yii::app()->db->createCommand()->delete($item['item_table'],"id=:id",array(":id"=>$item['item_id']));
+			if ($item['event_id'] === null) {
+				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['item_table'])->where("id=:id",array(":id"=>$item['item_id']))->queryRow()) {
+					if (strtotime($local['last_modified_date']) <= strtotime($item['created_date'])) {
+						Yii::app()->db->createCommand()->delete($item['item_table'],"id=:id",array(":id"=>$item['item_id']));
+					}
 				}
-			}
 
-			if (!$local = Yii::app()->db->createCommand()->select("*")->from('delete_log')->where('id=:id',array(':id'=>$item['id']))->queryRow()) {
-				Yii::app()->createCommand()->insert('delete_log',$item);
-				$resp['inserted']++;
-			} else {
-				$resp['not-modified']++;
+				if (!$local = Yii::app()->db->createCommand()->select("*")->from('delete_log')->where('id=:id',array(':id'=>$item['id']))->queryRow()) {
+					Yii::app()->createCommand()->insert('delete_log',$item);
+					$resp['inserted']++;
+				} else {
+					$resp['not-modified']++;
+				}
 			}
 		}
 

@@ -174,11 +174,14 @@ class BaseActiveRecord extends CActiveRecord
 	}
 
 	public function delete() {
+		$controller = Yii::app()->getController();
+
 		$model = get_class($this);
 
 		$dl = new DeleteLog;
 		$dl->item_table = $model::model()->tableName();
 		$dl->item_id = $this->id;
+		$dl->event_id = isset($controller->event) ? $controller->event->id : null;
 
 		if (parent::delete()) {
 			if (!$dl->save()) {
