@@ -200,4 +200,42 @@ class SyncController extends Controller
 			'message' => $data,
 		));
 	}
+
+	public function receiveItems($table,$data) {
+		$resp = array(
+			'received' => count($data),
+			'inserted' => 0,
+			'updated' => 0,
+			'not-modified' => 0,
+		);
+
+		switch ($table) {
+			case 'proc_opcs_assignment':
+				return $this->receiveItems_proc_opcs_assignment($resp, $data);
+			case 'delete_log':
+				return $this->receiveItems_delete_log($resp, $data);
+			case 'event':
+				return $this->receiveItems_event($resp, $data);
+		}
+
+		foreach ($data as $item) {
+			$id = @$item['id'];
+
+			if ($id && $local = Yii::app()->db->createCommand()->select("*")->from($table)->where("id = :id",array('id'=>$id))->queryRow()) {
+				if (strtotime($item['last_modified_date']) > strtotime($item['last_modified_date'])) {
+					unset($item['id']);
+
+					Yii::app()->db->createCommand()->update($table, $item, "id = :id", array(":id" => $id));
+					$resp['updated']++;
+				} else {
+					$resp['not-modified']++;
+				}
+			} else if (!$this->wasMoreRecentlyDeleted($table, $item)) {
+				Yii::app()->db->createCommand()->insert($table, $item);
+				$resp['inserted']++;
+			}
+		}
+
+		return $resp;
+	}
 }
