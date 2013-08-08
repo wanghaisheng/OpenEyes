@@ -4,11 +4,11 @@ class m130806_131714_disorder_tree_fields extends CDbMigration
 {
 	public function up()
 	{
-		$this->addColumn('disorder_tree','created_user_id','int(10) unsigned NOT NULL');
+		$this->addColumn('disorder_tree','created_user_id','int(10) unsigned NOT NULL DEFAULT 1');
 		$this->update('disorder_tree',array('created_user_id'=>1));
 		$this->addForeignKey('disorder_tree_created_user_id_fk','disorder_tree','created_user_id','user','id');
 
-		$this->addColumn('disorder_tree','last_modified_user_id','int(10) unsigned NOT NULL');
+		$this->addColumn('disorder_tree','last_modified_user_id','int(10) unsigned NOT NULL DEFAULT 1');
 		$this->update('disorder_tree',array('last_modified_user_id'=>1));
 		$this->addForeignKey('disorder_tree_last_modified_user_id_fk','disorder_tree','last_modified_user_id','user','id');
 

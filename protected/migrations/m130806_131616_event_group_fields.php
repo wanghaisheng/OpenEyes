@@ -4,11 +4,11 @@ class m130806_131616_event_group_fields extends CDbMigration
 {
 	public function up()
 	{
-		$this->addColumn('event_group','created_user_id','int(10) unsigned NOT NULL');
+		$this->addColumn('event_group','created_user_id','int(10) unsigned NOT NULL DEFAULT 1');
 		$this->update('event_group',array('created_user_id'=>1));
 		$this->addForeignKey('event_group_created_user_id_fk','event_group','created_user_id','user','id');
 
-		$this->addColumn('event_group','last_modified_user_id','int(10) unsigned NOT NULL');
+		$this->addColumn('event_group','last_modified_user_id','int(10) unsigned NOT NULL DEFAULT 1');
 		$this->update('event_group',array('last_modified_user_id'=>1));
 		$this->addForeignKey('event_group_last_modified_user_id_fk','event_group','last_modified_user_id','user','id');
 

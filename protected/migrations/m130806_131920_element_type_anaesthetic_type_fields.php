@@ -4,11 +4,11 @@ class m130806_131920_element_type_anaesthetic_type_fields extends CDbMigration
 {
 	public function up()
 	{
-		$this->addColumn('element_type_anaesthetic_type','created_user_id','int(10) unsigned NOT NULL');
+		$this->addColumn('element_type_anaesthetic_type','created_user_id','int(10) unsigned NOT NULL DEFAULT 1');
 		$this->update('element_type_anaesthetic_type',array('created_user_id'=>1));
 		$this->addForeignKey('element_type_anaesthetic_type_created_user_id_fk','element_type_anaesthetic_type','created_user_id','user','id');
 
-		$this->addColumn('element_type_anaesthetic_type','last_modified_user_id','int(10) unsigned NOT NULL');
+		$this->addColumn('element_type_anaesthetic_type','last_modified_user_id','int(10) unsigned NOT NULL DEFAULT 1');
 		$this->update('element_type_anaesthetic_type',array('last_modified_user_id'=>1));
 		$this->addForeignKey('element_type_anaesthetic_type_last_modified_user_id_fk','element_type_anaesthetic_type','last_modified_user_id','user','id');
 
