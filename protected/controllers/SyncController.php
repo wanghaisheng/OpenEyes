@@ -426,6 +426,8 @@ class SyncController extends Controller
 				return $this->receiveItems_proc_opcs_assignment($resp, $data);
 			case 'delete_log':
 				return $this->receiveItems_delete_log($resp, $data);
+			case 'event':
+				return $this->receiveItems_event($resp, $data);
 		}
 
 		foreach ($data as $item) {
@@ -489,6 +491,46 @@ class SyncController extends Controller
 		}
 
 		return $resp;
+	}
+
+	public function receiveItems_event($resp, $data) {
+		foreach ($data as $event) {
+			// Stuff that the event points to
+			!empty($event['related']) && $this->processRelatedData($event['related'], 'foreign');
+
+			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
+				if (strtotime($event['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
+					Yii::app()->db->createCommand()->update("event",$event['data'],"id=:id",array(":id"=>$event['id']));
+					$resp['updated']++;
+				} else {
+					$resp['not-modified']++;
+				}
+			} else {
+				Yii::app()->db->createCommand()->insert("event",$event['data']);
+				$resp['inserted']++;
+			}
+
+			// Stuff that points to the event
+			!empty($event['related']) && $this->processRelatedData($event['related'], 'reverse');
+		}
+	}
+
+	public function processRelatedData($related, $type) {
+		foreach ($related as $item) {
+			!empty($item['related']) && $this->processForeignRelatedData($related['related'], $type);
+
+			if ($item['type'] == $type) {
+				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['table'])->where("id=:id",array(":id"=>$item['data']['id']))->queryRow()) {
+					if (strtotime($item['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
+						Yii::app()->createCommand()->update($item['table'],$item['data'],"id=:id",array(":id"=>$item['data']['id']));
+					}
+				} else {
+					Yii::app()->createCommand()->insert($item['table'],$item['data']);
+				}
+			}
+
+			!empty($item['related']) && $this->processRelatedData($related['related'], $type);
+		}
 	}
 
 	public function sendItems($table, $last_sync) {
