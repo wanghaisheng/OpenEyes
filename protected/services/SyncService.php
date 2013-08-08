@@ -546,7 +546,7 @@ class SyncService
 		Yii::app()->db->createCommand()->delete($table,"id=:id",array(":id"=>$id));
 	}
 
-	public function getItems_event($table, $last_sync)
+	public function getItems($table, $last_sync)
 	{
 		$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
 
