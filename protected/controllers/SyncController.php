@@ -129,16 +129,18 @@ class SyncController extends Controller
 			return $this->response("fail","Access denied");
 		}
 
+		$sync = new SyncService;
+
 		switch ($data['type']) {
 			case 'PUSH':
-				return $this->response('ok',$this->receiveItems($data['table'],$data['data']));
+				return $this->response('ok',$sync->receiveItems($data['table'],$data['data']));
 			case 'PULL':
 				switch ($data['table']) {
 					case 'event':
-						$items = $this->sendItems_event($data['last_sync']);
+						$items = $sync->sendItems_event($data['last_sync']);
 						break;
 					default:
-						$items = $this->sendItems($data['table'], $data['last_sync']);
+						$items = $sync->sendItems($data['table'], $data['last_sync']);
 						break;
 				}
 
