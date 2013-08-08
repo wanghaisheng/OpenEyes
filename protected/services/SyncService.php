@@ -24,11 +24,13 @@ class SyncService
 {
 	public $server = null;
 
-	public function __construct($server=null) {
+	public function __construct($server=null)
+	{
 		$this->server = $server;
 	}
 
-	public function sync() {
+	public function sync()
+	{
 		$request = array(
 			'type' => 'PUSH',
 			'tables' => array(),
@@ -94,7 +96,8 @@ class SyncService
 		return false;
 	}
 
-	public function push($table) {
+	public function push($table)
+	{
 		$data = Yii::app()->db->createCommand()
 			->select("*")
 			->from($table)
@@ -119,7 +122,8 @@ class SyncService
 		return $resp['message'];
 	}
 
-	public function pushEvents() {
+	public function pushEvents()
+	{
 		$events = Yii::app()->db->createCommand()->select("*")->from("event")->where("last_modified_date > ?",array($this->server->last_sync))->order("last_modified_date asc")->queryAll();
 
 		if (empty($events)) {
@@ -144,7 +148,8 @@ class SyncService
 		return $resp['message'];
 	}
 
-	public function wrapElements($event) {
+	public function wrapElements($event)
+	{
 		$elements = array();
 
 		$criteria = new CDbCriteria;
@@ -164,7 +169,8 @@ class SyncService
 		return $elements;
 	}
 
-	public function wrapElement($table, $element) {
+	public function wrapElement($table, $element)
+	{
 		return array(
 			'table' => $table,
 			'data' => $element,
@@ -172,7 +178,8 @@ class SyncService
 		);
 	}
 
-	public function getRelatedItems($table, $element) {
+	public function getRelatedItems($table, $element)
+	{
 		$related = array();
 
 		if (preg_match('/^et_/',$table)) {
@@ -214,7 +221,8 @@ class SyncService
 		return $related;
 	}
 
-	public function wrapDeletes($event, $last_sync) {
+	public function wrapDeletes($event, $last_sync)
+	{
 		$deletes = array();
 
 		$event_type = EventType::model()->findByPk($event['event_type_id']);
@@ -232,7 +240,8 @@ class SyncService
 		return $deletes;
 	}
 
-	public function pull($table) {
+	public function pull($table)
+	{
 		$resp = $this->request(array(
 			'type' => 'PULL',
 			'table' => $table,
@@ -248,7 +257,8 @@ class SyncService
 		return $resp;
 	}
 
-	public function pullEvents() {
+	public function pullEvents()
+	{
 		$resp = $this->request(array(
 			'type' => 'PULL',
 			'table' => 'event',
@@ -262,7 +272,8 @@ class SyncService
 		$resp = $s->receiveItems('event', $resp['message']['data']);
 	}
 
-	public function inSync() {
+	public function inSync()
+	{
 		$response = $this->request(json_encode(array(
 			'key' => $this->server->key,
 			'timestamp' => $this->server->last_sync,
@@ -284,7 +295,8 @@ class SyncService
 		return $resp['sync_status'];
 	}
 
-	public function request($request) {
+	public function request($request)
+	{
 		$request['key'] = $this->server->key;
 		$request['last_sync'] = $this->server->last_sync;
 
@@ -315,7 +327,8 @@ class SyncService
 		return $resp;
 	}
 
-	public function getCoreTableListInSyncOrder() {
+	public function getCoreTableListInSyncOrder()
+	{
 		$tables = array('user');
 		$exclude = array('authitem','authitemchild','authassignment','event','episode','protected_file','user_session','tbl_migration');
 
@@ -337,7 +350,8 @@ class SyncService
 		return $tables;
 	}
 
-	public function getDependencies($table, $ignore) {
+	public function getDependencies($table, $ignore)
+	{
 		$deps = array();
 
 		foreach ($table->foreignKeys as $key) {
@@ -357,11 +371,13 @@ class SyncService
 		return $deps;
 	}
 
-	public function getTableObject($table) {
+	public function getTableObject($table)
+	{
 		return Yii::app()->db->getSchema()->getTable($table);
 	}
 
-	public function receiveItems($table,$data) {
+	public function receiveItems($table,$data)
+	{
 		$resp = array(
 			'received' => count($data),
 			'inserted' => 0,
@@ -399,7 +415,8 @@ class SyncService
 		return $resp;
 	}
 
-	public function wasMoreRecentlyDeleted($table, $item) {
+	public function wasMoreRecentlyDeleted($table, $item)
+	{
 		if ($dl = DeleteLog::model()->find('item_table=? and item_id=?',array($table,$item['id']))) {
 			if (strtotime($dl->created_date) > strtotime($item->last_modified_date)) {
 				return true;
@@ -409,7 +426,8 @@ class SyncService
 		return false;
 	}
 
-	public function receiveItems_proc_opcs_assignment($resp, $data) {
+	public function receiveItems_proc_opcs_assignment($resp, $data)
+	{
 		foreach ($data as $item) {
 			if (!$local = Yii::app()->db->createCommand()->select("*")->from('proc_opcs_assignment')->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
 				Yii::app()->db->createCommand()->insert($table, $item);
@@ -420,7 +438,8 @@ class SyncService
 		return $resp;
 	}
 
-	public function receiveItems_delete_log($resp, $data) {
+	public function receiveItems_delete_log($resp, $data)
+	{
 		foreach ($data as $item) {
 			if ($item['event_id'] === null) {
 				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['item_table'])->where("id=:id",array(":id"=>$item['item_id']))->queryRow()) {
@@ -441,7 +460,8 @@ class SyncService
 		return $resp;
 	}
 
-	public function receiveItems_event($resp, $data) {
+	public function receiveItems_event($resp, $data)
+	{
 		foreach ($data as $event) {
 			OELog::log(print_r($event,true));
 
@@ -474,7 +494,8 @@ class SyncService
 		return $resp;
 	}
 
-	public function processRelatedData($related, $type=null) {
+	public function processRelatedData($related, $type=null)
+	{
 		foreach ($related as $item) {
 			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'foreign' : $type));
 
@@ -496,7 +517,8 @@ class SyncService
 		}
 	}
 
-	public function processDeletes($deletes) {
+	public function processDeletes($deletes)
+	{
 		foreach ($deletes as $delete) {
 			if ($local = Yii::app()->db->createCommand()->select("*")->from($delete['table'])->where("id=:id",array(":id"=>$delete['id']))->queryRow()) {
 				if (strtotime($delete['datetime']) > strtotime($local['last_modified_date'])) {
@@ -507,7 +529,8 @@ class SyncService
 	}
 
 	// Delete row and anything that points to it recursively
-	public function nuke($table, $id) {
+	public function nuke($table, $id)
+	{
 		foreach (Yii::app()->db->getSchema()->getTables() as $_table) {
 			if ($_table->name != $table) {
 				foreach ($_table->foreignKeys as $field => $key) {
@@ -523,7 +546,17 @@ class SyncService
 		Yii::app()->db->createCommand()->delete($table,"id=:id",array(":id"=>$id));
 	}
 
-	public function sendItems($table, $last_sync) {
-		return Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
+	public function getItems_event($table, $last_sync)
+	{
+		$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
+
+		if ($table == 'event') {
+			foreach ($events as $i => $event) {
+				$events[$i]['_elements'] = $this->wrapElements($event);
+				$events[$i]['_deletes'] = $this->wrapDeletes($event, $this->server->last_sync);
+			}
+		}
+
+		return $events;
 	}
 }
