@@ -41,14 +41,12 @@ class SyncService
 		OELog::log("Preparing to sync ...");
 
 		foreach ($this->getCoreTableListInSyncOrder() as $table) {
-			if (!in_array($table,array('event','episode','protected_file'))) {
-				$changed = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($this->server->last_sync))->order("last_modified_date asc")->queryAll();
+			$changed = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($this->server->last_sync))->order("last_modified_date asc")->queryAll();
 
-				if (!empty($changed)) {
-					OELog::log("[$table] pushing ...");
-					$count = $this->push($table, $changed);
-					OELog::log("[$table] pushed $count rows");
-				}
+			if (!empty($changed)) {
+				OELog::log("[$table] pushing ...");
+				$count = $this->push($table, $changed);
+				OELog::log("[$table] pushed $count rows");
 			}
 		}
 
@@ -339,7 +337,7 @@ class SyncService
 			die("Failed: {$resp['message']}\n");
 		}
 
-		$resp = $this->receiveItems($table, $resp['message']['data']);
+		$resp = $this->receiveItems($table, $resp['message']['data'], "PULL");
 
 		return $resp;
 	}
@@ -355,7 +353,7 @@ class SyncService
 			die("Failed: {$resp['message']}\n");
 		}
 
-		$resp = $this->receiveItems('event', $resp['message']['data']);
+		$resp = $this->receiveItems('event', $resp['message']['data'], "PULL");
 
 		return $resp;
 	}
@@ -418,7 +416,7 @@ class SyncService
 	public function getCoreTableListInSyncOrder()
 	{
 		$tables = array('user');
-		$exclude = array('authitem','authitemchild','authassignment','event','episode','protected_file','user_session','tbl_migration');
+		$exclude = array('authitem','authitemchild','authassignment','event','protected_file','user_session','tbl_migration');
 
 		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
 			if (!preg_match('/^et_oph/',$table->name) && !preg_match('/^oph/',$table->name)) {
@@ -516,7 +514,7 @@ class SyncService
 		return Yii::app()->db->getSchema()->getTable($table);
 	}
 
-	public function receiveItems($table,$data)
+	public function receiveItems($table, $data, $method)
 	{
 		$resp = array(
 			'received' => count($data),
@@ -527,11 +525,11 @@ class SyncService
 
 		switch ($table) {
 			case 'proc_opcs_assignment':
-				return $this->receiveItems_proc_opcs_assignment($resp, $data);
+				return $this->receiveItems_proc_opcs_assignment($resp, $data, $method);
 			case 'delete_log':
-				return $this->receiveItems_delete_log($resp, $data);
+				return $this->receiveItems_delete_log($resp, $data, $method);
 			case 'event':
-				return $this->receiveItems_event($resp, $data);
+				return $this->receiveItems_event($resp, $data, $method);
 		}
 
 		foreach ($data as $item) {
@@ -566,7 +564,7 @@ class SyncService
 		return false;
 	}
 
-	public function receiveItems_proc_opcs_assignment($resp, $data)
+	public function receiveItems_proc_opcs_assignment($resp, $data, $method)
 	{
 		foreach ($data as $item) {
 			if (!$local = Yii::app()->db->createCommand()->select("*")->from('proc_opcs_assignment')->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
@@ -578,7 +576,7 @@ class SyncService
 		return $resp;
 	}
 
-	public function receiveItems_delete_log($resp, $data)
+	public function receiveItems_delete_log($resp, $data, $method)
 	{
 		foreach ($data as $item) {
 			if ($item['event_id'] === null) {
@@ -600,19 +598,22 @@ class SyncService
 		return $resp;
 	}
 
-	public function receiveItems_event($resp, $data)
+	public function receiveItems_event($resp, $data, $method)
 	{
 		$reference = $data['_reference'];
 		unset($data['_reference']);
 
 		foreach ($data as $i => $event) {
-			OELog::log(print_r($event,true));
-
 			$_data = $event;
 			foreach ($_data as $key => $value) {
 				if ($key[0] == '_') {
 					unset($_data[$key]);
 				}
+			}
+
+			if ($method == 'PUSH') {
+				$episode = $this->getEpisodeForEvent($event, $method);
+				$_data['episode_id'] = $episode['id'];
 			}
 
 			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
@@ -632,11 +633,54 @@ class SyncService
 
 			$this->processRelatedData($event['_elements']);
 			$this->processDeletes($event['_deletes']);
+
+			if ($method == 'PUSH' && $event['episode_id'] != $_data['episode_id']) {
+				// Ensure new episode_id is passed back when the PULL is issued
+				Yii::app()->db->createCommand()->update("event",array('last_modified_date'=>date('Y-m-d H:i:s',strtotime($_data['last_modified_date']) +1)),"id=:id",array(":id"=>$event['id']));
+			}
 		}
 
 		$this->processReferenceData($reference);
 
 		return $resp;
+	}
+
+	// Find or create an appropriate episode for the event.  If this is a PUSH, data is being sent to the master so we remap the episode if appropriate
+	public function getEpisodeForEvent($event, $method)
+	{
+		$episode = Yii::app()->db->createCommand()
+			->select("ep.*, ssa.subspecialty_id")
+			->from("episode ep")
+			->join("firm f","ep.firm_id = f.id")
+			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
+			->where("ep.id = :id",array(":id"=>$event['episode_id']))
+			->queryRow();
+
+		$otherEpisode = Yii::app()->db->createCommand()
+			->select("ep.*, ssa.subspecialty_id")
+			->from("episode ep")
+			->join("firm f","ep.firm_id = f.id")
+			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
+			->where("ssa.subspecialty_id = :subspecialty_id and ep.id != :id and episode.deleted != :deleted",array(":subspecialty_id"=>$episode['subspecialty_id'],":id"=>$episode['id'],":deleted"=>1))
+			->queryRow();
+
+		if (!$otherEpisode) {
+			return $episode;
+		}
+
+		// If the episode we already had was created earlier, it should take precedence
+		if (strtotime($otherEpisode['created_date']) < strtotime($episode['created_date'])) {
+			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
+			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",":id"=>$episode['id']);
+
+			return $otherEpisode;
+		}
+
+		// and vice versa
+		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
+		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",":id"=>$otherEpisode['id']);
+
+		return $episode;
 	}
 
 	public function processReferenceData($reference)
@@ -722,6 +766,7 @@ class SyncService
 			foreach ($events as $i => $event) {
 				$events[$i]['_elements'] = $this->wrapElements($event);
 				$events[$i]['_deletes'] = $this->wrapDeletes($event, $last_sync);
+				$events[$i]['_episode'] = Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow(),
 			}
 		}
 

@@ -133,7 +133,7 @@ class SyncController extends Controller
 
 		switch ($data['type']) {
 			case 'PUSH':
-				return $this->response('ok',$sync->receiveItems($data['table'],$data['data']));
+				return $this->response('ok',$sync->receiveItems($data['table'],$data['data'],"PUSH"));
 			case 'PULL':
 				$items = $sync->getItems($data['table'], $data['last_sync']);
 
