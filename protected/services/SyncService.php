@@ -663,7 +663,7 @@ class SyncService
 		$subspecialty_id = Yii::app()->db->createCommand()
 			->select("ssa.subspecialty_id")
 			->from("service_subspecialty_assignment ssa")
-			->join("firm f","f.service_subspecialty_assignment_id = ssa.firm_id")
+			->join("firm f","f.service_subspecialty_assignment_id = ssa.id")
 			->where("f.id = :firm_id",array(":firm_id"=>$event['_episode']['firm_id']))
 			->queryScalar();
 
