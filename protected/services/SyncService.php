@@ -133,10 +133,6 @@ class SyncService
 		foreach ($events as $i => $event) {
 			$events[$i]['_elements'] = $this->wrapElements($event);
 			$events[$i]['_deletes'] = $this->wrapDeletes($event, $this->server->last_sync);
-
-			if ($event['event_type_id'] == 25) {
-				print_r($events[$i]);exit;
-			}
 		}
 
 		$resp = $this->request(array(
