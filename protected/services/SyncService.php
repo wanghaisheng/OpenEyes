@@ -661,7 +661,7 @@ class SyncService
 			->from("episode ep")
 			->join("firm f","ep.firm_id = f.id")
 			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ssa.subspecialty_id = :subspecialty_id and ep.id != :id and episode.deleted != :deleted",array(":subspecialty_id"=>$episode['subspecialty_id'],":id"=>$episode['id'],":deleted"=>1))
+			->where("ssa.subspecialty_id = :subspecialty_id and ep.id != :id and ep.deleted != :deleted",array(":subspecialty_id"=>$episode['subspecialty_id'],":id"=>$episode['id'],":deleted"=>1))
 			->queryRow();
 
 		if (!$otherEpisode) {
