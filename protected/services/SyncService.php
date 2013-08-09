@@ -500,6 +500,12 @@ class SyncService
 			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'foreign' : $type));
 
 			if (@$item['type'] == $type) {
+				if (!isset($item['data']['id'])) {
+					echo $item['table']."\n";
+					print_r($item['data'],true);
+					exit;
+				}
+
 				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['table'])->where("id=:id",array(":id"=>$item['data']['id']))->queryRow()) {
 					if (strtotime($item['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
 						Yii::app()->db->createCommand()->update($item['table'],$item['data'],"id=:id",array(":id"=>$item['data']['id']));
