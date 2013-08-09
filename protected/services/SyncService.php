@@ -484,7 +484,9 @@ class SyncService
 	}
 
 	public function getDependencies2($module_class, $table, $tables) {
-		$_table = Yii::app()->db->getSchema()->getTable($table);
+		if (!$_table = Yii::app()->db->getSchema()->getTable($table)) {
+			die("Table not found: $table\n");
+		}
 
 		foreach ($_table->foreignKeys as $key) {
 			if (!in_array($key[0],$tables) && preg_match('/^'.strtolower($module_class).'_/',$key[0])) {
