@@ -576,7 +576,7 @@ class SyncService
 
 			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'reverse' : $type));
 
-			if ($type === null && $was_modified && !empty($item['defer']) {
+			if ($type === null && $was_modified && !empty($item['defer'])) {
 				Yii::app()->db->createCommand()->update($item['table'],$item['defer'],"id=:id",array(":id"=>$item['data']['id']));
 			}
 		}
