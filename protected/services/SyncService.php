@@ -553,7 +553,7 @@ class SyncService
 		if ($table == 'event') {
 			foreach ($events as $i => $event) {
 				$events[$i]['_elements'] = $this->wrapElements($event);
-				$events[$i]['_deletes'] = $this->wrapDeletes($event, $this->server->last_sync);
+				$events[$i]['_deletes'] = $this->wrapDeletes($event, $last_sync);
 			}
 		}
 
