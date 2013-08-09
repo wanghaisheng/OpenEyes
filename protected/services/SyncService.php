@@ -664,8 +664,18 @@ class SyncService
 			->where("ssa.subspecialty_id = :subspecialty_id and ep.id != :id and ep.deleted != :deleted",array(":subspecialty_id"=>$episode['subspecialty_id'],":id"=>$episode['id'],":deleted"=>1))
 			->queryRow();
 
-		if (!$otherEpisode) {
+		if (!$otherEpisode && $episode) {
 			return $episode;
+		}
+
+		if ($otherEpisode && !$episode) {
+			return $otherEpisode;
+		}
+
+		if (!$episode && !$otherEpisode) {
+			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
+
+			return Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow();
 		}
 
 		// If the episode we already had was created earlier, it should take precedence
