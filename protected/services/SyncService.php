@@ -122,7 +122,7 @@ class SyncService
 
 	public function pushEvents()
 	{
-		$events = $this->getItems('event',$this->server->last_sync);
+		$events = $this->getItems('event',$this->server->last_sync,'PUSH');
 
 		if (empty($events)) {
 			return array('received'=>0,'inserted'=>0,'updated'=>0,'not-modified'=>0);
@@ -540,7 +540,8 @@ class SyncService
 			$id = @$item['id'];
 
 			if ($id && $local = Yii::app()->db->createCommand()->select("*")->from($table)->where("id = :id",array('id'=>$id))->queryRow()) {
-				if (strtotime($item['last_modified_date']) > strtotime($local['last_modified_date'])) {
+				if (strtotime($item['last_modified_date']) > strtotime($local['last_modified_date']) ||
+					($method == 'PULL' && $table == 'episode' && $item['deleted'])) {
 					unset($item['id']);
 
 					Yii::app()->db->createCommand()->update($table, $item, "id = :id", array(":id" => $id));
@@ -809,9 +810,14 @@ class SyncService
 		Yii::app()->db->createCommand()->delete($table,"id=:id",array(":id"=>$id));
 	}
 
-	public function getItems($table, $last_sync)
+	public function getItems($table, $last_sync, $method)
 	{
-		$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
+		if ($method == 'PULL' && $table == 'episode') {
+			// We always want to pull deleted episodes from the master back to the slave
+			$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ? or deleted = ?",array($last_sync,1))->order("last_modified_date asc")->queryAll();
+		} else {
+			$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
+		}
 
 		if ($table == 'event') {
 			foreach ($events as $i => $event) {
