@@ -251,8 +251,7 @@ class SyncService
 			die("Failed: {$resp['message']}\n");
 		}
 
-		$s = new SyncController(null);
-		$resp = $s->receiveItems($table, $resp['message']['data']);
+		$resp = $this->receiveItems($table, $resp['message']['data']);
 
 		return $resp;
 	}
@@ -268,8 +267,9 @@ class SyncService
 			die("Failed: {$resp['message']}\n");
 		}
 
-		$s = new SyncController(null);
-		$resp = $s->receiveItems('event', $resp['message']['data']);
+		$resp = $this->receiveItems('event', $resp['message']['data']);
+
+		return $resp;
 	}
 
 	public function inSync()
