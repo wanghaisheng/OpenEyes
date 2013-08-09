@@ -570,6 +570,8 @@ class SyncService
 
 	public function receiveItems_proc_opcs_assignment($resp, $data, $method)
 	{
+		unset($data['_reference']);
+
 		foreach ($data as $item) {
 			if (!$local = Yii::app()->db->createCommand()->select("*")->from('proc_opcs_assignment')->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
 				Yii::app()->db->createCommand()->insert($table, $item);
@@ -582,6 +584,8 @@ class SyncService
 
 	public function receiveItems_delete_log($resp, $data, $method)
 	{
+		unset($data['_reference']);
+
 		foreach ($data as $item) {
 			if ($item['event_id'] === null) {
 				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['item_table'])->where("id=:id",array(":id"=>$item['item_id']))->queryRow()) {
