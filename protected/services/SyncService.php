@@ -669,14 +669,17 @@ class SyncService
 			->queryRow();
 
 		if (!$otherEpisode && $episode) {
+			OELog::log("CONDITION 1");
 			return $episode;
 		}
 
 		if ($otherEpisode && !$episode) {
+			OELog::log("CONDITION 2");
 			return $otherEpisode;
 		}
 
 		if (!$episode && !$otherEpisode) {
+			OELog::log("CONDITION 3");
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
 
 			return Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow();
@@ -684,11 +687,14 @@ class SyncService
 
 		// If the episode we already had was created earlier, it should take precedence
 		if (strtotime($otherEpisode['created_date']) < strtotime($episode['created_date'])) {
+			OELog::log("CONDITION 4");
 			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
 			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$episode['id']));
 
 			return $otherEpisode;
 		}
+
+		OELog::log("CONDITION 5");
 
 		// and vice versa
 		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
