@@ -124,15 +124,10 @@ class SyncService
 
 	public function pushEvents()
 	{
-		$events = Yii::app()->db->createCommand()->select("*")->from("event")->where("last_modified_date > ?",array($this->server->last_sync))->order("last_modified_date asc")->queryAll();
+		$events = $this->getItems('event',$this->server->last_sync);
 
 		if (empty($events)) {
 			return array('received'=>0,'inserted'=>0,'updated'=>0,'not-modified'=>0);
-		}
-
-		foreach ($events as $i => $event) {
-			$events[$i]['_elements'] = $this->wrapElements($event);
-			$events[$i]['_deletes'] = $this->wrapDeletes($event, $this->server->last_sync);
 		}
 
 		$resp = $this->request(array(
@@ -181,14 +176,14 @@ class SyncService
 		);
 	}
 
-	public function getRelatedItems($table, $element)
+	public function getRelatedItems($table, $element, $ignore=array())
 	{
 		$related = array();
 
 		if (preg_match('/^et_/',$table)) {
 			foreach (Yii::app()->db->getSchema()->getTables() as $_table) {
 				foreach ($_table->foreignKeys as $field => $key) {
-					if ($key[0] == $table) {
+					if ($key[0] == $table && !in_array($_table->name,$ignore)) {
 						$data = Yii::app()->db->createCommand()->select("*")->from($_table->name)->where("$field = :$field",array(":$field"=>$element['id']))->queryAll();
 
 						if (!empty($data)) {
@@ -197,7 +192,7 @@ class SyncService
 									'type' => 'reverse',
 									'table' => $_table->name,
 									'data' => $item,
-									'related' => $this->getRelatedItems($_table->name, $item),
+									'related' => $this->getRelatedItems($_table->name, $item, $ignore),
 								);
 							}
 						}
@@ -207,14 +202,14 @@ class SyncService
 		}
 
 		foreach (Yii::app()->db->getSchema()->getTable($table)->foreignKeys as $field => $key) {
-			if (preg_match('/^oph/',$key[0])) {
+			if (preg_match('/^oph/',$key[0]) && !in_array($key[0],$ignore)) {
 				if ($element[$field] !== null) {
 					if ($relatedItem = Yii::app()->db->createCommand()->select("*")->from($key[0])->where("id=?",array($element[$field]))->queryRow()) {
 						$related[] = array(
 							'type' => 'foreign',
 							'table' => $key[0],
 							'data' => $relatedItem,
-							'related' => $this->getRelatedItems($key[0], $relatedItem),
+							'related' => $this->getRelatedItems($key[0], $relatedItem, $ignore),
 						);
 					}
 				}
@@ -228,18 +223,6 @@ class SyncService
 		$defer = array();
 
 		foreach ($related as $i => $item) {
-			/*if ($item['type'] == 'reverse') {
-				// if an item is marked as reverse but has a key that points back to the element, we need to nuke it from the reverse list as it will be processed during "foreign"
-				// we will also detect in the foreign list the same item and defer (null) the key in the element that points to it until after the import is done
-				$table = Yii::app()->db->getSchema()->getTable($item['table']);
-
-				foreach ($table->foreignKeys as $field => $key) {
-					if ($key[0] == $element_table && $item['data'][$field] == $element['id']) {
-						unset($related[$i]);
-					}
-				}
-			}*/
-
 			if ($item['type'] == 'foreign') {
 				$table = Yii::app()->db->getSchema()->getTable($element_table);
 
@@ -285,6 +268,59 @@ class SyncService
 		}
 
 		return $deletes;
+	}
+
+	public function wrapReferenceTables($event_type, $last_sync) {
+		$ref_tables = $this->getReferenceTables($event_type->class_name);
+
+		$reference = array();
+
+		foreach ($ref_tables as $table) {
+			if ($data = $this->wrapReferenceTable($table, $last_sync)) {
+				$reference[$table] = $data;
+			}
+		}
+
+		return $reference;
+	}
+
+	public function wrapReferenceTable($table, $last_sync) {
+		$reference = array();
+
+		$_table = Yii::app()->db->getSchema()->getTable($table);
+
+		foreach ($_table->foreignKeys as $field => $key) {
+			if ($key[0] == $table) {
+				// different ballgame detected, this is a job for wrapSelfReferentialReferenceTable()
+				return $this->wrapSelfReferentialReferenceTable($table, $last_sync, $field);
+			}
+		}
+
+		foreach (Yii::app()->db->createCommand()->select("*")->from($_table->name)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll() as $row) {
+			$row['_related'] = $this->getRelatedItems($_table->name, $row);
+
+			$reference[] = $row;
+		}
+
+		return $reference;
+	}
+
+	public function wrapSelfReferentialReferenceTable($table, $last_sync, $field, $parent = null, $return=array()) {
+		if ($parent == null) {
+			$data = Yii::app()->db->createCommand()->select("*")->from($table)->where("$field is null")->queryAll();
+		} else {
+			$data = Yii::app()->db->createCommand()->select("*")->from($table)->where("$field =:$field",array(":$field"=>$parent))->queryAll();
+		}
+
+		foreach ($data as $row) {
+			if (strtotime($row['last_modified_date']) > strtotime($last_sync)) {
+				$row['_related'] = $this->getRelatedItems($table, $row, array($table));
+				$return[] = $row;
+			}
+			$return = $this->wrapSelfReferentialReferenceTable($table, $last_sync, $field, $row['id'], $return);
+		}
+
+		return $return;
 	}
 
 	public function pull($table)
@@ -418,6 +454,58 @@ class SyncService
 		return $deps;
 	}
 
+	public function getReferenceTables($module_class) {
+		$element_tables = $this->getElementTables($module_class);
+
+		$ref_tables = array();
+
+		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
+			if (preg_match('/^'.strtolower($module_class).'_/',$table->name) && !in_array($table->name,$element_tables)) {
+				$ref_tables[] = $table->name;
+			}
+		}
+
+		return $ref_tables;
+	}
+
+	public function getElementTables($module_class) {
+		$tables = array();
+
+		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
+			if (preg_match('/^et_'.strtolower($module_class).'_/',$table->name)) {
+				$tables = $this->getDependencies2($module_class, $table->name, $tables);
+			}
+		}
+
+		return $tables;
+	}
+
+	public function getDependencies2($module_class, $table, $tables) {
+		$_table = Yii::app()->db->getSchema()->getTable($table);
+
+		foreach ($_table->foreignKeys as $key) {
+			if (!in_array($key[0],$tables) && preg_match('/^'.strtolower($module_class).'_/',$key[0])) {
+				$tables[] = $key[0];
+				$tables = $this->getDependencies2($module_class, $key[0], $tables);
+			}
+		}
+
+		if (preg_match('/^et_/',$table)) {
+			foreach (Yii::app()->db->getSchema()->getTables() as $table2) {
+				foreach ($table2->foreignKeys as $key) {
+					if ($key[0] == $table) {
+						if (!in_array($table2->name,$tables) && preg_match('/^'.strtolower($module_class).'_/',$table2->name)) {
+							$tables[] = $table2->name;
+							$tables = $this->getDependencies2($module_class, $table2->name, $tables);
+						}
+					}
+				}
+			}
+		}
+
+		return $tables;
+	}
+
 	public function getTableObject($table)
 	{
 		return Yii::app()->db->getSchema()->getTable($table);
@@ -509,36 +597,49 @@ class SyncService
 
 	public function receiveItems_event($resp, $data)
 	{
-		foreach ($data as $event) {
-			OELog::log(print_r($event,true));
-
-			$_data = $event;
-			foreach ($_data as $key => $value) {
-				if ($key[0] == '_') {
-					unset($_data[$key]);
-				}
-			}
-
-			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
-				if (strtotime($_data['last_modified_date']) > strtotime($local['last_modified_date'])) {
-					Yii::app()->db->createCommand()->update("event",$_data,"id=:id",array(":id"=>$event['id']));
-					$resp['updated']++;
-					OELog::log("Updating event {$event['id']}");
-				} else {
-					$resp['not-modified']++;
-					OELog::log("Not updating event {$event['id']}");
-				}
+		foreach ($data as $i => $event) {
+			if ($i == '_reference') {
+				$this->processReferenceData($event);
 			} else {
-				Yii::app()->db->createCommand()->insert("event",$_data);
-				$resp['inserted']++;
-				OELog::log("Creating event {$_data['id']}");
-			}
+				OELog::log(print_r($event,true));
 
-			$this->processRelatedData($event['_elements']);
-			$this->processDeletes($event['_deletes']);
+				$_data = $event;
+				foreach ($_data as $key => $value) {
+					if ($key[0] == '_') {
+						unset($_data[$key]);
+					}
+				}
+
+				if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
+					if (strtotime($_data['last_modified_date']) > strtotime($local['last_modified_date'])) {
+						Yii::app()->db->createCommand()->update("event",$_data,"id=:id",array(":id"=>$event['id']));
+						$resp['updated']++;
+						OELog::log("Updating event {$event['id']}");
+					} else {
+						$resp['not-modified']++;
+						OELog::log("Not updating event {$event['id']}");
+					}
+				} else {
+					Yii::app()->db->createCommand()->insert("event",$_data);
+					$resp['inserted']++;
+					OELog::log("Creating event {$_data['id']}");
+				}
+
+				$this->processRelatedData($event['_elements']);
+				$this->processDeletes($event['_deletes']);
+			}
 		}
 
 		return $resp;
+	}
+
+	public function processReferenceData($reference)
+	{
+		foreach ($reference as $module_class => $referenceData) {
+			foreach ($referenceData as $table => $items) {
+				$this->processRelatedData($items);
+			}
+		}
 	}
 
 	public function processRelatedData($related, $type=null)
@@ -616,9 +717,13 @@ class SyncService
 				$events[$i]['_elements'] = $this->wrapElements($event);
 				$events[$i]['_deletes'] = $this->wrapDeletes($event, $last_sync);
 			}
+		}
 
-			if ($event['event_type_id'] == 25) {
-				print_r($events[$i]);exit;
+		$events['_reference'] = array();
+
+		foreach (EventType::model()->findAll() as $event_type) {
+			if ($data = $this->wrapReferenceTables($event_type, $last_sync)) {
+				$events['_reference'][$event_type->class_name] = $data;
 			}
 		}
 
