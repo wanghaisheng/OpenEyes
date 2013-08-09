@@ -716,6 +716,7 @@ class SyncService
 		if (strtotime($otherEpisode['created_date']) < strtotime($episode['created_date'])) {
 			in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 4 {$otherEpisode['id']} {$event['id']}");
 			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
+			Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
 			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$episode['id']));
 
 			return $otherEpisode;
@@ -727,6 +728,7 @@ class SyncService
 		in_array($event['id'],array(141,142,152)) && OELog::log("update event set episode_id = {$episode['id']} where episode_id = {$otherEpisode['id']}");
 
 		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
+		Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
 		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$otherEpisode['id']));
 
 		return $episode;
