@@ -540,7 +540,7 @@ class SyncService
 			$id = @$item['id'];
 
 			if ($id && $local = Yii::app()->db->createCommand()->select("*")->from($table)->where("id = :id",array('id'=>$id))->queryRow()) {
-				if (strtotime($item['last_modified_date']) > strtotime($item['last_modified_date'])) {
+				if (strtotime($item['last_modified_date']) > strtotime($local['last_modified_date'])) {
 					unset($item['id']);
 
 					Yii::app()->db->createCommand()->update($table, $item, "id = :id", array(":id" => $id));
