@@ -297,9 +297,11 @@ class SyncService
 		}
 
 		foreach (Yii::app()->db->createCommand()->select("*")->from($_table->name)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll() as $row) {
-			$row['_related'] = $this->getRelatedItems($_table->name, $row);
-
-			$reference[] = $row;
+			$reference[] = array(
+				'table' => $_table->name,
+				'data' => $row,
+				'related' => $this->getRelatedItems($_table->name, $row),
+			);
 		}
 
 		return $reference;
@@ -314,8 +316,11 @@ class SyncService
 
 		foreach ($data as $row) {
 			if (strtotime($row['last_modified_date']) > strtotime($last_sync)) {
-				$row['_related'] = $this->getRelatedItems($table, $row, array($table));
-				$return[] = $row;
+				$return[] = array(
+					'table' => $table,
+					'data' => $row,
+					'related' => $this->getRelatedItems($table, $row, array($table)),
+				);
 			}
 			$return = $this->wrapSelfReferentialReferenceTable($table, $last_sync, $field, $row['id'], $return);
 		}
