@@ -133,6 +133,10 @@ class SyncService
 		foreach ($events as $i => $event) {
 			$events[$i]['_elements'] = $this->wrapElements($event);
 			$events[$i]['_deletes'] = $this->wrapDeletes($event, $this->server->last_sync);
+
+			if ($event['event_type_id'] == 25) {
+				print_r($events[$i]);exit;
+			}
 		}
 
 		$resp = $this->request(array(
@@ -171,10 +175,13 @@ class SyncService
 
 	public function wrapElement($table, $element)
 	{
+		$cyclic = $this->fixCyclicDependencies($table, $element, $this->getRelatedItems($table, $element));
+
 		return array(
 			'table' => $table,
-			'data' => $element,
-			'related' => $this->getRelatedItems($table, $element),
+			'data' => $cyclic['element'],
+			'related' => $cyclic['related'],
+			'defer' => $cyclic['defer'],
 		);
 	}
 
@@ -219,6 +226,50 @@ class SyncService
 		}
 
 		return $related;
+	}
+
+	public function fixCyclicDependencies($element_table, $element, $related) {
+		$defer = array();
+
+		foreach ($related as $i => $item) {
+			/*if ($item['type'] == 'reverse') {
+				// if an item is marked as reverse but has a key that points back to the element, we need to nuke it from the reverse list as it will be processed during "foreign"
+				// we will also detect in the foreign list the same item and defer (null) the key in the element that points to it until after the import is done
+				$table = Yii::app()->db->getSchema()->getTable($item['table']);
+
+				foreach ($table->foreignKeys as $field => $key) {
+					if ($key[0] == $element_table && $item['data'][$field] == $element['id']) {
+						unset($related[$i]);
+					}
+				}
+			}*/
+
+			if ($item['type'] == 'foreign') {
+				$table = Yii::app()->db->getSchema()->getTable($element_table);
+
+				foreach ($table->foreignKeys as $field => $key) {
+					if ($key[0] == $item['table'] && $element[$field] == $item['data']['id']) {
+						// found the element table key that points to the foreign table, now we check to see if the foreign table has a key that points back to the element. if so we need to remove it from the foreign list and defer the key in the element that points to it.
+
+						$foreignTable = Yii::app()->db->getSchema()->getTable($item['table']);
+
+						foreach ($foreignTable->foreignKeys as $foreignField => $key) {
+							if ($key[0] == $element_table && $item['data'][$foreignField] == $element['id']) {
+								unset($related[$i]);
+								$defer[$field] = $element[$field];
+								$element[$field] = null;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return array(
+			'element' => $element,
+			'related' => $related,
+			'defer' => $defer,
+		);
 	}
 
 	public function wrapDeletes($event, $last_sync)
@@ -497,6 +548,8 @@ class SyncService
 	public function processRelatedData($related, $type=null)
 	{
 		foreach ($related as $item) {
+			$was_modified = false;
+
 			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'foreign' : $type));
 
 			if (@$item['type'] == $type) {
@@ -510,16 +563,22 @@ class SyncService
 					if (strtotime($item['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
 						Yii::app()->db->createCommand()->update($item['table'],$item['data'],"id=:id",array(":id"=>$item['data']['id']));
 						OELog::log("Updating {$item['table']} {$item['data']['id']}: ".print_r($item['data'],true));
+						$was_modified = true;
 					}
 				} else {
 					Yii::app()->db->createCommand()->insert($item['table'],$item['data']);
 					OELog::log("Inserting {$item['table']}: ".print_r($item['data'],true));
+					$was_modified = true;
 				}
 			} else {
 				OELog::log("Related data type {$item['type']} != $type");
 			}
 
 			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'reverse' : $type));
+
+			if ($type === null && $was_modified && !empty($item['defer']) {
+				Yii::app()->db->createCommand()->update($item['table'],$item['defer'],"id=:id",array(":id"=>$item['data']['id']));
+			}
 		}
 	}
 
@@ -560,6 +619,10 @@ class SyncService
 			foreach ($events as $i => $event) {
 				$events[$i]['_elements'] = $this->wrapElements($event);
 				$events[$i]['_deletes'] = $this->wrapDeletes($event, $last_sync);
+			}
+
+			if ($event['event_type_id'] == 25) {
+				print_r($events[$i]);exit;
 			}
 		}
 
