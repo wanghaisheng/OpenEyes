@@ -534,6 +534,8 @@ class SyncService
 				return $this->receiveItems_event($resp, $data, $method);
 		}
 
+		unset($data['_reference']);
+
 		foreach ($data as $item) {
 			$id = @$item['id'];
 
@@ -589,7 +591,7 @@ class SyncService
 				}
 
 				if (!$local = Yii::app()->db->createCommand()->select("*")->from('delete_log')->where('id=:id',array(':id'=>$item['id']))->queryRow()) {
-					Yii::app()->createCommand()->insert('delete_log',$item);
+					Yii::app()->db->createCommand()->insert('delete_log',$item);
 					$resp['inserted']++;
 				} else {
 					$resp['not-modified']++;
