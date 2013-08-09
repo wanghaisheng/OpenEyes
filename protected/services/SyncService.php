@@ -672,7 +672,7 @@ class SyncService
 			->from("episode ep")
 			->join("firm f","ep.firm_id = f.id")
 			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ep.patient_id = :patient_id and ssa.subspecialty_id = :subspecialty_id and ep.id != :id and ep.deleted = :deleted",array(":patient_id"=>$event['_episode']['patient_id'],":subspecialty_id"=>$subspecialty_id,":id"=>$episode['id'],":deleted"=>0))
+			->where("ep.patient_id = :patient_id and ssa.subspecialty_id = :subspecialty_id and ep.id <> :id and ep.deleted = :deleted",array(":patient_id"=>$event['_episode']['patient_id'],":subspecialty_id"=>$subspecialty_id,":id"=>$episode['id'],":deleted"=>0))
 			->queryRow();
 
 		if (!$otherEpisode && $episode) {
@@ -687,6 +687,7 @@ class SyncService
 
 		if (!$episode && !$otherEpisode) {
 			if (in_array($event['id'],array(141,142,152))) {
+				OELog::log("select episode where patient_id = ".$event['_episode']['patient_id']." and subspecialty_id = $subspecialty_id and id != {$episode['id']} and deleted = 0");
 
 				OElog::log("CONDITION subspecialty_id: $subspecialty_id");
 				if (Yii::app()->db->createCommand()->select("deleted")->from("episode")->where("id = :id",array(":id"=>112))->queryScalar()) {
