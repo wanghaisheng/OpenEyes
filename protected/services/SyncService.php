@@ -671,14 +671,14 @@ class SyncService
 		// If the episode we already had was created earlier, it should take precedence
 		if (strtotime($otherEpisode['created_date']) < strtotime($episode['created_date'])) {
 			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
-			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",":id"=>$episode['id']);
+			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$episode['id']));
 
 			return $otherEpisode;
 		}
 
 		// and vice versa
 		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
-		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",":id"=>$otherEpisode['id']);
+		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$otherEpisode['id']));
 
 		return $episode;
 	}
@@ -766,7 +766,7 @@ class SyncService
 			foreach ($events as $i => $event) {
 				$events[$i]['_elements'] = $this->wrapElements($event);
 				$events[$i]['_deletes'] = $this->wrapDeletes($event, $last_sync);
-				$events[$i]['_episode'] = Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow(),
+				$events[$i]['_episode'] = Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow();
 			}
 		}
 
