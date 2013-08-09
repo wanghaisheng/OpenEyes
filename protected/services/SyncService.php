@@ -697,6 +697,8 @@ class SyncService
 		OELog::log("CONDITION 5");
 
 		// and vice versa
+		OELog::log("update event set episode_id = {$episode['id']} where episode_id = {$otherEpisode['id']}");
+
 		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
 		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$otherEpisode['id']));
 
