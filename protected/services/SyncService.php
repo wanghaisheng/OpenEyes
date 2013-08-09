@@ -616,8 +616,6 @@ class SyncService
 			if ($method == 'PUSH') {
 				$episode = $this->getEpisodeForEvent($event, $method);
 				$_data['episode_id'] = $episode['id'];
-			} else {
-				$this->createEpisodeIfDoesntExist($event['_episode']);
 			}
 
 			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
@@ -726,12 +724,6 @@ class SyncService
 		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$otherEpisode['id']));
 
 		return $episode;
-	}
-
-	public function createEpisodeIfDoesntExist($episode) {
-		if (!Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$episode['id']))->queryRow()) {
-			Yii::app()->db->createCommand()->insert('episode',$episode);
-		}
 	}
 
 	public function processReferenceData($reference)
