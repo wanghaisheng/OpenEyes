@@ -597,38 +597,39 @@ class SyncService
 
 	public function receiveItems_event($resp, $data)
 	{
+		$reference = $data['_reference'];
+		unset($data['_reference']);
+
 		foreach ($data as $i => $event) {
-			if ($i == '_reference') {
-				$this->processReferenceData($event);
-			} else {
-				OELog::log(print_r($event,true));
+			OELog::log(print_r($event,true));
 
-				$_data = $event;
-				foreach ($_data as $key => $value) {
-					if ($key[0] == '_') {
-						unset($_data[$key]);
-					}
+			$_data = $event;
+			foreach ($_data as $key => $value) {
+				if ($key[0] == '_') {
+					unset($_data[$key]);
 				}
-
-				if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
-					if (strtotime($_data['last_modified_date']) > strtotime($local['last_modified_date'])) {
-						Yii::app()->db->createCommand()->update("event",$_data,"id=:id",array(":id"=>$event['id']));
-						$resp['updated']++;
-						OELog::log("Updating event {$event['id']}");
-					} else {
-						$resp['not-modified']++;
-						OELog::log("Not updating event {$event['id']}");
-					}
-				} else {
-					Yii::app()->db->createCommand()->insert("event",$_data);
-					$resp['inserted']++;
-					OELog::log("Creating event {$_data['id']}");
-				}
-
-				$this->processRelatedData($event['_elements']);
-				$this->processDeletes($event['_deletes']);
 			}
+
+			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
+				if (strtotime($_data['last_modified_date']) > strtotime($local['last_modified_date'])) {
+					Yii::app()->db->createCommand()->update("event",$_data,"id=:id",array(":id"=>$event['id']));
+					$resp['updated']++;
+					OELog::log("Updating event {$event['id']}");
+				} else {
+					$resp['not-modified']++;
+					OELog::log("Not updating event {$event['id']}");
+				}
+			} else {
+				Yii::app()->db->createCommand()->insert("event",$_data);
+				$resp['inserted']++;
+				OELog::log("Creating event {$_data['id']}");
+			}
+
+			$this->processRelatedData($event['_elements']);
+			$this->processDeletes($event['_deletes']);
 		}
+
+		$this->processReferenceData($reference);
 
 		return $resp;
 	}
