@@ -683,6 +683,8 @@ class SyncService
 		if ($otherEpisode && !$episode) {
 			// Create the slave's episode locally and then mark it deleted so it the deletion will be synced back
 			$event['_episode']['deleted'] = 1;
+			$event['_episode']['last_modified_date'] = date('Y-m-d H:i:s',strtotime($event['_episode']['last_modified_date'])+1);
+
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
 			in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 2 {$otherEpisode['id']} {$event['id']}");
 			return $otherEpisode;
