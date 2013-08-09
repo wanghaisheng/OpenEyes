@@ -672,7 +672,7 @@ class SyncService
 			->from("episode ep")
 			->join("firm f","ep.firm_id = f.id")
 			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ssa.subspecialty_id = :subspecialty_id and ep.id != :id and ep.deleted != :deleted",array(":subspecialty_id"=>$subspecialty_id,":id"=>$episode['id'],":deleted"=>1))
+			->where("ep.patient_id = :patient_id and ssa.subspecialty_id = :subspecialty_id and ep.id != :id and ep.deleted != :deleted",array(":patient_id"=>$event['_episode']['patient_id'],":subspecialty_id"=>$subspecialty_id,":id"=>$episode['id'],":deleted"=>1))
 			->queryRow();
 
 		if (!$otherEpisode && $episode) {
@@ -686,6 +686,15 @@ class SyncService
 		}
 
 		if (!$episode && !$otherEpisode) {
+			if (in_array($event['id'],array(141,142,152))) {
+				OElog::log("CONDITION subspecialty_id: $subspecialty_id");
+				if (Yii::app()->db->createCommand()->select("deleted")->from("episode")->where("id = :id",array(":id"=>112))->queryScalar()) {
+					OElog::log("CONDITION deleted");
+				} else {
+					OELog::log("CONDITION not deleted");
+				}
+			}
+
 			in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 3 {$event['episode_id']} {$event['id']}");
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
 
