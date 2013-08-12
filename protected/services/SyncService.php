@@ -536,7 +536,7 @@ class SyncService
 		$receiveMethod = "receiveItems_$table";
 
 		if (method_exists($this,$receiveMethod)) {
-			return $receiveMethod($resp, $data, $method);
+			return $this->$receiveMethod($resp, $data, $method);
 		}
 
 		unset($data['_reference']);
