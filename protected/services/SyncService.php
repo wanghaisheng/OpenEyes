@@ -847,8 +847,14 @@ class SyncService
 	}
 
 	public function getRemoteCoreTableListInSyncOrder() {
-		return $this->request(array(
+		$resp = $this->request(array(
 			'type' => 'TABLES',
 		));
+
+		if ($resp['status'] != 'ok') {
+			die("Failed: {$resp['message']}\n");
+		}
+
+		return $resp['message']['data'];
 	}
 }
