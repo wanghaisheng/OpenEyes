@@ -671,6 +671,7 @@ class SyncService
 			->where("ep.id = :id and deleted = :deleted",array(":id"=>$event['episode_id'],":deleted"=>0))
 			->queryRow()) {
 
+			OELog::log("FISH: event {$event['id']} episode {$event['episode']} exists locally we we're happy");
 			return $episode;
 		}
 
@@ -690,6 +691,8 @@ class SyncService
 			->queryRow();
 
 		if (!$otherEpisode) {
+			OELog::log("FISH: event {$event['id']} episode {$event['episode']} doesn'st exist so creating and recursing ...");
+
 			// No episode exists for this subspecialty so create the one that was passed with the event
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
 			return $this->getEpisodeForEvent($event, $method);
@@ -697,6 +700,8 @@ class SyncService
 
 		// If our existing episode was created first we use that, and also ensure that the passed episode is saved locally but marked as deleted
 		if (strtotime($otherEpisode->created_date) < strtotime($event['_episode']['created_date'])) {
+			OELog::log("FISH: event {$event['id']} episode {$event['episode']}, there is previous episode {$otherEpisode['id']} so remapping");
+
 			if (!Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow()) {
 				$event['_episode']['deleted'] = 1;
 				Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
@@ -708,6 +713,8 @@ class SyncService
 		}
 
 		// Need to use the episode that was passed with the event, mark our local one deleted and remap any events that point to the local one
+
+		OELog::log("FISH: event {$event['id']} episode {$event['_episode']} was created before local episode {$otherEpisode['id']} so remapping");
 
 		if (!Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow()) {
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
