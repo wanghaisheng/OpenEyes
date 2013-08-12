@@ -668,7 +668,7 @@ class SyncService
 			->from("episode ep")
 			->join("firm f","ep.firm_id = f.id")
 			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ep.id = :id and deleted = :deleted",array(":id"=>$event['episode_id'],0))
+			->where("ep.id = :id and deleted = :deleted",array(":id"=>$event['episode_id'],":deleted"=>0))
 			->queryRow()) {
 
 			return $episode;
