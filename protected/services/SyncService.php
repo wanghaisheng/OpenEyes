@@ -413,7 +413,7 @@ class SyncService
 		return $resp;
 	}
 
-	public function getCoreTableListInSyncOrder()
+	public function getCoreTableListInSyncOrder($last_sync)
 	{
 		$tables = array('user');
 		$exclude = array('authitem','authitemchild','authassignment','event','protected_file','user_session','tbl_migration');
@@ -423,17 +423,25 @@ class SyncService
 				if (!in_array($table->name,$tables)) {
 					foreach ($this->getDependencies($table,$tables) as $deptable) {
 						if (!in_array($deptable,$tables) && !in_array($deptable,$exclude)) {
-							$tables[] = $deptable;
+							if ($this->hasChanged($deptable,$last_sync)) {
+								$tables[] = $deptable;
+							}
 						}
 					}
 					if (!in_array($table->name,$tables) && !in_array($table->name,$exclude)) {
-						$tables[] = $table->name;
+						if ($this->hasChanged($table->name,$last_sync)) {
+							$tables[] = $table->name;
+						}
 					}
 				}
 			}
 		}
 
 		return $tables;
+	}
+
+	public function hasChanged($table, $last_sync) {
+		return Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > :last_sync",array(":last_sync" => $last_sync))->queryRow();
 	}
 
 	public function getDependencies($table, $ignore)
@@ -836,5 +844,11 @@ class SyncService
 		}
 
 		return $events;
+	}
+
+	public function getRemoteCoreTableListInSyncOrder() {
+		return $this->request(array(
+			'type' => 'TABLES',
+		));
 	}
 }
