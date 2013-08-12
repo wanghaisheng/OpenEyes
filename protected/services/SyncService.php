@@ -416,7 +416,7 @@ class SyncService
 	public function getCoreTableListInSyncOrder($last_sync)
 	{
 		$tables = array('user');
-		$exclude = array('authitem','authitemchild','authassignment','event','protected_file','user_session','tbl_migration');
+		$exclude = array('authitem','authitemchild','authassignment','event','protected_file','user_session','tbl_migration','audit','audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','sync_server','sync_remap');
 
 		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
 			if (!preg_match('/^et_oph/',$table->name) && !preg_match('/^oph/',$table->name)) {
@@ -665,13 +665,17 @@ class SyncService
 	// Find or create an appropriate episode for the event.  If this is a PUSH, data is being sent to the master so we remap the episode if appropriate
 	public function getEpisodeForEvent($event, $method)
 	{
-		$episode = Yii::app()->db->createCommand()
+		// Event's episode
+		if ($episode = Yii::app()->db->createCommand()
 			->select("ep.*, ssa.subspecialty_id")
 			->from("episode ep")
 			->join("firm f","ep.firm_id = f.id")
 			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ep.id = :id",array(":id"=>$event['episode_id']))
-			->queryRow();
+			->where("ep.id = :id and deleted = :deleted",array(":id"=>$event['episode_id'],0))
+			->queryRow()) {
+
+			return $episode;
+		}
 
 		$subspecialty_id = Yii::app()->db->createCommand()
 			->select("ssa.subspecialty_id")
@@ -680,69 +684,58 @@ class SyncService
 			->where("f.id = :firm_id",array(":firm_id"=>$event['_episode']['firm_id']))
 			->queryScalar();
 
-		OELog::log("Subspecialty: $subspecialty_id");
-
 		$otherEpisode = Yii::app()->db->createCommand()
 			->select("ep.*, ssa.subspecialty_id")
 			->from("episode ep")
 			->join("firm f","ep.firm_id = f.id")
 			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ep.patient_id = :patient_id and ssa.subspecialty_id = :subspecialty_id and ep.id <> :id and ep.deleted = :deleted",array(":patient_id"=>$event['_episode']['patient_id'],":subspecialty_id"=>$subspecialty_id,":id"=>$event['episode_id'],":deleted"=>0))
+			->where("ep.patient_id = :patient_id and ssa.subspecialty_id = :subspecialty_id and ep.deleted = :deleted",array(":patient_id"=>$event['_episode']['patient_id'],":subspecialty_id"=>$subspecialty_id,":deleted"=>0))
 			->queryRow();
 
-		if (!$otherEpisode && $episode) {
-			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 1 {$episode['id']} {$event['id']}");
-			return $episode;
-		}
-
-		if ($otherEpisode && !$episode) {
-			// Create the slave's episode locally and then mark it deleted so it the deletion will be synced back
-			$event['_episode']['deleted'] = 1;
-			$event['_episode']['last_modified_date'] = date('Y-m-d H:i:s',strtotime($event['_episode']['last_modified_date'])+1);
-
+		if (!$otherEpisode) {
+			// No episode exists for this subspecialty so create the one that was passed with the event
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
-			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 2 {$otherEpisode['id']} {$event['id']}");
-			return $otherEpisode;
+			return $this->getEpisodeForEvent($event, $method);
 		}
 
-		if (!$episode && !$otherEpisode) {
-			if (in_array($event['id'],array(141,151,142,152))) {
-				OELog::log("select episode where patient_id = ".$event['_episode']['patient_id']." and subspecialty_id = $subspecialty_id and id != {$episode['id']} and deleted = 0");
-
-				OElog::log("CONDITION subspecialty_id: $subspecialty_id");
-				if (Yii::app()->db->createCommand()->select("deleted")->from("episode")->where("id = :id",array(":id"=>112))->queryScalar()) {
-					OElog::log("CONDITION deleted");
-				} else {
-					OELog::log("CONDITION not deleted");
-				}
+		// If our existing episode was created first we use that, and also ensure that the passed episode is saved locally but marked as deleted
+		if (strtotime($otherEpisode->created_date) < strtotime($event['_episode']['created_date'])) {
+			if (!Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow()) {
+				$event['_episode']['deleted'] = 1;
+				Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
 			}
 
-			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 3 {$event['episode_id']} {$event['id']}");
-			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
-
-			return Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow();
-		}
-
-		// If the episode we already had was created earlier, it should take precedence
-		if (strtotime($otherEpisode['created_date']) < strtotime($episode['created_date'])) {
-			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 4 {$otherEpisode['id']} {$event['id']}");
-			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
-			Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
-			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$episode['id']));
+			$this->remapEpisode($event['episode_id'],$otherEpisode['id']);
 
 			return $otherEpisode;
 		}
 
-		in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 5 {$episode['id']} {$event['id']}");
+		// Need to use the episode that was passed with the event, mark our local one deleted and remap any events that point to the local one
 
-		// and vice versa
-		in_array($event['id'],array(141,151,142,152)) && OELog::log("update event set episode_id = {$episode['id']} where episode_id = {$otherEpisode['id']}");
+		if (!Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow()) {
+			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
+		}
 
-		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
-		Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
-		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$otherEpisode['id']));
+		$this->remapEpisode($otherEpisode['id'],$event['episode_id']);
 
-		return $episode;
+		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1),"id=:id",array(":id"=>$otherEpisode['id']));
+
+		return $this->getEpisodeForEvent($event, $method);
+	}
+
+	public function remapEpisode($old_episode_id, $new_episode_id) {
+		if (!SyncRemap::model()->find('old_episode_id=? and new_episode_id=?',array($old_episode_id,$new_episode_id))) {
+			$sr = new SyncRemap;
+			$sr->old_episode_id = $old_episode_id;
+			$sr->new_episode_id = $new_episode_id;
+
+			if (!$sr->save()) {
+				throw new Exception("Unable to save sync_remap: ".print_r($sr->getErrors(),true));
+			}
+		}
+
+		Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$new_episode_id),"episode_id = :episode_id",array(":episode_id"=>$old_episode_id));
+		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$new_episode_id),"episode_id = :episode_id",array(":episode_id"=>$old_episode_id));
 	}
 
 	public function processReferenceData($reference)
