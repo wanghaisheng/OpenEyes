@@ -680,6 +680,8 @@ class SyncService
 			->where("f.id = :firm_id",array(":firm_id"=>$event['_episode']['firm_id']))
 			->queryScalar();
 
+		OELog::log("Subspecialty: $subspecialty_id");
+
 		$otherEpisode = Yii::app()->db->createCommand()
 			->select("ep.*, ssa.subspecialty_id")
 			->from("episode ep")
@@ -689,7 +691,7 @@ class SyncService
 			->queryRow();
 
 		if (!$otherEpisode && $episode) {
-			in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 1 {$episode['id']} {$event['id']}");
+			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 1 {$episode['id']} {$event['id']}");
 			return $episode;
 		}
 
@@ -699,12 +701,12 @@ class SyncService
 			$event['_episode']['last_modified_date'] = date('Y-m-d H:i:s',strtotime($event['_episode']['last_modified_date'])+1);
 
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
-			in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 2 {$otherEpisode['id']} {$event['id']}");
+			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 2 {$otherEpisode['id']} {$event['id']}");
 			return $otherEpisode;
 		}
 
 		if (!$episode && !$otherEpisode) {
-			if (in_array($event['id'],array(141,142,152))) {
+			if (in_array($event['id'],array(141,151,142,152))) {
 				OELog::log("select episode where patient_id = ".$event['_episode']['patient_id']." and subspecialty_id = $subspecialty_id and id != {$episode['id']} and deleted = 0");
 
 				OElog::log("CONDITION subspecialty_id: $subspecialty_id");
@@ -715,7 +717,7 @@ class SyncService
 				}
 			}
 
-			in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 3 {$event['episode_id']} {$event['id']}");
+			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 3 {$event['episode_id']} {$event['id']}");
 			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
 
 			return Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow();
@@ -723,7 +725,7 @@ class SyncService
 
 		// If the episode we already had was created earlier, it should take precedence
 		if (strtotime($otherEpisode['created_date']) < strtotime($episode['created_date'])) {
-			in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 4 {$otherEpisode['id']} {$event['id']}");
+			in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 4 {$otherEpisode['id']} {$event['id']}");
 			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
 			Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$otherEpisode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$episode['id']));
 			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1,'last_modified_date'=>date('Y-m-d H:i:s')),"id = :id",array(":id"=>$episode['id']));
@@ -731,10 +733,10 @@ class SyncService
 			return $otherEpisode;
 		}
 
-		in_array($event['id'],array(141,142,152)) && OELog::log("CONDITION 5 {$episode['id']} {$event['id']}");
+		in_array($event['id'],array(141,151,142,152)) && OELog::log("CONDITION 5 {$episode['id']} {$event['id']}");
 
 		// and vice versa
-		in_array($event['id'],array(141,142,152)) && OELog::log("update event set episode_id = {$episode['id']} where episode_id = {$otherEpisode['id']}");
+		in_array($event['id'],array(141,151,142,152)) && OELog::log("update event set episode_id = {$episode['id']} where episode_id = {$otherEpisode['id']}");
 
 		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
 		Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$episode['id'],'last_modified_date'=>date('Y-m-d H:i:s')),"episode_id = :episode_id",array(":episode_id"=>$otherEpisode['id']));
