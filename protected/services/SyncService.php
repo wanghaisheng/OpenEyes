@@ -533,13 +533,10 @@ class SyncService
 			'not-modified' => 0,
 		);
 
-		switch ($table) {
-			case 'proc_opcs_assignment':
-				return $this->receiveItems_proc_opcs_assignment($resp, $data, $method);
-			case 'delete_log':
-				return $this->receiveItems_delete_log($resp, $data, $method);
-			case 'event':
-				return $this->receiveItems_event($resp, $data, $method);
+		$receiveMethod = "receiveItems_$table";
+
+		if (method_exists($this,$receiveMethod)) {
+			return $receiveMethod($resp, $data, $method);
 		}
 
 		unset($data['_reference']);
@@ -851,5 +848,13 @@ class SyncService
 		}
 
 		return $resp['message']['data'];
+	}
+
+	public function receiveItems_sync_remap($resp, $data, $method) {
+		foreach ($data as $sync_remap) {
+			Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$data['new_episode_id']),"episode_id=:episode_id",array(":episode_id"=>$data['old_episode_id']));
+			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$data['new_episode_id']),"episode_id=:episode_id",array(":episode_id"=>$data['old_episode_id']));
+			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1),"id=:id",array(":id"=>$data['old_episode_id']));
+		}
 	}
 }
