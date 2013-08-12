@@ -142,6 +142,11 @@ class SyncController extends Controller
 				));
 
 				break;
+			case 'TABLES':
+				return $this->response('ok',array(
+					'data' => $sync->getCoreTableListInSyncOrder($data['last_sync']),
+				));
+				break;
 			case 'STATUS':
 				if (Event::model()->find('last_modified_date > ?',array($data['timestamp'])) || Asset::model()->find('last_modified_date > ? ',array($data['timestamp']))) {
 					$this->response("ok","Out of sync",array(
