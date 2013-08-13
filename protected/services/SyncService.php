@@ -119,7 +119,7 @@ class SyncService
 			'data' => $data,
 		));
 
-		return ($resp['data']['inserted'] + $resp['data']['updated']);
+		return ($resp['message']['inserted'] + $resp['message']['updated']);
 	}
 
 	public function pushEvents()
@@ -353,7 +353,7 @@ class SyncService
 
 		$resp = $this->receiveItems('event', $resp['message']['data'], "PULL");
 
-		return ($resp['message']['inserted'] + $resp['message']['updated']);
+		return ($resp['inserted'] + $resp['updated']);
 	}
 
 	public function inSync()
