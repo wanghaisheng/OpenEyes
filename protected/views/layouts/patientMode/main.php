@@ -80,6 +80,7 @@
 		<div id="header" class="clearfix">
 			<?php $this->renderPartial('//base/_brand'); ?>
 			<?php $this->renderPartial('//base/_form', array()); ?>
+			<?php $this->renderPartial('//base/_sync', array()); ?>
 			<?php $this->renderPartial('//patient/_patient_id', array()); ?>
 		</div> <!-- #header -->
 
