@@ -25,12 +25,6 @@ class SyncService
 	public $server = null;
 	public $table_count = 0;
 	public $position = 0;
-	public $responses = array(
-		'inserted' => array(),
-		'updated' => array(),
-		'not-modified' => array(),
-		'received' => array(),
-	);
 
 	public function __construct($server=null)
 	{
@@ -49,36 +43,38 @@ class SyncService
 
 		$this->table_count = count($local_core_tables) + count($remote_core_tables) + 20;
 
+		$pushed = $pulled = 0;
+
 		foreach ($local_core_tables as $table) {
 			$this->status("Pushing: $table");
-			$this->push($table);
+			$pushed += $this->push($table);
 		}
 
 		foreach ($remote_core_tables as $table) {
 			$this->status("Pulling: $table");
-			$this->pull($table);
+			$pulled += $this->pull($table);
 		}
 
 		$this->status("Pushing: event");
-		$this->pushEvents();
+		$pushed += $this->pushEvents();
 
 		$this->status("Pulling: event");
-		$this->pullEvents();
+		$pulled += $this->pullEvents();
 
 		$this->status("Pushing: sync_remap");
-		$this->push('sync_remap');
+		$pushed += $this->push('sync_remap');
 
 		$this->status("Pulling: sync_remap");
-		$this->pull('sync_remap');
+		$pulled += $this->pull('sync_remap');
 
 		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
 			$this->status("Pushing: $table");
-			$this->push($table);
+			$pushed += $this->push($table);
 		}
 
 		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
 			$this->status("Pushing: $table");
-			$this->pull($table);
+			$pulled += $this->pull($table);
 		}
 
 		$this->server->last_sync = $sync_date;
@@ -86,7 +82,7 @@ class SyncService
 			throw new Exception("Unable to save sync_server: ".print_r($this->server->getErrors(),true));
 		}
 
-		$this->status("Sync completed, {$this->responses['inserted']} inserted, {$this->responses['updated']} updated, {$this->responses['not-modified']} not modified.");
+		$this->status("Sync completed, $pushed pushed $pulled pulled.");
 	}
 
 	public function status($message)
@@ -117,11 +113,13 @@ class SyncService
 			return;
 		}
 
-		$this->request(array(
+		$resp = $this->request(array(
 			'type' => 'PUSH',
 			'table' => $table,
 			'data' => $data,
 		));
+
+		return ($resp['data']['inserted'] + $resp['data']['updated']);
 	}
 
 	public function pushEvents()
@@ -132,11 +130,13 @@ class SyncService
 			return array('received'=>0,'inserted'=>0,'updated'=>0,'not-modified'=>0);
 		}
 
-		$this->request(array(
+		$resp = $this->request(array(
 			'type' => 'PUSH',
 			'table' => 'event',
 			'data' => $events,
 		));
+
+		return ($resp['data']['inserted'] + $resp['data']['updated']);
 	}
 
 	public function wrapElements($event)
@@ -337,7 +337,7 @@ class SyncService
 
 		$resp = $this->receiveItems($table, $resp['message']['data'], "PULL");
 
-		return $resp;
+		return ($resp['data']['inserted'] + $resp['data']['updated']);
 	}
 
 	public function pullEvents()
@@ -353,7 +353,7 @@ class SyncService
 
 		$resp = $this->receiveItems('event', $resp['message']['data'], "PULL");
 
-		return $resp;
+		return ($resp['data']['inserted'] + $resp['data']['updated']);
 	}
 
 	public function inSync()
@@ -411,10 +411,6 @@ class SyncService
 		if ($resp['status'] != 'ok') {
 			die("Request failed: {$resp['message']}");
 		}
-
-		$this->responses['inserted'] += $resp['message']['inserted'];
-		$this->responses['updated'] += $resp['message']['updated'];
-		$this->responses['not-modified'] += $resp['message']['not-modified'];
 
 		return $resp;
 	}
