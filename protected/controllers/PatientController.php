@@ -361,7 +361,11 @@ class PatientController extends BaseController
 		$this->layout = '//layouts/patientMode/main';
 
 		if (!$this->episode = Episode::model()->findByPk($id)) {
-			throw new SystemException('Episode not found: '.$id);
+			if ($sr = SyncRemap::model()->find('old_episode_id=?',array($id))) {
+				return $this->rediract(array('/patient/episodes/'.$sr->new_episode_id));
+			} else {
+				throw new SystemException('Episode not found: '.$id);
+			}
 		}
 
 		$this->patient = $this->episode->patient;
