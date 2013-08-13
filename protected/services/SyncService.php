@@ -31,67 +31,39 @@ class SyncService
 
 	public function sync()
 	{
-		$request = array(
-			'type' => 'PUSH',
-			'tables' => array(),
-			'events' => array(),
-			'protected_files' => array(),
-		);
-
-		OELog::log("Preparing to sync ...");
+		OELog::log("[sync] starting sync with {$this->server->hostname} ...");
 
 		foreach ($this->getCoreTableListInSyncOrder() as $table) {
-			$changed = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($this->server->last_sync))->order("last_modified_date asc")->queryAll();
-
-			if (!empty($changed)) {
-				OELog::log("[$table] pushing ...");
-				$count = $this->push($table, $changed);
-				OELog::log("[$table] pushed $count rows");
-			}
+			OELog::log("[sync] push: $table");
+			$resp = $this->push($table);
 		}
 
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("last_modified_date > '{$this->server->last_sync}'");
-		$criteria->order = "last_modified_date asc";
-
-		foreach (Event::model()->findAll($criteria) as $event) {
-			$request['events'][] = $event->wrap();
-			$this->processed_events[] = $event->hash;
+		foreach ($this->getRemoteCoreTableListInSyncOrder() as $table) {
+			OELog::log("[sync] pull: $table");
+			$resp = $this->pull($table);
 		}
 
-		if (empty($request['events'])) {
-			$this->messages[] = "pushed 0 events";
+		OELog::log("[sync] push: event");
+		$resp = $this->pushEvents();
+
+		OELog::log("[sync] pull: event");
+		$resp = $this->pullEvents();
+
+		OELog::log("[sync] push sync_remap");
+		$resp = $this->push('sync_remap');
+
+		OELog::log("[sync] pull sync_remap");
+		$resp = $this->pull('sync_remap');
+
+		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
+			OELog::log("[sync] push: $table");
+			$resp = $this->push($table);
 		}
 
-		if (empty($request['assets'])) {
-			$this->messages[] = "pushed 0 assets";
+		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
+			OELog::log("[sync] pull: $table");
+			$resp = $this->pull($table);
 		}
-
-		if (empty($request['events']) && empty($request['assets'])) {
-			return true;
-		}
-
-		$json = json_encode($request);
-
-		$response = $this->request($json);
-
-		if (!$resp = @json_decode($response,true)) {
-			if (preg_match('/Authorization Required/i',$response)) {
-				$this->messages[] = "http authorisation required";
-			} else {
-				$this->messages[] = "unable to parse server response";
-			}
-			die($response);
-			return false;
-		}
-
-		if (@$resp['status'] == 'OK') {
-			$this->messages[] = "pushed ".count($request['assets'])." asset".(count($request['assets'])==1 ? '' : 's');
-			$this->messages[] = "pushed ".count($request['events'])." event".(count($request['events'])==1 ? '' : 's');
-			return true;
-		}
-		$this->messages[] = $resp['message'];
-		return false;
 	}
 
 	public function push($table)
@@ -415,6 +387,10 @@ class SyncService
 
 	public function getCoreTableListInSyncOrder($last_sync)
 	{
+		if (!$last_sync && $this->server) {
+			$last_sync = $this->server->last_sync;
+		}
+
 		$tables = array('user');
 		$exclude = array('authitem','authitemchild','authassignment','event','protected_file','user_session','tbl_migration','audit','audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','sync_server','sync_remap');
 
@@ -620,9 +596,13 @@ class SyncService
 			if ($local = Yii::app()->db->createCommand()->select("*")->from('episode')->where("id=:id",array(":id"=>$item['id']))->queryRow()) {
 				if (strtotime($local['last_modified_date']) <= strtotime($item['last_modified_date'])) {
 					Yii::app()->db->createCommand()->update('episode',$item,"id=:id",array(":id"=>$item['id']));
+					$resp['updated']++;
+				} else {
+					$resp['not-modified']++;
 				}
 			} else {
 				Yii::app()->db->createCommand()->insert('episode',$item);
+				$resp['inserted']++;
 
 				if ($method == 'PUSH') {
 					$subspecialty_id = Yii::app()->db->createCommand()
@@ -633,8 +613,6 @@ class SyncService
 						->where("f.id = :firm_id",array(":firm_id" => $item['firm_id']))
 						->queryScalar();
 
-					OELog::log("PUSH: subspecialty_id $subspecialty_id episode {$item['id']}");
-
 					if ($existingEpisode = Yii::app()->db->createCommand()
 						->select("ep.*")
 						->from("episode ep")
@@ -643,11 +621,7 @@ class SyncService
 						->where("subspecialty_id = :subspecialty_id and deleted = :deleted and ep.patient_id = :patient_id and ep.id != :episode_id",array(":subspecialty_id" => $subspecialty_id, ":deleted" => 0, ":patient_id" => $item['patient_id'],":episode_id" => $item['id']))
 						->queryRow()) {
 
-						OELog::log("PUSH: found existing episode {$existingEpisode['id']}");
-
 						if (strtotime($item['created_date']) < strtotime($existingEpisode['created_date'])) {
-							OELog::log("PUSH: passed episode is earlier so remapping ... {$existingEpisode['id']} => {$item['id']}");
-
 							// Remap
 							Yii::app()->db->createCommand()->update('event',array('episode_id' => $item['id']),"episode_id = :id",array(":id" => $existingEpisode['id']));
 							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $item['id']),"episode_id = :id",array(":id" => $existingEpisode['id']));
@@ -661,8 +635,6 @@ class SyncService
 								throw new Exception("Unable to save sync_remap item: ".print_r($sr->getErrors(),true));
 							}
 						} else {
-							OELog::log("PUSH: local episode is earlier so remapping ... {$existingEpisode['id']} => {$item['id']}");
-
 							// Remap
 							Yii::app()->db->createCommand()->update('event',array('episode_id' => $existingEpisode['id']),"episode_id = :id",array(":id" => $item['id']));
 							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $existingEpisode['id']),"episode_id = :id",array(":id" => $item['id']));
@@ -680,6 +652,8 @@ class SyncService
 				}
 			}
 		}
+
+		return $resp;
 	}
 
 	public function receiveItems_event($resp, $data, $method)
@@ -705,15 +679,12 @@ class SyncService
 				if (strtotime($_data['last_modified_date']) > strtotime($local['last_modified_date'])) {
 					Yii::app()->db->createCommand()->update("event",$_data,"id=:id",array(":id"=>$event['id']));
 					$resp['updated']++;
-					OELog::log("Updating event {$event['id']}");
 				} else {
 					$resp['not-modified']++;
-					OELog::log("Not updating event {$event['id']}");
 				}
 			} else {
 				Yii::app()->db->createCommand()->insert("event",$_data);
 				$resp['inserted']++;
-				OELog::log("Creating event {$_data['id']}");
 			}
 
 			$this->processRelatedData($event['_elements']);
@@ -756,16 +727,12 @@ class SyncService
 				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['table'])->where("id=:id",array(":id"=>$item['data']['id']))->queryRow()) {
 					if (strtotime($item['data']['last_modified_date']) > strtotime($local['last_modified_date'])) {
 						Yii::app()->db->createCommand()->update($item['table'],$item['data'],"id=:id",array(":id"=>$item['data']['id']));
-						OELog::log("Updating {$item['table']} {$item['data']['id']}: ".print_r($item['data'],true));
 						$was_modified = true;
 					}
 				} else {
 					Yii::app()->db->createCommand()->insert($item['table'],$item['data']);
-					OELog::log("Inserting {$item['table']}: ".print_r($item['data'],true));
 					$was_modified = true;
 				}
-			} else {
-				OELog::log("Related data type {$item['type']} != $type");
 			}
 
 			!empty($item['related']) && $this->processRelatedData($item['related'], ($type===null ? 'reverse' : $type));

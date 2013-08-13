@@ -82,22 +82,6 @@ class SyncController extends Controller
 			));
 		}
 
-		/*if (!$response = $server->push()) {
-			echo json_encode(array(
-				'status' => 'FAIL',
-				'message' => implode(', ',$server->messages),
-			));
-			return;
-		}
-
-		if (!$response = $server->pull()) {
-			echo json_encode(array(
-				'status' => 'FAIL',
-				'message' => implode(', ',$server->messages),
-			));
-			return;
-		}*/
-
 		echo json_encode(array(
 			'status' => 'OK',
 			'message' => implode(', ',$server->messages),
