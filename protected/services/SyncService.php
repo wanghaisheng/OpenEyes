@@ -814,7 +814,7 @@ class SyncService
 
 	public function receiveItems_sync_remap($resp, $data, $method) {
 		foreach ($data as $sync_remap) {
-			if (!isset($sync_remap)) {
+			if (!isset($sync_remap['new_episode_id'])) {
 				file_put_contents("/tmp/debug",print_r($sync_remap,true));
 			}
 
