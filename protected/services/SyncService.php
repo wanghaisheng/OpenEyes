@@ -95,7 +95,7 @@ class SyncService
 		if ($pc > 100) {$pc = 100;}
 
 		echo "event: status\n";
-		echo "data: $message".($pc <100) ? " - $pc%" : "")."\n\n";
+		echo "data: $message".($pc <100 ? " - $pc%" : "")."\n\n";
 		flush();
 		ob_flush();
 	}
