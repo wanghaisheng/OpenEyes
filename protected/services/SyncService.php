@@ -618,7 +618,7 @@ class SyncService
 
 		foreach ($data as $item) {
 			if ($local = Yii::app()->db->createCommand()->select("*")->from('episode')->where("id=:id",array(":id"=>$item['id']))->queryRow()) {
-				if (strtotime($local['last_modified_date']) <= strtotime($item['created_date'])) {
+				if (strtotime($local['last_modified_date']) <= strtotime($item['last_modified_date'])) {
 					Yii::app()->db->createCommand()->update('episode',$item,"id=:id",array(":id"=>$item['id']));
 				}
 			} else {
@@ -633,15 +633,21 @@ class SyncService
 						->where("f.id = :firm_id",array(":firm_id" => $item['firm_id']))
 						->queryScalar();
 
+					OELog::log("PUSH: subspecialty_id $subspecialty_id episode {$item['id']}");
+
 					if ($existingEpisode = Yii::app()->db->createCommand()
 						->select("ep.*")
 						->from("episode ep")
 						->join("firm f","ep.firm_id = f.id")
 						->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-						->where("subspecialty_id = :subspecialty_id and deleted = :deleted",array(":subspecialty_id" => $subspecialty_id, ":deleted" => 0))
+						->where("subspecialty_id = :subspecialty_id and deleted = :deleted and ep.patient_id = :patient_id and ep.id != :episode_id",array(":subspecialty_id" => $subspecialty_id, ":deleted" => 0, ":patient_id" => $item['patient_id'],":episode_id" => $item['id']))
 						->queryRow()) {
 
+						OELog::log("PUSH: found existing episode {$existingEpisode['id']}");
+
 						if (strtotime($item['created_date']) < strtotime($existingEpisode['created_date'])) {
+							OELog::log("PUSH: passed episode is earlier so remapping ... {$existingEpisode['id']} => {$item['id']}");
+
 							// Remap
 							Yii::app()->db->createCommand()->update('event',array('episode_id' => $item['id']),"episode_id = :episode_id",array(":episode_id" => $existingEpisode['id']));
 							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $item['id']),"episode_id = :episode_id",array(":episode_id" => $existingEpisode['id']));
@@ -650,6 +656,21 @@ class SyncService
 							$sr = new SyncRemap;
 							$sr->old_episode_id = $existingEpisode['id'];
 							$sr->new_episode_id = $item['id'];
+
+							if (!$sr->save()) {
+								throw new Exception("Unable to save sync_remap item: ".print_r($sr->getErrors(),true));
+							}
+						} else {
+							OELog::log("PUSH: local episode is earlier so remapping ... {$existingEpisode['id']} => {$item['id']}");
+
+							// Remap
+							Yii::app()->db->createCommand()->update('event',array('episode_id' => $existingEpisode['id']),"episode_id = :episode_id",array(":episode_id" => $item['id']));
+							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $existingEpisode['id']),"episode_id = :episode_id",array(":episode_id" => $item['id']));
+							Yii::app()->db->createCommand()->update('episode',array('deleted' => 1),"id=:id",array(":id" => $item['id']));
+
+							$sr = new SyncRemap;
+							$sr->old_episode_id = $item['id'];
+							$sr->new_episode_id = $existingEpisode['id'];
 
 							if (!$sr->save()) {
 								throw new Exception("Unable to save sync_remap item: ".print_r($sr->getErrors(),true));
