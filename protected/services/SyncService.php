@@ -612,6 +612,55 @@ class SyncService
 		return $resp;
 	}
 
+	public function receiveItems_episode($resp, $data, $method)
+	{
+		unset($data['_reference']);
+
+		foreach ($data as $item) {
+			if ($local = Yii::app()->db->createCommand()->select("*")->from('episode')->where("id=:id",array(":id"=>$item['id']))->queryRow()) {
+				if (strtotime($local['last_modified_date']) <= strtotime($item['created_date'])) {
+					Yii::app()->db->createCommand()->update('episode',$item);
+				}
+			} else {
+				Yii::app()->db->createCommand()->insert('episode',$item);
+
+				if ($method == 'PUSH') {
+					$subspecialty_id = Yii::app()->db->createCommand()
+						->select("s.*")
+						->from("subspecialty s")
+						->join("service_subspecialty_assignment ssa","ssa.subspecialty_id = s.id")
+						->join("firm f","f.service_subspecialty_assignment_id = ssa.id")
+						->where("f.id = :firm_id",array(":firm_id" => $item['firm_id']))
+						->queryScalar();
+
+					if ($existingEpisode = Yii::app()->db->createCommand()
+						->select("ep.*")
+						->from("episode ep")
+						->join("firm f","ep.firm_id = f.id")
+						->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
+						->where("subspecialty_id = :subspecialty_id and deleted = :deleted",array(":subspecialty_id" => $subspecialty_id, ":deleted" => 0))
+						->queryRow()) {
+
+						if (strtotime($item['created_date']) < strtotime($existingEpisode['created_date'])) {
+							// Remap
+							Yii::app()->db->createCommand()->update('event',array('episode_id' => $item['id']),"episode_id = :episode_id",array(":episode_id" => $existingEpisode['id']));
+							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $item['id']),"episode_id = :episode_id",array(":episode_id" => $existingEpisode['id']));
+							Yii::app()->db->createCommand()->update('episode',array('deleted' => 1),"id=:id",array(":id" => $existingEpisode['id']));
+
+							$sr = new SyncRemap;
+							$sr->old_episode_id = $existingEpisode['id'];
+							$sr->new_episode_id = $item['id'];
+
+							if (!$sr->save()) {
+								throw new Exception("Unable to save sync_remap item: ".print_r($sr->getErrors(),true));
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public function receiveItems_event($resp, $data, $method)
 	{
 		$reference = $data['_reference'];
@@ -626,8 +675,9 @@ class SyncService
 			}
 
 			if ($method == 'PUSH') {
-				$episode = $this->getEpisodeForEvent($event, $method);
-				$_data['episode_id'] = $episode['id'];
+				if ($sr = SyncRemap::model()->find('old_episode_id=?',array($_data['episode_id']))) {
+					$_data['episode_id'] = $sr->new_episode_id;
+				}
 			}
 
 			if ($local = Yii::app()->db->createCommand()->select("*")->from("event")->where("id=:id",array(":id"=>$event['id']))->queryRow()) {
@@ -657,89 +707,6 @@ class SyncService
 		$this->processReferenceData($reference);
 
 		return $resp;
-	}
-
-	// Find or create an appropriate episode for the event.  If this is a PUSH, data is being sent to the master so we remap the episode if appropriate
-	public function getEpisodeForEvent($event, $method)
-	{
-		// Event's episode
-		if ($episode = Yii::app()->db->createCommand()
-			->select("ep.*, ssa.subspecialty_id")
-			->from("episode ep")
-			->join("firm f","ep.firm_id = f.id")
-			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ep.id = :id and deleted = :deleted",array(":id"=>$event['episode_id'],":deleted"=>0))
-			->queryRow()) {
-
-			OELog::log("FISH: event {$event['id']} episode {$event['episode_id']} exists locally we we're happy");
-			return $episode;
-		}
-
-		$subspecialty_id = Yii::app()->db->createCommand()
-			->select("ssa.subspecialty_id")
-			->from("service_subspecialty_assignment ssa")
-			->join("firm f","f.service_subspecialty_assignment_id = ssa.id")
-			->where("f.id = :firm_id",array(":firm_id"=>$event['_episode']['firm_id']))
-			->queryScalar();
-
-		$otherEpisode = Yii::app()->db->createCommand()
-			->select("ep.*, ssa.subspecialty_id")
-			->from("episode ep")
-			->join("firm f","ep.firm_id = f.id")
-			->join("service_subspecialty_assignment ssa","f.service_subspecialty_assignment_id = ssa.id")
-			->where("ep.patient_id = :patient_id and ssa.subspecialty_id = :subspecialty_id and ep.deleted = :deleted",array(":patient_id"=>$event['_episode']['patient_id'],":subspecialty_id"=>$subspecialty_id,":deleted"=>0))
-			->queryRow();
-
-		if (!$otherEpisode) {
-			OELog::log("FISH: event {$event['id']} episode {$event['episode_id']} doesn'st exist so creating and recursing ...");
-
-			// No episode exists for this subspecialty so create the one that was passed with the event
-			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
-			return $this->getEpisodeForEvent($event, $method);
-		}
-
-		// If our existing episode was created first we use that, and also ensure that the passed episode is saved locally but marked as deleted
-		if (strtotime($otherEpisode->created_date) < strtotime($event['_episode']['created_date'])) {
-			OELog::log("FISH: event {$event['id']} episode {$event['episode_id']}, there is previous episode {$otherEpisode['id']} so remapping");
-
-			if (!Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow()) {
-				$event['_episode']['deleted'] = 1;
-				Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
-			}
-
-			$this->remapEpisode($event['episode_id'],$otherEpisode['id']);
-
-			return $otherEpisode;
-		}
-
-		// Need to use the episode that was passed with the event, mark our local one deleted and remap any events that point to the local one
-
-		OELog::log("FISH: event {$event['id']} episode {$event['episode_id']} was created before local episode {$otherEpisode['id']} so remapping");
-
-		if (!Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow()) {
-			Yii::app()->db->createCommand()->insert('episode',$event['_episode']);
-		}
-
-		$this->remapEpisode($otherEpisode['id'],$event['episode_id']);
-
-		Yii::app()->db->createCommand()->update('episode',array('deleted'=>1),"id=:id",array(":id"=>$otherEpisode['id']));
-
-		return $this->getEpisodeForEvent($event, $method);
-	}
-
-	public function remapEpisode($old_episode_id, $new_episode_id) {
-		if (!SyncRemap::model()->find('old_episode_id=? and new_episode_id=?',array($old_episode_id,$new_episode_id))) {
-			$sr = new SyncRemap;
-			$sr->old_episode_id = $old_episode_id;
-			$sr->new_episode_id = $new_episode_id;
-
-			if (!$sr->save()) {
-				throw new Exception("Unable to save sync_remap: ".print_r($sr->getErrors(),true));
-			}
-		}
-
-		Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$new_episode_id),"episode_id = :episode_id",array(":episode_id"=>$old_episode_id));
-		Yii::app()->db->createCommand()->update('event',array('episode_id'=>$new_episode_id),"episode_id = :episode_id",array(":episode_id"=>$old_episode_id));
 	}
 
 	public function processReferenceData($reference)
