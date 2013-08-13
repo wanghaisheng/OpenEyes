@@ -412,9 +412,9 @@ class SyncService
 			die("Request failed: {$resp['message']}");
 		}
 
-		$this->responses['inserted'] += $resp['data']['inserted'];
-		$this->responses['updated'] += $resp['data']['updated'];
-		$this->responses['not-modified'] += $resp['data']['not-modified'];
+		$this->responses['inserted'] += $resp['message']['inserted'];
+		$this->responses['updated'] += $resp['message']['updated'];
+		$this->responses['not-modified'] += $resp['message']['not-modified'];
 
 		return $resp;
 	}
