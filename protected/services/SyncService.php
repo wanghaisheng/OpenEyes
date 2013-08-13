@@ -136,7 +136,7 @@ class SyncService
 			'data' => $events,
 		));
 
-		return ($resp['data']['inserted'] + $resp['data']['updated']);
+		return ($resp['message']['inserted'] + $resp['message']['updated']);
 	}
 
 	public function wrapElements($event)
@@ -337,7 +337,7 @@ class SyncService
 
 		$resp = $this->receiveItems($table, $resp['message']['data'], "PULL");
 
-		return ($resp['data']['inserted'] + $resp['data']['updated']);
+		return ($resp['inserted'] + $resp['updated']);
 	}
 
 	public function pullEvents()
@@ -353,7 +353,7 @@ class SyncService
 
 		$resp = $this->receiveItems('event', $resp['message']['data'], "PULL");
 
-		return ($resp['data']['inserted'] + $resp['data']['updated']);
+		return ($resp['message']['inserted'] + $resp['message']['updated']);
 	}
 
 	public function inSync()
