@@ -31,39 +31,49 @@ class SyncService
 
 	public function sync()
 	{
-		OELog::log("[sync] starting sync with {$this->server->hostname} ...");
+		header('Content-Type: text/event-stream');
+		header('Cache-Control: no-cache');
+
+		$this->status("starting sync with {$this->server->hostname} ...");
 
 		foreach ($this->getCoreTableListInSyncOrder() as $table) {
-			OELog::log("[sync] push: $table");
+			$this->status("push: $table");
 			$resp = $this->push($table);
 		}
 
 		foreach ($this->getRemoteCoreTableListInSyncOrder() as $table) {
-			OELog::log("[sync] pull: $table");
+			$this->status("pull: $table");
 			$resp = $this->pull($table);
 		}
 
-		OELog::log("[sync] push: event");
+		$this->status("push: event");
 		$resp = $this->pushEvents();
 
-		OELog::log("[sync] pull: event");
+		$this->status("pull: event");
 		$resp = $this->pullEvents();
 
-		OELog::log("[sync] push sync_remap");
+		$this->status("push sync_remap");
 		$resp = $this->push('sync_remap');
 
-		OELog::log("[sync] pull sync_remap");
+		$this->status("pull sync_remap");
 		$resp = $this->pull('sync_remap');
 
 		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
-			OELog::log("[sync] push: $table");
+			$this->status("push: $table");
 			$resp = $this->push($table);
 		}
 
 		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
-			OELog::log("[sync] pull: $table");
+			$this->status("pull: $table");
 			$resp = $this->pull($table);
 		}
+	}
+
+	public function status($message)
+	{
+		OELog::log("[sync] $message");
+		echo $message."\n";
+		flush();
 	}
 
 	public function push($table)

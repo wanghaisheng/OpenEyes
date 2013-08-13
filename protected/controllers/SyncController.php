@@ -75,17 +75,8 @@ class SyncController extends Controller
 			throw new Exception("Unknown server: $id");
 		}
 
-		if (!$response = $server->sync()) {
-			echo json_encode(array(
-				'status' => 'FAIL',
-				'message' => implode(', ',$server->message),
-			));
-		}
-
-		echo json_encode(array(
-			'status' => 'OK',
-			'message' => implode(', ',$server->messages),
-		));
+		$service = new SyncService($server);
+		$service->sync();
 	}
 
 	public function actionCsrf() {
