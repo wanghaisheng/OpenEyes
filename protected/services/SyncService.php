@@ -385,7 +385,7 @@ class SyncService
 		return $resp;
 	}
 
-	public function getCoreTableListInSyncOrder($last_sync)
+	public function getCoreTableListInSyncOrder($last_sync=false)
 	{
 		if (!$last_sync && $this->server) {
 			$last_sync = $this->server->last_sync;
