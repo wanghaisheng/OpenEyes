@@ -515,8 +515,6 @@ class SyncService
 			return $this->$receiveMethod($resp, $data, $method);
 		}
 
-		unset($data['_reference']);
-
 		foreach ($data as $item) {
 			$id = @$item['id'];
 
@@ -552,8 +550,6 @@ class SyncService
 
 	public function receiveItems_proc_opcs_assignment($resp, $data, $method)
 	{
-		unset($data['_reference']);
-
 		foreach ($data as $item) {
 			if (!$local = Yii::app()->db->createCommand()->select("*")->from('proc_opcs_assignment')->where("proc_id=:proc_id and opcs_code_id=:opcs_code_id",array(':proc_id'=>$item['proc_id'],':opcs_code_id'=>$item['opcs_code_id']))->queryRow()) {
 				Yii::app()->db->createCommand()->insert($table, $item);
@@ -566,8 +562,6 @@ class SyncService
 
 	public function receiveItems_delete_log($resp, $data, $method)
 	{
-		unset($data['_reference']);
-
 		foreach ($data as $item) {
 			if ($item['event_id'] === null) {
 				if ($local = Yii::app()->db->createCommand()->select("*")->from($item['item_table'])->where("id=:id",array(":id"=>$item['item_id']))->queryRow()) {
@@ -590,8 +584,6 @@ class SyncService
 
 	public function receiveItems_episode($resp, $data, $method)
 	{
-		unset($data['_reference']);
-
 		foreach ($data as $item) {
 			if ($local = Yii::app()->db->createCommand()->select("*")->from('episode')->where("id=:id",array(":id"=>$item['id']))->queryRow()) {
 				if (strtotime($local['last_modified_date']) <= strtotime($item['last_modified_date'])) {
@@ -774,12 +766,7 @@ class SyncService
 
 	public function getItems($table, $last_sync, $method)
 	{
-		if ($method == 'PULL' && $table == 'episode') {
-			// We always want to pull deleted episodes from the master back to the slave
-			$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ? or deleted = ?",array($last_sync,1))->order("last_modified_date asc")->queryAll();
-		} else {
-			$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
-		}
+		$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
 
 		if ($table == 'event') {
 			foreach ($events as $i => $event) {
@@ -787,13 +774,13 @@ class SyncService
 				$events[$i]['_deletes'] = $this->wrapDeletes($event, $last_sync);
 				$events[$i]['_episode'] = Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow();
 			}
-		}
 
-		$events['_reference'] = array();
+			$events['_reference'] = array();
 
-		foreach (EventType::model()->findAll() as $event_type) {
-			if ($data = $this->wrapReferenceTables($event_type, $last_sync)) {
-				$events['_reference'][$event_type->class_name] = $data;
+			foreach (EventType::model()->findAll() as $event_type) {
+				if ($data = $this->wrapReferenceTables($event_type, $last_sync)) {
+					$events['_reference'][$event_type->class_name] = $data;
+				}
 			}
 		}
 
