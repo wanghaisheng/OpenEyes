@@ -23,6 +23,14 @@
 class SyncService
 {
 	public $server = null;
+	public $table_count = 0;
+	public $position = 0;
+	public $responses = array(
+		'inserted' => array(),
+		'updated' => array(),
+		'not-modified' => array(),
+		'received' => array(),
+	);
 
 	public function __construct($server=null)
 	{
@@ -34,45 +42,64 @@ class SyncService
 		header('Content-Type: text/event-stream');
 		header('Cache-Control: no-cache');
 
-		$this->status("starting sync with {$this->server->hostname} ...");
+		$sync_date = date('Y-m-d H:i:s');
 
-		foreach ($this->getCoreTableListInSyncOrder() as $table) {
-			$this->status("push: $table");
-			$resp = $this->push($table);
+		$local_core_tables = $this->getCoreTableListInSyncOrder();
+		$remote_core_tables = $this->getRemoteCoreTableListInSyncOrder();
+
+		$this->table_count = count($local_core_tables) + count($remote_core_tables) + 20;
+
+		foreach ($local_core_tables as $table) {
+			$this->status("Pushing: $table");
+			$this->push($table);
 		}
 
-		foreach ($this->getRemoteCoreTableListInSyncOrder() as $table) {
-			$this->status("pull: $table");
-			$resp = $this->pull($table);
+		foreach ($remote_core_tables as $table) {
+			$this->status("Pulling: $table");
+			$this->pull($table);
 		}
 
-		$this->status("push: event");
-		$resp = $this->pushEvents();
+		$this->status("Pushing: event");
+		$this->pushEvents();
 
-		$this->status("pull: event");
-		$resp = $this->pullEvents();
+		$this->status("Pulling: event");
+		$this->pullEvents();
 
-		$this->status("push sync_remap");
-		$resp = $this->push('sync_remap');
+		$this->status("Pushing: sync_remap");
+		$this->push('sync_remap');
 
-		$this->status("pull sync_remap");
-		$resp = $this->pull('sync_remap');
+		$this->status("Pulling: sync_remap");
+		$this->pull('sync_remap');
 
 		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
-			$this->status("push: $table");
-			$resp = $this->push($table);
+			$this->status("Pushing: $table");
+			$this->push($table);
 		}
 
 		foreach (array('audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','audit') as $table) {
-			$this->status("pull: $table");
-			$resp = $this->pull($table);
+			$this->status("Pushing: $table");
+			$this->pull($table);
 		}
+
+		$this->server->last_sync = $sync_date;
+		if (!$this->server->save()) {
+			throw new Exception("Unable to save sync_server: ".print_r($this->server->getErrors(),true));
+		}
+
+		$this->status("Sync completed, {$this->responses['inserted']} inserted, {$this->responses['updated']} updated, {$this->responses['not-modified']} not modified.");
 	}
 
 	public function status($message)
 	{
 		OELog::log("[sync] $message");
-		echo $message."\n";
+
+		$this->position++;
+
+		$pc = round($this->position / ($this->table_count / 100));
+		if ($pc > 100) {$pc = 100;}
+
+		echo "event: status\n";
+		echo "data: $message - $pc%\n\n";
 		flush();
 		ob_flush();
 	}
@@ -87,20 +114,14 @@ class SyncService
 			->queryAll();
 
 		if (empty($data)) {
-			return array('received'=>0,'inserted'=>0,'updated'=>0,'not-modified'=>0);
+			return;
 		}
 
-		$resp = $this->request(array(
+		$this->request(array(
 			'type' => 'PUSH',
 			'table' => $table,
 			'data' => $data,
 		));
-
-		if ($resp['status'] != 'ok') {
-			die("Failed: {$resp['message']}\n");
-		}
-
-		return $resp['message'];
 	}
 
 	public function pushEvents()
@@ -111,17 +132,11 @@ class SyncService
 			return array('received'=>0,'inserted'=>0,'updated'=>0,'not-modified'=>0);
 		}
 
-		$resp = $this->request(array(
+		$this->request(array(
 			'type' => 'PUSH',
 			'table' => 'event',
 			'data' => $events,
 		));
-
-		if ($resp['status'] != 'ok') {
-			die("Failed: {$resp['message']}\n");
-		}
-
-		return $resp['message'];
 	}
 
 	public function wrapElements($event)
@@ -392,6 +407,14 @@ class SyncService
 				die("unable to parse server response");
 			}
 		}
+
+		if ($resp['status'] != 'ok') {
+			die("Request failed: {$resp['message']}");
+		}
+
+		$this->responses['inserted'] += $resp['data']['inserted'];
+		$this->responses['updated'] += $resp['data']['updated'];
+		$this->responses['not-modified'] += $resp['data']['not-modified'];
 
 		return $resp;
 	}

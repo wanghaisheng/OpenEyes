@@ -115,7 +115,7 @@
 			ping(server_id, true);
 		} else {
 			if ($(this).attr('data-rotating') == 'false') {
-				$('span.sync_message').text('Syncing ...');
+				$('span.sync_message').text('Starting sync ...');
 				$('img.syncimage').attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_blue.png');
 				animate($(this));
 				sync(server_id);
@@ -126,34 +126,12 @@
 	function sync(server_id) {
 		var source = new EventSource('/sync/go/'+server_id);
 
-		source.onmessage = function(event) {
-			$('span.sync_message').text(event.data);
-		};
+		source.addEventListener('status', function(e) {
+			$('span.sync_message').text(e.data);
 
-		return;
-
-		$.ajax({
-			'type': 'GET',
-			'url': baseUrl+'/sync/go/'+server_id,
-			'dataType': 'json',
-			'success': function(response) {
-				if (response["status"] == "OK") {
-					$('td.out_of_sync').removeClass('out_of_sync').addClass('in_sync').text('Yes');
-					$('.syncimage').attr('data-status','succeeded');
-					$('.syncimage').attr('data-rotating','stopping');
-				} else {
-					$('td.in_sync').removeClass('in_sync').addClass('out_of_sync').text('No');
-					$('.syncimage').attr('data-status','failed');
-					$('.syncimage').attr('data-rotating','stopping');
-				}
-
-				$('span.sync_message').text(response["message"]);
-			},
-			'error': function(er) {
-				$('td.in_sync').removeClass('in_sync').addClass('out_of_sync').text('No');
-				$('span.sync_message').text("Sync failed (HTTP500 error)");
-				$('.syncimage').attr('data-status','failed');
+			if (e.data.match(/Finished/)) {
 				$('.syncimage').attr('data-rotating','stopping');
+				source.close();
 			}
 		});
 	}
