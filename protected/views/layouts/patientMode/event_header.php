@@ -49,6 +49,7 @@
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.printElement.min.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.hoverIntent.min.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jquery.autosize.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jQueryRotate.2.2.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/util.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/print.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/buttons.js'))?>
@@ -83,6 +84,7 @@
 		<div id="header" class="clearfix">
 			<?php $this->renderPartial('//base/_brand'); ?>
 			<?php $this->renderPartial('//base/_form', array()); ?>
+			<?php $this->renderPartial('//base/_sync', array()); ?>
 			<?php $this->renderPartial('//patient/_patient_id', array()); ?>
 		</div> <!-- #header -->
 

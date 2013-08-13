@@ -74,6 +74,7 @@ class SyncService
 		OELog::log("[sync] $message");
 		echo $message."\n";
 		flush();
+		ob_flush();
 	}
 
 	public function push($table)
