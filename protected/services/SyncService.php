@@ -814,6 +814,10 @@ class SyncService
 
 	public function receiveItems_sync_remap($resp, $data, $method) {
 		foreach ($data as $sync_remap) {
+			if (!isset($sync_remap)) {
+				file_put_contents("/tmp/debug",print_r($sync_remap,true));
+			}
+
 			Yii::app()->db->createCommand()->update('audit',array('episode_id'=>$sync_remap['new_episode_id']),"episode_id=:episode_id",array(":episode_id"=>$sync_remap['old_episode_id']));
 			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$sync_remap['new_episode_id']),"episode_id=:episode_id",array(":episode_id"=>$sync_remap['old_episode_id']));
 			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1),"id=:id",array(":id"=>$sync_remap['old_episode_id']));
