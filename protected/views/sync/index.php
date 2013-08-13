@@ -124,6 +124,14 @@
 	});
 
 	function sync(server_id) {
+		var source = new EventSource('/sync/go/'+server_id);
+
+		source.onmessage = function(event) {
+			$('span.sync_message').text(event.data);
+		};
+
+		return;
+
 		$.ajax({
 			'type': 'GET',
 			'url': baseUrl+'/sync/go/'+server_id,

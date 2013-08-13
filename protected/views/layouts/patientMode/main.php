@@ -47,6 +47,7 @@
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/jquery.printElement.min.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/jquery.hoverIntent.min.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/jquery.autosize.js'))?>
+	<?php $cs->registerScriptFile(Yii::app()->createUrl('js/jQueryRotate.2.2.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/print.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/buttons.js'))?>
 	<?php $cs->registerScriptFile(Yii::app()->createUrl('/js/util.js'))?>
