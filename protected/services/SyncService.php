@@ -619,7 +619,7 @@ class SyncService
 		foreach ($data as $item) {
 			if ($local = Yii::app()->db->createCommand()->select("*")->from('episode')->where("id=:id",array(":id"=>$item['id']))->queryRow()) {
 				if (strtotime($local['last_modified_date']) <= strtotime($item['created_date'])) {
-					Yii::app()->db->createCommand()->update('episode',$item);
+					Yii::app()->db->createCommand()->update('episode',$item,"id=:id",array(":id"=>$item['id']));
 				}
 			} else {
 				Yii::app()->db->createCommand()->insert('episode',$item);
