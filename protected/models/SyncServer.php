@@ -83,7 +83,7 @@ class SyncServer extends BaseActiveRecord
 			if (file_exists("/etc/hosts")) {
 				foreach (@file("/etc/hosts") as $line) {
 					$line = substr($line,0,strlen($line)-1);
-					if (preg_match('/^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})[\s\t]+([a-z][a-zA-Z0-9\.\-_]+)$/',$line,$m)) {
+					if (preg_match('/^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})[\s\t]+([a-z][a-zA-Z0-9\.\-_]+)/',$line,$m)) {
 						if (strtolower($m[2]) == strtolower($this->hostname)) {
 							$ip = $m[1];
 							break;
