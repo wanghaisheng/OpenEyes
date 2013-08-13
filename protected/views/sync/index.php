@@ -129,11 +129,18 @@
 		source.addEventListener('status', function(e) {
 			$('span.sync_message').text(e.data);
 
-			if (e.data.match(/Finished/)) {
+			if (e.data.match(/Sync completed/)) {
 				$('.syncimage').attr('data-rotating','stopping');
 				source.close();
 			}
 		});
+
+		source.onerror = function(e) {
+			$('.syncimage').attr('data-rotating','stopping');
+			$('img.syncimage').attr('src',baseUrl+'/img/_elements/icons/sync/syncbtn_orange.png');
+			$('span.sync_message').text("Sync failed, server error detected.");
+			source.close();
+		}
 	}
 
 	function animate(img) {
