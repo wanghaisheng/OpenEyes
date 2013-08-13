@@ -649,8 +649,8 @@ class SyncService
 							OELog::log("PUSH: passed episode is earlier so remapping ... {$existingEpisode['id']} => {$item['id']}");
 
 							// Remap
-							Yii::app()->db->createCommand()->update('event',array('episode_id' => $item['id']),"episode_id = :episode_id",array(":episode_id" => $existingEpisode['id']));
-							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $item['id']),"episode_id = :episode_id",array(":episode_id" => $existingEpisode['id']));
+							Yii::app()->db->createCommand()->update('event',array('episode_id' => $item['id']),"episode_id = :id",array(":id" => $existingEpisode['id']));
+							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $item['id']),"episode_id = :id",array(":id" => $existingEpisode['id']));
 							Yii::app()->db->createCommand()->update('episode',array('deleted' => 1),"id=:id",array(":id" => $existingEpisode['id']));
 
 							$sr = new SyncRemap;
@@ -664,8 +664,8 @@ class SyncService
 							OELog::log("PUSH: local episode is earlier so remapping ... {$existingEpisode['id']} => {$item['id']}");
 
 							// Remap
-							Yii::app()->db->createCommand()->update('event',array('episode_id' => $existingEpisode['id']),"episode_id = :episode_id",array(":episode_id" => $item['id']));
-							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $existingEpisode['id']),"episode_id = :episode_id",array(":episode_id" => $item['id']));
+							Yii::app()->db->createCommand()->update('event',array('episode_id' => $existingEpisode['id']),"episode_id = :id",array(":id" => $item['id']));
+							Yii::app()->db->createCommand()->update('audit',array('episode_id' => $existingEpisode['id']),"episode_id = :id",array(":id" => $item['id']));
 							Yii::app()->db->createCommand()->update('episode',array('deleted' => 1),"id=:id",array(":id" => $item['id']));
 
 							$sr = new SyncRemap;
