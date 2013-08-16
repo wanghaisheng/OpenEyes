@@ -422,7 +422,7 @@ class SyncService
 		}
 
 		$tables = array('user');
-		$exclude = array('authitem','authitemchild','authassignment','event','protected_file','user_session','tbl_migration','audit','audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','sync_server','sync_remap');
+		$exclude = array('authitem','authitemchild','authassignment','event','user_session','tbl_migration','audit','audit_action','audit_ipaddr','audit_model','audit_module','audit_server','audit_type','audit_useragent','sync_server','sync_remap');
 
 		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
 			if (!preg_match('/^et_oph/',$table->name) && !preg_match('/^oph/',$table->name)) {
