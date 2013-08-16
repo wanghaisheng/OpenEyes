@@ -8,7 +8,7 @@ Feature: Create New Correspondence
 
     Given I am on the OpenEyes "<environment>" homepage
     And I enter login credentials "<username>" and "<password>"
-    And I select Site "<site>"
+    And I select Site "1"
     Then I select a firm of "1"
     # check below
     Then I select a firm of "18"

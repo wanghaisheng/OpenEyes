@@ -19,6 +19,19 @@ class PatientViewContext extends PageObjectContext
     }
 
     /**
+     * @Then /^I select Add First New Episode and Confirm$/
+     */
+    public function iSelectAddFirstNewEpisodeAndConfirm()
+    {
+        /**
+         * @var PatientView $patientView
+         */
+        $patientView = $this->getPage('PatientView');
+        $patientView->addEpisodeAndEvent();
+        $patientView->addEpisode();
+    }
+
+    /**
      * @Then /^I select Create or View Episodes and Events$/
      */
     public function CreateOrViewEpisodesAndEvents()
