@@ -102,12 +102,7 @@ class SyncService
 
 	public function push($table)
 	{
-		$data = Yii::app()->db->createCommand()
-			->select("*")
-			->from($table)
-			->where("last_modified_date > ?",array($this->server->last_sync))
-			->order("last_modified_date asc")
-			->queryAll();
+		$data = $this->getItems($table,$this->server->last_sync,'PUSH');
 
 		if (empty($data)) {
 			return;
