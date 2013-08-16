@@ -814,6 +814,12 @@ class SyncService
 			}
 		}
 
+		if ($table == 'protected_file') {
+			foreach ($events as $i => $event) {
+				$events[$i]['_data'] = base64_encode(file_get_contents("protected/files/".$event['uid'][0]."/".$event['uid'][1]."/".$event['uid'][2]."/".$event['uid']));
+			}
+		}
+
 		return $events;
 	}
 
@@ -835,5 +841,38 @@ class SyncService
 			Yii::app()->db->createCommand()->update('event',array('episode_id'=>$sync_remap['new_episode_id']),"episode_id=:episode_id",array(":episode_id"=>$sync_remap['old_episode_id']));
 			Yii::app()->db->createCommand()->update('episode',array('deleted'=>1),"id=:id",array(":id"=>$sync_remap['old_episode_id']));
 		}
+	}
+
+	public function receiveItems_protected_file($resp, $data, $method) {
+		foreach ($data as $protectedFile) {
+			$_data = $protectedFile;
+			foreach ($_data as $key => $value) {
+				if ($key[0] == '_') {
+					unset($_data[$key]);
+				}
+			}
+
+			if ($local = Yii::app()->db->createCommand()->select("*")->from("protected_file")->where("id=:id",array(":id"=>$protectedFile['id']))->queryRow()) {
+				if (strtotime($_data['last_modified_date']) > strtotime($local['last_modified_date'])) {
+					Yii::app()->db->createCommand()->update("protected_file",$_data,"id=:id",array(":id"=>$protectedFile['id']));
+					$resp['updated']++;
+				} else {
+					$resp['not-modified']++;
+				}
+			} else {
+				Yii::app()->db->createCommand()->insert("protected_file",$_data);
+				$resp['inserted']++;
+			}
+
+			$path = "protected/files/".$protectedFile['uid'][0]."/".$protectedFile['uid'][1]."/".$protectedFile['uid'][2]."/".$protectedFile['uid'];
+
+			if (!file_exists(dirname($path))) {
+				mkdir(dirname($path),0755,true);
+			}
+
+			file_put_contents($path, $protectedFile['_data']);
+		}
+
+		return $resp;
 	}
 }
