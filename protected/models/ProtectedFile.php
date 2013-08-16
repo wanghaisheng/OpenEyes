@@ -326,6 +326,10 @@ class ProtectedFile extends BaseActiveRecord
 	 */
 	protected function generateThumbnail($dimensions)
 	{
+		if ($this->mimetype == 'application/pdf') {
+			return $this->generatePDFThumbnail($dimensions);
+		}
+
 		// Setup source image
 		$image_info = getimagesize($this->getPath());
 		$src_width = $image_info[0];
@@ -384,6 +388,49 @@ class ProtectedFile extends BaseActiveRecord
 		}
 
 		return true;
+	}
 
+	protected function generatePDFThumbnail($dimensions) {
+		$params = explode('_',$dimensions);
+
+		$size = explode('x',$params[0]);
+
+		if (isset($size[1])) {
+			$width = $size[0];
+			$height = $size[1];
+		} else {
+			$width = $height = $size[0];
+		}
+
+		if (isset($params[1])) {
+			$offset = explode('x',$params[1]);
+			$offset_x = $offset[0];
+			$offset_y = $offset[1];
+		} else {
+			$offset_x = $offset_y = 0;
+		}
+
+		$thumbnail = imagecreatetruecolor($width, $height);
+		$thumbnail_path = $this->getThumbnailPath($dimensions);
+
+		if (!file_exists($thumbnail_path)) {
+			if (!file_exists(dirname($thumbnail_path))) {
+				mkdir(dirname($thumbnail_path), 0777, true);
+			}
+
+			$im = new imagick();
+			$im->readImage($this->getPath());
+			$im->cropImage($width,$height,$offset_x,$offset_y);
+			$im->setCompressionQuality(100);
+			$im->setImageFormat('JPEG');
+			$im->writeImage($thumbnail_path);
+			$im->clear();
+			$im->destroy();
+		}
+
+		header('Content-Type: image/jpeg');
+		readfile($thumbnail_path);
+
+		return true;
 	}
 }
