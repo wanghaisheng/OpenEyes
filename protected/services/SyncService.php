@@ -882,7 +882,7 @@ class SyncService
 				mkdir(dirname($path),0755,true);
 			}
 
-			file_put_contents($path, $protectedFile['_data']);
+			file_put_contents($path, base64_decode($protectedFile['_data']));
 		}
 
 		return $resp;
