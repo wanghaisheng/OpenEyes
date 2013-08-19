@@ -108,6 +108,23 @@ class SyncService
 			return;
 		}
 
+		if ($table == 'protected_file') {
+			$count = 0;
+
+			foreach ($data as $dataItem) {
+				$resp = $this->request(array(
+					'type' => 'PUSH',
+					'table' => $table,
+					'data' => array($dataItem),
+				));
+
+				$count += $resp['message']['inserted'];
+				$count += $resp['message']['updated'];
+			}
+
+			return $count;
+		}
+
 		$resp = $this->request(array(
 			'type' => 'PUSH',
 			'table' => $table,
@@ -791,31 +808,31 @@ class SyncService
 
 	public function getItems($table, $last_sync, $method)
 	{
-		$events = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
+		$items = Yii::app()->db->createCommand()->select("*")->from($table)->where("last_modified_date > ?",array($last_sync))->order("last_modified_date asc")->queryAll();
 
 		if ($table == 'event') {
-			foreach ($events as $i => $event) {
-				$events[$i]['_elements'] = $this->wrapElements($event);
-				$events[$i]['_deletes'] = $this->wrapDeletes($event, $last_sync);
-				$events[$i]['_episode'] = Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$event['episode_id']))->queryRow();
+			foreach ($items as $i => $item) {
+				$items[$i]['_elements'] = $this->wrapElements($item);
+				$items[$i]['_deletes'] = $this->wrapDeletes($item, $last_sync);
+				$items[$i]['_episode'] = Yii::app()->db->createCommand()->select("*")->from("episode")->where("id=:id",array(":id"=>$item['episode_id']))->queryRow();
 			}
 
-			$events['_reference'] = array();
+			$items['_reference'] = array();
 
-			foreach (EventType::model()->findAll() as $event_type) {
-				if ($data = $this->wrapReferenceTables($event_type, $last_sync)) {
-					$events['_reference'][$event_type->class_name] = $data;
+			foreach (EventType::model()->findAll() as $item_type) {
+				if ($data = $this->wrapReferenceTables($item_type, $last_sync)) {
+					$items['_reference'][$item_type->class_name] = $data;
 				}
 			}
 		}
 
 		if ($table == 'protected_file') {
-			foreach ($events as $i => $event) {
-				$events[$i]['_data'] = base64_encode(file_get_contents("protected/files/".$event['uid'][0]."/".$event['uid'][1]."/".$event['uid'][2]."/".$event['uid']));
+			foreach ($items as $i => $item) {
+				$items[$i]['_data'] = base64_encode(file_get_contents("protected/files/".$item['uid'][0]."/".$item['uid'][1]."/".$item['uid'][2]."/".$item['uid']));
 			}
 		}
 
-		return $events;
+		return $items;
 	}
 
 	public function getRemoteCoreTableListInSyncOrder() {
