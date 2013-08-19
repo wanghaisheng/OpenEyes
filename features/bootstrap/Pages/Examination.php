@@ -56,18 +56,19 @@ class Examination extends Page
         'sphereRightAxis' => array('xpath' => "//*[@id='Element_OphCiExamination_Refraction_right_axis']"),
         'sphereRightType' => array('xpath' => "//*[@id='Element_OphCiExamination_Refraction_right_type_id']"),
 
-        'expandGonioscopy' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='gonioscopy']"),
-        'expandaAdnexalComorbidity' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='adnexal comorbidity']"),
-        'expandAnteriorSegment' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='anterior segment']"),
-        'expandPupillaryAbnormalities' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='pupillary abnormalities']"),
-        'expandOpticDisc' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='optic disc']"),
-        'expandPosteriorPole' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='posterior pole']"),
-        'expandDiagnoses' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='diagnoses']"),
-        'expandInvestigation' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='investigation']"),
-        'expandClinicalManagement' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='clinical management']"),
-        'expandRisks' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='risks']"),
-        'expandClinicOutcome' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='clinic outcome']"),
-        'expandConclusion' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='conclusion']"),
+        'expandVisualFields' => array ('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Visual Fields']"),
+        'expandGonioscopy' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Gonioscopy']"),
+        'expandaAdnexalComorbidity' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Adnexal Comorbidity']"),
+        'expandAnteriorSegment' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Anterior Segment']"),
+        'expandPupillaryAbnormalities' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Pupillary Abnormalities']"),
+        'expandOpticDisc' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Optic Disc']"),
+        'expandPosteriorPole' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Posterior Pole']"),
+        'expandDiagnoses' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Diagnoses']"),
+        'expandInvestigation' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Investigation']"),
+        'expandClinicalManagement' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Clinical Management']"),
+        'expandRisks' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Risks']"),
+        'expandClinicOutcome' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Clinic Outcome']"),
+        'expandConclusion' => array('xpath' => "//*[@id='inactive_elements']//*[@data-element-type-name='Conclusion']"),
 
         'saveExamination' => array('xpath' => "//*[@id='et_save']"),
     );
@@ -240,6 +241,77 @@ class Examination extends Page
     public function RightType ($type)
     {
         $this->getElement('sphereLeftType')->selectOption($type);
-        $this->getSession()->wait(10000);
     }
+
+    public function expandVisualFields ()
+    {
+        $this->getElement('expandVisualFields')->click();
+    }
+
+    public function expandGonioscopy ()
+    {
+        $this->getElement('expandGonioscopy')->click();
+    }
+
+    public function expandAdnexalComorbidity ()
+    {
+        $this->getElement('expandaAdnexalComorbidity')->click();
+    }
+
+    public function expandAnteriorSegment ()
+    {
+        $this->getElement('expandAnteriorSegment')->click();
+    }
+
+    public function expandPupillaryAbnormalities ()
+    {
+        $this->getElement('expandPupillaryAbnormalities')->click();
+    }
+
+    public function expandOpticDisc ()
+    {
+        $this->getElement('expandOpticDisc')->click();
+    }
+
+    public function expandPosteriorPole ()
+    {
+       $this->getElement('expandPosteriorPole')->click();
+    }
+
+    public function expandDiagnoses ()
+    {
+       $this->getElement('expandDiagnoses')->click();
+    }
+
+    public function expandInvestigation ()
+    {
+        $this->getElement('expandInvestigation')->click();
+    }
+
+    public function expandClinicalManagement ()
+    {
+        $this->getElement('expandClinicalManagement')->click();
+    }
+
+    public function expandRisks ()
+    {
+        $this->getElement('expandRisks')->click();
+    }
+
+    public function expandClinicalOutcome ()
+    {
+        $this->getElement('expandClinicOutcome')->click();
+    }
+
+    public function expandConclusion ()
+    {
+        $this->getElement('expandConclusion')->click();
+    }
+
+    public function saveExamination ()
+    {
+        $this->getSession()->wait(10000);
+        $this->getElement('saveExamination')->click();
+    }
+
 }

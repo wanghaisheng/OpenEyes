@@ -284,107 +284,171 @@ class ExaminationContext extends PageObjectContext
         $examination->RightType($type);
     }
 
-//    /**
-//     * @Then /^I choose to expand the Gonioscopy section$/
-//     */
-//    public function iChooseToExpandTheGonioscopySection()
-//    {
-//        $this->clickLink(Examination::$expandGonioscopy);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Adnexal Comorbidity section$/
-//     */
-//    public function iChooseToExpandTheAdnexalComorbiditySection()
-//    {
-//        $this->clickLink(Examination::$expandaAdnexalComorbidity);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Anterior Segment section$/
-//     */
-//    public function iChooseToExpandTheAnteriorSegmentSection()
-//    {
-//        $this->clickLink(Examination::$expandAnteriorSegment);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Pupillary Abnormalities section$/
-//     */
-//    public function iChooseToExpandThePupillaryAbnormalitiesSection()
-//    {
-//        $this->clickLink(Examination::$expandPupillaryAbnormalities);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Optic Disc section$/
-//     */
-//    public function iChooseToExpandTheOpticDiscSection()
-//    {
-//        $this->clickLink(Examination::$expandOpticDisc);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Posterior Pole section$/
-//     */
-//    public function iChooseToExpandThePosteriorPoleSection()
-//    {
-//        $this->clickLink(Examination::$expandPosteriorPole);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Diagnoses section$/
-//     */
-//    public function iChooseToExpandTheDiagnosesSection()
-//    {
-//        $this->clickLink(Examination::$expandDiagnoses);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Investigation section$/
-//     */
-//    public function iChooseToExpandTheInvestigationSection()
-//    {
-//        $this->clickLink(Examination::$expandInvestigation);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Clinical Management section$/
-//     */
-//    public function iChooseToExpandTheClinicalManagementSection()
-//    {
-//        $this->clickLink(Examination::$expandClinicalManagement);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Risks section$/
-//     */
-//    public function iChooseToExpandTheRisksSection()
-//    {
-//        $this->clickLink(Examination::$expandRisks);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Clinic Outcome section$/
-//     */
-//    public function iChooseToExpandTheClinicOutcomeSection()
-//    {
-//        $this->clickLink(Examination::$expandClinicOutcome);
-//    }
-//
-//    /**
-//     * @Then /^I choose to expand the Conclusion section$/
-//     */
-//    public function iChooseToExpandTheConclusionSection()
-//    {
-//        $this->clickLink(Examination::$expandConclusion);
-//    }
-//
-//    /**
-//     * @Then /^I Save the Examination$/
-//     */
-//    public function iSaveTheExamination()
-//    {
-//        $this->clickLink(Examination::$saveExamination);
-//    }
+    /**
+     * @Then /^I choose to expand the Visual Fields section$/
+     */
+    public function iChooseToExpandTheVisualFieldsSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandVisualFields();
+    }
+
+    /**
+     * @Then /^I choose to expand the Gonioscopy section$/
+     */
+    public function iChooseToExpandTheGonioscopySection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandGonioscopy();
+    }
+
+    /**
+     * @Then /^I choose to expand the Adnexal Comorbidity section$/
+     */
+    public function iChooseToExpandTheAdnexalComorbiditySection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandAdnexalComorbidity();
+    }
+
+    /**
+     * @Then /^I choose to expand the Anterior Segment section$/
+     */
+    public function iChooseToExpandTheAnteriorSegmentSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandAnteriorSegment();
+    }
+
+    /**
+     * @Then /^I choose to expand the Pupillary Abnormalities section$/
+     */
+    public function iChooseToExpandThePupillaryAbnormalitiesSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandPupillaryAbnormalities();
+    }
+
+    /**
+     * @Then /^I choose to expand the Optic Disc section$/
+     */
+    public function iChooseToExpandTheOpticDiscSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandOpticDisc();
+    }
+
+    /**
+     * @Then /^I choose to expand the Posterior Pole section$/
+     */
+    public function iChooseToExpandThePosteriorPoleSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandPosteriorPole();
+    }
+
+    /**
+     * @Then /^I choose to expand the Diagnoses section$/
+     */
+    public function iChooseToExpandTheDiagnosesSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandDiagnoses();
+    }
+
+    /**
+     * @Then /^I choose to expand the Investigation section$/
+     */
+    public function iChooseToExpandTheInvestigationSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandInvestigation();
+    }
+
+    /**
+     * @Then /^I choose to expand the Clinical Management section$/
+     */
+    public function iChooseToExpandTheClinicalManagementSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandClinicalManagement();
+    }
+
+    /**
+     * @Then /^I choose to expand the Risks section$/
+     */
+    public function iChooseToExpandTheRisksSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandRisks();
+    }
+
+    /**
+     * @Then /^I choose to expand the Clinic Outcome section$/
+     */
+    public function iChooseToExpandTheClinicOutcomeSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandClinicalOutcome();
+    }
+
+    /**
+     * @Then /^I choose to expand the Conclusion section$/
+     */
+    public function iChooseToExpandTheConclusionSection()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->expandConclusion();
+    }
+
+    /**
+     * @Then /^I Save the Examination$/
+     */
+    public function iSaveTheExamination()
+    {
+        /**
+         * @var Examination $examination
+         */
+        $examination= $this->getPage('Examination');
+        $examination->saveExamination();
+    }
 }

@@ -51,23 +51,24 @@ Feature: Create New Examination
     And I enter right cylinder details of of Cylinder "-1" integer "4" fraction "0.25"
     Then I enter right Axis degrees of "34"
     And I enter a right type of "1"
-#
-#    #WIP - These Optional sections are to be coded (Dependant on changing firms)
-#    Then I choose to expand the Gonioscopy section
-#    Then I choose to expand the Adnexal Comorbidity section
-#    Then I choose to expand the Anterior Segment section
-#    Then I choose to expand the Pupillary Abnormalities section
-#    Then I choose to expand the Optic Disc section
-#    Then I choose to expand the Posterior Pole section
-#    Then I choose to expand the Diagnoses section
-#    Then I choose to expand the Investigation section
-#    Then I choose to expand the Clinical Management section
-#    Then I choose to expand the Risks section
-#    Then I choose to expand the Clinic Outcome section
-#    Then I choose to expand the Conclusion section
-#
-#    Then I Save the Examination
-#    #Then I Cancel the Examination
+
+
+    Then I choose to expand the Visual Fields section
+    Then I choose to expand the Gonioscopy section
+    Then I choose to expand the Adnexal Comorbidity section
+    Then I choose to expand the Anterior Segment section
+    Then I choose to expand the Pupillary Abnormalities section
+    Then I choose to expand the Optic Disc section
+    Then I choose to expand the Posterior Pole section
+    Then I choose to expand the Diagnoses section
+    Then I choose to expand the Investigation section
+    Then I choose to expand the Clinical Management section
+    Then I choose to expand the Risks section
+    Then I choose to expand the Clinic Outcome section
+    Then I choose to expand the Conclusion section
+
+    Then I Save the Examination
+
 
 
   Examples: User details
