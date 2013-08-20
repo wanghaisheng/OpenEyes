@@ -352,10 +352,6 @@ background:	linear-gradient(#145ea9, #104d8b);
 border-bottom:2px solid #0f467e; 
 }
 
-
-
-
-
 }
 .classy.inactive {
 background: -moz-linear-gradient(#aaaaaa, #999999);
@@ -367,6 +363,7 @@ border-bottom:2px solid #999999;
 }
 /* === BTN GROUP: handle layout of buttons  === */
 .btngroup { }
+.btngroup span.adminbtndivider { display:inline-block; position:relative; bottom:-6px; background: transparent url(../img/_elements/gradients/bg_wrap_btn_divider.png) top center repeat-y; width:16px; height:21px; }
 
 /* positioning of buttons and surrounding space */
 .btngroup.right { text-align:right; }
@@ -558,6 +555,7 @@ textarea {
 .overlay.position.addevent, .overlay.position.addepisode { top:120px; } 
 .overlay.position.startchat { top:100px; }
 .overlay.position.syncconsole { top:70px; }
+.overlay.position.bighelp { position:absolute; top:200px; } /* top controlled with jQuery */
 
 /* close / cancel by clicking on background */
 .overlay .bigcross { position:absolute; top:2px; right:-40px; display:block; width:34px; height:34px; background:transparent url(../img/_elements/btns/overlay/big-cross.png) top left no-repeat; }
@@ -582,16 +580,19 @@ textarea {
 /* Sync console */
 .overlay .syncconsole { width:580px; margin-left:-500px; border:3px solid #ccc; background:#f1f1f1 url(../img/_elements/icons/sync/sync_watermark.png) top left no-repeat; }
 .overlay .syncconsole > h3 { margin-left:30px; }
-
+/* big help (from in-page help) */
+.overlay .bighelp { width:600px; margin-left:-250px; }
 
 
 /* ====== IN-PAGE QUICK / HELP ====== */
 .quickhelp { display:inline-block; margin:0 5px 0 3px; vertical-align:bottom; }
-.quickhelp > a.helpicon { display:inline-block; height:17px; width:17px; border:none; line-height:17px; font-size:11px; font-weight: bold; background:transparent url(../img/_elements/icons/alerts/help.png) top left no-repeat; }
-.quickhelp > a.helpicon.images { background-image:url(../img/_elements/icons/alerts/images.png);}
+.quickhelp > a.helpicon { display:inline-block; height:17px; width:17px; border:none; line-height:17px; font-size:11px; font-weight: bold; background:transparent url(../img/_elements/icons/alerts/help/help.png) top left no-repeat; }
+.quickhelp > a.helpicon.images { background-image:url(../img/_elements/icons/alerts/help/images.png);}
+.quickhelp > a.helpicon.weblink { background-image:url(../img/_elements/icons/alerts/help/weblink.png);}
+
 /* jquery loads help */
 .helpwrap { z-index:9 !important; background:transparent; position:absolute; left:-200px; top:-200px; }
-.helpwrap .inpagehelpinfo { padding:10px 12px; max-width:300px; background:#fff; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -moz-box-shadow: 2px 2px 2px 0 #bbb; -webkit-box-shadow: 2px 2px 2px 0 #bbb;  box-shadow: 2px 2px 2px 0 #bbb;}
+.helpwrap .inpagehelpinfo { padding:10px 12px; max-width:300px; background:#ecf7fd; border:3px #73cbfd solid; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -moz-box-shadow: 2px 2px 2px 0 #bbb; -webkit-box-shadow: 2px 2px 2px 0 #bbb;  box-shadow: 2px 2px 2px 0 #bbb;}
 .helpwrap .inpagehelpinfo ul { padding-left:1.5em; }
 
 
@@ -660,11 +661,11 @@ ul.usershortcuts a.logout:active { background: #ff5652 !important; color:#fff; }
 .patientid > .patient.reminder > .numbers > .number	{ display:inline-block; font-size: 12px; margin-top:1px; }
 .patientid > .patient.reminder > .numbers > .nhs	{ display:inline-block; font-size: 12px; color:#fff; background: #107ebd url(../img/_elements/icons/nhs_tiny.png) center left no-repeat;  margin-left:5px; padding:1px 4px 1px 35px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 .patientid > .patient.summary { position:absolute; left:10px; bottom:4px; }
-.patientid > .patient.details { position:absolute; right:5px; bottom:4px; height:17px; padding:0 20px 0 5px; color:#444; font-size:11px; }
+.patientid > .patient.details { position:absolute; right:5px; bottom:4px; height:17px; padding:0 23px 0 0px; color:#444; font-size:11px; }
 .patientid > .patient.details.female { background:transparent url(../img/_elements/icons/alerts/female_trans.png) center right no-repeat;  }
 .patientid > .patient.details.male { background:transparent url(../img/_elements/icons/alerts/male_trans.png) center right no-repeat; }
 .patientid > .patient.details .icons { display:inline-block; }
-.patientid > .patient.details .icons > img { padding-right:2px; } 
+.patientid > .patient.details .icons > img { padding-left:8px; } 
 .patientid > .patient.warningflag { position:absolute; z-index:5; right:5px; bottom:-25px; height:17px; line-height:17px; font-size:11px; letter-spacing:1px; white-space: nowrap; padding:0 5px; color:#fff; background:#eb5911; border:2px solid #fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;}
 .patientid > .patient.warningflag:after { content: ""; position: absolute; top:-6px; left:43%; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 5px solid #fff;}
 
@@ -910,11 +911,16 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 /* description of subelement to show when hidden */
 .edetail .subelementdescription { position:absolute; top:15px; right:40px; z-index:2; display:none; color:#838a91; }
 
-/* ADD OPTIONAL elements listed at bottom of event */
-.eventcontent .optionalelements { margin:5px 0 15px 0; padding-bottom:5px; border-top:2px dotted #8c949c; }
+/* ADD OPTIONAL elements list  */
+/* 2 styles for this 'inpage' (in Event content) and 'sidenav' (in Episode Event list side area - eventfocus)  */
+.eventcontent .optionalelements {  }
+.eventcontent 	.optionalelements.inpage { margin:5px 0 15px 0; padding-bottom:5px;  border-top:2px dotted #8c949c; }
+.eventfocus 	.optionalelements.sidenav { margin:0 0 0 -5px; border-top:2px dotted #8c949c;}
+/* sidenav header */
+.optionalelements.sidenav > h4 { font-size:11px; font-style: italic; color:#8c949c; padding:3px 0 8px 10px; margin:0;}
 /* add remove multiple elements */
 .optionalelements > .bulkactions { font-size:12px; background:#dae6f1; border-bottom:1px dotted #fafafa; }
-.optionalelements > .bulkactions .bulkbtn { float:right; display:inline-block; height:28px; line-height:28px; padding-right:0; margin-left:10px; }
+.optionalelements > .bulkactions .bulkbtn { display:inline-block; height:28px; line-height:28px; padding-right:0; margin-left:10px; }
 .optionalelements > .bulkactions .bulkbtn > a { padding-right:25px; }
 .optionalelements > .bulkactions .bulkbtn > a:hover { border-bottom:none; } 
 .optionalelements > .bulkactions .bulkbtn.add { background:transparent url(../img/_elements/icons/element-optional/optional-tick-blue.png) center right no-repeat; }
@@ -923,14 +929,22 @@ background:#c8d3dd; -webkit-border-bottom-right-radius: 6px; -webkit-border-bott
 .optionalelements > .selectelement { font-size:12px; font-weight:bold; color:#fff; padding:8px 10px; margin:0; background:#8c949c url(../img/_elements/icons/element-optional/optional-add-white.png) center right no-repeat; border-bottom:1px dotted #fafafa; }
 .optionalelements > .selectelement:hover  { background-color: #3665ff; cursor: pointer; }
 .optionalelements > .selectelement:active { background-color: #55a256; }
-.optionalelements > .selectelement.added { color:#8c949c; background:#ddd url(../img/_elements/icons/element-optional/optional-tick-grey.png) center right no-repeat; }
-.optionalelements > .selectelement.added:hover { color:#fff; background-color: #3665ff; cursor: default;}
+.optionalelements > .selectelement.added,.optionalelements.sidenav > .selectelement.child.added { color:#8c949c; background:#ddd url(../img/_elements/icons/element-optional/optional-tick-grey.png) center right no-repeat; }
+.optionalelements > .selectelement.added:hover, .optionalelements.sidenav > .selectelement.child:hover { color:#fff; background-color: #3665ff; cursor: default;}
 /* click hint add with jquery */
 .optionalelements > .selectelement > .clickhint { font-weight: normal; float: right; padding-right:20px; }
 /* show parent */
 .optionalelements > .selectelement .parent { padding-right:25px; margin-right: 5px;  color: #ccc; background: transparent url(../img/_elements/icons/element-actions/parent-child-arrow.png) right center no-repeat;}
 .optionalelements > .selectelement.added .parent { color:#b3b3b3; }
 .optionalelements > .selectelement.added:hover .parent { color:#ddd;}
+
+/* = sidenav tweaks = */
+.optionalelements.sidenav >.bulkactions { padding-bottom: 5px;}
+.optionalelements.sidenav >.bulkactions .bulkbtn { font-size:11px; height:22px; line-height:24px; }
+.optionalelements.sidenav > .selectelement { font-size:11px; padding:6px 15px 6px 10px; }
+.optionalelements.sidenav > .selectelement.child { padding:6px 15px 6px 25px; position:relative; background-color: #878f96; }
+.optionalelements.sidenav > .selectelement.child .childicon { display:inline-block; height:15px; width:15px; position:absolute; top:20%; left:6px; background: transparent url(../img/_elements/icons/element-actions/parent-child-arrow.png) right center no-repeat; }
+
 
 
 /* ====== MESSAGING (Alerts,Notifications,Chat,etc...) 6592bf ====== */
