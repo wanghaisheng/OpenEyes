@@ -23,4 +23,6 @@ class Correspondence extends Page
         'letterElement' => array('xpath' => "//textarea[@id='elementletter_cc']"),
         'addEnclosure' => array('xpath' => "//button[@type='button']//*[contains(text(), 'add')]"),
     );
+
+
 }

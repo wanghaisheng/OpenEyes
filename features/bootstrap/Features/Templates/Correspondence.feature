@@ -8,15 +8,17 @@ Feature: Create New Correspondence
 
     Given I am on the OpenEyes "<environment>" homepage
     And I enter login credentials "<username>" and "<password>"
-    And I select Site "1"
-    Then I select a firm of "1"
-    # check below
-    Then I select a firm of "18"
+    And I select Site "2"
+    Then I select a firm of "3"
 
-    Then I search for patient name last name "<last>" and first name "<first>"
+    Then I search for hospital number "<hospnumber>"
+  #    Then I search for patient name last name "<last>" and first name "<first>"
 
-    Then I select Create or View Episodes and Events
-    Then I select Add First New Episode and Confirm
+    Then I select the Latest Event
+  #Then I select Create or View Episodes and Events
+  #Then I select Add First New Episode and Confirm
+  #Then I expand the Cataract sidebar
+    Then I expand the Glaucoma sidebar
     And I add a New Event "<EventType>"
 
     Then I select Site ID "4"
@@ -42,10 +44,10 @@ Feature: Create New Correspondence
     #Then I add "text" to Letter Element Field
     And I add a New Enclosure
 
-    #Then I Save the Event
-    Then I Cancel the Event
+    Then I Save the Event
 
-    Then I choose to close the browser
+
+
 
   Examples: User details
     | environment   | username | password     | hospnumber   | nhs        | last    | first  | EventType        | target | macro  | intro | diagnosis | manage | drugs   | outcome | cc      |
