@@ -21,305 +21,400 @@ OpenEyes.Dialog = OpenEyes.Dialog || {};
 
 (function() {
 
-  // Set the jQuery UI Dialog default options.
-  $.extend($.ui.dialog.prototype.options, {
-    dialogClass: 'dialog',
-    show: 'fade'
-  });
+	// Set the jQuery UI Dialog default options.
+	$.extend($.ui.dialog.prototype.options, {
+		dialogClass: 'dialog',
+		show: 'fade'
+	});
 
-  var EventEmitter = OpenEyes.Util.EventEmitter;
+	var EventEmitter = OpenEyes.Util.EventEmitter;
 
-  /**
-   * Dialog constructor.
-   * @name Dialog
-   * @constructor
-   * @example
-   * var dialog = new OpenEyes.Dialog({
-   *   title: 'Title here',
-   *   content: 'Here is some content.'
-   * });
-   * dialog.on('open', function() {
-   *   console.log('The dialog is now open');
-   * });
-   * dialog.on('close', function() {
-   *   console.log('The dialog is now closed.');
-   * });
-   * dialog.on('destroy', function() {
-   *   console.log('The dialog has been destroyed.');
-   * });
-   * dialog.open();
-   */
-  function Dialog(options) {
+	/**
+	 * Dialog constructor.
+	 * @name Dialog
+	 * @constructor
+	 * @example
+	 * var dialog = new OpenEyes.Dialog({
+	 *	 title: 'Title here',
+	 *	 content: 'Here is some content.'
+	 * });
+	 * dialog.on('open', function() {
+	 *	 console.log('The dialog is now open');
+	 * });
+	 * dialog.on('close', function() {
+	 *	 console.log('The dialog is now closed.');
+	 * });
+	 * dialog.on('destroy', function() {
+	 *	 console.log('The dialog has been destroyed.');
+	 * });
+	 * dialog.open();
+	 */
+	function Dialog(options) {
 
-    EventEmitter.call(this);
+		EventEmitter.call(this);
 
-    this.options = $.extend(true, {}, Dialog.defaultOptions, options);
-    this.create();
-    this.bindEvents();
+		this.options = $.extend(true, {}, Dialog.defaultOptions, options);
+		this.create();
+		this.bindEvents();
 
-    if (this.options.url) {
-      this.loadContent();
-    }
-  }
+		if (this.options.url) {
+			this.loadContent();
+		}
+	}
 
-  Dialog.inherits(EventEmitter);
+	Dialog.inherits(EventEmitter);
 
-  /**
-   * The default dialog options. Custom options will be merged with these.
-   * @name Dialog#defaultOptions
-   * @property
-   */
-  Dialog.defaultOptions = {
-    content: '',
-    destroyOnClose: true,
-    url: null,
-    autoOpen: false,
-    title: '',
-    modal: true,
-    dialogClass: 'dialog',
-    resizable: false,
-    draggable: false,
-    width: 400,
-    height: 'auto',
-    minHeight: 'auto',
-    show: 'fade'
-  };
+	/**
+	 * The default dialog options. Custom options will be merged with these.
+	 * @name Dialog#defaultOptions
+	 * @property
+	 */
+	Dialog.defaultOptions = {
+		content: '',
+		destroyOnClose: true,
+		url: null,
+		autoOpen: false,
+		title: '',
+		modal: true,
+		dialogClass: 'dialog',
+		resizable: false,
+		draggable: false,
+		width: 400,
+		height: 'auto',
+		minHeight: 'auto',
+		show: 'fade'
+	};
 
-  /**
-   * Creates and stores the dialog container, and creates a new jQuery UI
-   * instance on the container.
-   * @name Dialog#create
-   * @method
-   * @private
-   */
-  Dialog.prototype.create = function() {
-    this.content = $('<div>' + (this.options.content || '') + '</div>');
-    this.content.dialog(this.options);
-    this.instance = this.content.data('ui-dialog');
-  };
+	/**
+	 * Creates and stores the dialog container, and creates a new jQuery UI
+	 * instance on the container.
+	 * @name Dialog#create
+	 * @method
+	 * @private
+	 */
+	Dialog.prototype.create = function() {
+		this.content = $('<div>' + (this.options.content || '') + '</div>');
+		this.content.dialog(this.options);
+		this.instance = this.content.data('ui-dialog');
+	};
 
-  /**
-   * Binds common dialog event handlers.
-   * @name Dialog#create
-   * @method
-   * @private
-   */
-  Dialog.prototype.bindEvents = function() {
-    this.content.on({
-      dialogclose: this.onDialogClose.bind(this),
-      dialogopen: this.onDialogOpen.bind(this)
-    });
-  };
+	/**
+	 * Binds common dialog event handlers.
+	 * @name Dialog#create
+	 * @method
+	 * @private
+	 */
+	Dialog.prototype.bindEvents = function() {
+		this.content.on({
+			dialogclose: this.onDialogClose.bind(this),
+			dialogopen: this.onDialogOpen.bind(this)
+		});
+	};
 
-  /**
-   * Gets a script template from the DOM, compiles it using Mustache, and
-   * returns the HTML.
-   * @name Dialog#compileTemplate
-   * @method
-   * @private
-   * @param {object} options - An options object container the template selector and data.
-   * @returns {string}
-   */
-  Dialog.prototype.compileTemplate = function(options) {
+	/**
+	 * Gets a script template from the DOM, compiles it using Mustache, and
+	 * returns the HTML.
+	 * @name Dialog#compileTemplate
+	 * @method
+	 * @private
+	 * @param {object} options - An options object container the template selector and data.
+	 * @returns {string}
+	 */
+	Dialog.prototype.compileTemplate = function(options) {
 
-    var template = $(options.selector).html();
+		var template = $(options.selector).html();
 
-    if (!template) {
-      throw new Error('Unable to compile dialog template. Template not found: ' + options.selector);
-    }
+		if (!template) {
+			throw new Error('Unable to compile dialog template. Template not found: ' + options.selector);
+		}
 
-    return Mustache.render(template, options.data || {});
-  };
+		return Mustache.render(template, options.data || {});
+	};
 
-  /**
-   * Sets a 'loading' message and retrieves the dialog content via AJAX.
-   * @name Dialog#loadContent
-   * @method
-   * @private
-   */
-  Dialog.prototype.loadContent = function() {
-    this.content.html('Loading...');
-    this.content.load(this.options.url, this.onContentLoaded.bind(this));
-  };
+	/**
+	 * Sets a 'loading' message and retrieves the dialog content via AJAX.
+	 * @name Dialog#loadContent
+	 * @method
+	 * @private
+	 */
+	Dialog.prototype.loadContent = function() {
+		this.content.html('Loading...');
+		this.content.load(this.options.url, this.onContentLoaded.bind(this));
+	};
 
-  /**
-   * When loading content, if the request fails, then show an error message.
-   * @name Dialog#showContentLoadError
-   * @method
-   * @private
-   */
-  Dialog.prototype.showContentLoadError = function() {
-    this.content.html('Sorry, there was an error retrieving the content. Please try again.');
-  };
+	/**
+	 * When loading content, if the request fails, then show an error message.
+	 * @name Dialog#showContentLoadError
+	 * @method
+	 * @private
+	 */
+	Dialog.prototype.showContentLoadError = function() {
+		this.content.html('Sorry, there was an error retrieving the content. Please try again.');
+	};
 
-  /**
-   * Repositions the dialog in the center of the page.
-   * @name Dialog#reposition
-   * @method
-   */
-  Dialog.prototype.reposition = function() {
-    this.instance._position(this.instance._position());
-  };
+	/**
+	 * Repositions the dialog in the center of the page.
+	 * @name Dialog#reposition
+	 * @method
+	 */
+	Dialog.prototype.reposition = function() {
+		this.instance._position(this.instance._position());
+	};
 
-  /**
-   * Opens (shows) the dialog.
-   * @name Dialog#open
-   * @method
-   */
-  Dialog.prototype.open = function() {
-    this.instance.open();
-  };
+	/**
+	 * Opens (shows) the dialog.
+	 * @name Dialog#open
+	 * @method
+	 */
+	Dialog.prototype.open = function() {
+		this.instance.open();
+	};
 
-  /**
-   * Closes (hides) the dialog, and optionally destroys it.
-   * @name Dialog#close
-   * @method
-   */
-  Dialog.prototype.close = function() {
+	/**
+	 * Closes (hides) the dialog, and optionally destroys it.
+	 * @name Dialog#close
+	 * @method
+	 */
+	Dialog.prototype.close = function() {
 
-    this.instance.close();
+		this.instance.close();
 
-    if (this.options.destroyOnClose) {
-      this.destroy();
-    }
-  };
+		if (this.options.destroyOnClose) {
+			this.destroy();
+		}
+	};
 
-  /**
-   * Destroys the dialog. Removes all elements from the DOM and detaches all
-   * event handlers.
-   * @name Dialog#destroy
-   * @method
-   */
-  Dialog.prototype.destroy = function() {
-    this.instance.destroy();
-    this.content.remove();
-    this.emit('destroy');
-  };
+	/**
+	 * Destroys the dialog. Removes all elements from the DOM and detaches all
+	 * event handlers.
+	 * @name Dialog#destroy
+	 * @method
+	 */
+	Dialog.prototype.destroy = function() {
+		this.instance.destroy();
+		this.content.remove();
+		this.emit('destroy');
+	};
 
-  /** Event handlers */
+	/** Event handlers */
 
-  /**
-   * Emit the 'open' event after the dialog has opened.
-   * @name Dialog#onDialogOpen
-   * @method
-   * @private
-   */
-  Dialog.prototype.onDialogOpen = function() {
-    this.emit('open');
-  };
+	/**
+	 * Emit the 'open' event after the dialog has opened.
+	 * @name Dialog#onDialogOpen
+	 * @method
+	 * @private
+	 */
+	Dialog.prototype.onDialogOpen = function() {
+		this.emit('open');
+	};
 
-  /**
-   * Emit the 'close' event after the dialog has closed.
-   * @name Dialog#onDialogClose
-   * @method
-   * @private
-   */
-  Dialog.prototype.onDialogClose = function() {
-    this.emit('close');
-  };
+	/**
+	 * Emit the 'close' event after the dialog has closed.
+	 * @name Dialog#onDialogClose
+	 * @method
+	 * @private
+	 */
+	Dialog.prototype.onDialogClose = function() {
+		this.emit('close');
+	};
 
-  /**
-   * Reposition the dialog after the content has been loaded.
-   * @name Dialog#onContentLoaded
-   * @method
-   * @private
-   */
-  Dialog.prototype.onContentLoaded = function(response, status, xhr) {
-    if (status === 'error') {
-      this.showContentLoadError();
-    }
-    this.reposition();
-  };
+	/**
+	 * Reposition the dialog after the content has been loaded.
+	 * @name Dialog#onContentLoaded
+	 * @method
+	 * @private
+	 */
+	Dialog.prototype.onContentLoaded = function(response, status, xhr) {
+		if (status === 'error') {
+			this.showContentLoadError();
+		}
+		this.reposition();
+	};
 
-  OpenEyes.Dialog = Dialog;
+	OpenEyes.Dialog = Dialog;
 
 }());
 
 (function() {
 
-  var Dialog = OpenEyes.Dialog;
+	var Dialog = OpenEyes.Dialog;
 
-  /**
-   * AlertDialog constructor. The AlertDialog extends the base Dialog and provides
-   * an 'Ok' button for the user to click on.
-   * @name AlertDialog
-   * @constructor
-   * @extends Dialog
-   * @example
-   * var alert = new OpenEyes.Dialog.Alert({
-   *   content: 'Here is some content.'
-   * });
-   * alert.open();
-   */
-  function AlertDialog(options) {
+	/**
+	 * AlertDialog constructor. The AlertDialog extends the base Dialog and provides
+	 * an 'Ok' button for the user to click on.
+	 * @name AlertDialog
+	 * @constructor
+	 * @extends Dialog
+	 * @example
+	 * var alert = new OpenEyes.Dialog.Alert({
+	 *	 content: 'Here is some content.'
+	 * });
+	 * alert.open();
+	 */
+	function AlertDialog(options) {
 
-    options = $.extend(true, options, AlertDialog.defaultOptions);
-    options.content = this.getContent(options.content);
+		options = $.extend(true, options, AlertDialog.defaultOptions);
+		options.content = this.getContent(options);
 
-    Dialog.call(this, options);
-  }
+		Dialog.call(this, options);
+	}
 
-  AlertDialog.inherits(Dialog);
+	AlertDialog.inherits(Dialog);
 
-  /**
-   * The default alert dialog options. These options will be merged into the
-   * default dialog options.
-   * @name AlertDialog#defaultOptions
-   * @property
-   */
-  AlertDialog.defaultOptions = {
-    modal: true,
-    width: 400,
-    minHeight: 'auto',
-    title: 'Alert',
-    dialogClass: 'dialog alert'
-  };
+	/**
+	 * The default alert dialog options. These options will be merged into the
+	 * default dialog options.
+	 * @name AlertDialog#defaultOptions
+	 * @property
+	 */
+	AlertDialog.defaultOptions = {
+		modal: true,
+		width: 400,
+		minHeight: 'auto',
+		title: 'Alert',
+		dialogClass: 'dialog alert'
+	};
 
-  /**
-   * Get the dialog content. Do some basic content formatting, then compile
-   * and return the alert dialog template.
-   * @name AlertDialog#getContent
-   * @method
-   * @private
-   * @param {string} content - The main alert dialog content to display.
-   * @returns {string}
-   */
-  AlertDialog.prototype.getContent = function(content) {
+	/**
+	 * Get the dialog content. Do some basic content formatting, then compile
+	 * and return the alert dialog template.
+	 * @name AlertDialog#getContent
+	 * @method
+	 * @private
+	 * @param {string} content - The main alert dialog content to display.
+	 * @returns {string}
+	 */
+	AlertDialog.prototype.getContent = function(options) {
 
-    // Replace new line characters with html breaks
-    content = (content || '').replace(/\n/g, '<br/>');
+		// Replace new line characters with html breaks
+		options.content = (options.content || '').replace(/\n/g, '<br/>');
 
-    // Compile the template, get the HTML
-    return this.compileTemplate({
-      selector: '#dialog-alert-template',
-      data: {
-        content: content
-      }
-    });
-  };
+		// Compile the template, get the HTML
+		return this.compileTemplate({
+			selector: '#dialog-alert-template',
+			data: {
+				content: options.content
+			}
+		});
+	};
 
-  /**
-   * Bind events
-   * @name AlertDialog#bindEvents
-   * @method
-   * @private
-   */
-  AlertDialog.prototype.bindEvents = function() {
-    Dialog.prototype.bindEvents.apply(this, arguments);
-    this.content.on('click', '.ok', this.onButtonClick.bind(this));
-  };
+	/**
+	 * Bind events
+	 * @name AlertDialog#bindEvents
+	 * @method
+	 * @private
+	 */
+	AlertDialog.prototype.bindEvents = function() {
+		Dialog.prototype.bindEvents.apply(this, arguments);
+		this.content.on('click', '.ok', this.onButtonClick.bind(this));
+	};
 
-  /** Event handlers */
+	/** Event handlers */
 
-  /**
-   * 'OK' button click handler. Simply close the dialog on click.
-   * @name AlertDialog#onButtonClick
-   * @method
-   * @private
-   */
-  AlertDialog.prototype.onButtonClick = function() {
-    this.close();
-  };
+	/**
+	 * 'OK' button click handler. Simply close the dialog on click.
+	 * @name AlertDialog#onButtonClick
+	 * @method
+	 * @private
+	 */
+	AlertDialog.prototype.onButtonClick = function() {
+		this.close();
+	};
 
-  OpenEyes.Dialog.Alert = AlertDialog;
+	OpenEyes.Dialog.Alert = AlertDialog;
+
+	/**
+	 * ConfirmDialog constructor. The ConfirmDialog extends the base Dialog and provides
+	 * an 'Ok' button for the user to click on.
+	 * @name ConfirmDialog
+	 * @constructor
+	 * @extends Dialog
+	 * @example
+	 * var alert = new OpenEyes.Dialog.Confirm({
+	 *	 content: 'Here is some content.'
+	 * });
+	 * alert.open();
+	 */
+	function ConfirmDialog(options) {
+
+		options = $.extend(true, options, ConfirmDialog.defaultOptions);
+		options.content = this.getContent(options);
+
+		Dialog.call(this, options);
+	}
+
+	ConfirmDialog.inherits(Dialog);
+
+	/**
+	 * The default alert dialog options. These options will be merged into the
+	 * default dialog options.
+	 * @name ConfirmDialog#defaultOptions
+	 * @property
+	 */
+	ConfirmDialog.defaultOptions = {
+		modal: true,
+		width: 400,
+		minHeight: 'auto',
+		title: 'Confirm',
+		dialogClass: 'dialog alert'
+	};
+
+	/**
+	 * Get the dialog content. Do some basic content formatting, then compile
+	 * and return the alert dialog template.
+	 * @name ConfirmDialog#getContent
+	 * @method
+	 * @private
+	 * @param {string} content - The main alert dialog content to display.
+	 * @returns {string}
+	 */
+	ConfirmDialog.prototype.getContent = function(options) {
+		// Compile the template, get the HTML
+		return this.compileTemplate({
+			selector: '#dialog-confirm-template',
+			data: {
+				content: options.content,
+				okButton: options.okButton || 'OK',
+				cancelButton: options.cancelButton || 'Cancel'
+			}
+		});
+	};
+
+	/**
+	 * Bind events
+	 * @name ConfirmDialog#bindEvents
+	 * @method
+	 * @private
+	 */
+	ConfirmDialog.prototype.bindEvents = function() {
+		Dialog.prototype.bindEvents.apply(this, arguments);
+		this.content.on('click', '.ok', this.onOKButtonClick.bind(this));
+		this.content.on('click', '.cancel', this.onCancelButtonClick.bind(this));
+	};
+
+	/** Event handlers */
+
+	/**
+	 * 'OK' button click handler. Simply close the dialog on click.
+	 * @name ConfirmDialog#onButtonClick
+	 * @method
+	 * @private
+	 */
+	ConfirmDialog.prototype.onOKButtonClick = function() {
+		this.close();
+		this.emit('ok');
+	};
+
+	/**
+	 * 'Cancel' button click handler. Simply close the dialog on click.
+	 * @name ConfirmDialog#onButtonClick
+	 * @method
+	 * @private
+	 */
+	ConfirmDialog.prototype.onCancelButtonClick = function() {
+		this.close();
+		this.emit('cancel');
+	};
+
+	OpenEyes.Dialog.Confirm = ConfirmDialog;
 }());
