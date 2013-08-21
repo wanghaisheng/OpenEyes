@@ -23,7 +23,11 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iSelectSiteId($site)
     {
-        $this->selectOption(Correspondence::$siteDropdown, $site);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->siteDropdown($site);
     }
 
     /**
@@ -31,7 +35,11 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iSelectAddressTarget($address)
     {
-       $this->selectOption(Correspondence::$addressTarget, $address);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->addressTarget($address);
     }
 
     /**
@@ -39,7 +47,23 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iChooseAMacroOf($macro)
     {
-       $this->selectOption(Correspondence::$macro, $macro);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->macro($macro);
+    }
+
+    /**
+     * @Given /^I select Clinic Date "([^"]*)"$/
+     */
+    public function iSelectClinicDate($date)
+    {
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->clinicDate($date);
     }
 
     /**
@@ -47,7 +71,23 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iChooseAnIntroductionOf($intro)
     {
-        $this->selectOption(Correspondence::$introduction, $intro);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->introduction($intro);
+    }
+
+    /**
+     * @Given /^I add Findings of "([^"]*)"$/
+     */
+    public function iAddFindingsOf($findings)
+    {
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->findings($findings);
     }
 
     /**
@@ -55,7 +95,11 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iChooseADiagnosisOf($diagnosis)
     {
-        $this->selectOption(Correspondence::$diagnosis, $diagnosis);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->diagnosis($diagnosis);
     }
 
     /**
@@ -63,7 +107,11 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iChooseAManagementOf($management)
     {
-        $this->selectOption(Correspondence::$management, $management);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->management($management);
     }
 
     /**
@@ -71,7 +119,11 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iChooseDrugs($drugs)
     {
-        $this->selectOption(Correspondence::$drugs, $drugs);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->drugs($drugs);
     }
 
     /**
@@ -79,7 +131,11 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iChooseOutcome($outcome)
     {
-        $this->selectOption(Correspondence::$outcome, $outcome);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->outcome($outcome);
     }
 
     /**
@@ -87,14 +143,34 @@ class CorrespondenceContext extends PageObjectContext
      */
     public function iChooseCcTarget($cc)
     {
-        $this->selectOption(Correspondence::$letterCc, $cc);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->CC($cc);
     }
 
     /**
      * @Given /^I add a New Enclosure$/
      */
-    public function iAddANewEnclosure()
+    public function iAddANewEnclosure($enclosure)
     {
-        $this->clickLink(Correspondence::$addEnclosure);
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->enclosure($enclosure);
+    }
+
+    /**
+     * @Then /^I Save the Correspondence Draft$/
+     */
+    public function iSaveTheCorrespondenceDraft()
+    {
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->saveDraft();
     }
 }

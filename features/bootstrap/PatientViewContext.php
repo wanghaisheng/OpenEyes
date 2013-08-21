@@ -268,7 +268,7 @@ class PatientViewContext extends PageObjectContext
          */
         $patientView = $this->getPage('PatientView');
         $patientView->addAllergy($allergy);
-        //!!Allergies can only be added once so a manual remove or a feature to remove needs to be added here!!
+
     }
 
     /**

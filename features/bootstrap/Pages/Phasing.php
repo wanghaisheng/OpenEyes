@@ -4,6 +4,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class Phasing extends Page
 {
+    protected $path = "/site/OphCiPhasing/Default/create?patient_id={parentId}";
+
     protected $elements = array(
         'phasingInstrumentRight' => array('xpath' => "//*[@id='Element_OphCiPhasing_IntraocularPressure_right_instrument_id']"),
         'phasingDilationRightYes' => array('xpath' => "//*[@id='Element_OphCiPhasing_IntraocularPressure_right_dilated_1']"),

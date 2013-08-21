@@ -4,6 +4,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class Prescription extends Page
 {
+    protected $path = "/site/OphDrPrescription/Default/create?patient_id={parentId}";
+
     protected $elements = array(
         'prescriptionCommonDrug' => array('xpath' => "//*[@id='common_drug_id']"),
         'prescriptionStandardSet' => array('xpath' => "//*[@id='drug_set_id']"),
