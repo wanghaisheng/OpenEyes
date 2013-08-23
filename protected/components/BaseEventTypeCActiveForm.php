@@ -112,4 +112,9 @@ class BaseEventTypeCActiveForm extends CActiveForm
 	{
 		$this->widget('application.widgets.SliderTable', array('element' => $element, 'field' => $field, 'data' => $data));
 	}
+
+	public function timeField($element,$field,$htmlOptions=array())
+	{
+		$this->widget('application.widgets.TimeField',array('element' => $element, 'name' => get_class($element)."[$field]", 'field' => $field, 'htmlOptions' => $htmlOptions));
+	}
 }
