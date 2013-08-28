@@ -63,7 +63,7 @@ class SiteAndFirmWidget extends CWidget
 					);
 				}
 
-                if(!$episode)
+                if(!isset($episode))
                 $this->controller->redirect(array("/patient/".$this->patient->id));
                 else
 				// Redirect browser to clear POST
