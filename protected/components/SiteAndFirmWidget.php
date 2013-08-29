@@ -63,11 +63,14 @@ class SiteAndFirmWidget extends CWidget
 					);
 				}
 
-                if(!isset($episode))
-                $this->controller->redirect(array("/patient/".$this->patient->id));
-                else
+				if(!isset($episode) && isset($this->patient)) {
+					$this->controller->redirect(array("/patient/".$this->patient->id));
+				}
+				else
+				{
 				// Redirect browser to clear POST
 				$this->controller->redirect($this->returnUrl);
+				}
 				Yii::app()->end();
 			}
 		} else {
