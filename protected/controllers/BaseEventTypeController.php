@@ -625,11 +625,20 @@ class BaseEventTypeController extends BaseController
 		return $errors;
 	}
 
+	/*
+ 	* Override in controller and set default options by switching get_class($element)
+ 	*/
+	public function setDefaultOptions($element)
+	{
+		return $element;
+	}
+
 	public function renderDefaultElements($action, $form=false, $data=false)
 	{
 		foreach ($this->getDefaultElements($action) as $element) {
 			if ($action == 'create' && empty($_POST)) {
 				$element->setDefaultOptions();
+				$this->setDefaultOptions($element);
 			}
 
 			$view = ($element->{$action.'_view'}) ? $element->{$action.'_view'} : $element->getDefaultView();
@@ -646,6 +655,7 @@ class BaseEventTypeController extends BaseController
 		foreach ($this->getOptionalElements($action) as $element) {
 			if ($action == 'create' && empty($_POST)) {
 				$element->setDefaultOptions();
+				$this->setDefaultOptions($element);
 			}
 
 			$view = ($element->{$action.'_view'}) ? $element->{$action.'_view'} : $element->getDefaultView();
