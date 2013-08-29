@@ -23,12 +23,13 @@ class SliderTable extends BaseCWidget
 	public $max;
 	public $step = 1;
 	public $data;
+	public $htmlOptions = array();
 
 	public function init()
 	{
 		parent::init();
 
-		$this->max = count($this->data) + 1;
+		$this->max = count($this->data);
 
 		if (!$this->value) {
 			$this->value = 1;

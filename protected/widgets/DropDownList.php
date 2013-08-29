@@ -21,4 +21,15 @@ class DropDownList extends BaseCWidget
 {
 	public $data;
 	public $htmlOptions;
+
+	public function init()
+	{
+		if (@$this->htmlOptions['append']) {
+			foreach ($this->data as $key => $value) {
+				$this->data[$key] .= $this->htmlOptions['append'];
+			}
+		}
+
+		parent::init();
+	}
 }

@@ -1056,4 +1056,29 @@ class BaseEventTypeController extends BaseController
 
 		parent::processJsVars();
 	}
+
+	public function actionLoadElementByClassName()
+	{
+		if (!@$_GET['class_name']) {
+			throw new Exception("Missing class_name");
+		}
+
+		if (!$element_type = ElementType::model()->find('class_name=?',array($_GET['class_name']))) {
+			throw new Exception("Element type not found: {$_GET['class_name']}");
+		}
+
+		$form = new BaseEventTypeCActiveForm;
+
+		$class_name = $element_type->class_name;
+		$element = new $class_name;
+
+		$element->setDefaultOptions();
+
+		$this->renderPartial(
+			'create' . '_' . $element->create_view,
+			array('element' => $element, 'data' => array(), 'form' => $form, 'ondemand' => true),
+			false,
+			true
+		);
+	}
 }

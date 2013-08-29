@@ -94,12 +94,6 @@ $(document).ready(function(){
 		e.preventDefault();
 	});
 
-	$('label').die('click').live('click',function() {
-		if ($(this).prev().is('input:radio')) {
-			$(this).prev().click();
-		}
-	});
-
 	$(this).undelegate('select.dropDownTextSelection','change').delegate('select.dropDownTextSelection','change',function() {
 		if ($(this).val() != '') {
 			var target = $('#' + $(this).attr('id').replace(/^dropDownTextSelection_/,''));
@@ -217,6 +211,8 @@ function WidgetSliderTable() {if (this.init) this.init.apply(this, arguments); }
 
 WidgetSliderTable.prototype = {
 	init : function(params) {
+		this.append = '';
+
 		for (var i in params) {
 			this[i] = params[i];
 		}
@@ -239,6 +235,6 @@ WidgetSliderTable.prototype = {
 	handleChange : function(element) {
 		var val = element.val();
 
-		$('#'+this.range_id+'_value_span').text(this.data[val]);
+		$('#'+this.range_id+'_value_span').text(this.data[val]+this.append);
 	}
 }

@@ -36,7 +36,11 @@ class BaseEventTypeCActiveForm extends CActiveForm
 
 	public function radioButtons($element,$field,$table=null,$selected_item=null, $maxwidth=false, $hidden=false, $no_element=false, $label_above=false, $htmlOptions=array())
 	{
-		$data = $element->getFormOptions($table);
+		if (is_array($table)) {
+			$data = $table;
+		} else {
+			$data = $element->getFormOptions($table);
+		}
 		$this->widget('application.widgets.RadioButtonList',array('element' => $element, 'name' => get_class($element)."[$field]", 'field' => $field, 'data' => $data, 'selected_item' => $selected_item, 'maxwidth' => $maxwidth, 'hidden' => $hidden, 'no_element' => $no_element, 'label_above' => $label_above, 'htmlOptions' => $htmlOptions));
 	}
 
@@ -108,9 +112,9 @@ class BaseEventTypeCActiveForm extends CActiveForm
 		$this->widget('application.widgets.Slider', array('element' => $element, 'field' => $field, 'min' => $options['min'], 'max' => $options['max'], 'step' => $options['step'], 'force_dp' => @$options['force_dp'], 'prefix_positive' => @$options['prefix_positive'], 'remap_values' => @$options['remap'], 'null' => @$options['null'], 'append' => @$options['append']));
 	}
 
-	public function sliderTable($element, $field, $data)
+	public function sliderTable($element, $field, $data, $htmlOptions=array())
 	{
-		$this->widget('application.widgets.SliderTable', array('element' => $element, 'field' => $field, 'data' => $data));
+		$this->widget('application.widgets.SliderTable', array('element' => $element, 'field' => $field, 'data' => $data, 'htmlOptions' => $htmlOptions));
 	}
 
 	public function timeField($element,$field,$htmlOptions=array())
