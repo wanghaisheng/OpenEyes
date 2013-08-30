@@ -47,7 +47,6 @@ class NestedElementsEventTypeController extends BaseEventTypeController
 	{
 		$element_class = $element_type->class_name;
 		$element = new $element_class;
-		$element->setDefaultOptions();
 		$this->setDefaultOptions($element);
 
 		if ($previous_id && $element->canCopy()) {
@@ -506,7 +505,6 @@ class NestedElementsEventTypeController extends BaseEventTypeController
 	protected function setElementOptions($element, $action)
 	{
 		if ($action == 'create') {
-			$element->setDefaultOptions();
 			$this->setDefaultOptions($element);
 		} elseif ($action == 'update') {
 			$element->setUpdateOptions();
@@ -520,7 +518,6 @@ class NestedElementsEventTypeController extends BaseEventTypeController
 	{
 		foreach ($this->getChildDefaultElements(get_class($parent), $action, false, false, $previous_parent_id) as $child ) {
 			if ($action == 'create' && empty($_POST)) {
-				$child->setDefaultOptions();
 				$this->setDefaultOptions($child);
 			} elseif ($action == 'ElementForm') {
 				// ensure we use a property that the child element can recognise
