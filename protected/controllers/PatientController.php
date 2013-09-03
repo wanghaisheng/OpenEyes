@@ -102,6 +102,27 @@ class PatientController extends BaseController
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function actionEmailTim()
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, 'https://api.twilio.com/2010-04-01/Accounts/AC6e98914ab1dc014d1ae25b41cb35c737/SMS/Messages');
+		$post_data['To']='447793537596';
+		$post_data['From']='441473379501';
+		$post_data['Body']='PATIENT IS INTERESTED IN RESEARCH PROJECT!!';
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, 'AC6e98914ab1dc014d1ae25b41cb35c737:126779ddecdc250b90fb226ea0a497d2');
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$response = curl_exec($ch);
+		echo $response;
+	}
+
+
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
 	public function actionView($id)
 	{
 		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->createUrl('/js/patientSummary.js'));
@@ -797,7 +818,7 @@ class PatientController extends BaseController
 		} elseif (!SecondaryDiagnosis::model()->find('patient_id=? and disorder_id=? and eye_id=? and date=?',array($patient->id,$disorder->id,$_POST['diagnosis_eye'],$date))) {
 			$patient->addDiagnosis($disorder->id, $_POST['diagnosis_eye'], $date);
 		}
-
+		Yii::app()->session['research']='research';
 		$this->redirect(array('patient/view/'.$patient->id));
 	}
 

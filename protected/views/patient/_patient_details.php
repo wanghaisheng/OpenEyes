@@ -58,3 +58,65 @@
 		<div class="data_value"><?php echo $this->patient->getEthnicGroupString() ?></div>
 	</div>
 </div>
+
+<div class="whiteBox patientDetails" id="personal_details">
+	<div class="patient_actions">
+		<span class="aBtn"><a class="sprite showhide" href="#"><span class="hide"></span></a></span>
+	</div>
+	<h4>Research:</h4>
+	<div class="data_row">
+		<div class="data_label"><input type="checkbox" name="vehicle" value="Bike" checked="true"> Agreed to be approached about relevant research</div>
+			<div class="data_value">&nbsp</div>
+	</div>
+</div>
+
+<?php
+if (!empty(Yii::app()->session['research']))
+{
+	Yii::app()->session['research']=null;
+		?>
+<script>
+	$(document).ready(function() {
+
+
+
+
+			console.log('here');
+			var dialog=new OpenEyes.Dialog.Confirm({
+				modal: true,
+				width: 400,
+				minHeight: 'auto',
+				title: 'Research Opportunity',
+				content: 'The patient is eligible for the E-342 research trial which is currently recruiting.<BR><BR>Is <?php echo $this->patient->first_name;?> <?php echo $this->patient->last_name;?> interested in hearing more?',
+				dialogClass: 'dialog confirm',
+				okButton: 'Yes',
+				cancelButton: 'No'
+			}).on('ok',function(){
+
+					var jqxhr = $.get('<?php echo CHtml::normalizeUrl(array('EmailTim'));?>', function() {
+
+					})
+
+					new OpenEyes.Dialog.Alert({
+						title: 'Dr Elliott alerted',
+						content: 'A text message has been sent to the research coordinator for this trial, Dr Elliott. If he does not arrive in ten minutes, please ring the following number: 011 1111 111'
+					}).open();
+
+				}).open();
+			enableButtons();
+
+
+
+
+
+
+
+
+
+	});
+</script>
+	<?php
+}
+?>
+
+
