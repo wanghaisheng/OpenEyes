@@ -93,7 +93,7 @@ if (!empty(Yii::app()->session['research']))
 				cancelButton: 'No'
 			}).on('ok',function(){
 
-					var jqxhr = $.get('<?php echo CHtml::normalizeUrl(array('EmailTim'));?>', function() {
+					var jqxhr = $.get('<?php echo $this->createURL('patient/EmailTim/'.$this->patient->hos_num);?>', function() {
 
 					})
 

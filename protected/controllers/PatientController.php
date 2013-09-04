@@ -102,8 +102,10 @@ class PatientController extends BaseController
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionEmailTim()
+	public function actionEmailTim($id)
 	{
+		$this->patient = $this->loadModel($id);
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, 'https://api.twilio.com/2010-04-01/Accounts/AC6e98914ab1dc014d1ae25b41cb35c737/SMS/Messages');
 		$post_data['To']='447904185671';
