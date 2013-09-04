@@ -108,7 +108,7 @@ class PatientController extends BaseController
 		curl_setopt($ch, CURLOPT_URL, 'https://api.twilio.com/2010-04-01/Accounts/AC6e98914ab1dc014d1ae25b41cb35c737/SMS/Messages');
 		$post_data['To']='447904185671';
 		$post_data['From']='441473379501';
-		$post_data['Body']='PATIENT IS INTERESTED IN RESEARCH PROJECT!!';
+		$post_data['Body']='PATIENT NUMBER '.$this->patient->hos_num.' IS INTERESTED IN YOUR RESEARCH PROJECT.';
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
