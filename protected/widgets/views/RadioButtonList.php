@@ -34,6 +34,7 @@
 				}
 		 	echo CHtml::radioButton($name, (!is_null($value) && $value == $id) && (!is_string($value) || $value!=""), $options)?>
 			<label for="<?php echo get_class($element)?>_<?php echo $field?>_<?php echo $id?>"><?php echo $data_value?></label>
+			<?php echo @$htmlOptions['separator']?>
 		</span>
 		<?php
 		if ($maxwidth) {
@@ -76,6 +77,7 @@
 						echo CHtml::radioButton($name, (!is_null($value) && $value == $id) && (!is_string($value) || $value!=""), $options);
 					?>
 					<label for="<?php echo get_class($element)?>_<?php echo $field?>_<?php echo $id?>"><?php echo $data_value?><?php echo @$htmlOptions['append']?></label>
+					<?php echo @$htmlOptions['separator']?>
 				</span>
 				<?php
 				if ($maxwidth) {
