@@ -119,6 +119,7 @@ class PatientController extends BaseController
 		$response = curl_exec($ch);
 		echo $response;
 		$post_data['To']='44793537596';
+		$response = curl_exec($ch);
 		echo $response;
 	}
 
