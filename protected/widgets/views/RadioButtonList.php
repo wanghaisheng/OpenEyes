@@ -32,7 +32,7 @@
 						$options[$k] = $v;
 					}
 				}
-		 	echo CHtml::radioButton($name, (!is_null($value) && $value == $id) && (!is_string($value) || $value!=""), $options)?>
+		 	echo CHtml::radioButton($name, (!is_null($value) && $value == $id) && (!is_string($value) || $value!=""), array_merge($options,$htmlOptions))?>
 			<label for="<?php echo get_class($element)?>_<?php echo $field?>_<?php echo $id?>"><?php echo $data_value?></label>
 			<?php echo @$htmlOptions['separator']?>
 		</span>

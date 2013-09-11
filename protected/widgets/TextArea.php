@@ -26,4 +26,5 @@ class TextArea extends BaseCWidget
 	public $nowrapper;
 	public $class;
 	public $no_label;
+	public $disabled=false;
 }
