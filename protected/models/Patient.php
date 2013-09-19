@@ -621,7 +621,7 @@ class Patient extends BaseActiveRecord
 	 * returns all disorder ids for the patient, aggregating the principal diagnosis for each patient episode, and any secondary diagnosis on the patient
 	*
 	* FIXME: some of this can be abstracted to a relation when we upgrade from yii 1.1.8, which has some problems with yii relations:
-	* 	http://www.yiiframework.com/forum/index.php/topic/26806-relations-through-problem-wrong-on-clause-in-sql-generated/
+	*		http://www.yiiframework.com/forum/index.php/topic/26806-relations-through-problem-wrong-on-clause-in-sql-generated/
 	*
 	* @returns array() of disorder ids
 	*/
@@ -651,7 +651,7 @@ class Patient extends BaseActiveRecord
 	 * returns all disorders for the patient.
 	 *
 	 * FIXME: some of this can be abstracted to a relation when we upgrade from yii 1.1.8, which has some problems with yii relations:
-	 * 	http://www.yiiframework.com/forum/index.php/topic/26806-relations-through-problem-wrong-on-clause-in-sql-generated/
+	 *	http://www.yiiframework.com/forum/index.php/topic/26806-relations-through-problem-wrong-on-clause-in-sql-generated/
 	 *
 	 * @returns array() of disorders
 	 */
@@ -1144,5 +1144,16 @@ class Patient extends BaseActiveRecord
 		
 		
 		return $res;
+	}
+
+	public function getFormOptions($table)
+	{
+		$options = array();
+
+		foreach (Yii::app()->db->createCommand()->select("*")->from($table)->queryAll() as $row) {
+			$options[$row['id']] = $row['name'];
+		}
+
+		return $options;
 	}
 }
