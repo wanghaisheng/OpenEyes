@@ -439,18 +439,30 @@ class SyncService
 		foreach (Yii::app()->db->getSchema()->getTables() as $table) {
 			if (!preg_match('/^et_oph/',$table->name) && !preg_match('/^oph/',$table->name)) {
 				if (!in_array($table->name,$tables)) {
-					foreach ($this->getDependencies($table,$tables) as $deptable) {
-						if (!in_array($deptable,$tables) && !in_array($deptable,$exclude)) {
-							if ($this->hasChanged($deptable,$last_sync)) {
-								$tables[] = $deptable;
-							}
-						}
-					}
+					fwrite($fp,"table: $table->name\n");
+					fwrite($fp,"deps: ".print_r($this->getDependencies($table,$tables),true)."\n");
+
+					$tables = $this->getDescendentDependencies($table, $tables, $exclude, $last_sync);
+
 					if (!in_array($table->name,$tables) && !in_array($table->name,$exclude)) {
 						if ($this->hasChanged($table->name,$last_sync)) {
 							$tables[] = $table->name;
 						}
 					}
+				}
+			}
+		}
+
+		return $tables;
+	}
+
+	public function getDescendentDependencies($table, $tables, $exclude, $last_sync) {
+		foreach ($this->getDependencies($table,$tables) as $deptable) {
+			if (!in_array($deptable,$tables) && !in_array($deptable,$exclude)) {
+				if ($this->hasChanged($deptable,$last_sync)) {
+					$_deptable = Yii::app()->db->getSchema()->getTable($deptable);
+					$tables = $this->getDescendentDependencies($_deptable, $tables, $exclude, $last_sync);
+					$tables[] = $deptable;
 				}
 			}
 		}
