@@ -19,6 +19,9 @@
 ?>
 <div class="whiteBox patientDetails" id="personal_details">
 	<div class="patient_actions">
+		<?php if (isset(Yii::app()->modules['AddPatient'])) {?>
+			<a href="<?php echo Yii::app()->createUrl('/AddPatient/default/update/'.$this->patient->id)?>">edit</a>
+		<?php }?>
 		<span class="aBtn"><a class="sprite showhide" href="#"><span class="hide"></span></a></span>
 	</div>
 	<h4>Personal Details:</h4>

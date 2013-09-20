@@ -42,7 +42,7 @@ class Helper
 		}
 		$list = ($fields) ? $fields : array_keys($data);
 		foreach ($list as $key) {
-			if ( isset($data[$key]) ) {
+			if (isset($data[$key]) ) {
 				// traverse down arrays to convert nested structures
 				if (is_array($data[$key])) {
 					$data[$key] = Helper::convertNHS2MySQL($data[$key], $fields);
@@ -50,7 +50,6 @@ class Helper
 					$data[$key] = date('Y-m-d',strtotime($data[$key]));
 				}
 			}
-
 		}
 		if ($is_string) {
 			return $data['dummy'];
