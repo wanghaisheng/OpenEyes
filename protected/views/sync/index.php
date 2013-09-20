@@ -32,7 +32,7 @@
 			</tr>
 			<tr>
 				<td><span class="small bold">Last Sync</span></td>
-				<td><?php echo date('jS F Y, H:i',strtotime($server->last_sync))?></td>
+				<td class="lastSyncDate"><?php echo date('jS F Y, H:i',strtotime($server->last_sync))?></td>
 			</tr>
 			<tr>
 				<td><span class="small bold">In sync</span></td>
@@ -127,11 +127,16 @@
 		var source = new EventSource('/sync/go/'+server_id);
 
 		source.addEventListener('status', function(e) {
-			$('span.sync_message').text(e.data);
-
 			if (e.data.match(/Sync completed/)) {
 				$('.syncimage').attr('data-rotating','stopping');
 				source.close();
+
+				var m = e.data.match(/date:\[(.*?)\]/);
+
+				$('td.lastSyncDate').text(m[1]);
+				$('span.sync_message').text(e.data.replace(/ date:\[.*$/,''));
+			} else {
+				$('span.sync_message').text(e.data);
 			}
 		});
 

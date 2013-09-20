@@ -82,7 +82,7 @@ class SyncService
 			throw new Exception("Unable to save sync_server: ".print_r($this->server->getErrors(),true));
 		}
 
-		$this->status("Sync completed, $pushed pushed $pulled pulled.");
+		$this->status("Sync completed, $pushed pushed $pulled pulled. date:[".date('jS F Y, H:i',strtotime($this->server->last_sync))."]");
 	}
 
 	public function status($message)
