@@ -26,12 +26,12 @@
 				<span class="divider">|</span>
 				<?php if (Yii::app()->params['helpdesk_email']) {?>
 					<span><?php echo Yii::app()->params['helpdesk_email']?></span>
-				<?php }?>
 					<span class="divider">|</span>
+				<?php }?>
 				<?php if (Yii::app()->params['helpdesk_phone']) {?>
 					<span><strong><?php echo Yii::app()->params['helpdesk_phone'] ?></strong></span>
+					<span class="divider">|</span>
 				<?php } ?>
-				<span class="divider">|</span>
 				<span><?php echo CHtml::link('Help Documentation','http://mehhome/about/trust-wide-projects/openeyes/training-arrangements/',array('target'=>'_new'))?></span>
 		</div>
 	</div> <!-- #footer -->
