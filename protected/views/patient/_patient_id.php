@@ -28,8 +28,7 @@
 			<?php echo CHtml::link($this->patient->getDisplayName(),array('/patient/view/'.$this->patient->id)) ?>
 			(<?php if ($this->patient->isDeceased()) { ?>Deceased<?php } else { echo $this->patient->getAge(); } ?>)
 		</div>
-		<div class="hospitalNumber">No. <?php echo $this->patient->hos_num?></div>
-		<div class="nhsNumber"><span class="hide">NHS number:</span><?php echo $this->patient->nhsnum?></div>
+		<div class="hospitalNumber">Medical Record Number <?php echo $this->patient->hos_num?></div>
 		<ul class="icons">
 			<li class="gender <?php echo strtolower($this->patient->getGenderString()) ?>"><?php echo $this->patient->getGenderString() ?></li>
 			<?php if ($warnings) { 
