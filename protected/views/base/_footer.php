@@ -19,7 +19,7 @@
 ?>
 	<div id="footer">
 		<h6>&copy; Copyright OpenEyes Foundation 2011&#x2013;<?php echo date('Y'); ?>&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="<?php echo Yii::app()->createUrl('site/debuginfo')?>" id="support-info-link">served, with love, by <?php echo trim(`hostname`)?></a></h6>
+			<a href="<?php echo Yii::app()->createUrl('site/debuginfo')?>" id="support-info-link">About OpenEyes</a></h6>
 		<div class="help">
 
 				<span><strong>Need Help?</strong></span>
