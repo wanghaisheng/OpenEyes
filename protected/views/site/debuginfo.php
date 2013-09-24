@@ -46,7 +46,7 @@ $branch = array_pop($ex);
 <div id="debug-info-modal">
 	<strong>This information is provided to assist the helpdesk in diagnosing any problems</strong><br/><br/>
 	<code>
-		Served, with love, by: <?php echo $hostname?><br />
+		Server name: <?php echo $hostname?><br />
 		Docroot: <?php echo @$_SERVER['DOCUMENT_ROOT']?><br />
 		Base dir: <?php echo Yii::app()->basePath?><br />
 		Date: <?php echo date('d.m.Y H:i:s')?><br />
@@ -56,6 +56,5 @@ $branch = array_pop($ex);
 		Client IP: <?php echo @$_SERVER['REMOTE_ADDR']?><br />
 		Username: <?php echo $username?><br />
 		Firm: <?php echo $firm?><br />
-
 	</code>
 </div>

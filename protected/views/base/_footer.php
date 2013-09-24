@@ -40,7 +40,7 @@ $(document).ready(function() {
 
 		new OpenEyes.Dialog({
 			url: this.href,
-			title: 'Support Information'
+			title: 'About OpenEyes'
 		}).open();
 
 		return false;
