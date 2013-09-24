@@ -32,7 +32,6 @@
 					<span><strong><?php echo Yii::app()->params['helpdesk_phone'] ?></strong></span>
 					<span class="divider">|</span>
 				<?php } ?>
-				<span><?php echo CHtml::link('Help Documentation','http://mehhome/about/trust-wide-projects/openeyes/training-arrangements/',array('target'=>'_new'))?></span>
 		</div>
 	</div> <!-- #footer -->
 
