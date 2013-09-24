@@ -23,7 +23,6 @@
 		<div class="help">
 
 				<span><strong>Need Help?</strong></span>
-				<span class="divider">|</span>
 				<?php if (Yii::app()->params['helpdesk_email']) {?>
 					<span><?php echo Yii::app()->params['helpdesk_email']?></span>
 					<span class="divider">|</span>
