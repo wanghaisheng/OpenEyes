@@ -234,4 +234,8 @@ class SiteController extends BaseController
 		$this->renderPartial('/site/debuginfo',array());
 	}
 
+	public function actionHelpInfo()
+	{
+		$this->renderPartial('/site/helpinfo');
+	}
 }

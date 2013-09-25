@@ -22,7 +22,7 @@
 			<a href="<?php echo Yii::app()->createUrl('site/debuginfo')?>" id="support-info-link">About OpenEyes</a></h6>
 		<div class="help">
 
-				<span><strong>Need Help?</strong></span>
+				<span><strong><a href="<?php echo Yii::app()->createUrl('site/helpinfo')?>" id="help-info-link">Need Help?</a></strong></span>
 				<?php if (Yii::app()->params['helpdesk_email']) {?>
 					<span><?php echo Yii::app()->params['helpdesk_email']?></span>
 					<span class="divider">|</span>
@@ -37,10 +37,18 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#support-info-link').live('click',function() {
-
 		new OpenEyes.Dialog({
 			url: this.href,
 			title: 'About OpenEyes'
+		}).open();
+
+		return false;
+	});
+
+	$('#help-info-link').live('click',function() {
+		new OpenEyes.Dialog({
+			url: this.href,
+			title: 'Need Help?'
 		}).open();
 
 		return false;
