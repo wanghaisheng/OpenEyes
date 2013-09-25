@@ -24,16 +24,16 @@ OpenEyes.Util = OpenEyes.Util || {};
  * @name Object#mixin
  */
 if (!Object.prototype.mixin) {
-  Object.defineProperty(Object.prototype, 'mixin', {
-    value: function(obj) {
-      for (var prop in obj) {
-        if (obj.hasOwnProperty(prop)) {
-          this[prop] = obj[prop];
-        }
-      }
-      return this;
-    }
-  });
+	Object.defineProperty(Object.prototype, 'mixin', {
+		value: function(obj) {
+			for (var prop in obj) {
+				if (obj.hasOwnProperty(prop)) {
+					this[prop] = obj[prop];
+				}
+			}
+			return this;
+		}
+	});
 }
 
 /**
@@ -41,15 +41,15 @@ if (!Object.prototype.mixin) {
  * @name Function#inherits
  */
 if (!Function.prototype.inherits) {
-  Object.defineProperty(Function.prototype, 'inherits', {
-    value: function(_super, _subProto) {
-      this._super = _super;
-      this.prototype = Object.create(_super.prototype);
-      this.prototype.constructor = this;
-      this.prototype.mixin(_subProto);
-      return this;
-    }
-  });
+	Object.defineProperty(Function.prototype, 'inherits', {
+		value: function(_super, _subProto) {
+			this._super = _super;
+			this.prototype = Object.create(_super.prototype);
+			this.prototype.constructor = this;
+			this.prototype.mixin(_subProto);
+			return this;
+		}
+	});
 }
 
 /**
@@ -57,142 +57,170 @@ if (!Function.prototype.inherits) {
  * @name Function.prototype#bind
  */
 if (!Function.prototype.bind) {
-  Object.defineProperty(Function.prototype, 'bind', {
-    value: function(oThis) {
+	Object.defineProperty(Function.prototype, 'bind', {
+		value: function(oThis) {
 
-      if (typeof this !== "function") {
-        // closest thing possible to the ECMAScript 5 internal IsCallable function
-        throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-      }
+			if (typeof this !== "function") {
+				// closest thing possible to the ECMAScript 5 internal IsCallable function
+				throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+			}
 
-      var aArgs = Array.prototype.slice.call(arguments, 1);
-      var fToBind = this;
-      var fNOP = function () {};
-      var fBound = function () {
-        return fToBind.apply((this instanceof fNOP && oThis ? this : oThis),
-          aArgs.concat(Array.prototype.slice.call(arguments)));
-      };
+			var aArgs = Array.prototype.slice.call(arguments, 1);
+			var fToBind = this;
+			var fNOP = function () {};
+			var fBound = function () {
+				return fToBind.apply((this instanceof fNOP && oThis ? this : oThis),
+					aArgs.concat(Array.prototype.slice.call(arguments)));
+			};
 
-      fNOP.prototype = this.prototype;
-      fBound.prototype = new fNOP();
+			fNOP.prototype = this.prototype;
+			fBound.prototype = new fNOP();
 
-      return fBound;
-    }
-  });
+			return fBound;
+		}
+	});
 }
+
+/**
+ * Binds methods of an object to the object itself.
+ * @param {object} object - The object with the methods to bind.
+ * @param {boolean} [inherited=false] - Bind to inherited methods?
+ */
+OpenEyes.Util.bindAll = function(object, inherited) {
+
+	for(var key in object) {
+
+		var isFunction = typeof object[key] === 'function';
+
+		if ((inherited || object.hasOwnProperty(key)) && isFunction) {
+			object[key] = object[key].bind(object);
+		}
+	}
+};
 
 (function(window) {
 
-  /**
-   * Emitter
-   * @name Emitter
-   * @constructor
-   */
-  function Emitter() {
-    this.events = {};
-  }
+	/**
+	 * Emitter
+	 * @name Emitter
+	 * @constructor
+	 */
+	function Emitter() {
+		this.events = {};
+	}
 
-  /**
-   * Adds a new handler (function) for a given event.
-   * @name Emitter#on
-   * @method
-   * @param {string} type - The event type.
-   * @param {function} handler - The callback handler for the event type.
-   * @returns {this}
-   */
-  Emitter.prototype.on = function(type, handler) {
+	/**
+	 * Adds a new handler (function) for a given event.
+	 * @name Emitter#on
+	 * @method
+	 * @param {string} type - The event type.
+	 * @param {function} handler - The callback handler for the event type.
+	 * @returns {this}
+	 */
+	Emitter.prototype.on = function(type, handler) {
 
-    var events = this.events;
+		var events = this.events;
 
-    if (!events[type]) {
-      events[type] = [];
-    }
+		if (!events[type]) {
+			events[type] = [];
+		}
 
-    events[type].push(handler);
+		events[type].push(handler);
 
-    return this;
-  };
+		return this;
+	};
 
-  /**
-   * Remove a specific handler, or all handlers for a given event.
-   * @name Emitter#off
-   * @method
-   * @param {string} type - The event type.
-   * @param {function} [handler] - The callback handler to remove for the given event (optional)
-   * @returns {this}
-   */
-  Emitter.prototype.off = function(type, handler) {
+	/**
+	 * Remove a specific handler, or all handlers for a given event.
+	 * @name Emitter#off
+	 * @method
+	 * @param {string} type - The event type.
+	 * @param {function} [handler] - The callback handler to remove for the given event (optional)
+	 * @returns {this}
+	 */
+	Emitter.prototype.off = function(type, handler) {
 
-    var events = this.events[type];
+		var events = this.events[type];
 
-    if (events) {
+		if (events) {
 
-      if (!handler) {
-        // Remove all event handlers
-        events = [];
-      } else {
-        // Remove a specific event handler
-        events.splice(events.indexOf(handler), 1);
-      }
+			if (!handler) {
+				// Remove all event handlers
+				events = [];
+			} else {
+				// Remove a specific event handler
+				events.splice(events.indexOf(handler), 1);
+			}
 
-      // If this event handler group is empty then remove it
-      if (!events.length) {
-        delete this.events[type];
-      }
-    }
+			// If this event handler group is empty then remove it
+			if (!events.length) {
+				delete this.events[type];
+			}
+		}
 
-    return this;
-  };
+		return this;
+	};
 
-  /**
-   * Executes all handlers for a given event.
-   * @name Emitter#emit
-   * @method
-   * @param {string} type - The event type.
-   * @param {mixed} data - Event data to be passed to all the event handlers.
-   * @returns {this}
-   */
-  Emitter.prototype.emit = function(type, data) {
+	/**
+	 * Executes all handlers for a given event.
+	 * @name Emitter#emit
+	 * @method
+	 * @param {string} type - The event type.
+	 * @param {mixed} data - Event data to be passed to all the event handlers.
+	 * @returns {this}
+	 */
+	Emitter.prototype.emit = function(type, data) {
 
-    var event;
-    var events = (this.events[type] || []).slice();
+		var event;
+		var events = (this.events[type] || []).slice();
 
-    // First, lets execute all the event handlers
-    if (events.length) {
-      while ((event = events.shift())) {
-        event.call(this, data);
-      }
-    }
+		// First, lets execute all the event handlers
+		if (events.length) {
+			while ((event = events.shift())) {
+				event.call(this, data);
+			}
+		}
 
-    // Now try trigger a callback handler
-    return this.trigger(type, data);
-  };
+		// Now try trigger a callback handler
+		return this.trigger(type, data);
+	};
 
-  /**
-   * Execute a callback handler for a given event. Callback handlers are stored
-   * within the 'options' property of this object, and have the format of 'onEventName'.
-   * @name Emitter#trigger
-   * @method
-   * @param {string} type - The event type.
-   * @param {mixed} data - Event data to be passed to all the event handlers.
-   * @returns {this}
-   */
-  Emitter.prototype.trigger = function(type, data) {
+	/**
+	 * Binds all methods of this object to the object itself.
+	 * @name Emitter#bindAll
+	 * @method
+	 * @private
+	 * @param {boolean} [inherited=false] - Bind to inherited methods?
+	 */
+	Emitter.prototype.bindAll = function(inherited) {
+		OpenEyes.Util.bindAll(this, inherited);
+	};
 
-    if (!this.options) {
-      return;
-    }
+	/**
+	 * Execute a callback handler for a given event. Callback handlers are stored
+	 * within the 'options' property of this object, and have the format of 'onEventName'.
+	 * @name Emitter#trigger
+	 * @method
+	 * @param {string} type - The event type.
+	 * @param {mixed} data - Event data to be passed to all the event handlers.
+	 * @returns {this}
+	 */
+	Emitter.prototype.trigger = function(type, data) {
 
-    var name = 'on' + type.slice(0,1).toUpperCase() + type.slice(1);
-    var handler = this.options[name];
+		if (!this.options) {
+			return;
+		}
 
-    if (handler) {
-      handler.call(this, data);
-    }
+		var name = 'on' + type.slice(0,1).toUpperCase() + type.slice(1);
+		var handler = this.options[name];
 
-    return this;
-  };
+		if (handler) {
+			handler.call(this, data);
+		}
 
-  OpenEyes.Util.EventEmitter = Emitter;
+		return this;
+	};
+
+	OpenEyes.Util.EventEmitter = Emitter;
 
 }(this));

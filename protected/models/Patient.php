@@ -123,7 +123,7 @@ class Patient extends BaseActiveRecord
 				'condition' => 'support_services=1',
 			),
 			'episodes' => array(self::HAS_MANY, 'Episode', 'patient_id',
-				'condition' => "(legacy=0 or legacy is null) and (support_services=0 or support_services is null)",
+				'condition' => "(legacy=0 or legacy is null)",
 			),
 			'contact' => array(self::BELONGS_TO, 'Contact', 'contact_id'),
 			'gp' => array(self::BELONGS_TO, 'Gp', 'gp_id'),
@@ -237,10 +237,19 @@ class Patient extends BaseActiveRecord
 			// group
 			foreach ($episodes as $ep) {
 				if ($ep->firm) {
-					$specialty = $ep->firm->serviceSubspecialtyAssignment->subspecialty->specialty;
-					$by_specialty[$specialty->code]['episodes'][] = $ep;
-					$by_specialty[$specialty->code]['specialty'] = $specialty;
+					if ($ssa = $ep->firm->serviceSubspecialtyAssignment) {
+						$specialty = $ssa->subspecialty->specialty;
+						$specialty_name = $specialty->name;
+						$specialty_code = $specialty->code;
+					} else {
+						continue;
+					}
+				} else {
+					$specialty_name = 'Support Services';
+					$specialty_code = 'SUP';
 				}
+				$by_specialty[$specialty_code]['episodes'][] = $ep;
+				$by_specialty[$specialty_code]['specialty'] = $specialty_name;
 			}
 
 
@@ -259,7 +268,7 @@ class Patient extends BaseActiveRecord
 				// sort the remainder
 				function cmp($a, $b)
 				{
-					return strcasecmp($a['specialty']->name, $b['specialty']->name);
+					return strcasecmp($a['specialty'], $b['specialty']);
 				}
 				uasort($by_specialty, "cmp");
 			}
@@ -323,9 +332,9 @@ class Patient extends BaseActiveRecord
 	}
 
 	/**
-		* @return string Patient name for prefixing an address
-		*/
-	public function getAddressName()
+	* @return string Patient name for prefixing an address
+	*/
+	public function getCorrespondenceName()
 	{
 		if ($this->isChild()) {
 			return 'Parent/Guardian of ' . $this->getFullName();
@@ -335,8 +344,8 @@ class Patient extends BaseActiveRecord
 	}
 
 	/**
-		* @return string Patient name for using as a salutation
-		*/
+	* @return string Patient name for using as a salutation
+	*/
 	public function getSalutationName()
 	{
 		if ($this->isChild()) {
@@ -347,8 +356,8 @@ class Patient extends BaseActiveRecord
 	}
 
 	/**
-		* @return string Full name
-		*/
+	* @return string Full name
+	*/
 	public function getFullName()
 	{
 		return trim(implode(' ',array($this->title, $this->first_name, $this->last_name)));
@@ -418,23 +427,16 @@ class Patient extends BaseActiveRecord
 		Yii::app()->event->dispatch('patient_after_find', array('patient' => $this));
 	}
 
+	/**
+	* Get the episode for the subspecialty of the firm (or no subspecialty when the firm doesn't have one)
+	*
+	* @return Episode
+	*/
 	public function getEpisodeForCurrentSubspecialty()
 	{
 		$firm = Firm::model()->findByPk(Yii::app()->session['selected_firm_id']);
 
-		if ($firm->service_subspecialty_assignment_id) {
-			$ssa = $firm->serviceSubspecialtyAssignment;
-
-			// Get all firms for the subspecialty
-			$firm_ids = array();
-			foreach (Firm::model()->findAll('service_subspecialty_assignment_id=?',array($ssa->id)) as $firm) {
-				$firm_ids[] = $firm->id;
-			}
-
-			return Episode::model()->find('patient_id=? and firm_id in ('.implode(',',$firm_ids).')',array($this->id));
-		}
-
-		return Episode::model()->find('patient_id=? and support_services=?',array($this->id,1));
+		return Episode::model()->getCurrentEpisodeByFirm($this->id, $firm, true);
 	}
 
 	/**
@@ -476,7 +478,7 @@ class Patient extends BaseActiveRecord
 		$episode = $this->getEpisodeForCurrentSubspecialty();
 
 		if ($episode && $disorder = $episode->diagnosis) {
-			
+
 			if ($episode->eye) {
 				return $episode->eye->getAdjective() . ' ' . strtolower($disorder->term);
 			} else {
@@ -673,16 +675,16 @@ class Patient extends BaseActiveRecord
 		}
 		return false;
 	}
-	
+
 	public function getDisordersOfType($snomeds)
 	{
 		$disorders = array();
 		foreach ($snomeds as $id) {
 			$disorders[] = Disorder::model()->findByPk($id);
 		}
-		$disorder_ids = $this->getAllDisorderIds();
+		$patient_disorder_ids = $this->getAllDisorderIds();
 		$res = array();
-		foreach ($disorder_ids as $p_did) {
+		foreach ($patient_disorder_ids as $p_did) {
 			foreach ($disorders as $d) {
 				if ($d->ancestorOfIds(array($p_did))) {
 					$res[] = Disorder::model()->findByPk($p_did);
@@ -983,32 +985,37 @@ class Patient extends BaseActiveRecord
 		$this->updateMedication(new Medication, $params);
 	}
 
+	/**
+	 * return the open episode of the given subspecialty if there is one, null otherwise
+	 *
+	 * @param $subspecialty_id
+	 * @return CActiveRecord|null
+	 */
+	public function getOpenEpisodeOfSubspecialty($subspecialty_id)
+	{
+		return Episode::model()->getCurrentEpisodeBySubspecialtyId($this->id, $subspecialty_id);
+	}
+
+	/**
+	 * returns true if patient has an open episode for the given subspecialty id
+	 *
+	 * @param $subspecialty_id
+	 * @return boolean
+	 */
 	public function hasOpenEpisodeOfSubspecialty($subspecialty_id)
 	{
-		if ($subspecialty_id) {
-			$firm_ids = array();
-
-			$ssa = ServiceSubspecialtyAssignment::model()->find('subspecialty_id=?',array($subspecialty_id));
-
-			foreach (Firm::model()->findAll('service_subspecialty_assignment_id=?',array($ssa->id)) as $firm) {
-				$firm_ids[] = $firm->id;
-			}
-
-			$criteria = new CDbCriteria;
-			$criteria->addCondition('patient_id=:patient_id');
-			$criteria->addInCondition('firm_id',$firm_ids);
-			$criteria->params[':patient_id'] = $this->id;
-			return Episode::model()->find($criteria);
-		} else {
-			return Episode::model()->find('patient_id=? and support_services=?',array($this->id,1));
-		}
+		return  $this->getOpenEpisodeOfSubspecialty($subspecialty_id) ? true : false;
 	}
 
 	public function addEpisode($firm)
 	{
 		$episode = new Episode;
 		$episode->patient_id = $this->id;
-		$episode->firm_id = $firm->id;
+		if ($firm->getSubspecialtyID()) {
+			$episode->firm_id = $firm->id;
+		} else {
+			$episode->support_services = true;
+		}
 		$episode->start_date = date("Y-m-d H:i:s");
 
 		if (!$episode->save()) {
@@ -1024,7 +1031,7 @@ class Patient extends BaseActiveRecord
 
 		return $episode;
 	}
-	
+
 	public function getLatestEvent()
 	{
 		$criteria = new CDbCriteria();
@@ -1032,22 +1039,22 @@ class Patient extends BaseActiveRecord
 		$criteria->params = array(':pid' => $this->id);
 		$criteria->order = "t.created_date DESC";
 		$criteria->limit = 1;
-		
+
 		return Event::model()->with('episode')->find($criteria);
-		
+
 	}
-	
+
 	/**
 	 * get an associative array of CommissioningBody for this patient and the patient's practice
 	 * indexed by CommissioningBodyType id.
-	 * 
+	 *
 	 * @return array[string][CommissioningBody]
 	 */
 	public function getDistinctCommissioningBodiesByType()
 	{
 		$res = array();
 		$seen_bodies = array();
-		
+
 		foreach ($this->commissioningbodies as $body) {
 			if (in_array($body->id, $seen_bodies)) {
 				continue;
@@ -1060,7 +1067,7 @@ class Patient extends BaseActiveRecord
 			}
 			$seen_bodies[] = $body->id;
 		}
-		
+
 		if ($this->practice) {
 			foreach ($this->practice->commissioningbodies as $body) {
 				if (in_array($body->id, $seen_bodies)) {
@@ -1075,14 +1082,14 @@ class Patient extends BaseActiveRecord
 				$seen_bodies[] = $body->id;
 			}
 		}
-		
+
 		return $res;
 	}
-	
+
 	/**
 	 * get the CommissioningBody of the CommissioningBodyType $type
 	 * currently assumes there would only ever be one commissioning body of a given type
-	 * 
+	 *
 	 * @param CommissioningBodyType $type
 	 * @return CommissioningBody
 	 */
@@ -1102,26 +1109,26 @@ class Patient extends BaseActiveRecord
 			}
 		}
 	}
-	
+
 	// storage of warning data
 	protected $_clinical_warnings = null;
 	protected $_nonclinical_warnings = null;
-	
+
 	/**
 	 * return the patient warnings that have been defined for the patient. If $clinical is false
 	 * only non-clinical warnings will be returned.
-	 * 
+	 *
 	 * @param boolean $clinical
 	 * @return {'short_msg' => string, 'long_msg' => string}[]
 	 */
 	public function getWarnings($clinical=true)
 	{
 		// At the moment, we only warn for diabetes, so this is quite lightweight and hard coded
-		// but this should serve as a wrapper function for configuring warnings (i.e. a system setting could 
+		// but this should serve as a wrapper function for configuring warnings (i.e. a system setting could
 		// define what should be warned on, and then we return a structure that is determined from this)
-		
+
 		$res = array();
-		
+
 		if ($clinical) {
 			if ($this->_nonclinical_warnings == null) {
 				// this should be expanded with any future clinical disorders
@@ -1136,13 +1143,13 @@ class Patient extends BaseActiveRecord
 							'details' => implode(', ', $terms)
 					);
 				}
-				
+
 				$this->_nonclinical_warnings = $res;
 			}
 			return $this->_nonclinical_warnings;
 		}
-		
-		
+
+
 		return $res;
 	}
 
