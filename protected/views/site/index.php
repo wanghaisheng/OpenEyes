@@ -19,7 +19,7 @@
 ?>
 <h2>Search</h2>
 <div class="centralColumn">
-	<p>Find a patient by <strong>ORBIS Medical Record Number</strong>, <strong>Firstname Last name</strong> or <strong>Last name, Firstname</strong>.</p>
+	<p>Find a patient by <strong>ORBIS Medical Record Number</strong>, <strong>Firstname Lastname</strong> or <strong>Lastname, Firstname</strong>.</p>
 	<?php $this->renderPartial('//base/_messages'); ?>
 	<?php
 		$this->beginWidget('CActiveForm', array(
