@@ -27,4 +27,5 @@ class TextArea extends BaseCWidget
 	public $class;
 	public $no_label;
 	public $disabled=false;
+	public $sublabel;
 }

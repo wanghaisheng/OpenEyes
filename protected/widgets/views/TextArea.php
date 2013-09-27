@@ -20,7 +20,14 @@
 					<?php if (!$nowrapper) {?>
 						<div id="div_<?php echo get_class($element)?>_<?php echo $field?>" class="eventDetail"<?php if ($hidden) {?> style="display: none;"<?php }?>>
 							<?php if (!@$no_label) {?>
-								<div class="label"><?php if ($label) {?><?php echo CHtml::encode($element->getAttributeLabel($field))?>:<?php }?></div>
+								<div class="label">
+									<?php if ($label) {?><?php echo CHtml::encode($element->getAttributeLabel($field))?>:<?php }?>
+									<?php if ($sublabel) {?>
+										<div class="textarea_sublabel">
+											<?php echo $sublabel?>
+										</div>
+									<?php }?>
+								</div>
 							<?php }?>
 							<div class="data">
 								<?php }?>

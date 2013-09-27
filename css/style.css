@@ -1865,3 +1865,5 @@ a.profileLink strong { float: left; margin-left: 20px; margin-top: 3px; }
 .overlay .dropshadow { -webkit-box-shadow: 2px 2px 2px 2px #666; box-shadow: 2px 2px 2px 2px #666; }
 .overlay .overlaybox { padding: 10px; -webkit-border-radius: 7px; border-radius: 7px; }
 img.syncimage { margin-right: 6px; }
+
+.textarea_sublabel { font-size: 12px; }
