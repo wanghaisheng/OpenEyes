@@ -28,6 +28,7 @@ class Slider extends BaseCWidget
 	public $null;
 	public $value_display;
 	public $append = '';
+	public $nolabel = false;
 
 	public function init()
 	{
