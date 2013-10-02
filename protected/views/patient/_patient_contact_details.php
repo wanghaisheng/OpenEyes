@@ -27,6 +27,10 @@
 		<div class="data_value"><?php echo !empty($this->patient->primary_phone) ? $this->patient->primary_phone : 'Unknown'?></div>
 	</div>
 	<div class="data_row">
+		<div class="data_label">Secondary telephone:</div>
+		<div class="data_value"><?php echo !empty($this->patient->secondary_phone) ? $this->patient->secondary_phone : 'Unknown'?></div>
+	</div>
+	<div class="data_row">
 		<div class="data_label">Email:</div>
 		<div class="data_value"><?php echo !empty($this->patient->contact->address->email) ? $this->patient->contact->address->email : 'Unknown'?></div>
 	</div>
