@@ -108,6 +108,7 @@ class Patient extends BaseActiveRecord
 			array('dob, date_of_death, ethnic_group_id', 'safe'),
 			array('dob, hos_num, nhs_num, date_of_death', 'safe', 'on' => 'search'),
 			array('dob, hos_num, first_name, last_name', 'required'),
+			array('dob', 'date', 'format' => 'yyyy-MM-dd'),
 		);
 	}
 
