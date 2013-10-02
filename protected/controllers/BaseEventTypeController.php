@@ -270,6 +270,17 @@ class BaseEventTypeController extends BaseController
 	 */
 	public function actionCreate()
 	{
+		// FIXME: Horrible horrible hack for Orbis because there isn't time to do this properly :/
+		$post = $_POST;
+
+		foreach ($_POST as $key => $value) {
+			if (preg_match('/^(Element_.*)_active$/',$key,$m)) {
+				if (!$value) {
+					unset($_POST[$m[1]]);
+				}
+			}
+		}
+
 		$this->event_type = EventType::model()->find('class_name=?', array($this->getModule()->name));
 		if (!$this->patient = Patient::model()->findByPk($_REQUEST['patient_id'])) {
 			throw new CHttpException(403, 'Invalid patient_id.');
@@ -372,6 +383,9 @@ class BaseEventTypeController extends BaseController
 			}
 		}
 
+		// FIXME: Horrible horrible hack for Orbis
+		$_POST = $post;
+
 		$this->editable = false;
 		$this->title = 'Create';
 		$this->event_tabs = array(
@@ -467,6 +481,20 @@ class BaseEventTypeController extends BaseController
 
 	public function actionUpdate($id)
 	{
+		// FIXME: Horrible horrible hack for Orbis
+		$post = $_POST;
+
+		foreach ($_POST as $key => $value) {
+			if (preg_match('/^(Element_.*)_active$/',$key,$m)) {
+				if (!$value) {
+					$model = $m[1];
+					if (!$model::model()->find('event_id=?',array($id))) {
+						unset($_POST[$m[1]]);
+					}
+				}
+			}
+		}
+
 		if (!$this->event = Event::model()->findByPk($id)) {
 			throw new CHttpException(403, 'Invalid event id.');
 		}
@@ -576,6 +604,9 @@ class BaseEventTypeController extends BaseController
 				}
 			}
 		}
+
+		// FIXME: horrible horrible hack for Orbis
+		$_POST = $post;
 
 		$this->editing = true;
 		$this->title = 'Update';
