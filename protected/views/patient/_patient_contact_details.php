@@ -28,7 +28,7 @@
 	</div>
 	<div class="data_row">
 		<div class="data_label">Secondary telephone:</div>
-		<div class="data_value"><?php echo !empty($this->patient->secondary_phone) ? $this->patient->secondary_phone : 'None'?></div>
+		<div class="data_value"><?php echo !empty($this->patient->contact->secondary_phone) ? $this->patient->contact->secondary_phone : 'None'?></div>
 	</div>
 	<div class="data_row">
 		<div class="data_label">Email:</div>
