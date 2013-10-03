@@ -60,4 +60,8 @@
 		<div class="data_label">Ethnic Group:</div>
 		<div class="data_value"><?php echo $this->patient->getEthnicGroupString() ?></div>
 	</div>
+	<div class="data_row">
+		<div class="data_label">Translator needed:</div>
+		<div class="data_value"><?php echo $this->patient->translator_needed ? 'Yes' : 'No'?></div>
+	</div>
 </div>
