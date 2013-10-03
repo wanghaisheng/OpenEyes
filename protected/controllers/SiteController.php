@@ -200,6 +200,10 @@ class SiteController extends BaseController
 			$institution = Institution::model()->find('source_id=? and remote_id=?',array(1,'RP6'));
 		}
 
+		if (!$institution) {
+			$institution = Institution::model()->find(array('order'=>'id asc'));
+		}
+
 		$criteria = new CDbCriteria;
 		$criteria->compare('institution_id',$institution->id);
 		$criteria->order = 'short_name asc';
