@@ -86,7 +86,7 @@ class Episode extends BaseActiveRecord
 		return array(
 			array('patient_id', 'required'),
 			array('patient_id, firm_id', 'length', 'max'=>10),
-			array('end_date, deleted', 'safe'),
+			array('end_date, deleted, program_number', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, patient_id, firm_id, start_date, end_date', 'safe', 'on'=>'search'),
@@ -396,6 +396,15 @@ class Episode extends BaseActiveRecord
 				return ($this->firm->getSubspecialtyID() == $current_subspecialty_id);
 			}
 		}
+	}
+
+	public function beforeSave()
+	{
+		if (!$this->program_number && isset(Yii::app()->params['program_number'])) {
+			$this->program_number = Yii::app()->params['program_number'];
+		}
+
+		return parent::beforeSave();
 	}
 
 	protected function afterSave()

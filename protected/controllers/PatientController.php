@@ -443,11 +443,12 @@ class PatientController extends BaseController
 					}
 				}
 
-				if ($_POST['episode_status_id'] != $this->episode->episode_status_id) {
+				if ($_POST['episode_status_id'] != $this->episode->episode_status_id || $_POST['program_number'] != $this->episode->program_number) {
 					$this->episode->episode_status_id = $_POST['episode_status_id'];
+					$this->episode->program_number = $_POST['program_number'];
 
 					if (!$this->episode->save()) {
-						throw new Exception('Unable to update status for episode '.$this->episode->id.' '.print_r($this->episode->getErrors(),true));
+						throw new Exception('Unable to update episode '.$this->episode->id.' '.print_r($this->episode->getErrors(),true));
 					}
 				}
 

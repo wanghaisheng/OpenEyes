@@ -76,6 +76,11 @@ if (!empty($episode)) {
 		</div>
 	</div> <!-- end of cols2 (column split) -->
 
+	<h4>Program number:</h4>
+	<div class="eventHighlight big">
+		<h4><?php echo $episode->program_number ? $episode->program_number : 'None'?></h4>
+	</div>
+
 	<?php
 	try {
 		if ($episode->firm) {

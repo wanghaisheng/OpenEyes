@@ -67,8 +67,10 @@ if (!empty($episode)) {
 
 	if (!empty($_POST)) {
 		$eye_id = @$_POST['eye_id'];
+		$program_number = @$_POST['program_number'];
 	} else {
 		$eye_id = $episode->eye_id;
+		$program_number = $episode->program_number;
 	}
 	?>
 
@@ -111,6 +113,11 @@ if (!empty($episode)) {
 			</div>
 		</div>
 	</div> <!-- end of cols2 (column split) -->
+
+	<h4>Program number</h4>
+	<div class="eventHighlight big">
+		<h4><?php echo CHtml::textField('program_number',$episode->program_number)?></h4>
+	</div>
 
 	<?php
 	try {
