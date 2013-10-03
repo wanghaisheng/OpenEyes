@@ -73,8 +73,8 @@ class User extends BaseActiveRecord
 		$commonRules = array(
 			// Added for uniqueness of username
 			array('username', 'unique', 'className' => 'User', 'attributeName' => 'username'),
-			array('id, username, first_name, last_name, email, active, global_firm_rights', 'safe', 'on'=>'search'),
-			array('username, first_name, last_name, email, active, global_firm_rights, is_doctor, title, qualifications, role, salt, access_level, password, is_clinical, is_consultant, is_surgeon, has_selected_firms', 'safe'),
+			array('id, username, active, global_firm_rights', 'safe', 'on'=>'search'),
+			array('username, active, global_firm_rights, is_doctor, title, qualifications, role, salt, access_level, password, is_clinical, is_consultant, is_surgeon, has_selected_firms', 'safe'),
 		);
 
 		if (Yii::app()->params['auth_source'] == 'BASIC') {
@@ -82,8 +82,8 @@ class User extends BaseActiveRecord
 				$commonRules,
 				array(
 					array('username', 'match', 'pattern' => '/^[\w|_]+$/', 'message' => 'Only letters, numbers and underscores are allowed for usernames.'),
-					array('username, email, first_name, last_name, active, global_firm_rights', 'required'),
-					array('username, password, first_name, last_name', 'length', 'max' => 40),
+					array('username, active, global_firm_rights', 'required'),
+					array('username, password', 'length', 'max' => 40),
 					array('password', 'length', 'min' => 5, 'message' => 'Passwords must be at least 6 characters long.'),
 					array('email', 'length', 'max' => 80),
 					array('email', 'email'),
@@ -159,9 +159,6 @@ class User extends BaseActiveRecord
 		return array(
 			'id' => 'ID',
 			'username' => 'Username',
-			'first_name' => 'First name',
-			'last_name' => 'Last name',
-			'email' => 'Email',
 			'active' => 'Active',
 			'password' => 'Password',
 			'password_old' => 'Current password',
@@ -185,9 +182,6 @@ class User extends BaseActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('username',$this->username,true);
-		$criteria->compare('first_name',$this->first_name,true);
-		$criteria->compare('last_name',$this->last_name,true);
-		$criteria->compare('email',$this->email,true);
 		$criteria->compare('active',$this->active);
 		$criteria->compare('global_firm_rights',$this->global_firm_rights);
 
