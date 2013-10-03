@@ -55,10 +55,10 @@ return array(
 							'exists_method' => 'elementShortNameExists',
 							'message' => 'Element short name is already in use',
 					),
-					array(
+					/*array(
 							'type' => 'length',
 							'max'  => 11,
-					),
+					),*/
 			),
 	),
 	'/^elementName([0-9]+)FieldName([0-9]+)$/' => array(
