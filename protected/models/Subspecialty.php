@@ -57,8 +57,8 @@ class Subspecialty extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, class_name', 'required'),
-			array('name, class_name', 'length', 'max'=>40),
+			array('name', 'required'),
+			array('name', 'length', 'max'=>40),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, class_name', 'safe', 'on'=>'search'),
