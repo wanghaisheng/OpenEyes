@@ -151,12 +151,12 @@ class Patient extends BaseActiveRecord
 		return array(
 			'id' => 'ID',
 			'pas_key' => 'PAS Key',
-			'dob' => 'Date of Birth',
-			'date_of_death' => 'Date of Death',
+			'dob' => 'Date of birth',
+			'date_of_death' => 'Date of death',
 			'gender' => 'Gender',
-			'ethnic_group_id' => 'Ethnic Group',
-			'hos_num' => 'Hospital Number',
-			'nhs_num' => 'NHS Number',
+			'ethnic_group_id' => 'Ethnic group',
+			'hos_num' => 'Hospital number',
+			'nhs_num' => 'Program number',
 		);
 	}
 
