@@ -495,4 +495,17 @@ class User extends BaseActiveRecord
 		natcasesort($data);
 		return $data;
 	}
+
+	public function findAllByLabel($label) {
+		if (!$_label = ContactLabel::model()->find('name=?',array($label))) {
+			throw new Exception("Contact label not found: $label");
+		}
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('contact_label_id = :contact_label_id');
+		$criteria->params[':contact_label_id'] = $_label->id;
+		$criteria->order = 't.first_name, t.last_name';
+
+		return User::model()->with('contact')->findAll($criteria);
+	}
 }
