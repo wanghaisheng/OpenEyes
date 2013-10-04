@@ -508,4 +508,13 @@ class User extends BaseActiveRecord
 
 		return User::model()->with('contact')->findAll($criteria);
 	}
+
+	public function findAllByLabelLike($label) {
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('label.name like :label');
+		$criteria->params[':label'] = '%'.$label.'%';
+		$criteria->order = 't.first_name, t.last_name';
+
+		return User::model()->with(array('contact'=>array('with'=>'label')))->findAll($criteria);
+	}
 }
