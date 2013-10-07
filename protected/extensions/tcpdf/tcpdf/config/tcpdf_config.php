@@ -36,6 +36,8 @@
  * @since 2004-10-27
  */
 
+$_SERVER['DOCUMENT_ROOT'] = dirname($_SERVER['SCRIPT_FILENAME']);
+
 // If you define the constant K_TCPDF_EXTERNAL_CONFIG, the following settings will be ignored.
 
 if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
