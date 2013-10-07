@@ -32,8 +32,8 @@
 						$options[$k] = $v;
 					}
 				}
-			foreach ($htmlOptions as $key => $value) {
-				if (is_array($value)) {
+			foreach ($htmlOptions as $key => $_value) {
+				if (is_array($_value)) {
 					unset($htmlOptions[$key]);
 				}
 			}
