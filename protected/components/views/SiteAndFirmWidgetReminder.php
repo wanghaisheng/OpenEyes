@@ -38,7 +38,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 	</p>
 </div>
 
-<div style="margin-top: 1em; margin-bottom: 1.5em;">
+<div style="margin-top: 0.4em; margin-bottom: 0.4em;">
 	<p>
 		Do this now?
 	</p>
