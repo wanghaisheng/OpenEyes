@@ -250,6 +250,12 @@ class PatientController extends BaseController
 		));
 
 		if ($nr == 0) {
+			if ($search_terms['hos_num']) {
+				if ($patient_merged = PatientMerged::model()->findByHosNum($search_terms['hos_num'])) {
+					return $this->redirect(Yii::app()->createUrl('/patient/view/'.$patient_merged->patient_id));
+				}
+			}
+
 			Audit::add('search','search-results',implode(',',$search_terms) ." : No results");
 
 			$message = 'Sorry, no results ';
@@ -262,6 +268,7 @@ class PatientController extends BaseController
 			} else {
 				$message .= 'found for your search.';
 			}
+
 			Yii::app()->user->setFlash('warning.no-results', $message);
 
 			$this->redirect(Yii::app()->homeUrl);
