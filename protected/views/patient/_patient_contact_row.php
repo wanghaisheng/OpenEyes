@@ -27,7 +27,7 @@ $contact = $pca->location ? $pca->location->contact : $pca->contact;
 		<?php echo $pca->locationText?>
 	</td>
 	<td>
-		<?php echo $contact->label->name?>
+		<?php echo $contact->label ? $contact->label->name : 'No label'?>
 	</td>
 	<td>
 		<?php if (BaseController::checkUserLevel(4)) {?>

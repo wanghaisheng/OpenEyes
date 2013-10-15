@@ -168,9 +168,24 @@ class Contact extends BaseActiveRecord
 
 	public function contactLine($location=false)
 	{
-		$line = $this->fullName.' ('.$this->label->name;
-		if ($location) $line .= ', '.$location;
-		return $line.')';
+		$append = '';
+
+		if ($this->label) {
+			$append = $this->label;
+		}
+
+		if ($location) {
+			if ($append) $append .= ', ';
+			$append .= $location;
+		}
+
+		if ($append) {
+			$line = $this->fullname.' ('.$append.')';
+		} else {
+			$line = $this->fullName;
+		}
+
+		return $line;
 	}
 
 	public function findByLabel($term, $label, $exclude=false)
