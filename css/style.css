@@ -1867,3 +1867,6 @@ a.profileLink strong { float: left; margin-left: 20px; margin-top: 3px; }
 img.syncimage { margin-right: 6px; }
 
 .textarea_sublabel { font-size: 12px; }
+.allergy-status {
+	font-size: 15px;
+}

@@ -118,6 +118,8 @@ class Helper
 	 * If date of death provided, then returns age at point of death
 	 * @param string $dob
 	 * @param string $date_of_death
+	 *
+	 * @return string $age
 	 */
 	public static function getAge($dob, $date_of_death = null)
 	{

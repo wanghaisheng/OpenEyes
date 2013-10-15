@@ -257,6 +257,38 @@ class Event extends BaseActiveRecord
 		return ($this->created_user_id == Yii::app()->session['user']->id && (time() - strtotime($this->created_date)) <= 86400);
 	}
 
+	/**
+	 * marks an event as deleted and processes any softDelete methods that exist on the elements attached to it.
+	 *
+	 * @throws Exception
+	 */
+	public function softDelete()
+	{
+		// perform this process in a transaction if one has not been created
+		$transaction = Yii::app()->db->getCurrentTransaction() === null
+			? Yii::app()->db->beginTransaction()
+			: false;
+
+		try {
+			$this->deleted = 1;
+			foreach ($this->getElements() as $element) {
+				$element->softDelete();
+			}
+			if (!$this->save()) {
+				throw new Exception("Unable to mark event deleted: ".print_r($this->event->getErrors(),true));
+			}
+			if ($transaction) {
+				$transaction->commit();
+			}
+		}
+		catch (Exception $e) {
+			if ($transaction) {
+				$transaction->rollback();
+			}
+			throw $e;
+		}
+	}
+
 	public function delete()
 	{
 		// Delete related
@@ -301,37 +333,27 @@ class Event extends BaseActiveRecord
 		parent::audit($target, $action, $data, $log, $properties);
 	}
 
-	public function wrap($params=array()) {
-		$data = Yii::app()->db->createCommand()->select("*")->from("event")->where("id = $this->id")->queryRow();
-		$data['_elements'] = array();
+	/**
+	 * returns the saved elements that belong to the event if it has any.
+	 *
+	 * @return BaseEventTypeElement[]
+	 */
+	public function getElements()
+	{
+		$elements = array();
+		if ($this->id) {
+			$criteria = new CDbCriteria;
+			$criteria->compare('event_type_id', $this->event_type_id);
+			$criteria->order = 'display_order asc';
 
-		foreach (ElementType::model()->findAll('event_type_id=?',array($this->event_type_id)) as $element_type) {
-			$class = $element_type->class_name;
+			foreach (ElementType::model()->findAll($criteria) as $element_type) {
+				$element_class = $element_type->class_name;
 
-			if ($element = $class::model()->find('event_id=?',array($this->id))) {
-				$data['_elements'][$element_type->class_name] = $element->wrap();
+				if ($element = $element_class::model()->find('event_id = ?',array($this->id))) {
+					$elements[] = $element;
+				}
 			}
 		}
-
-		$data['_episode'] = $this->episode->wrap();
-		$data['episode_id'] = '{Episode:'.$this->episode->hash.'}';
-		$data['_issues'] = Yii::app()->db->createCommand()->select("*")->from("event_issue")->where("event_id = $this->id")->queryAll();
-		foreach ($data['_issues'] as $i => $issue) {
-			$data['_issues'][$i]['event_id'] = '{Event:'.$this->hash.'}';
-		}
-
-		return $this->strip_ids($data);
-	}
-
-	public function strip_ids($data) {
-		if (isset($data['id'])) unset($data['id']);
-
-		foreach ($data as $key => $value) {
-			if (is_array($value)) {
-				$data[$key] = $this->strip_ids($value);
-			}
-		}
-
-		return $data;
+		return $elements;
 	}
 }
