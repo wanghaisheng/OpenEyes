@@ -65,13 +65,26 @@ class AdminController extends BaseController
 	public function actionAddUser()
 	{
 		$user = new User;
+		$contact = new Contact;
 
 		if (!empty($_POST)) {
 			$user->attributes = $_POST['User'];
+			$contact->attributes = $_POST['Contact'];
 
 			if (!$user->validate()) {
 				$errors = $user->getErrors();
 			} else {
+				$contact->title = $_POST['User']['title'];
+				$contact->first_name = $_POST['User']['first_name'];
+				$contact->last_name = $_POST['User']['last_name'];
+				$contact->qualifications = $_POST['User']['qualifications'];
+
+				if (!$contact->save()) {
+					throw new Exception("Unable to save contact: ".print_r($contact->getErrors(),true));
+				}
+
+				$user->contact_id = $contact->id;
+
 				if (!$user->save()) {
 					throw new Exception("Unable to save user: ".print_r($user->getErrors(),true));
 				}
@@ -84,6 +97,7 @@ class AdminController extends BaseController
 
 		$this->render('/admin/adduser',array(
 			'user' => $user,
+			'contact' => $contact,
 			'errors' => @$errors,
 		));
 	}
@@ -94,22 +108,23 @@ class AdminController extends BaseController
 			throw new Exception("User not found: $id");
 		}
 
+		if (!$contact = $user->contact) {
+			$contact = new Contact;
+		}
+
 		if (!empty($_POST)) {
 			if (!$_POST['User']['password']) {
 				unset($_POST['User']['password']);
 			}
 
 			$user->attributes = $_POST['User'];
+			$contact->attributes = $_POST['Contact'];
 
 			if (!$user->validate()) {
 				$errors = $user->getErrors();
 			} else {
 				if (!$user->save()) {
 					throw new Exception("Unable to save user: ".print_r($user->getErrors(),true));
-				}
-
-				if (!$contact = $user->contact) {
-					$contact = new Contact;
 				}
 
 				$contact->title = $user->title;
@@ -140,6 +155,7 @@ class AdminController extends BaseController
 
 		$this->render('/admin/edituser',array(
 			'user' => $user,
+			'contact' => $contact,
 			'errors' => @$errors,
 		));
 	}

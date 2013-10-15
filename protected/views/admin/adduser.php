@@ -52,6 +52,7 @@
 				</div>
 			</div>
 			<?php echo $form->dropDownList($user,'access_level', $user->getAccessLevelOptions())?>
+			<?php echo $form->dropDownList($contact,'contact_label_id',CHtml::listData(ContactLabel::model()->findAll(array('order'=>'name asc')),'id','name'),array('empty'=>'- None -'))?>
 			<?php $this->endWidget()?>
 		</div>
 	</div>
