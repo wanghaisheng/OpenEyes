@@ -42,6 +42,17 @@ class SyncController extends Controller
 
 	public function actionIndex()
 	{
+		// HACK FOR ORBIS
+		$ip = trim(`ifconfig mlan0 |grep 'inet addr' |cut -d ':' -f2 |cut -d ' ' -f1`);
+
+		foreach (Yii::app()->params['sync_servers'] as $prefix => $server) {
+			if (strncmp($ip,$prefix,strlen($prefix)) == 0) {
+				$serverip = $server;
+			}
+		}
+
+		Yii::app()->db->createCommand("update sync_server set hostname='$serverip'")->query();
+
 		$this->renderPartial('/sync/index',array('server' => SyncServer::model()->find()));
 	}
 
