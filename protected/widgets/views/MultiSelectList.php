@@ -44,7 +44,7 @@ if (isset($htmlOptions['div_class'])) {
 <div id="<?php echo $div_id ?>" class="<?php echo $div_class ?>"<?php if ($hidden) {?> style="display: none;"<?php }?>>
 	<div class="label"><?php echo @$htmlOptions['label']?>:</div>
 	<div class="data">
-		<select label="<?php echo $htmlOptions['label']?>" class="MultiSelectList" name="">
+		<select label="<?php echo $htmlOptions['label']?>" class="MultiSelectList" name=""<?php if (@$htmlOptions['width']) {?> style="width: <?php echo $htmlOptions['width']?>"<?php }?>>
 			<option value=""><?php echo $htmlOptions['empty']?></option>
 			<?php foreach ($filtered_options as $value => $option) {
 				$attributes = array('value' => $value);
@@ -58,6 +58,12 @@ if (isset($htmlOptions['div_class'])) {
 				echo ">" . $option . "</option>";
 			}?>
 		</select>
+		<?php if (@$htmlOptions['textField']) {
+			$form = new BaseEventTypeCActiveForm;?>
+			&nbsp;&nbsp;
+			<span class="label"><?php echo $element->getAttributeLabel($htmlOptions['textField'])?>:</span>
+			<?php echo $form->textField($element, $htmlOptions['textField'], array('nowrapper' => true))?>
+		<?php }?>
 		<div class="MultiSelectList">
 			<ul class="MultiSelectList">
 				<?php foreach ($selected_ids as $id) {
