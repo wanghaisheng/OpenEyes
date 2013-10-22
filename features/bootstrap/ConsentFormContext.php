@@ -106,7 +106,7 @@ class ConsentFormContext extends PageObjectContext
     /**
      * @Then /^I choose Permissions for images No$/
      */
-    public function iChoosePermissionsForImages($images)
+    public function iChoosePermissionsForImages()
     {
         /**
          * @var ConsentForm $consentForm
@@ -128,7 +128,7 @@ class ConsentFormContext extends PageObjectContext
     }
 
     /**
-     * @Given /^I select the Anasethetic leflet checkbox$/
+     * @Given /^I select the Anaesthetic leaflet checkbox$/
      */
     public function iSelectTheAnasetheticLefletCheckbox()
     {

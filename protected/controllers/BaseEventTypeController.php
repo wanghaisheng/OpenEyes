@@ -183,7 +183,7 @@ class BaseEventTypeController extends BaseController
 				foreach (ElementType::model()->findAll($criteria) as $element_type) {
 					$element_class = $element_type->class_name;
 
-					if ($element = $element_class::model()->find('event_id = ?',array($event->id))) {
+					foreach ($element_class::model()->findAll(array('condition'=>'event_id=?','params'=>array($event->id),'order'=>'id asc')) as $element) {
 						$elements[] = $element;
 					}
 				}
@@ -201,11 +201,35 @@ class BaseEventTypeController extends BaseController
 					if ($element_type = ElementType::model()->find('class_name=?',array($key))) {
 						$element_class = $element_type->class_name;
 
-						if (isset($event->event_type_id) && ($element = $element_class::model()->find('event_id = ?',array($event->id)))) {
-							$elements[] = $element;
+						$keys = array_keys($value);
+
+						if (is_array($value[$keys[0]])) {
+							if (isset($event->event_type_id)) {
+								foreach ($element_class::model()->findAll(array('condition'=>'event_id=?','params'=>array($event->id),'order'=>'id asc')) as $element) {
+									$elements[] = $element;
+								}
+							} else {
+								if ($action != 'update' || !$element_type->default) {
+									for ($i=0; $i<count($value[$keys[0]]); $i++) {
+										$element = new $element_class;
+
+										foreach ($keys as $_key) {
+											if ($_key != '_element_id') {
+												$element[$_key] = $value[$_key][$i];
+											}
+										}
+
+										$elements[] = $element;
+									}
+								}
+							}
 						} else {
-							if ($action != 'update' || !$element_type->default) {
-								$elements[] = new $element_class;
+							if (isset($event->event_type_id) && ($element = $element_class::model()->find('event_id = ?',array($event->id)))) {
+								$elements[] = $element;
+							} else {
+								if ($action != 'update' || !$element_type->default) {
+									$elements[] = new $element_class;
+								}
 							}
 						}
 					}
@@ -519,12 +543,32 @@ class BaseEventTypeController extends BaseController
 			foreach (ElementType::model()->findAll('event_type_id=?',array($this->event_type->id)) as $element_type) {
 				$class_name = $element_type->class_name;
 				if (isset($_POST[$class_name])) {
-					if ($element = $class_name::model()->find('event_id=?',array($this->event->id))) {
-						// Add existing element to array
-						$elements[] = $element;
+					$keys = array_keys($_POST[$class_name]);
+					if (is_array($_POST[$class_name][$keys[0]])) {
+						if (!isset($_POST[$class_name]['_element_id'])) {
+							throw new Exception("Array'd elements must include _element_id");
+						}
+
+						foreach ($class_name::model()->findAll(array('condition'=>'event_id=?','params'=>array($this->event->id),'order'=>'id asc')) as $element) {
+							if (in_array($element->id,$_POST[$class_name]['_element_id'])) {
+								$elements[] = $element;
+							} else {
+								$to_delete[] = $element;
+							}
+						}
+						foreach ($_POST[$class_name]['_element_id'] as $element_id) {
+							if (!$element_id) {
+								$elements[] = new $class_name;
+							}
+						}
 					} else {
-						// Add new element to array
-						$elements[] = new $class_name;
+						if ($element = $class_name::model()->find('event_id=?',array($this->event->id))) {
+							// Add existing element to array
+							$elements[] = $element;
+						} else {
+							// Add new element to array
+							$elements[] = new $class_name;
+						}
 					}
 				} elseif ($element = $class_name::model()->find('event_id=?',array($this->event->id))) {
 					// Existing element is not posted, so we need to delete it
@@ -534,7 +578,6 @@ class BaseEventTypeController extends BaseController
 
 			// validation
 			$errors = $this->validatePOSTElements($elements);
-
 
 			// creation
 			if (empty($errors)) {
@@ -630,16 +673,50 @@ class BaseEventTypeController extends BaseController
 		$errors = array();
 		foreach ($elements as $element) {
 			$elementClassName = get_class($element);
-			$element->attributes = Helper::convertNHS2MySQL($_POST[$elementClassName]);
-			$this->setPOSTManyToMany($element);
-			if (!$element->validate()) {
-				$elementName = $element->getElementType()->name;
-				foreach ($element->getErrors() as $errormsgs) {
-					foreach ($errormsgs as $error) {
-						$errors[$elementName][] = $error;
+
+			if ($element->required || isset($_POST[$elementClassName])) {
+				if (isset($_POST[$elementClassName])) {
+					$keys = array_keys($_POST[$elementClassName]);
+
+					if (is_array($_POST[$elementClassName][$keys[0]])) {
+						for ($i=0; $i<count($_POST[$elementClassName][$keys[0]]); $i++) {
+							$element = new $elementClassName;
+
+							foreach ($keys as $key) {
+								if ($key != '_element_id') {
+									$element->{$key} = $_POST[$elementClassName][$key][$i];
+								}
+							}
+
+							$this->setPOSTManyToMany($element);
+
+							if (!$element->validate()) {
+								$proc_name = $element->procedure->term;
+								$elementName = $element->getElementType()->name;
+								foreach ($element->getErrors() as $errormsgs) {
+									foreach ($errormsgs as $error) {
+										$errors[$proc_name][] = $error;
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						$element->attributes = Helper::convertNHS2MySQL($_POST[$elementClassName]);
+						$this->setPOSTManyToMany($element);
+						if (!$element->validate()) {
+							$elementName = $element->getElementType()->name;
+							foreach ($element->getErrors() as $errormsgs) {
+								foreach ($errormsgs as $error) {
+									$errors[$elementName][] = $error;
+								}
+							}
+						}
 					}
 				}
 			}
+
 		}
 
 		return $errors;
@@ -734,15 +811,37 @@ class BaseEventTypeController extends BaseController
 
 			if ($element->required || isset($data[$elementClassName])) {
 				if (isset($data[$elementClassName])) {
-					$element->attributes = Helper::convertNHS2MySQL($data[$elementClassName]);
-				}
+					$keys = array_keys($data[$elementClassName]);
 
-				$this->setPOSTManyToMany($element);
+					if (is_array($data[$elementClassName][$keys[0]])) {
+						for ($i=0; $i<count($data[$elementClassName][$keys[0]]); $i++) {
+							$element = new $elementClassName;
 
-				if (!$element->validate()) {
-					$valid = false;
-				} else {
-					$elementsToProcess[] = $element;
+							foreach ($keys as $key) {
+								if ($key != '_element_id') {
+									$element->{$key} = $data[$elementClassName][$key][$i];
+								}
+							}
+
+							$this->setPOSTManyToMany($element);
+
+							if (!$element->validate()) {
+								$valid = false;
+							} else {
+								$elementsToProcess[] = $element;
+							}
+						}
+					} else {
+						$element->attributes = Helper::convertNHS2MySQL($data[$elementClassName]);
+
+						$this->setPOSTManyToMany($element);
+
+						if (!$element->validate()) {
+							$valid = false;
+						} else {
+							$elementsToProcess[] = $element;
+						}
+					}
 				}
 			}
 		}
@@ -795,11 +894,28 @@ class BaseEventTypeController extends BaseController
 			$needsValidation = false;
 
 			if (isset($data[$elementClassName])) {
-				$element->attributes = Helper::convertNHS2MySQL($data[$elementClassName]);
+				$keys = array_keys($data[$elementClassName]);
 
-				$toSave[] = $element;
+				if (is_array($data[$elementClassName][$keys[0]])) {
+					if (!$element->id || in_array($element->id,$data[$elementClassName]['_element_id'])) {
+						$i = array_search($element->id,$data[$elementClassName]['_element_id']);
 
-				$needsValidation = true;
+						$properties = array();
+						foreach ($data[$elementClassName] as $key => $values) {
+							$properties[$key] = $values[$i];
+						}
+						$element->attributes = Helper::convertNHS2MySQL($properties);
+
+						$toSave[] = $element;
+						$needsValidation = true;
+					} else {
+						$toDelete[] = $element;
+					}
+				} else {
+					$element->attributes = Helper::convertNHS2MySQL($data[$elementClassName]);
+					$toSave[] = $element;
+					$needsValidation = true;
+				}
 			} elseif ($element->required) {
 				// The form has failed to provide an array of data for a required element.
 				// This isn't supposed to happen - a required element should at least have the

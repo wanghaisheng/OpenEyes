@@ -112,4 +112,8 @@ class BaseEventTypeCActiveForm extends CActiveForm
 	{
 		$this->widget('application.widgets.SliderTable', array('element' => $element, 'field' => $field, 'data' => $data));
 	}
+
+	public function hiddenField($element, $field, $htmlOptions=array()) {
+		$this->widget('application.widgets.HiddenField', array('element' => $element, 'field' => $field, 'htmlOptions' => $htmlOptions));
+	}
 }
