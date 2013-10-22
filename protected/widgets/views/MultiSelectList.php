@@ -17,18 +17,16 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-<?php 
+<?php
 if (isset($htmlOptions['options'])) {
 	$opts = $htmlOptions['options'];
-}
-else {
+} else {
 	$opts = array();
 }
 
 if (isset($htmlOptions['div_id'])) {
 	$div_id = $htmlOptions['div_id'];
-}
-else {
+} else {
 	// for legacy, this is the original definition of the div id that was created for the multiselect
 	// not recommended as it doesn't allow for sided uniqueness
 	$div_id = "div_" . get_class($element) . "_" . @$htmlOptions['label'];
@@ -39,7 +37,7 @@ if (isset($htmlOptions['div_class'])) {
 } else {
 	$div_class = "eventDetail";
 }
-	
+
 ?>
 
 <?php if ($basic) {?>
@@ -47,9 +45,17 @@ if (isset($htmlOptions['div_class'])) {
 	<div class="MultiSelectList">
 		<select label="<?php echo $htmlOptions['label']?>" class="MultiSelectList" name=""<?php if ($disabled) {?> disabled="disabled"<?php }?>>
 			<option value=""><?php echo $htmlOptions['empty']?></option>
-			<?php foreach ($filtered_options as $value => $option) {?>
-				<option value="<?php echo $value?>"><?php echo $option?></option>
-			<?php }?>
+			<?php foreach ($filtered_options as $value => $option) {
+				$attributes = array('value' => $value);
+				if (isset($opts[$value])) {
+					$attributes = array_merge($attributes, $opts[$value]);
+				}
+				echo "<option";
+				foreach ($attributes as $att => $att_val) {
+					echo " " . $att . "=\"" . $att_val . "\"";
+				}
+				echo ">" . $option . "</option>";
+			}?>
 		</select>
 		<div class="MultiSelectListBasic">
 			<ul class="MultiSelectList"<?php if ($disabled) {?> disabled="disabled"<?php }?>>
@@ -58,7 +64,13 @@ if (isset($htmlOptions['div_class'])) {
 						<li>
 							<?php echo $options[$id]?> (<a href="#" class="MultiSelectRemove <?php echo $id?>"<?php if ($disabled) {?> disabled="disabled"<?php }?>>remove</a>)
 						</li>
-						<input type="hidden" name="<?php echo $field?>[]" value="<?php echo $id?>" />
+						<input type="hidden" name="<?php echo $field?>[]" value="<?php echo $id?>"
+						<?php if (isset($opts[$id])) {
+							foreach ($opts[$id] as $key => $val) {
+								echo " " . $key . "=\"" . $val . "\"";
+							}
+						}?>
+						/>
 					<?php }?>
 				<?php }?>
 			</ul>

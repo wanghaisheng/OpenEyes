@@ -20,7 +20,7 @@
 <?php
 	$helpdesk_phone = Config::get('helpdesk_phone');
 	$helpdesk_email = Config::get('helpdesk_email');
-	$this->layout = 'error';
+	$this->layout = '//layouts/error';
 ?>
 <h3>Application Error</h3>
 <p><strong>There has been a problem trying to access OpenEyes, please

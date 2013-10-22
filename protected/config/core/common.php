@@ -65,6 +65,10 @@ return array(
 		),
 		'request' => array(
 			'enableCsrfValidation' => true,
+			'class'=>'HttpRequest',
+			'noCsrfValidationRoutes'=>array(
+				'site/login', //disabled csrf check on login form
+			),
 		),
 		'event' => array(
 			'class' => 'OEEventManager',
@@ -146,7 +150,7 @@ return array(
 			),
 		),
 		'session' => array(
-			'class' => 'application.components.CDbHttpSession',
+			'class' => 'CDbHttpSession',
 			'connectionID' => 'db',
 			'sessionTableName' => 'user_session',
 			'autoCreateSessionTable' => false

@@ -20,7 +20,7 @@
 <?php
 	$helpdesk_phone = Config::get('helpdesk_phone');
 	$helpdesk_email = Config::get('helpdesk_email');
-	$this->layout = 'error';
+	$this->layout = '//layouts/error';
 ?>
 <h3>Merged patient record</h3>
 <p><strong>The patient record you requested cannot be accessed due to an inconsistency in the PAS system.</strong></p>

@@ -21,7 +21,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		var sprite = $(this).children('span');
 		var whiteBox = $(this).parents('.whiteBox');
-		
+
 		if(sprite.hasClass('hide')) {
 			whiteBox.children('.data_row').slideUp("fast");
 			sprite.removeClass('hide');
@@ -34,7 +34,7 @@ $(document).ready(function(){
 	});
 
 	// show hide
-				
+
 	$('.sprite.showhide2').click(function(e){
 		var episode_id = $(this).parent().parent().prev('input').val();
 		if (episode_id == undefined) {
@@ -44,7 +44,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		changeState($(this).parents('.episode_nav'),$(this).children('span'),episode_id);
 	});
-	
+
 	function changeState(wb,sp,episode_id) {
 		if (sp.hasClass('hide')) {
 			wb.children('.events').slideUp('fast');
@@ -66,14 +66,14 @@ $(document).ready(function(){
 				'type': 'GET',
 				'url': baseUrl+'/patient/showepisode?episode_id='+episode_id,
 				'success': function(html) {
-				} 
+				}
 			});
 		}
 	}
-	
+
 	/**
 	 * Sticky stuff
-	 */ 
+	 */
 	$('#alert_banner').waypoint('sticky', {
 		offset: -30,
 		wrapper: '<div class="alert_banner_sticky_wrapper" />'
@@ -104,29 +104,39 @@ $(document).ready(function(){
 				$(this).removeClass('hover');
 			}
 	);
-	
+
 	/**
 	 * Site / firm switcher
 	 */
-	$('.change-firm a').click(function(e) {
-		if (typeof(OE_patient_id) != 'undefined') {
-			var patient_id = OE_patient_id;
-		} else {
-			var patient_id = null;
-		}
+	(function firmSwitcher() {
 
-		$.ajax({
-			url: baseUrl + '/site/changesiteandfirm',
-			data: {
-				returnUrl: window.location.href,
-				patient_id: patient_id
-			},
-			success: function(data) {
-				$('#user_panel').before(data);
-			}
+		// Default dialog options.
+		var options = {
+			id: 'site-and-firm-dialog',
+			title: 'Select a new Site and/or Firm'
+		};
+
+		// Show the 'change firm' dialog when clicking on the 'change firm' link.
+		$('.change-firm a').click(function(e) {
+
+			e.preventDefault();
+
+			new OpenEyes.Dialog($.extend({}, options, {
+				url: baseUrl + '/site/changesiteandfirm',
+				data: {
+					returnUrl: window.location.href,
+					patient_id: window.OE_patient_id || null
+				}
+			})).open();
 		});
-		e.preventDefault();
-	});
+
+		// Show the 'change firm' dialog on page load.
+		if ($('#site-and-firm-form').length) {
+			new OpenEyes.Dialog($.extend({}, options, {
+				content: $('#site-and-firm-form')
+			})).open();
+		}
+	}());
 
 	$('#checkall').click(function() {
 		$('input.'+$(this).attr('class')).attr('checked',$(this).is(':checked') ? 'checked' : false);
@@ -186,17 +196,17 @@ function getMonthNumberByShortName(m) {
 /**
  * sort comparison function for html elements based on the inner html content, but will check for the presence of data-order attributes and
  * sort on those if present
- * 
+ *
  * @param a
  * @param b
- * @returns
+ * @return
  */
 function selectSort(a, b) {
 		if (a.innerHTML == rootItem) {
-				return -1;		
+				return -1;
 		}
 		else if (b.innerHTML == rootItem) {
-				return 1;  
+				return 1;
 		}
 		// custom ordering
 		if ($(a).data('order')) {

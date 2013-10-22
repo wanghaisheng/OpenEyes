@@ -18,7 +18,8 @@
  */
 
 class OELog {
-	static public function log($msg, $username=false) {
+	static public function log($msg, $username=false)
+	{
 		if (Config::get('log_events')) {
 			if (!$username) {
 				if (Yii::app()->session['user']) {
@@ -36,4 +37,3 @@ class OELog {
 		}
 	}
 }
-?>

@@ -25,32 +25,44 @@
 	<div class="icon_patientIssue"></div>
 	<h4>Allergies</h4>
 	<div class="data_row">
-		<table class="subtleWhite">
-			<thead>
-				<tr>
-					<th width="80%">Allergies</th>
-					<?php if(BaseController::checkUserLevel(4)) { ?><th>Edit</th><?php } ?>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($this->patient->allergies as $allergy) { ?>
-				<tr data-allergy-id="<?php echo $allergy->id ?>">
-					<td><?php echo $allergy->name ?></td>
-					<?php if(BaseController::checkUserLevel(4)) { ?>
-					<td><a href="#" rel="<?php echo $allergy->id?>" class="small removeAllergy"><strong>Remove</strong>
+		<?php
+		if (!$this->patient->hasAllergyStatus()) {
+			?>
+			<span class="allergy-status">Patient allergy status is unknown</span>
+			<?php
+		} elseif ($this->patient->no_allergies_date) {
+			?>
+			<span class="allergy-status">Patient has no known allergies</span>
+			<?php
+		} else {
+			?>
+			<table class="subtleWhite" id="currentAllergies">
+				<thead>
+					<tr>
+						<th width="80%">Allergies</th>
+						<?php if (BaseController::checkUserLevel(4)) { ?><th>Edit</th><?php } ?>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->patient->allergies as $allergy) { ?>
+					<tr data-allergy-id="<?php echo $allergy->id ?>" data-allergy-name="<?php echo $allergy->name ?>">
+						<td><?php echo $allergy->name ?></td>
+						<?php if (BaseController::checkUserLevel(4)) { ?>
+						<td><a href="#" rel="<?php echo $allergy->id?>" class="small removeAllergy"><strong>Remove</strong>
+						<?php } ?>
+						</a></td>
+					</tr>
 					<?php } ?>
-					</a></td>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
+				</tbody>
+			</table>
 
-		<?php if(BaseController::checkUserLevel(4)) { ?>
+			<?php
+		}
+		if (BaseController::checkUserLevel(4)) { ?>
 			<div align="center" style="margin-top:10px;">
-				<form><button id="btn-add_allergy" class="classy green mini" type="button"><span class="button-span button-span-green">Add allergy</span></button></form>
+				<form><button id="btn-add_allergy" class="classy green mini" type="button"><span class="button-span button-span-green">Edit</span></button></form>
 			</div>
 			<div id="add_allergy" style="display: none;">
-				<h5>Add allergy</h5>
 				<?php
 				$form = $this->beginWidget('CActiveForm', array(
 						'id'=>'add-allergy',
@@ -59,12 +71,21 @@
 						'action'=>array('patient/addAllergy'),
 				))?>
 
+				<div class="familyHistory">
+					<div class="label">
+						Confirm patient has no allergies:
+					</div>
+					<div class="data">
+						<?php echo CHtml::checkBox('no_allergies', $this->patient->no_allergies_date ? true : false); ?>
+					</div>
+				</div>
+
 				<input type="hidden" name="edit_allergy_id" id="edit_allergy_id" value="" />
 				<input type="hidden" name="patient_id" value="<?php echo $this->patient->id?>" />
 
-				<div class="familyHistory">
+				<div class="familyHistory" id="allergy_field" <?php if ($this->patient->no_allergies_date) { echo 'style="display: none;"'; }?>>
 					<div class="label">
-						Allergy:
+						Add allergy:
 					</div>
 					<div class="data">
 						<?php echo CHtml::dropDownList('allergy_id', null, CHtml::listData($this->allergyList(), 'id', 'name'), array('empty' => '-- Select --'))?>
@@ -82,7 +103,7 @@
 		<?php }?>
 	</div>
 </div>
-<?php if(BaseController::checkUserLevel(4)) { ?>
+<?php if (BaseController::checkUserLevel(4)) { ?>
 <div id="confirm_remove_allergy_dialog" title="Confirm remove allergy" style="display: none;">
 	<div>
 		<div id="delete_allergy">
@@ -103,6 +124,15 @@
 </div>
 <!-- #patient_allergies -->
 <script type="text/javascript">
+	$('#no_allergies').bind('change', function() {
+		if ($(this)[0].checked) {
+			$('#allergy_field').hide().find('select').attr('disabled', 'disabled');
+		}
+		else {
+			$('#allergy_field').show().find('select').removeAttr('disabled');
+		}
+	});
+
 	$('#btn-add_allergy').click(function() {
 		$('#relative_id').val('');
 		$('div.familyHistory #side_id').val('');
@@ -121,8 +151,10 @@
 		return false;
 	});
 	$('button.btn_save_allergy').click(function() {
-		if ($('#allergy_id').val() == '') {
-			alert("Please select an allergy");
+		if ($('#allergy_id').val() == '' && !$('#no_allergies')[0].checked) {
+			new OpenEyes.Dialog.Alert({
+				content: "Please select an allergy or confirm patient has no allergies"
+			}).open();
 			return false;
 		}
 		$('img.add_allergy_loader').show();
@@ -179,13 +211,23 @@
 			'url': baseUrl+'/patient/removeAllergy?patient_id=<?php echo $this->patient->id?>&allergy_id='+$('#remove_allergy_id').val(),
 			'success': function(html) {
 				if (html == 'success') {
-					$('a.removeAllergy[rel="'+$('#remove_allergy_id').val()+'"]').parent().parent().remove();
+					var allergy_id = $('#remove_allergy_id').val();
+					var row = $('#currentAllergies tr[data-allergy-id="' + allergy_id + '"]');
+					var allergy_name = row.data('allergy-name');
+					row.remove();
+					$('#allergy_id').append('<option value="'+allergy_id+'">'+allergy_name+'</option>');
+					sort_selectbox($('#allergy_id'));
+
 				} else {
-					alert("Sorry, an internal error occurred and we were unable to remove the allergy.\n\nPlease contact support for assistance.");
+					new OpenEyes.Dialog.Alert({
+						content: "Sorry, an internal error occurred and we were unable to remove the allergy.\n\nPlease contact support for assistance."
+					}).open();
 				}
 			},
 			'error': function() {
-				alert("Sorry, an internal error occurred and we were unable to remove the allergy.\n\nPlease contact support for assistance.");
+				new OpenEyes.Dialog.Alert({
+					content: "Sorry, an internal error occurred and we were unable to remove the allergy.\n\nPlease contact support for assistance."
+				}).open();
 			}
 		});
 
