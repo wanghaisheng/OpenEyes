@@ -1,24 +1,34 @@
 /* Admin CSS */
 /* theme Admin area */
 .Admin #brand 		{ width:290px; background-image: url(../../img/_structure/openeyes-admin.png); }
-.Admin #container { background: #bbb; border-left: 2px solid #999; border-right: 2px solid #999; }
+.Admin #container 	{ background: url(../../img/_structure/gradient_bg_grey.jpg) #e5e5e5 top left repeat-x; border-left: 2px solid #999; border-right: 2px solid #999; }
 .Admin #header	  { border-top:2px solid #999; }
 .Admin div.pagefooter { background-color: #999; }
 .Admin div.pagefooter > .help { background-color:#c5c5c5; }
 
 /* user panel */
-.Admin #user_panel { position: absolute; top:0; right:10px; height:40px; width:590px; }
-.Admin .userpanel { background-color: #dfe2e5; background-image: none; }
+.Admin #user_panel { position: absolute; top:0; right:10px; height:50px; width:420px; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
+.Admin .userpanel { background-color: #ffffea; background-image: none; border:1px solid #ccc; border-top:none;}
 .Admin .userpanel .user { color:#444; white-space:nowrap; position:absolute; bottom:5px; left:12px; }
+.Admin .userpanel .userinfo { position:absolute; top:8px; left:12px;}
+.Admin .userpanel .userinfo .userdetails { color:#666; font-size:12px; padding-bottom:1px; margin-bottom:2px; border-bottom:1px dotted #c2cdd7; }
+.Admin .userpanel .userinfo .userdetails span:first-child { display:inline-block; width:35px; color:#666; }
 
 /* dashboard */
 .Admin .group { display:block; float:left; width:32%; margin-left:1%; }
-.Admin .group .sub { background:#d5d5d5; padding:15px; margin:0 0 15px 0; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; -moz-box-shadow: inset 2px 2px 2px #999; -webkit-box-shadow: inset 2px 2px 2px #999; box-shadow: inset 2px 2px 2px #999; }
-.Admin .group .sub h3 { font-family:Georgia,Constantia,Lucida,Times,serif; font-size:17px; color:#888; position:relative; top:-5px; left:-5px; padding:0; margin:0 0 5px 0; }
-.Admin .group p { font-family:Georgia,Constantia,Lucida,Times,serif; color:#666; }
+.Admin .group .sub { position:relative; background:#e5e5e5; padding:32px 8px 8px 8px; margin:0 0 15px 0; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3); -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.Admin .group .sub h3 { position:absolute; top:0; right:8px; font-family:Georgia,Constantia,Lucida,Times,serif; font-size:12px; color:#c59231; background: #fffbf3; margin:0 0 5px 0; padding:5px 10px; -webkit-border-bottom-left-radius: 3px; -webkit-border-bottom-right-radius: 3px; -moz-border-radius-bottomleft: 3px; -moz-border-radius-bottomright: 3px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;}
+.Admin .group p { font-family:Georgia,Constantia,Lucida,Times,serif; color:#666; line-height:1.3;  padding:0 5px; }
+
+/* ul links based on report style */
+.Admin ul.links { list-style-type:none; padding:4px 0; margin:0; }
+.Admin ul.links li a { display:block; height:25px; line-height:25px; background:#fafafa; margin:0 0 2px 0; padding-left:5px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; } 
+.Admin ul.links li a:hover { border-bottom: none; background-color: #3665ff; color:#fff; }
+.Admin ul.links li a:active	{ border-bottom: none; background-color: #315be6; color:#fff; }
+
 
 /* form */
-.Admin .form { background-color:#ccc; background-image: none; border:2px solid #999; padding:5px 15px;}
+.Admin .form { background-color:#cdcdcd; background-image: none; border:none; padding:2px 10px;}
 
 
 

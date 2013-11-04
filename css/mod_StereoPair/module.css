@@ -1,0 +1,16 @@
+/* Stereo Pair Event */
+
+/* risk percentage */
+#patientRiskScore .curvybox.risk		{ background: #ffffff; }
+#patientRiskScore .curvybox.risk.high	{ background: #f06c6c; }
+#patientRiskScore .curvybox.risk.ok		{ background: #d3ebd2; }
+#patientRiskScore .curvybox.risk.high h3 { color:#fff; }
+
+/* for the demo override main styling for view mode */
+.demo-content .edetail { background-color:#dee0e2; }
+.demo-content .edetail:hover { background-color:#dee0e2; }
+.demo-content .edetail.showsplit { background-color:#dee0e2; } 
+.demo-content .edetail.showsplit:hover { background-color:#dee0e2; }
+
+
+

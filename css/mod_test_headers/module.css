@@ -1,0 +1,7 @@
+/* CSS to test ideas out to improve clarity of Element headers */
+ .eventcontent .newheaderstyle1 .edetail > .label { color:#682b06;   }
+ 
+ .eventcontent .newheaderstyle2 .edetail > .label { width:145px; margin-right:10px; padding:3px 5px; color:#595d61; background:#cfd9e2; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;  }
+
+
+

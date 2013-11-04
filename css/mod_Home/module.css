@@ -4,7 +4,7 @@
 .home .user { background:#036 url(../../img/_elements/icons/user/idcard_bg.png) top right no-repeat; border:1px dotted #ccc; color:#fff; padding:10px; margin-bottom:10px;}
 /* user details */
 .home .user .userdetails {  margin-bottom:5px; }
-.home .user .userdetails h3 { font-size: 27px; font-weight:lighter; }
+.home .user .userdetails h3 { font-size: 27px; font-weight:300; }
 .home .user .userdetails a { color:#a0f3ff; }
 .home .user .userdetails a:hover { border-bottom-color:#a0f3ff; }
 /* user edit profile */
