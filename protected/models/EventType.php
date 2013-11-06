@@ -72,6 +72,8 @@ class EventType extends BaseActiveRecord
 		return array(
 			'events' => array(self::HAS_MANY, 'Event', 'event_type_id'),
 			'elementTypes' => array(self::HAS_MANY, 'ElementType', 'event_type_id'),
+			'parent' => array(self::BELONGS_TO, 'EventType', 'parent_id'),
+			'children' => array(self::HAS_MANY, 'EventType', 'parent_id'),
 		);
 	}
 
@@ -93,6 +95,8 @@ class EventType extends BaseActiveRecord
 		$criteria = new CDbCriteria;
 		$criteria->condition = "class_name in ('".implode("','",array_keys(Yii::app()->getModules()))."') and event_group_id != $legacy_events->id";
 		$criteria->order = "name asc";
+		$criteria->addCondition('parent_id is null');
+
 		return EventType::model()->findAll($criteria);
 	}
 	/**
@@ -140,6 +144,7 @@ class EventType extends BaseActiveRecord
 		$criteria = new CDbCriteria;
 		$criteria->addInCondition('id',$event_type_ids);
 		$criteria->order = 'name asc';
+		$criteria->addCondition('parent_id is null');
 
 		return CHtml::listData(EventType::model()->findAll($criteria), 'id', 'name');
 	}

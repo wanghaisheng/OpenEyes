@@ -304,6 +304,15 @@ class BaseEventTypeController extends BaseController
 			$this->redirectToPatientEpisodes();
 		}
 
+		if ($this->event_type->parent_id !== null) {
+			// Ensure we have a valid parent event
+			if (!$event = Event::model()->findByPk(@$_GET['parent_event_id'])) {
+				$this->redirectToPatientEpisodes();
+			} elseif ($event->eventType->id != $this->event_type->parent_id) {
+				$this->redirectToPatientEpisodes();
+			}
+		}
+
 		$session = Yii::app()->session;
 		/** @var $firm Firm */
 		$firm = Firm::model()->findByPk($session['selected_firm_id']);
@@ -390,7 +399,13 @@ class BaseEventTypeController extends BaseController
 					$event->audit('event','create',serialize($audit_data));
 
 					Yii::app()->user->setFlash('success', "{$this->event_type->name} created.");
-					$this->redirect(array($this->successUri.$eventId));
+
+					if ($this->event_type->parent_id !== null) {
+						$this->redirect(Yii::app()->createUrl('/'.$this->event_type->parent->class_name.'/default/view/'.$_GET['parent_event_id']));
+					} else {
+						$this->redirect(array($this->successUri.$eventId));
+					}
+
 					return $eventId;
 				}
 			}
@@ -1008,6 +1023,7 @@ class BaseEventTypeController extends BaseController
 		}
 
 		$event = new Event();
+		$event->event_parent_id = isset($_GET['parent_event_id']) ? $_GET['parent_event_id'] : null;
 		$event->episode_id = $episode->id;
 		$event->event_type_id = $eventTypeId;
 		$event->info = $info_text;
