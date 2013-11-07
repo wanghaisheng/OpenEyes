@@ -105,7 +105,7 @@ class Event extends BaseActiveRecord
 			'eventType' => array(self::BELONGS_TO, 'EventType', 'event_type_id'),
 			'issues' => array(self::HAS_MANY, 'EventIssue', 'event_id'),
 			'parent' => array(self::BELONGS_TO, 'Event', 'parent_id'),
-			'children' => array(self::HAS_MANY, 'Event', 'parent_id'),
+			'children' => array(self::HAS_MANY, 'Event', 'parent_id', 'order' => 'created_date asc'),
 		);
 	}
 

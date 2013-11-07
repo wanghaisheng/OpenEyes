@@ -314,6 +314,19 @@ class PatientController extends BaseController
 		$this->renderPartial('_correspondence', array('model'=>$patient));
 	}
 
+	public function actionParentEvent($id)
+	{
+		if (!$event = Event::model()->findByPk($id)) {
+			throw new Exception("Event not found: $id");
+		}
+
+		if (!$event->parent) {
+			throw new Exception("Event has no parent: $id");
+		}
+
+		$this->redirect(Yii::app()->createUrl('/'.$event->parent->eventType->class_name.'/default/view/'.$event->parent_id));
+	}
+
 	public function actionEpisodes()
 	{
 		$this->layout = '//layouts/events_and_episodes';

@@ -412,8 +412,8 @@ class BaseEventTypeController extends BaseController
 
 					Yii::app()->user->setFlash('success', "{$this->event_type->name} created.");
 
-					if ($this->event_type->parent_id !== null) {
-						$this->redirect(Yii::app()->createUrl('/'.$this->event_type->parent->class_name.'/default/view/'.$_GET['parent_event_id']));
+					if ($event->parent_id) {
+						$this->redirect(Yii::app()->createUrl('/'.$event->parent->eventType->class_name.'/default/view/'.$event->parent_id));
 					} else {
 						$this->redirect(array($this->successUri.$eventId));
 					}
@@ -645,7 +645,12 @@ class BaseEventTypeController extends BaseController
 
 					OELog::log("Updated event {$this->event->id}");
 
-					$this->redirect(array('default/view/'.$this->event->id));
+					if ($this->event->parent_id) {
+						$this->redirect(Yii::app()->createUrl('/'.$this->event->parent->eventType->class_name.'/default/view/'.$this->event->parent_id));
+					} else {
+						$this->redirect(array('default/view/'.$this->event->id));
+					}
+
 					return;
 				}
 			}
@@ -1002,7 +1007,7 @@ class BaseEventTypeController extends BaseController
 		}
 
 		$event = new Event();
-		$event->event_parent_id = isset($_GET['parent_event_id']) ? $_GET['parent_event_id'] : null;
+		$event->parent_id = isset($_GET['parent_event_id']) ? $_GET['parent_event_id'] : null;
 		$event->episode_id = $episode->id;
 		$event->event_type_id = $eventTypeId;
 		$event->info = $info_text;
@@ -1131,13 +1136,25 @@ class BaseEventTypeController extends BaseController
 
 				$this->event->episode->audit('episode','delete',false);
 
-				header('Location: '.Yii::app()->createUrl('/patient/episodes/'.$this->event->episode->patient->id));
+				if ($this->event->parent) {
+					$this->redirect(Yii::app()->createUrl('/'.$this->event->parent->eventType->class_name.'/default/view/'.$this->event->parent_id));
+				} else {
+					$this->redirect(Yii::app()->createUrl('/patient/episodes/'.$this->event->episode->patient->id));
+				}
+
 				return true;
 			}
 
 			Yii::app()->user->setFlash('success', "An event was deleted, please ensure the episode status is still correct.");
 
+			if ($this->event->parent) {
+				$this->redirect(Yii::app()->createUrl('/'.$this->event->parent->eventType->class_name.'/default/view/'.$this->event->parent_id));
+			} else {
+				$this->redirect(Yii::app()->createUrl('/patient/episode/'.$this->event->episode_id));
+			}
+
 			header('Location: '.Yii::app()->createUrl('/patient/episode/'.$this->event->episode_id));
+
 			return true;
 		}
 
