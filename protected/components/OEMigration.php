@@ -22,6 +22,21 @@ class OEMigration extends CDbMigration
 	private $migrationPath;
 
 	/**
+	 * Executes a SQL statement.
+	 * This method executes the specified SQL statement using {@link dbConnection}.
+	 * @param string $sql the SQL statement to be executed
+	 * @param array $params input parameters (name=>value) for the SQL execution. See {@link CDbCommand::execute} for more details.
+	 * @param string $message optional message to display instead of SQL
+	 */
+	public function execute($sql, $params=array(), $message = null) {
+		$message = ($message) ? $message : strtok($sql, "\n").'...';
+		echo "    > execute SQL: $message ...";
+		$time=microtime(true);
+		$this->getDbConnection()->createCommand($sql)->execute($params);
+		echo " done (time: ".sprintf('%.3f', microtime(true)-$time)."s)\n";
+	}
+
+	/**
 	 * @param array $consolidated_migrations
 	 * @return bool
 	 */
@@ -57,6 +72,7 @@ class OEMigration extends CDbMigration
 	/**
 	 * Initialise tables with default data
 	 * Filenames must to be in the format "nn_tablename.csv", where nn is the processing order
+	 * FIXME: This needs to be refactored to use SQL rather than relying on models
 	 */
 	public function initialiseData($migrations_path, $update_pk = null, $data_directory = null)
 	{
@@ -230,7 +246,7 @@ class OEMigration extends CDbMigration
 	 */
 	protected function insertOEEventType($eventTypeName, $eventTypeClass, $eventTypeGroup)
 	{
-		// Get the event group id for this event type g
+		// Get the event group id for this event type
 		$group_id = $this->dbConnection->createCommand()
 			->select('id')
 			->from('event_group')
@@ -241,28 +257,43 @@ class OEMigration extends CDbMigration
 			throw new OEMigrationException('Group id could not be found for $eventTypeGroup: ' . $eventTypeGroup);
 		}
 
-		// Create the new  event_type
-		$this->insert(
-			'event_type',
-			array(
-				'name' => $eventTypeName,
-				'event_group_id' => $group_id,
-				'class_name' => $eventTypeClass
-			)
-		);
-
-		echo 'Inserting event_type, event_type_name: ' . $eventTypeName . ' event_type_class: ' . $eventTypeClass . ' event_type_group: ' . $eventTypeGroup;
-
-		$getIdQuery = $this->dbConnection->createCommand()
+		// Create the new event_type (if not already present)
+		$event_type_id = $this->dbConnection->createCommand()
 			->select('id')
 			->from('event_type')
-			->where('class_name=:class_name', array(':class_name' => $eventTypeClass));
+			->where('class_name = :class_name', array(':class_name' => $eventTypeClass))
+			->queryScalar();
+		if($event_type_id) {
+			echo 'Updating event_type, event_type_name: ' . $eventTypeName . ' event_type_class: ' . $eventTypeClass . ' event_type_group: ' . $eventTypeGroup . "\n";
+			$this->update(
+				'event_type',
+				array(
+					'name' => $eventTypeName,
+					'event_group_id' => $group_id,
+				),
+				'id = :event_type_id',
+				array(':event_type_id' => $event_type_id)
+			);
+		} else {
+			echo 'Inserting event_type, event_type_name: ' . $eventTypeName . ' event_type_class: ' . $eventTypeClass . ' event_type_group: ' . $eventTypeGroup . "\n";
+			$this->insert(
+				'event_type',
+				array(
+					'name' => $eventTypeName,
+					'event_group_id' => $group_id,
+					'class_name' => $eventTypeClass
+				)
+			);
+			$event_type_id = $this->dbConnection->createCommand()
+				->select('id')
+				->from('event_type')
+				->where('class_name = :class_name', array(':class_name' => $eventTypeClass))
+				->queryScalar();
+			if(!$event_type_id) {
+				throw new CException('Failed to insert event type');
+			}
+		}
 
-		echo "\n\nEvent type query: " . $getIdQuery->getText() . "\n";
-
-		$event_type_id = $getIdQuery->queryScalar();
-
-		// Get the newly created event type
 		return $event_type_id;
 	}
 
