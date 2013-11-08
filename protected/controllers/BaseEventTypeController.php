@@ -658,10 +658,17 @@ class BaseEventTypeController extends BaseController
 
 		$this->editing = true;
 		$this->title = 'Update';
+
+		if ($this->event->parent_id) {
+			$view_url = Yii::app()->createUrl($this->event->parent->eventType->class_name.'/default/view/'.$this->event->parent_id);
+		} else {
+			$view_url = Yii::app()->createUrl($this->event->eventType->class_name.'/default/view/'.$this->event->id);
+		}
+
 		$this->event_tabs = array(
 				array(
 						'label' => 'View',
-						'href' => Yii::app()->createUrl($this->event->eventType->class_name.'/default/view/'.$this->event->id),
+						'href' => $view_url,
 				),
 				array(
 						'label' => 'Edit',
@@ -669,12 +676,13 @@ class BaseEventTypeController extends BaseController
 				),
 		);
 
-		$this->event_actions = array(
-				EventAction::link('Cancel',
-						Yii::app()->createUrl($this->event->eventType->class_name.'/default/view/'.$this->event->id),
-						array('level' => 'secondary'),array('class' => 'warning button small')
-				)
-		);
+		if ($this->event->parent_id) {
+			$cancel_url = Yii::app()->createUrl($this->event->parent->eventType->class_name.'/default/view/'.$this->event->parent_id);
+		} else {
+			$cancel_url = Yii::app()->createUrl($this->event->eventType->class_name.'/default/view/'.$this->event->id);
+		}
+
+		$this->event_actions = array(EventAction::link('Cancel', $cancel_url, array('level' => 'secondary'), array('class' => 'warning button small')));
 
 		$this->processJsVars();
 
