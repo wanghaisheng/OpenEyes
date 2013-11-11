@@ -25,12 +25,14 @@ $current_episode = @$this->current_episode;
 <aside class="large-2 column sidebar episodes-and-events">
 
 	<?php if ((!empty($ordered_episodes) || !empty($legacyepisodes) || !empty($supportserviceepisodes)) && BaseController::checkUserLevel(4)) {?>
-		<button class="secondary small add-episode" type="button">
-			<span class="icon-button-small-plus-sign"></span>Add Episode
+		<button class="secondary small add-episode" type="button" id="add-episode">
+			<span class="icon-button-small-plus-sign"></span>
+			Add Episode
 		</button>
 	<?php }?>
+
+	<!-- Legacy events -->
 	<?php $this->renderPartial('//patient/_legacy_events',array('legacyepisodes'=>$legacyepisodes))?>
-	<!-- <?php $this->renderPartial('//patient/_support_service_events',array('supportserviceepisodes'=>$supportserviceepisodes))?> -->
 
 	<?php
 	if (is_array($ordered_episodes)) {
@@ -51,7 +53,7 @@ $current_episode = @$this->current_episode;
 
 						<!-- Show/hide toggle icon -->
 						<a href="#" class="toggle-trigger toggle-<?php if ((!$current_episode || $current_episode->id != $episode->id) && $episode->hidden) { ?>show<?php } else { ?>hide<?php } ?>">
-							<span class="icon-showhide <?php if ((!$current_episode || $current_episode->id != $episode->id) && $episode->hidden) { ?>show<?php } else { ?>hide<?php } ?>">
+							<span class="icon-showhide">
 								Show/hide events for this episode
 							</span>
 						</a>
@@ -148,7 +150,7 @@ $current_episode = @$this->current_episode;
 										</div>
 
 										<a href="<?php echo $event_path . $event->id ?>" data-id="<?php echo $event->id ?>">
-											<span class="event-type alert<?php if ($event->hasIssue()) { ?> statusflag<?php } ?>">
+											<span class="event-type<?php if ($event->hasIssue()) { ?> alert<?php } ?>">
 												<?php
 												if (file_exists(Yii::getPathOfAlias('application.modules.' . $event->eventType->class_name . '.assets'))) {
 													$assetpath = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.' . $event->eventType->class_name . '.assets')) . '/';
