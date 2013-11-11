@@ -41,7 +41,7 @@ class DiagnosisSelection extends BaseFieldWidget
 	{
 		$this->class = get_class($this->element);
 		if (empty($_POST) || !array_key_exists($this->class, $_POST)) {
-			if (empty($this->element->event_id)) {
+			if (empty($this->element->id)) {
 				if ($this->default) {
 					// It's a new event so fetch the most recent element_diagnosis
 					$firmId = Yii::app()->session['selected_firm_id'];
