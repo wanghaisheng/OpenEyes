@@ -22,8 +22,6 @@
 		<label for="<?php echo "{$class}_{$field}";?>">Diagnosis:</label>
 	</div>
 	<div class="large-<?php echo $layoutColumns['field'];?> column end">
-
-		<!-- Here we show the selected diagnosis -->
 		<div id="enteredDiagnosisText" class="panel element-field<?php if (!$label) {?> hide<?php }?>">
 			<?php echo $label?>
 		</div>
@@ -52,7 +50,7 @@
 					'select' => "js:function(event, ui) {
 						$('#".$class."_".$field."_0').val('');
 						$('#enteredDiagnosisText').html(ui.item.value);
-						$('#enteredDiagnosisText').show();
+						$('#enteredDiagnosisText').removeClass('hide');
 						$('input[id=savedDiagnosis]').val(ui.item.id);
 						$('#".$class."_".$field."').focus();
 						return false;
@@ -63,8 +61,7 @@
 				),
 			));
 			?>
-			<input type="hidden" name="<?php echo $class?>[<?php echo $field?>]"
-				   id="savedDiagnosis" value="<?php echo $value?>" />
+			<input type="hidden" name="<?php echo $class?>[<?php echo $field?>]" id="savedDiagnosis" value="<?php echo $value?>" />
 		</div>
 	</div>
 </div>
@@ -72,7 +69,7 @@
 <script type="text/javascript">
 	$('#<?php echo $class?>_<?php echo $field?>').change(function() {
 		$('#enteredDiagnosisText').html($('option:selected', this).text());
-		$('#enteredDiagnosisText').show();
+		$('#enteredDiagnosisText').removeClass('hide');
 		$('#savedDiagnosis').val($(this).val());
 	});
 </script>
