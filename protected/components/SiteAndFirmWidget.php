@@ -63,11 +63,6 @@ class SiteAndFirmWidget extends CWidget
 					);
 				}
 
-				if(!isset($episode) && isset($this->patient)) {
-					$this->controller->redirect(array("/patient/".$this->patient->id));
-				}
-				else
-				{
 				// Redirect browser to clear POST
 				$this->controller->redirect($this->returnUrl);
 				Yii::app()->end();
@@ -83,7 +78,7 @@ class SiteAndFirmWidget extends CWidget
 					'join' => 'JOIN institution ON institution.id = t.institution_id',
 					'order' => 'short_name',
 					'params' => array(':source_id' => 1, ':institution_code' => 'RP6'),
-			));
+				));
 		}
 
 		$user_firm_ids = array();
@@ -129,6 +124,6 @@ class SiteAndFirmWidget extends CWidget
 				'model' => $model,
 				'firms' => $firms,
 				'sites' => CHtml::listData($sites, 'id', 'short_name'),
-		));
+			));
 	}
 }
