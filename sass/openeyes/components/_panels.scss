@@ -25,6 +25,13 @@
 	@include panel;
 	@include radius;
 	margin-top: 0;
+	.field-row,
+	.data-row {
+		&:last-child,
+		&:only-child {
+			padding: 0;
+		}
+	}
 }
 
 @import "panels/main";

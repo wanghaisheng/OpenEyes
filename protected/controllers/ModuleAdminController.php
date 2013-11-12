@@ -18,9 +18,8 @@
  */
 
 
-class ModuleAdminController extends BaseController
+class ModuleAdminController extends BaseAdminController
 {
-	public $layout = '//layouts/admin';
 	public $assetPath;
 
 	protected function beforeAction($action)
