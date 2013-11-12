@@ -19,7 +19,7 @@
 ?>
 <div class="row field-row">
 	<div class="large-<?php echo $layoutColumns['label'];?> column">
-		<label for="<?php echo "{$class}_{$field}";?>">Diagnosis:</label>
+		<label for="<?php echo "{$class}_{$field}";?>"><?php if (@$htmlOptions['fieldLabel']) { echo $htmlOptions['fieldLabel']; } else {?>Diagnosis<?php }?>:</label>
 	</div>
 	<div class="large-<?php echo $layoutColumns['field'];?> column end">
 		<div id="enteredDiagnosisText" class="panel element-field<?php if (!$label) {?> hide<?php }?>">
