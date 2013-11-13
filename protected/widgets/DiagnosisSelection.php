@@ -41,41 +41,49 @@ class DiagnosisSelection extends BaseFieldWidget
 	public function run()
 	{
 		$this->class = get_class($this->element);
-		if (empty($_POST) || !array_key_exists($this->class, $_POST)) {
-			if (empty($this->element->id)) {
-				if ($this->default) {
-					// It's a new event so fetch the most recent element_diagnosis
-					$firmId = Yii::app()->session['selected_firm_id'];
-					$firm = Firm::model()->findByPk($firmId);
-					if (isset(Yii::app()->getController()->patient)) {
-						$patientId = Yii::app()->getController()->patient->id;
-						$episode = Episode::getCurrentEpisodeByFirm($patientId, $firm, true);
-						if ($episode && $disorder = $episode->diagnosis) {
-							// There is a diagnosis for this episode
-							$this->value = $disorder->id;
-							$this->label = $disorder->term;
+
+		if ($this->element !== null) {
+			if (empty($_POST) || !array_key_exists($this->class, $_POST)) {
+				if (empty($this->element->id)) {
+					if ($this->default) {
+						// It's a new event so fetch the most recent element_diagnosis
+						$firmId = Yii::app()->session['selected_firm_id'];
+						$firm = Firm::model()->findByPk($firmId);
+						if (isset(Yii::app()->getController()->patient)) {
+							$patientId = Yii::app()->getController()->patient->id;
+							$episode = Episode::getCurrentEpisodeByFirm($patientId, $firm, true);
+							if ($episode && $disorder = $episode->diagnosis) {
+								// There is a diagnosis for this episode
+								$this->value = $disorder->id;
+								$this->label = $disorder->term;
+							}
 						}
 					}
+				} else {
+					if (isset($this->element->disorder)) {
+						$this->value = $this->element->disorder->id;
+						$this->label = $this->element->disorder->term;
+					}
 				}
-			} else {
-				if (isset($this->element->disorder)) {
-					$this->value = $this->element->disorder->id;
-					$this->label = $this->element->disorder->term;
+			} elseif (array_key_exists($this->field, $_POST[$this->class])) {
+				if (preg_match('/[^\d]/', $_POST[$this->class][$this->field])) {
+					if ($disorder = Disorder::model()->find('term=? and specialty_id is not null',array($_POST[$this->class][$this->field]))) {
+						$this->value = $disorder->id;
+						$this->label = $disorder->term;
+					}
+				} else {
+					$this->value = $_POST[$this->class][$this->field];
+					if ($disorder = Disorder::model()->findByPk($this->value)) {
+						$this->label = $disorder->term;
+					}
 				}
 			}
-		} elseif (array_key_exists($this->field, $_POST[$this->class])) {
-			if (preg_match('/[^\d]/', $_POST[$this->class][$this->field])) {
-				if ($disorder = Disorder::model()->find('term=? and specialty_id is not null',array($_POST[$this->class][$this->field]))) {
-					$this->value = $disorder->id;
-					$this->label = $disorder->term;
-				}
-			} else {
-				$this->value = $_POST[$this->class][$this->field];
-				if ($disorder = Disorder::model()->findByPk($this->value)) {
-					$this->label = $disorder->term;
-				}
+		} else if ($this->value) {
+			if ($disorder = Disorder::model()->findByPk($this->value)) {
+				$this->label = $disorder->term;
 			}
 		}
+
 		parent::run();
 	}
 

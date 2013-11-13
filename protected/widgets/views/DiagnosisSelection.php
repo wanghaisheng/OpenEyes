@@ -30,7 +30,11 @@
 		</div>
 
 		<div class="field-row">
-			<?php echo CHtml::dropDownList("{$class}[$field]", '', $options, array('empty' => 'Select a commonly used diagnosis'))?>
+			<?php if ($element !== null) {
+				echo CHtml::dropDownList("{$class}[$field]", '', $options, array('empty' => 'Select a commonly used diagnosis'));
+			} else {
+				echo CHtml::dropDownList("DiagnosisSelection", '', $options, array('empty' => 'Select a commonly used diagnosis'));
+			}?>
 		</div>
 		<div class="field-row">
 			<?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
@@ -71,7 +75,11 @@
 </div>
 
 <script type="text/javascript">
-	$('#<?php echo $class?>_<?php echo $field?>').change(function() {
+	<?php if ($element !== null) {?>
+		$('#<?php echo $class?>_<?php echo $field?>').change(function() {
+	<?php }else{?>
+		$('#DiagnosisSelection').change(function() {
+	<?php }?>
 		if ($(this).val() != '') {
 			$('#enteredDiagnosisText').html($('option:selected', this).text());
 			$('#enteredDiagnosisText').parent().removeClass('hide');
