@@ -22,8 +22,11 @@
 		<label for="<?php echo "{$class}_{$field}";?>"><?php if (@$htmlOptions['fieldLabel']) { echo $htmlOptions['fieldLabel']; } else {?>Diagnosis<?php }?>:</label>
 	</div>
 	<div class="large-<?php echo $layoutColumns['field'];?> column end">
-		<div id="enteredDiagnosisText" class="panel element-field<?php if (!$label) {?> hide<?php }?>">
-			<?php echo $label?>
+		<div class="panel element-field<?php if (!$label) {?> hide<?php }?>">
+			<span id="enteredDiagnosisText">
+				<?php echo $label?>
+			</span>
+			<a href="#" class="clearDiagnosisText<?php if (!$label || !$allowClear) {?> hide<?php }?>">(clear)</a>
 		</div>
 
 		<div class="field-row">
@@ -50,7 +53,8 @@
 					'select' => "js:function(event, ui) {
 						$('#".$class."_".$field."_0').val('');
 						$('#enteredDiagnosisText').html(ui.item.value);
-						$('#enteredDiagnosisText').removeClass('hide');
+						$('#enteredDiagnosisText').parent().removeClass('hide');
+						".($allowClear ? "$('.clearDiagnosisText').removeClass('hide');" : '')."
 						$('input[id=savedDiagnosis]').val(ui.item.id);
 						$('#".$class."_".$field."').focus();
 						return false;
@@ -68,8 +72,20 @@
 
 <script type="text/javascript">
 	$('#<?php echo $class?>_<?php echo $field?>').change(function() {
-		$('#enteredDiagnosisText').html($('option:selected', this).text());
-		$('#enteredDiagnosisText').removeClass('hide');
-		$('#savedDiagnosis').val($(this).val());
+		if ($(this).val() != '') {
+			$('#enteredDiagnosisText').html($('option:selected', this).text());
+			$('#enteredDiagnosisText').parent().removeClass('hide');
+			<?php if ($allowClear) {?>
+				$('.clearDiagnosisText').removeClass('hide');
+			<?php }?>
+			$('#savedDiagnosis').val($(this).val());
+		}
+	});
+	$('.clearDiagnosisText').click(function(e) {
+		e.preventDefault();
+
+		$('#enteredDiagnosisText').parent().addClass('hide');
+		$('#enteredDiagnosisText').html('');
+		$('input[id=savedDiagnosis]').val('');
 	});
 </script>
