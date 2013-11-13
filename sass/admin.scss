@@ -1,4 +1,3 @@
-<?php
 /**
  * OpenEyes
  *
@@ -17,9 +16,9 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-return array(
-	'section1' => array(
-		'specialty_id' => 1,
-		'name' => 'subsection 1'
-	)
-);
+// Import base, common & shared mixins, functions and variables.
+@import "openeyes";
+
+
+@import "openeyes/admin/components/forms";
+@import "openeyes/admin/components/treeview";
