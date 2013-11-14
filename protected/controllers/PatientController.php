@@ -1597,10 +1597,15 @@ class PatientController extends BaseController
 	{
 		if (isset(Yii::app()->params['module_partials'][$area])) {
 			foreach (Yii::app()->params['module_partials'][$area] as $module => $partials) {
-				foreach ($partials as $partial) {
-					$this->renderPartial($module.'.views.default.'.$partial, array(
-						'api' => Yii::app()->moduleAPI->get($module),
-					));
+				if ($api = Yii::app()->moduleAPI->get($module)) {
+					foreach ($partials as $partial) {
+						if ($viewFile = $api->findViewFile('patientSummary', $partial)) {
+							$this->renderFile($viewFile, array(
+								'patient' => $this->patient,
+								'api' => $api,
+							));
+						}
+					}
 				}
 			}
 		}
