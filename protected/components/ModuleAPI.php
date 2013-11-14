@@ -29,7 +29,11 @@ class ModuleAPI extends CApplicationComponent
 
 				if (file_exists(Yii::app()->basePath."/modules/$moduleName/components/{$moduleName}_API.php")) {
 					if (class_exists($APIClass)) {
-						if ($event_type = EventType::model()->find('class_name=?',array($moduleName))) {
+						if (preg_match('/^[A-Z][a-z]{2}[A-Z][a-z][A-Z][a-z]+$/',$moduleName)) {
+							if ($event_type = EventType::model()->find('class_name=?',array($moduleName))) {
+								return new $APIClass;
+							}
+						} else {
 							return new $APIClass;
 						}
 					}
