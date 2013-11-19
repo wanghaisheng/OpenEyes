@@ -25,8 +25,13 @@ class openeyes {
 
   exec { 'create application config':
     unless  => '/usr/bin/test -e /var/www/protected/config/local/common.php',
-    command => '/bin/cp /var/www/protected/config/local/common.vagrant.php /var/www/protected/config/local/common.php;\
-    /bin/cp -f /var/www/protected/config/local/console.sample.php /var/www/protected/config/local/console.php;',
+    command => '/bin/cp /var/www/protected/config/local/common.vagrant.php /var/www/protected/config/local/common.php;',
+    require => Service['mysql'],
+  }
+  #required to provide a testdb connection id to yiic migrate
+  exec { 'create console config':
+    unless  => '/usr/bin/test -e /var/www/protected/config/local/console.php',
+    command => '/bin/cp /var/www/protected/config/local/console.vagrant.php /var/www/protected/config/local/console.php;',
     require => Service['mysql'],
   }
 
@@ -77,6 +82,7 @@ class openeyes {
       Exec['create openeyestest db'],
       Exec['create openeyestest user'],
       Exec['create application config'],
+      Exec['create console config'],
       File['/var/www/protected/runtime'],
     ]
   }

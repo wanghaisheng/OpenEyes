@@ -1,20 +1,18 @@
-/**
- * OpenEyes
- *
- * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
- * (C) OpenEyes Foundation, 2011-2013
- * This file is part of OpenEyes.
- * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
- *
- * @package OpenEyes
- * @link http://www.openeyes.org.uk
- * @author OpenEyes <info@openeyes.org.uk>
- * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
- * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
- * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
- */
+// * OpenEyes
+// *
+// * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
+// * (C) OpenEyes Foundation, 2011-2013
+// * This file is part of OpenEyes.
+// * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// * You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+// *
+// * @package OpenEyes
+// * @link http://www.openeyes.org.uk
+// * @author OpenEyes <info@openeyes.org.uk>
+// * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
+// * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
+// * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
 
 // Common buttons
 //
@@ -116,9 +114,10 @@ button, .button, input[type="submit"] {
 		border: 0;
 		color: #000;
 		text-shadow: none;
+		&:active,
 		&:hover,
 		&:focus {
-			@include background(linear-gradient(#336234, #b8152b));
+			@include background(linear-gradient(#cf0d27, #b8152b));
 			@include box-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
 			text-shadow: 1px 1px 0 #9a091c, 2px 2px 0 #851616;
 			color: #fff;
@@ -130,6 +129,28 @@ button, .button, input[type="submit"] {
 		}
 	}
 }
+
+// Cancel button styles
+@include buttons {
+	&.cancel {
+		@extend button.warning;
+		@include box-shadow(none);
+		background: none;
+		border-color: transparent;
+		color: #ad1515;
+		text-shadow: none;
+		&:active,
+		&:focus,
+		&:hover {
+			@include box-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
+			background-color: #ad1515;
+			border-color: #9a091c;
+			text-shadow: 1px 1px 0 #9a091c, 2px 2px 0 #851616;
+			color: #fff;
+		}
+	}
+}
+
 
 // Disabled button (grey)
 // This should always be defined after all other button variations.
@@ -149,9 +170,9 @@ button, .button, input[type="submit"] {
 
 // Extend disabled to inactive buttons
 button, .button, input[type="submit"] {
-  &.inactive {
-    @extend button.disabled;
-  }
+	&.inactive {
+		@extend button.disabled;
+	}
 }
 
 // Button sizes
@@ -216,7 +237,9 @@ button, .button, input[type="submit"] {
 				[class*="icon-button-small-"] {
 					margin-top: -6px;
 				}
-				&:hover {
+				&:hover,
+				&:focus,
+				&:active {
 					.icon-button-small-trash-can {
 						@include sprite-background-position($oe-sprite-icons-button-small, "trash-can-hover");
 					}
