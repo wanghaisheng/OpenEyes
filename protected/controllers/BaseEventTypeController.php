@@ -681,7 +681,7 @@ class BaseEventTypeController extends BaseController
 			$cancel_url = Yii::app()->createUrl($this->event->eventType->class_name.'/default/view/'.$this->event->id);
 		}
 
-		$this->event_actions = array(EventAction::link('Cancel', $cancel_url), array('level' => 'cancel')));
+		$this->event_actions = array(EventAction::link('Cancel', $cancel_url), array('level' => 'cancel'));
 
 		$this->processJsVars();
 
