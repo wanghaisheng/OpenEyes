@@ -233,4 +233,9 @@ class SiteController extends BaseController
 		$this->renderPartial('/site/debuginfo',array());
 	}
 
+	public function actionAdvancedSearch()
+	{
+		$this->layout = 'advanced_search';
+		$this->render('advanced_search_core');
+	}
 }

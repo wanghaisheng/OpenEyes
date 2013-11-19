@@ -45,7 +45,7 @@
 					'class' => 'form panel search'
 				)
 			));?>
-			<div class="row">
+			<div class="row field-row">
 				<div class="large-9 medium-8 small-7 column">
 					<?php echo CHtml::textField('query', '', array('class' => 'large', 'placeholder' => 'Enter search...')); ?>
 				</div>
@@ -56,6 +56,13 @@
 					</button>
 				</div>
 			</div>
+			<?php if (!empty(Yii::app()->params['advanced_search'])) {?>
+				<div class="row field-row">
+					<div class="large-12 column">
+						<?php echo CHtml::link('Advanced search',Yii::app()->createUrl('/site/advancedSearch'))?>
+					</div>
+				</div>
+			<?php }?>
 		<?php $this->endWidget(); ?>
 	</div>
 </div>
