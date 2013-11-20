@@ -676,12 +676,12 @@ class BaseEventTypeController extends BaseController
 		);
 
 		if ($this->event->parent_id) {
-			$cancel_url = Yii::app()->createUrl($this->event->parent->eventType->class_name.'/default/view/'.$this->event->parent_id);
+			$cancel_url = $this->event->parent->eventType->class_name.'/default/view/'.$this->event->parent_id;
 		} else {
-			$cancel_url = Yii::app()->createUrl($this->event->eventType->class_name.'/default/view/'.$this->event->id);
+			$cancel_url = $this->event->eventType->class_name.'/default/view/'.$this->event->id;
 		}
 
-		$this->event_actions = array(EventAction::link('Cancel', $cancel_url), array('level' => 'cancel'));
+		$this->event_actions = array(EventAction::link('Cancel', Yii::app()->createUrl($cancel_url), array('level' => 'cancel')));
 
 		$this->processJsVars();
 
