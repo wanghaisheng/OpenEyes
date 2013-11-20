@@ -39,10 +39,10 @@
 
 			<div class="box content admin-content">
 				<div class="row">
-					<aside class="large-3 column sidebar admin">
+					<aside class="large-2 column sidebar admin">
 						<?php $this->renderPartial('//site/advanced_search_sidebar'); ?>
 					</aside>
-					<div class="large-9 column admin">
+					<div class="large-10 column admin">
 						<?php echo $content; ?>
 					</div>
 				</div>

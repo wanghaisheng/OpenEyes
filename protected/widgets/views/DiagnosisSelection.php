@@ -18,9 +18,11 @@
  */
 ?>
 <div class="row field-row">
-	<div class="large-<?php echo $layoutColumns['label'];?> column">
-		<label for="<?php echo "{$class}_{$field}";?>"><?php if (@$htmlOptions['fieldLabel']) { echo $htmlOptions['fieldLabel']; } else {?>Diagnosis<?php }?>:</label>
-	</div>
+	<?php if (!@$htmlOptions['hide_label']) {?>
+		<div class="large-<?php echo $layoutColumns['label'];?> column">
+			<label for="<?php echo "{$class}_{$field}";?>"><?php if (@$htmlOptions['fieldLabel']) { echo $htmlOptions['fieldLabel']; } else {?>Diagnosis<?php }?>:</label>
+		</div>
+	<?php }?>
 	<div class="large-<?php echo $layoutColumns['field'];?> column end">
 		<div class="panel element-field<?php if (!$label) {?> hide<?php }?>">
 			<span id="enteredDiagnosisText">
