@@ -1,4 +1,3 @@
-<?php
 /**
  * OpenEyes
  *
@@ -16,28 +15,6 @@
  * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-?>
-<?php
-$event = $this->event;
-$event_type = $event->eventType->name;
-?>
-<div class="row">
-	<div class="large-12 column">
-		<div class="metadata">
-			<?php if (!@$hide_created) { ?>
-				<span class="info">
-					<?php echo $event_type ?> created by <span class="user"><?php echo $event->user->fullname ?></span>
-					on <?php echo $event->NHSDate('created_date') ?>
-					at <?php echo date('H:i', strtotime($event->created_date)) ?>
-				</span>
-			<?php } ?>
-			<?php if (!@$hide_modified) { ?>
-				<span class="info">
-					<?php echo $event_type ?> last modified by <span class="user"><?php echo $event->usermodified->fullname ?></span>
-					on <?php echo $event->NHSDate('last_modified_date') ?>
-					at <?php echo date('H:i', strtotime($event->last_modified_date)) ?>
-				</span>
-			<?php } ?>
-		</div>
-	</div>
-</div>
+(function(exports) {
+	exports.OpenEyes = {};
+}(window));
