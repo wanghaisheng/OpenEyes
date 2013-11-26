@@ -19,6 +19,22 @@
 
 class BaseEventTypeCActiveForm extends FormLayout
 {
+	public function infoShowHide($controlID, $data)
+	{
+		$this->widget('application.widgets.InfoShowHide', array(
+				'controlID' => $controlID,
+				'data' => $data,
+			));
+	}
+
+	public function infoLink($preview, $content)
+	{
+		$this->widget('application.widgets.InfoLink', array(
+				'preview' => $preview,
+				'content' => $content,
+			));
+	}
+
 	public function dropDownList($model, $field, $data, $htmlOptions=array(), $hidden=false, $layoutColumns=array())
 	{
 		$this->widget('application.widgets.DropDownList', array(
