@@ -502,8 +502,6 @@ class BaseEventTypeController extends BaseModuleController
 				)
 		);
 
-		$this->processJsVars();
-
 		$this->render('create', array(
 			'errors' => @$errors
 		));
@@ -563,8 +561,6 @@ class BaseEventTypeController extends BaseModuleController
 				)
 			);
 		}
-
-		$this->processJsVars();
 
 		$viewData = array_merge(array(
 			'elements' => $this->open_elements,
@@ -652,8 +648,6 @@ class BaseEventTypeController extends BaseModuleController
 						array('level' => 'cancel')
 				)
 		);
-
-		$this->processJsVars();
 
 		$this->render($this->action->id, array(
 			'errors' => @$errors
@@ -1025,15 +1019,31 @@ class BaseEventTypeController extends BaseModuleController
 	 */
 	protected function renderOptionalElement($element, $action, $form, $data)
 	{
-		$this->renderPartial(
-			'_optional_element',
-			array(
-				'element' => $element,
-				'data' => $data,
-				'form' => $form
-			),
-			false, false
-		);
+		try {
+			$this->renderPartial(
+				'_optional_'  . get_class($element),
+				array(
+					'element' => $element,
+					'data' => $data,
+					'form' => $form
+				),
+				false, false
+			);
+		} catch (Exception $e) {
+			if (strpos($e->getMessage(), "cannot find the requested view") === false) {
+				throw $e;
+			}
+			$this->renderPartial(
+				'_optional_element',
+				array(
+					'element' => $element,
+					'data' => $data,
+					'form' => $form
+				),
+				false, false
+			);
+		}
+
 
 	}
 	/**
