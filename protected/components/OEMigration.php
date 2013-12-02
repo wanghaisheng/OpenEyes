@@ -224,6 +224,31 @@ class OEMigration extends CDbMigration
 	}
 
 	/**
+	 * Create a table with the standard OE columns and options
+	 *
+	 * @param string $name
+	 * @param array $colums
+	 */
+	protected function createOETable($name, array $columns)
+	{
+		$fk_prefix = substr($name, 0, 56);
+
+		$columns = array_merge(
+			$columns,
+			array(
+				'last_modified_user_id' => 'int unsigned not null default 1',
+				'last_modified_date' => 'datetime not null default "1901-01-01 00:00:00"',
+				'created_user_id' => 'int unsigned not null default 1',
+				'created_date' => 'datetime not null default "1901-01-01 00:00:00"',
+				"constraint {$fk_prefix}_lmui_fk foreign key (last_modified_user_id) references user (id)",
+				"constraint {$fk_prefix}_cui_fk foreign key (created_user_id) references user (id)",
+			)
+		);
+
+		$this->createTable($name, $columns, 'engine=InnoDB charset=utf8 collate=utf8_bin');
+	}
+
+	/**
 	 * @description used within subclasses to find out the element_type id based on Class Name
 	 * @param $className - string
 	 * @return mixed - the value of the id. False is returned if there is no value.
@@ -363,6 +388,133 @@ class OEMigration extends CDbMigration
 			echo 'Added Element Type Eye. Element Type id: ' . $element_type_id . ' with EyeId: ' . $eye_id . ' and DisplayOrder: ' . $displayOrder;
 			$displayOrder++;
 		}
+	}
+
+	/**
+	 * Create an event and associated element types
+	 *
+	 * @param string $specialty
+	 * @param string $group
+	 * @param string $name
+	 * @param array $element_types
+	 * @return int Event type ID
+	 */
+	protected function createOEEventType($specialty, $group, $name, array $element_types = array())
+	{
+		$module = $this->getEventTypeModuleName($specialty, $group, $name);
+		$group_id = $this->dbConnection->createCommand()->select('id')->from('event_group')->where('code  = ?', array($group))->queryScalar();
+
+		$this->insert('event_type', array('name' => $name, 'event_group_id' => $group_id, 'class_name' => $module));
+		$event_type_id = $this->dbConnection->lastInsertId;
+
+		$element_type_ids = array();
+		$display_order = 0;
+		foreach ($element_types as $name => $element_def) {
+			$data = isset($element_def['data']) ? $element_def['data'] : array();
+
+			$data += array(
+				'event_type_id' => $event_type_id,
+				'display_order' => ($display_order += 10),
+			);
+
+			if (isset($data['parent_element']) && isset($element_type_ids[$data['parent_element']])) {
+				$data['parent_element_type_id'] = $element_type_ids[$data['parent_element']];
+				unset($data['parent_element']);
+			}
+
+			$columns = isset($element_def['columns']) ? $element_def['columns'] : array();
+
+			$element_type_ids[$name] = $this->createOEElementType($module, $name, $data, $columns);
+		}
+
+		return $event_type_id;
+	}
+
+	/**
+	 * Create element type table entry and table
+	 *
+	 * @param string $module
+	 * @param string $name
+	 * @param array $data
+	 * @param array $columns
+	 * @return int Element type ID
+	 */
+	protected function createOEElementType($module, $name, array $data, array $columns)
+	{
+		$data += array(
+			'name' => $name,
+			'class_name' => $this->getElementTypeClassName($module, $name),
+		);
+		if (isset($data['parent_element'])) {
+			$data['parent_element_type_id'] = $this->dbConnection->createCommand()->select('id')->from('element_type')
+				->where('name = :name and event_type_id = :event_type_id', $data);
+			unset($data['parent_element']);
+		}
+
+		$this->insert('element_type', $data);
+
+		$table_name = $this->getElementTypeTableName($module, $name);
+		$columns = array_merge(
+			array(
+				'id' => 'int unsigned not null auto_increment primary key',
+				'event_id' => 'int unsigned not null',
+				'constraint ' . substr($table_name, 0, 56) . '_eid_fk foreign key (event_id) references event (id)',
+			),
+			$columns
+		);
+
+		$this->createOETable($table_name, $columns);
+
+		return $this->dbConnection->lastInsertId;
+	}
+
+	/**
+	 * Remove an event type and associated element types (will only work if no events of this type exist)
+	 *
+	 * @param string $specialty
+	 * @param string $group
+	 * @param string $name
+	 */
+	protected function removeOEEventType($specialty, $group, $name)
+	{
+		$module = $this->getEventTypeModuleName($specialty, $group, $name);
+
+		$element_type_names = $this->dbConnection->createCommand(
+			'select elt.name from element_type elt inner join event_type evt on elt.event_type_id = evt.id where evt.class_name = ?'
+		)->queryColumn(array($module));
+
+		foreach ($element_type_names as $name) {
+			$this->removeOEElementType($module, $name);
+		}
+
+		$this->delete('event_type', 'class_name = ?', array($module));
+	}
+
+	/**
+	 * Remove an element type and its table
+	 *
+	 * @param string $module
+	 * @param string $name
+	 */
+	protected function removeOEElementType($module, $name)
+	{
+		$this->dropTable($this->getElementTypeTableName($module, $name));
+		$this->delete('element_type', 'class_name = ?', array($this->getElementTypeClassName($module, $name)));
+	}
+
+	private function getEventTypeModuleName($specialty, $group, $name)
+	{
+		return $specialty . $group . ucfirst(strtolower(preg_replace('/\s*/', '', $name)));
+	}
+
+	private function getElementTypeClassName($module, $name)
+	{
+		return "Element_{$module}_" . preg_replace('/\s*/', '', $name);
+	}
+
+	private function getElementTypeTableName($module, $name)
+	{
+		return strtolower("et_{$module}_" . preg_replace('/\s*/', '', $name));
 	}
 
 	/**
