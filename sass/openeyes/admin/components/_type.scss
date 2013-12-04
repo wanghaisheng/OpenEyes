@@ -1,0 +1,10 @@
+h1 {
+        &.badge {
+                &.admin {
+                        background: #666;
+                        border: 1px solid #999;
+                        border-left: none;
+                        color: #fff;
+                }
+        }
+}

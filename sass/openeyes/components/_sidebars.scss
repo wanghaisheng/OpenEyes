@@ -22,13 +22,3 @@
 		}
 	}
 }
-
-.sidebar {
-	&.admin {
-		h2 {
-			border-bottom: 1px dotted #ccc;
-			margin-bottom: emCalc(5px);
-			padding-bottom: emCalc(5px);
-		}
-	}
-}

@@ -38,5 +38,15 @@
     .box-actions {
       float: right;
     }
+    &:last-child {
+      margin: 0;
+    }
+  }
+  &.content {
+    &.admin {
+      background: #dae6f1;
+      border: 0;
+      padding: emCalc(16px) 0;
+    }
   }
 }

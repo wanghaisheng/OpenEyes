@@ -445,3 +445,8 @@ $oe-sprite-icon-user-panel: "_user-panel/*.png";
 // Button sizes
 $oe-button-primary-font-size: emCalc(16px);
 $oe-button-small-font-size: emCalc(13px);
+
+// Box vars
+$oe-box-gutter: $column-gutter / 2;
+$oe-box-margin: 0 0 $oe-box-gutter 0 !default;
+$oe-box-border-radius: $global-radius !default;

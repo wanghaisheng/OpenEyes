@@ -37,7 +37,7 @@
 
 			<h1 class="badge admin">Admin</h1>
 
-			<div class="box content admin-content">
+                        <div class="box content admin">
 				<div class="row">
 					<aside class="large-3 column sidebar admin">
 						<?php $this->renderPartial('//admin/sidebar'); ?>

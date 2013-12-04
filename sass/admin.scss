@@ -17,5 +17,12 @@
 // Import base, common & shared mixins, functions and variables.
 @import "openeyes";
 
+// Import dependent foundation mixins
+@import "foundation/components/panels";
+
+@import "openeyes/admin/components/type";
 @import "openeyes/admin/components/forms";
 @import "openeyes/admin/components/treeview";
+@import "openeyes/admin/components/boxes";
+@import "openeyes/admin/components/navigation";
+@import "openeyes/admin/components/sidebar";

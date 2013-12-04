@@ -13,7 +13,7 @@
 		<div class="container content">
 			<h1 class="badge admin">Profile</h1>
 
-			<div class="box content admin-content">
+                        <div class="box content admin">
 				<div class="row">
 					<? include 'components/admin/profile-sidebar.php'; ?>
 					<? include 'components/admin/profile-info.php'; ?>

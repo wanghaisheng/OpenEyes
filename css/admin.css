@@ -15,6 +15,14 @@
  * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+/* line 3, ../sass/openeyes/admin/components/_type.scss */
+h1.badge.admin {
+  background: #666;
+  border: 1px solid #999;
+  border-left: none;
+  color: #fff;
+}
+
 /* line 19, ../sass/openeyes/admin/components/_forms.scss */
 .admin .field-row:last-child {
   padding: 0;
@@ -37,4 +45,107 @@
 /* line 26, ../sass/openeyes/admin/components/_treeview.scss */
 .admin .treeview li li {
   font-size: 1em;
+}
+
+/* line 19, ../sass/openeyes/admin/components/_boxes.scss */
+.box.admin {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #d9d9d9;
+  margin-bottom: 1.25em;
+  padding: 0.625em;
+  background: #f2f2f2;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: #fafafa;
+  margin: 0 0 0.75em 0;
+}
+/* line 44, ../sass/foundation/components/_panels.scss */
+.box.admin > :first-child {
+  margin-top: 0;
+}
+/* line 45, ../sass/foundation/components/_panels.scss */
+.box.admin > :last-child {
+  margin-bottom: 0;
+}
+/* line 50, ../sass/foundation/components/_panels.scss */
+.box.admin h1, .box.admin h2, .box.admin h3, .box.admin h4, .box.admin h5, .box.admin h6, .box.admin p {
+  color: #333333;
+}
+/* line 54, ../sass/foundation/components/_panels.scss */
+.box.admin h1, .box.admin h2, .box.admin h3, .box.admin h4, .box.admin h5, .box.admin h6 {
+  line-height: 1;
+  margin-bottom: 0.625em;
+}
+/* line 56, ../sass/foundation/components/_panels.scss */
+.box.admin h1.subheader, .box.admin h2.subheader, .box.admin h3.subheader, .box.admin h4.subheader, .box.admin h5.subheader, .box.admin h6.subheader {
+  line-height: 1.4;
+}
+/* line 24, ../sass/openeyes/admin/components/_boxes.scss */
+.box.admin h2 {
+  margin-bottom: 0.75em;
+}
+/* line 28, ../sass/openeyes/admin/components/_boxes.scss */
+.box.admin .table-actions select {
+  width: auto;
+}
+/* line 32, ../sass/openeyes/admin/components/_boxes.scss */
+.box.admin .box-header {
+  margin: 0;
+}
+/* line 34, ../sass/openeyes/admin/components/_boxes.scss */
+.box.admin .box-header .box-title {
+  float: left;
+}
+/* line 38, ../sass/openeyes/admin/components/_boxes.scss */
+.box.admin .box-actions {
+  float: right;
+}
+/* line 41, ../sass/openeyes/admin/components/_boxes.scss */
+.box.admin:last-child {
+  margin: 0;
+}
+/* line 46, ../sass/openeyes/admin/components/_boxes.scss */
+.box.content.admin {
+  background: #dae6f1;
+  border: 0;
+  padding: 1em 0;
+}
+
+/* line 3, ../sass/openeyes/admin/components/_navigation.scss */
+.navigation.admin {
+  list-style-type: none;
+}
+/* line 5, ../sass/openeyes/admin/components/_navigation.scss */
+.navigation.admin a {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: #fff;
+  display: block;
+  margin-bottom: 4px;
+  padding: 4px 8px;
+}
+/* line 11, ../sass/openeyes/admin/components/_navigation.scss */
+.navigation.admin a:hover {
+  background: #3665ff;
+  color: #fff;
+}
+/* line 15, ../sass/openeyes/admin/components/_navigation.scss */
+.navigation.admin a.selected {
+  background: #ccc;
+  color: #333;
+}
+/* line 21, ../sass/openeyes/admin/components/_navigation.scss */
+.navigation.admin li:last-child a {
+  margin: 0;
+}
+
+/* line 3, ../sass/openeyes/admin/components/_sidebar.scss */
+.sidebar.admin h2 {
+  border-bottom: 1px dotted #ccc;
+  margin-bottom: 0.3125em;
+  padding-bottom: 0.3125em;
 }

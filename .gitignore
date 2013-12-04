@@ -35,6 +35,7 @@ vendor
 /bin/phpunit
 /bin/webunit
 /docs/public
+/*.sql
 
 # Bower development dependencies
 /js/components/google-code-prettify

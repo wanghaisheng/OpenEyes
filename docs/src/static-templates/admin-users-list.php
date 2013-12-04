@@ -10,7 +10,7 @@
 		<? include 'components/header-logged-in.php'; ?>
 
 		<div class="container content">
-			<h1 class="badge">Admin</h1>
+                        <h1 class="badge admin">Admin</h1>
 
 			<div class="box content">
 				<div class="row">
