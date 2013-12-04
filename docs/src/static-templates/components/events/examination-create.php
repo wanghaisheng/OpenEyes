@@ -192,7 +192,7 @@
 
 						<div class="eyedraw-row row refraction">
 							<div class="fixed column">
-								<img src="/img/tmp/eyedraw-small-edit.png" class="canvas" alt="Eyedraw" />
+								<img src="img/eyedraw-small-edit.png" class="canvas" alt="Eyedraw" />
 							</div>
 							<div class="fluid column">
 								<div class="eyedraw-data eyedraw-row row">
