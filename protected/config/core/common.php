@@ -33,6 +33,7 @@ return array(
 		'application.components.summaryWidgets.*',
 		'application.extensions.tcpdf.*',
 		'application.services.*',
+		'application.resources.*',
 		'application.modules.*',
 		'application.commands.*',
 		'application.commands.shell.*',
@@ -86,6 +87,16 @@ return array(
 				'patient/viewpas/<pas_key:\d+>' => 'patient/viewpas',
 				'file/view/<id:\d+>/<dimensions:\d+(x\d+)?>/<name:\w+\.\w+>' => 'protectedFile/thumbnail',
 				'file/view/<id:\d+>/<name:\w+\.\w+>' => 'protectedFile/view',
+
+				// API
+				array('api/read', 'pattern' => 'api/<resource:\w+>/@<id:\d+>', 'verb' => 'GET'),
+				array('api/vread', 'pattern' => 'api/<resource:\w+>/@<id:\d+>/history/@<vid:\d+>', 'verb' => 'GET'),
+				array('api/update', 'pattern' => 'api/<resource:\w+>/@<id:\d+>', 'verb' => 'PUT'),
+				array('api/delete', 'pattern' => 'api/<resource:\w+>/@<id:\d+>', 'verb' => 'DELETE'),
+				array('api/create', 'pattern' => 'api/<resource:\w+>', 'verb' => 'POST'),
+				array('api/search', 'pattern' => 'api/<resource:\w+>(/search)?', 'verb' => 'GET'),
+				array('api/badrequest', 'pattern' => 'api/(.*)'),
+
 				'<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
 				'<controller:\w+>/<id:\d+>' => '<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
