@@ -19,7 +19,7 @@
 		},
 		createAnchor: function() {
 			return $('<a />', {
-				'class': 'view-markup right',
+				'class': 'view-markup right button',
 				'html': 'View Markup'
 			})
 			.on('click', this.onViewMarkupClick.bind(this));

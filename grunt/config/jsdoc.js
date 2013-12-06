@@ -6,7 +6,7 @@ module.exports = {
 		],
 		options: {
 			destination: 'docs/public/jsdoc',
-			template: 'docs/templates/jsdoc',
+			template: 'docs/src/templates/jsdoc',
 			tutorials: 'docs/src/tutorials/javascript',
 			recurse: true
 		}

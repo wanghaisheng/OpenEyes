@@ -3,48 +3,13 @@
 <html lang="en" >
 <head>
 <? include 'components/head.php'; ?>
-<style type="text/css">
-	.complete {
-		color: green;
-		white-space: nowrap;
-	}
-	.not-complete {
-		color: red;
-		white-space: nowrap;
-	}
-	.complete:before {
-		content: "✓ ";
-	}
-	.not-complete:before {
-		content: "✖ ";
-	}
-	table {
-		background: #fff;
-	}
-	table tr td {
-		border-top: 1px solid #ddd;
-	}
-	table tr:nth-of-type(even) {
-		background: #fff;
-	}
-	tr.heading h3,
-	tr.heading h4 {
-		font-size: inherit;
-		margin: 0;
-		padding: 0;
-		font-weight: bold;
-	}
-	tr.heading h4 {
-		color: #666;
-	}
-</style>
 </head>
 <body>
-	<div class="container main" role="main">
+	<div class="container main docs" role="main">
 
 		<? include 'components/header.php'; ?>
 
-		<div class="container content">
+		<div class="container content docs">
 			<h1 class="badge">OpenEyes templates</h1>
 
 			<div class="box content">
@@ -54,7 +19,7 @@
 					<div class="large-12 column">
 
 						<br />
-						<table class="">
+						<table class="static-templates">
 							<thead>
 								<tr>
 									<th>Template</th>
@@ -282,7 +247,7 @@
 										<a href="correspondence-create.php">Correspondence create</a>
 									</td>
 									<td>The correspondence create template.</td>
-									<td><span class="not-complete">Not complete</span></td>
+									<td><span class="complete">Complete</span></td>
 								</tr>
 								<tr>
 									<td>
@@ -401,18 +366,6 @@
 									<td><span class="complete">Complete</span></td>
 								</tr>
 								<tr class="heading">
-									<td colspan="3"><h3>Bookings</h3></td>
-								</tr>
-								<tr>
-									<td>
-										<a href="schedule-operation.php">Schedule operation</a>
-									</td>
-									<td>
-										The main schedule operation template for bookings which shows a calender.
-									</td>
-									<td><span class="not-complete">Not started</span></td>
-								</tr>
-								<tr class="heading">
 									<td colspan="3"><h3>Profile templates</h3></td>
 								</tr>
 								<tr>
@@ -427,7 +380,7 @@
 										<a href="profile-info-sites.php">Profile information - sites</a>
 									</td>
 									<td>The profile template which lists the sites you work at.</td>
-									<td><span class="not-complete">Not started</span></td>
+									<td><span class="complete">complete</span></td>
 								</tr>
 								<tr class="heading">
 									<td colspan="3"><h3>Interaction components</h3></td>
@@ -437,7 +390,7 @@
 										<a href="interaction-components-alerts-tooltip.php">Alerts tooltip</a>
 									</td>
 									<td>Shows a custom tooltip when hovering on any of the alerts icons.</td>
-									<td><span class="not-complete">Not started</span></td>
+									<td><span class="complete">complete</span></td>
 								</tr>
 								<tr class="heading">
 									<td colspan="3"><h3>Admin templates</h3></td>
@@ -447,21 +400,7 @@
 										<a href="admin-layout.php">Admin layout</a>
 									</td>
 									<td>The main admin layout used for all admin templates.</td>
-									<td><span class="not-complete">Not started</span></td>
-								</tr>
-								<tr>
-									<td>
-										<a href="admin-users-list.php">Admin users</a>
-									</td>
-									<td>The admin users template that shows a list of users in a table.</td>
-									<td><span class="not-complete">Not started</span></td>
-								</tr>
-								<tr>
-									<td>
-										<a href="admin-user-edit.php">Admin user edit</a>
-									</td>
-									<td>The admin user edit template which shows a basic edit form.</td>
-									<td><span class="not-complete">Not started</span></td>
+									<td><span class="complete">Complete</span></td>
 								</tr>
 							</tbody>
 						</table>

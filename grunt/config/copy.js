@@ -3,15 +3,15 @@ module.exports = {
 		files: [
 			{
 				src: ['css/**/*'],
-				dest: 'docs/public/assets/core/'
+				dest: 'docs/public/assets/'
 			},
 			{
 				src: ['img/**/*'],
-				dest: 'docs/public/assets/core/'
+				dest: 'docs/public/assets/'
 			},
 			{
 				src: ['js/**/*'],
-				dest: 'docs/public/assets/core/'
+				dest: 'docs/public/assets/'
 			},
 			{
 				cwd: 'docs/src/',
@@ -34,14 +34,14 @@ module.exports = {
 			{
 				cwd: 'docs/src/',
 				expand: true,
-				src: ['js/**/*'],
-				dest: 'docs/public/assets'
+				src: ['assets/js/**/*'],
+				dest: 'docs/public'
 			},
 			{
 				cwd: 'docs/src/',
 				expand: true,
-				src: ['css/**/*'],
-				dest: 'docs/public/assets'
+				src: ['assets/css/**/*'],
+				dest: 'docs/public'
 			},
 			{
 				cwd: 'docs/src/',

@@ -1,0 +1,165 @@
+// * OpenEyes
+// *
+// * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
+// * (C) OpenEyes Foundation, 2011-2013
+// * This file is part of OpenEyes.
+// * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// * You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+// *
+// * @package OpenEyes
+// * @link http://www.openeyes.org.uk
+// * @author OpenEyes <info@openeyes.org.uk>
+// * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
+// * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
+// * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+
+.container {
+	&.main {
+		&.docs {
+			margin-top: 1em;
+		}
+	}
+}
+
+.container.content.docs {
+	min-height: 0;
+	h1, h2, h3, h4, h5, h6 {
+		font-weight: 500;
+	}
+	pre {
+		font-size: .8em;
+		margin: 1em 0 1.5em 0;
+		width: 99%;
+		&.prettyprint {
+			border-color: #ddd;
+			padding: 2px 5px;
+		}
+	}
+	code {
+		font-size: 12px;
+		color: #555;
+	}
+	hr {
+		margin-top: .5em;
+	}
+	.box.event {
+		border: 0;
+	}
+	.example {
+		padding: 10px;
+		border: 1px solid #ddd;
+		border-radius: 5px;
+		margin: 0 0 1em 0;
+		> header:first-child {
+			margin-bottom: 1em;
+		}
+	}
+	.view-markup {
+		font-size: 13px;
+	}
+	.side-nav {
+		margin: 0;
+		padding: 0;
+		li {
+			a {
+				display: inline-block;
+			}
+			> ul {
+				margin-top: .5em;
+			}
+		}
+	}
+	.box {
+		&.content {
+			&.docs {
+				background: #dae6f1;
+				border: 0;
+				padding: 1em 0;
+				margin: 0;
+				ul {
+					margin-left: 1.5em;
+				}
+				.event {
+					background: none;
+					width: 83.33333%;
+				}
+			}
+		}
+		&.generic {
+			&.docs {
+				&:last-child {
+					margin: 0;
+				}
+				.side-nav {
+					margin: 0;
+					li {
+						&:last-child {
+							margin: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	.complete {
+		color: green;
+		white-space: nowrap;
+	}
+	.not-complete {
+		color: red;
+		white-space: nowrap;
+	}
+	.complete:before {
+		content: "✓ ";
+	}
+	.not-complete:before {
+		content: "✖ ";
+	}
+	table.static-templates {
+		background: #fff;
+		tr td {
+			border-top: 1px solid #ddd;
+		}
+		tr:nth-of-type(even) {
+			background: #fff;
+		}
+		tr.heading h3,
+		tr.heading h4 {
+			font-size: inherit;
+			margin: 0;
+			padding: 0;
+			font-weight: bold;
+		}
+		tr.heading h4 {
+			color: #666;
+		}
+	}
+}
+
+/** JSDoc Styles */
+
+.jsdoc {
+	.side-nav {
+		padding: 0;
+	}
+	.sub-tutorials-header {
+		padding: 5px 0;
+		h4 {
+			float: left;
+			margin: 0 1em 0 0;
+			line-height: 1.4;
+		}
+		.panel {
+			padding: .2em .5em;
+			margin: .5em 0;
+		}
+	}
+	.sub-tutorials-list {
+		margin-left: 0;
+		li {
+			margin-left: 0;
+			margin-right: 1em;
+		}
+	}
+}

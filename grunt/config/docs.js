@@ -5,6 +5,7 @@ module.exports = {
 				'bower',
 				'clean:docs',
 				'build',
+				'compass:docs',
 				'copy:docs',
 				'styleguide:dist',
 				'jsdoc:dist'
@@ -16,6 +17,7 @@ module.exports = {
 			tasks: [
 				'clean:docs',
 				'build',
+				'compass:docs',
 				'copy:docs',
 				'jsdoc:dist'
 			]
@@ -26,6 +28,7 @@ module.exports = {
 			tasks: [
 				'clean:docs',
 				'build',
+				'compass:docs',
 				'copy:docs',
 				'styleguide:dist'
 			]

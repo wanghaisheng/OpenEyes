@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<? include 'components/head.php'; ?>
-<link rel="stylesheet" href="/protected/modules/OphTrConsent/assets/css/module.css" />
+	<? include 'components/admin/head.php'; ?>
+	<link rel="stylesheet" href="/protected/modules/OphTrConsent/assets/css/module.css" />
 </head>
 <body>
 	<div class="container main" role="main">
@@ -13,7 +13,7 @@
 		<div class="container content">
 			<h1 class="badge admin">Profile</h1>
 
-                        <div class="box content admin">
+			<div class="box content admin">
 				<div class="row">
 					<? include 'components/admin/profile-sidebar.php'; ?>
 					<? include 'components/admin/profile-info.php'; ?>

@@ -10,5 +10,15 @@ module.exports = {
 			httpPath: '',
 			noLineComments: false
 		}
+	},
+	docs: {
+		options: {
+			sassDir: 'docs/src/assets/sass',
+			cssDir: 'docs/src/assets/css',
+			outputStyle: 'expanded',
+			relativeAssets: true,
+			httpPath: '',
+			noLineComments: false
+		}
 	}
 };

@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>OpenEyes - Grids</title>
-<meta name="viewport" content="width=device-width" />
-<?php
-$assets_root_path = '../';
-include '../fragments/assets.php';
-?>
-<style type="text/css">
-.example .column {
-	border: 1px solid #e3e3e3;
-}
-.example .row {
-	margin-bottom: 10px;
-}
-</style>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>OpenEyes - Grids</title>
+	<meta name="viewport" content="width=device-width" />
+	<?php
+	$assets_app_root_path = '';
+	$assets_docs_root_path = '../';
+	if (strpos($_SERVER["REQUEST_URI"],'src/') !== false) {
+		$assets_app_root_path = '../../../';
+	}
+	include '../fragments/assets.php';
+	?>
+	<style type="text/css">
+		.example .column {
+			border: 1px solid #e3e3e3;
+		}
+		.example .row {
+			margin-bottom: 10px;
+		}
+	</style>
 
 </head>
 <body>
-	<div class="container main" role="main">
+	<div class="container main docs" role="main">
 
 		<header class="header row">
 			<div class="large-3 columns">
@@ -48,15 +52,19 @@ include '../fragments/assets.php';
 				<div class="large-10 column">
 					<div class="box generic">
 						<h2 id="overview">Overview</h2>
-						<p>The layout of the OpenEyes application is based on a 12 column grid. The grid does not
-						use set dimensions, instead the width of the columns are percentage based, and
-						the overall width of the rows are based on the width of the container. This
-						gives you the freedom of creating complex layouts without the need for creating
-						additional CSS.</p>
+						<p>
+							The layout of the OpenEyes application is based on a 12 column grid. The grid does not
+							use set dimensions, instead the width of the columns are percentage based, and
+							the overall width of the rows are based on the width of the container. This
+							gives you the freedom of creating complex layouts without the need for creating
+							additional CSS.
+						</p>
 						<hr />
 						<h2 id="usage">Grid usage</h2>
-						<p>Like a table, the grid system relies on columns and rows. Columns need to be wrapped
-						in rows, for example:</p>
+						<p>
+							Like a table, the grid system relies on columns and rows. Columns need to be wrapped
+							in rows, for example:
+						</p>
 						<div class="example">
 							<header>
 								<h3>Nested example</h3>
@@ -95,8 +103,10 @@ include '../fragments/assets.php';
 								</div>
 							</div>
 						</div>
-						<p>Please refer to the <a href="http://foundation.zurb.com/docs/components/grid.html">foundation documentation</a> for more information on how the
-						grid system works.</p>
+						<p>
+							Please refer to the <a href="http://foundation.zurb.com/docs/components/grid.html">foundation documentation</a> for more information on how the
+							grid system works.
+						</p>
 					</div>
 				</div>
 			</div>

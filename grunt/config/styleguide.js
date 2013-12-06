@@ -5,7 +5,7 @@ module.exports = {
 				name: 'kss'
 			},
 			template: {
-				src: 'docs/templates/styleguide',
+				src: 'docs/src/templates/styleguide',
 				include: ''
 			}
 		},
