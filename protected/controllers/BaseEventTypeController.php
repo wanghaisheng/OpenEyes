@@ -125,6 +125,15 @@ class BaseEventTypeController extends BaseModuleController
 		}
 	}
 
+	/**
+	 * based on the current state of the controller, sets the open_elements property, which is the array of relevant
+	 * open elements for the controller
+	 */
+	protected function setOpenElementsFromCurrentEvent($action)
+	{
+		$this->open_elements = $this->getEventElements();
+		$this->setElementOptions($action);
+	}
 
 	/**
 	 * Renders the metadata of the event with the standard template
@@ -158,15 +167,15 @@ class BaseEventTypeController extends BaseModuleController
 	 */
 	public function getChildElements($parent_type)
 	{
-		$open_elements = array();
+		$open_child_elements = array();
 		foreach ($this->open_elements as $open) {
 			$et = $open->getElementType();
 			if ($et->isChild() && $et->parent_element_type->class_name == $parent_type->class_name) {
-				$open_elements[] = $open;
+				$open_child_elements[] = $open;
 			}
 		}
 
-		return $open_elements;
+		return $open_child_elements;
 	}
 
 	/**
@@ -291,6 +300,10 @@ class BaseEventTypeController extends BaseModuleController
 	{
 		foreach ($this->open_elements as $element) {
 			$this->setElementDefaultOptions($element, $action);
+			$el_method = 'setElementDefaultOptions_' . get_class($element);
+			if (method_exists($this, $el_method)) {
+				$this->$el_method($element, $action);
+			}
 		}
 	}
 
@@ -494,8 +507,7 @@ class BaseEventTypeController extends BaseModuleController
 			}
 		}
 		else {
-			$this->open_elements = $this->getEventElements();
-			$this->setElementOptions('create');
+			$this->setOpenElementsFromCurrentEvent('create');
 		}
 
 		$this->editable = false;
@@ -528,7 +540,7 @@ class BaseEventTypeController extends BaseModuleController
 	 */
 	public function actionView($id)
 	{
-		$this->open_elements = $this->event->getElements();
+		$this->setOpenElementsFromCurrentEvent('view');
 		// Decide whether to display the 'edit' button in the template
 		if ($this->editable) {
 			if (!BaseController::checkUserLevel(4) || (!$this->event->episode->firm && !$this->event->episode->support_services)) {
@@ -638,8 +650,7 @@ class BaseEventTypeController extends BaseModuleController
 		}
 		else {
 			// get the elements
-			$this->open_elements = $this->getEventElements();
-			$this->setElementOptions('update');
+			$this->setOpenElementsFromCurrentEvent('update');
 		}
 
 		$this->editing = true;
@@ -1267,7 +1278,7 @@ class BaseEventTypeController extends BaseModuleController
 		$this->patient = $this->event->episode->patient;
 		$this->site = Site::model()->findByPk(Yii::app()->session['selected_site_id']);
 		$this->title = $this->event_type->name;
-		$this->open_elements = $this->getEventElements();
+		$this->setOpenElementsFromCurrentEvent('print');
 	}
 
 	/**
