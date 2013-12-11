@@ -14,11 +14,27 @@
 // * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
 // * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
 
-@import "global";
-@import "containers";
-@import "nav";
-@import "boxes";
-@import "static-templates";
-@import "jsdoc";
-@import "kss";
-@import "prettify";
+.jsdoc {
+	.side-nav {
+		padding: 0;
+	}
+	.sub-tutorials-header {
+		padding: 5px 0;
+		h4 {
+			float: left;
+			margin: 0 1em 0 0;
+			line-height: 1.4;
+		}
+		.panel {
+			padding: .2em .5em;
+			margin: .5em 0;
+		}
+	}
+	.sub-tutorials-list {
+		margin-left: 0;
+		li {
+			margin-left: 0;
+			margin-right: 1em;
+		}
+	}
+}

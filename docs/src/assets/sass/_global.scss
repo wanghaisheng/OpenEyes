@@ -14,11 +14,51 @@
 // * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
 // * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
 
-@import "global";
-@import "containers";
-@import "nav";
-@import "boxes";
-@import "static-templates";
-@import "jsdoc";
-@import "kss";
-@import "prettify";
+.container.content.docs {
+	min-height: 0;
+	h1, h2, h3, h4, h5, h6 {
+		font-weight: 500;
+	}
+	pre {
+		font-size: .8em;
+		margin: 1em 0 1.5em 0;
+		width: 99%;
+		&.prettyprint {
+			border-color: #ddd;
+			padding: 2px 5px;
+		}
+	}
+	code {
+		font-size: 12px;
+		color: #555;
+	}
+	hr {
+		margin-top: .5em;
+	}
+	.example {
+		padding: 10px;
+		border: 1px solid #ddd;
+		border-radius: 5px;
+		margin: 0 0 1em 0;
+		> header:first-child {
+			margin-bottom: 1em;
+		}
+	}
+	.view-markup {
+		font-size: 13px;
+	}
+	.complete {
+		color: green;
+		white-space: nowrap;
+	}
+	.not-complete {
+		color: red;
+		white-space: nowrap;
+	}
+	.complete:before {
+		content: "✓ ";
+	}
+	.not-complete:before {
+		content: "✖ ";
+	}
+}

@@ -1,0 +1,149 @@
+// * OpenEyes
+// *
+// * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
+// * (C) OpenEyes Foundation, 2011-2013
+// * This file is part of OpenEyes.
+// * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// * You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+// *
+// * @package OpenEyes
+// * @link http://www.openeyes.org.uk
+// * @author OpenEyes <info@openeyes.org.uk>
+// * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
+// * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
+// * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+
+.kss-footer {
+	background-image: none;
+}
+
+.kss-side-nav {
+	padding: .5em;
+}
+
+.kss-title {
+	margin-top: 0;
+}
+
+.kss-sub-head {
+	font-size: 1.1em;
+}
+
+.kss-overview h1,
+.kss-overview h2,
+.kss-overview h3,
+.kss-overview h4,
+.kss-overview h5,
+.kss-overview h6 {
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: .4em;
+}
+
+.kss-overview li p {
+	margin: 0;
+	font-size: 1em;
+}
+
+.kss-overview pre {
+	margin: 1em 0;
+}
+
+.kss-mod-list {
+	background: #fff;
+	margin-bottom: 1em;
+}
+
+.kss-mod-description {
+	padding-top: 1em;
+}
+
+.kss-mod {
+	border: solid 1px #dddddd;
+	padding: 0 1em 1em 1em;
+	margin-bottom: 1em;
+}
+
+.kss-mod-name span {
+	background: #eee;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border: 1px solid #eee;
+	display: inline-block;
+	font-size: .9em;
+	padding: .5em 1em;
+}
+
+.kss-mod-overview {
+	padding: 0 0 1em 0;
+}
+
+.kss-mod-overview p {
+	margin: 0;
+}
+
+.kss-markup {
+	background: #fff;
+	border: 1px solid #dddddd;
+	font-size: .95em;
+	padding: .5em;
+}
+
+.kss-depth-1>h1 {
+	font-size: 2.375em;
+}
+
+.kss-depth-2>h1 {
+	font-size: 2.25em;
+}
+
+.kss-depth-3>h1 {
+	font-size: 2.125em;
+}
+
+.kss-depth-4>h1 {
+	font-size: 2em;
+}
+
+.kss-depth-5>h1 {
+	font-size: 1.875em;
+}
+
+.kss-depth-6>h1 {
+	font-size: 1.75em;
+}
+
+code {
+	margin: 0 2px;
+	padding: 0 5px;
+	white-space: nowrap;
+	border: 1px solid #eaeaea;
+	background-color: #f8f8f8;
+	border-radius: 3px;
+	color: #333;
+	font-weight: normal;
+	font-family: Consolas,"Liberation Mono",Courier,monospace;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #ccc;
+	font-size: .85em;
+	line-height: 1.1em;
+	overflow: auto;
+	padding: 6px 10px;
+	border-radius: 3px;
+}
+
+pre>code {
+	margin: 0;
+	padding: 0;
+	white-space: pre;
+	border: none;
+	background: transparent;
+}
+
+li {
+	margin-left: 1.2em;
+}

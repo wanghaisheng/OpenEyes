@@ -14,11 +14,108 @@
 // * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
 // * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
 
-@import "global";
-@import "containers";
-@import "nav";
-@import "boxes";
-@import "static-templates";
-@import "jsdoc";
-@import "kss";
-@import "prettify";
+/******************************************************************
+ * Prettify styles (syntax highlighting)
+ *****************************************************************/
+.pln {
+	color: black;
+}
+
+@media screen {
+	.str {
+		color: #008800;
+	}
+	.kwd {
+		color: #000088;
+	}
+	.com {
+		color: #880000;
+	}
+	.typ {
+		color: #660066;
+	}
+	.lit {
+		color: #006666;
+	}
+	.pun,
+	.opn,
+	.clo {
+		color: #666600;
+	}
+	.tag {
+		color: #000088;
+	}
+	.atn {
+		color: #660066;
+	}
+	.atv {
+		color: #008800;
+	}
+	.dec,
+	.var {
+		color: #660066;
+	}
+	.fun {
+		color: red;
+	}
+}
+
+@media print, projection {
+	.str {
+		color: #006600;
+	}
+	.kwd {
+		color: #006;
+		font-weight: 700;
+	}
+	.com {
+		color: #600;
+		font-style: italic;
+	}
+	.typ {
+		color: #404;
+		font-weight: 700;
+	}
+	.lit {
+		color: #004444;
+	}
+	.pun,
+	.opn,
+	.clo {
+		color: #444400;
+	}
+	.tag {
+		color: #006;
+		font-weight: 700;
+	}
+	.atn {
+		color: #440044;
+	}
+	.atv {
+		color: #006600;
+	}
+}
+
+ol.linenums {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L5,
+li.L6,
+li.L7,
+li.L8 {
+	list-style-type: none;
+}
+
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 {
+	background: #eeeeee;
+}
