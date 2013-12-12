@@ -1,3 +1,4 @@
+/* global prettyPrintOne:true, prettyPrint:true */
 (function docs() {
 
 	function htmlEntities(str) {
@@ -8,7 +9,7 @@
 		init: function() {
 			this.getElements();
 			this.createMarkupAnchors();
-			this.prettify()
+			this.prettify();
 			this.moreInfo();
 		},
 		getElements: function() {
@@ -37,7 +38,7 @@
 				markup = markup.replace(/^\n/gm, '');    // remove blank lines
 
 				// Get the indentation level from the first line
-				var indentation = markup.split('\n')[0].replace(/^([^>]+)<.*/, '$1').length
+				var indentation = markup.split('\n')[0].replace(/^([^>]+)<.*/, '$1').length;
 
 				markup = markup.replace(new RegExp('^\\s{0,'+indentation+'}', 'gm'), ''); // remove leading whitespace
 				markup = markup.replace(/^\n/gm, '');    // remove blank lines
@@ -60,11 +61,30 @@
 			}).open();
 		},
 		prettify: function() {
+
 			$('pre').addClass('prettyprint').each(function() {
 				$(this).append($(this).find('code').html());
 				$(this).find('code').remove();
-			})
-			prettyPrint()
+			});
+			prettyPrint();
+
+			(function addLineNumbers() {
+
+				var counter = 0;
+				var numbered;
+				var source = document.getElementsByClassName('prettyprint source');
+
+				if (source && source[0]) {
+					source = source[0].getElementsByTagName('code')[0];
+
+					numbered = source.innerHTML.split('\n');
+					numbered = numbered.map(function(item) {
+						counter++;
+						return '<span id="line' + counter + '" class="line"></span>' + item;
+					});
+					source.innerHTML = numbered.join('\n');
+				}
+			})();
 		},
 		moreInfo: function() {
 			$('.jsdoc .name a').on('click', function(e){

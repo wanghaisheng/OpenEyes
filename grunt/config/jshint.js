@@ -2,6 +2,7 @@ module.exports = {
 	files: [
 		'*.js',
 		'*.json',
+		'docs/src/assets/js/**/*.js',
 		'grunt/**/*.js',
 		'js/OpenEyes*',
 		'docs/templates/**/js/script.js'

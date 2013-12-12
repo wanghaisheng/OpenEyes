@@ -167,6 +167,289 @@
   margin-right: 1em;
 }
 
+/**********************
+ * FIXME
+ ***********************/
+/* line 46, ../sass/_jsdoc.scss */
+.class-description {
+  font-style: italic;
+  font-family: Palatino, 'Palatino Linotype', serif;
+  font-size: 130%;
+  line-height: 140%;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+/* line 55, ../sass/_jsdoc.scss */
+section {
+  display: block;
+}
+
+/* line 59, ../sass/_jsdoc.scss */
+ul li, ol li, dl li {
+  margin-left: 1.5em;
+}
+
+/* line 63, ../sass/_jsdoc.scss */
+h1, h2, h3, h4, h5 {
+  font-weight: bold;
+}
+
+/* line 67, ../sass/_jsdoc.scss */
+.variation {
+  display: none;
+}
+
+/* line 71, ../sass/_jsdoc.scss */
+.optional:after {
+  content: "opt";
+  font-size: 60%;
+  color: #aaa;
+  font-style: italic;
+  font-weight: lighter;
+}
+
+/* line 80, ../sass/_jsdoc.scss */
+dl dt {
+  margin: 0;
+}
+/* line 83, ../sass/_jsdoc.scss */
+dl dd {
+  margin-bottom: 0;
+}
+
+/* line 88, ../sass/_jsdoc.scss */
+nav {
+  display: block;
+  float: left;
+  margin-left: -230px;
+  margin-top: 28px;
+  width: 220px;
+  border-left: 1px solid #ccc;
+  padding-left: 9px;
+}
+/* line 96, ../sass/_jsdoc.scss */
+nav ul {
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
+  font-size: 100%;
+  line-height: 17px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+/* line 104, ../sass/_jsdoc.scss */
+nav h2 a {
+  color: #A35A00;
+  text-decoration: none;
+}
+/* line 107, ../sass/_jsdoc.scss */
+nav h2 a:visited {
+  color: #A35A00;
+  text-decoration: none;
+}
+/* line 112, ../sass/_jsdoc.scss */
+nav h3 {
+  margin-top: 12px;
+}
+/* line 115, ../sass/_jsdoc.scss */
+nav li {
+  margin-top: 6px;
+}
+/* line 118, ../sass/_jsdoc.scss */
+nav a {
+  color: #5C5954;
+}
+/* line 120, ../sass/_jsdoc.scss */
+nav a:visited, nav a:active {
+  color: #5C5954;
+}
+
+/* line 126, ../sass/_jsdoc.scss */
+h4 {
+  font-size: 13px;
+}
+
+/* line 130, ../sass/_jsdoc.scss */
+h5, .container-overview .subsection-title {
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: -0.01em;
+  margin: 8px 0 3px 0;
+}
+
+/* line 137, ../sass/_jsdoc.scss */
+h6 {
+  font-size: 100%;
+  letter-spacing: -0.01em;
+  margin: 6px 0 3px 0;
+  font-style: italic;
+}
+
+/* line 144, ../sass/_jsdoc.scss */
+.ancestors {
+  color: #999;
+}
+/* line 146, ../sass/_jsdoc.scss */
+.ancestors a {
+  color: #999 !important;
+  text-decoration: none;
+}
+
+/* line 152, ../sass/_jsdoc.scss */
+.important {
+  font-weight: bold;
+  color: #950B02;
+}
+
+/* line 157, ../sass/_jsdoc.scss */
+.yes-def {
+  text-indent: -1000px;
+}
+
+/* line 161, ../sass/_jsdoc.scss */
+.type-signature {
+  color: #aaa;
+}
+
+/* line 165, ../sass/_jsdoc.scss */
+.name, .signature {
+  font-family: Consolas, "Lucida Console", Monaco, monospace;
+}
+
+/* line 169, ../sass/_jsdoc.scss */
+.details {
+  margin-top: 14px;
+  border-left: 2px solid #DDD;
+}
+/* line 172, ../sass/_jsdoc.scss */
+.details dt {
+  width: 130px;
+  float: left;
+  padding-left: 10px;
+  font-size: 13px;
+}
+/* line 178, ../sass/_jsdoc.scss */
+.details dd {
+  margin-left: 50px;
+}
+/* line 181, ../sass/_jsdoc.scss */
+.details ul {
+  margin: 0;
+  list-style-type: none;
+}
+/* line 185, ../sass/_jsdoc.scss */
+.details li {
+  margin-left: 30px;
+}
+/* line 188, ../sass/_jsdoc.scss */
+.details pre.prettyprint {
+  margin: 0;
+}
+/* line 191, ../sass/_jsdoc.scss */
+.details .object-value {
+  padding-top: 0;
+}
+
+/* line 196, ../sass/_jsdoc.scss */
+.description {
+  margin-bottom: 1em;
+  margin-top: .2em;
+  font-size: 13px;
+}
+
+/* line 202, ../sass/_jsdoc.scss */
+code {
+  font-size: 13px;
+}
+
+/* line 206, ../sass/_jsdoc.scss */
+.code-caption {
+  font-style: italic;
+  font-family: Palatino, 'Palatino Linotype', serif;
+  font-size: 107%;
+  margin: 0;
+}
+
+/* line 213, ../sass/_jsdoc.scss */
+.prettyprint {
+  border: 1px solid #ddd;
+  width: 80%;
+  overflow: auto;
+}
+/* line 217, ../sass/_jsdoc.scss */
+.prettyprint.source {
+  width: inherit;
+}
+/* line 220, ../sass/_jsdoc.scss */
+.prettyprint code {
+  font-family: Consolas, 'Lucida Console', Monaco, monospace;
+  line-height: 18px;
+  display: block;
+  padding: 4px 12px;
+  margin: 0;
+  background-color: #fff;
+  color: #000;
+  border-left: 3px #ddd solid;
+}
+/* line 229, ../sass/_jsdoc.scss */
+.prettyprint code span.line {
+  display: inline-block;
+}
+
+/* line 235, ../sass/_jsdoc.scss */
+.params, .props {
+  border-spacing: 0;
+  border: 0;
+  border-collapse: collapse;
+}
+
+/* line 241, ../sass/_jsdoc.scss */
+.params .name, .props .name, .name code {
+  color: #A35A00;
+  font-family: Consolas, 'Lucida Console', Monaco, monospace;
+  font-size: 13px;
+}
+
+/* line 248, ../sass/_jsdoc.scss */
+.params td, .params th {
+  border: 1px solid #ddd;
+  margin: 0px;
+  text-align: left;
+  vertical-align: top;
+  padding: 4px 6px;
+  display: table-cell;
+}
+
+/* line 259, ../sass/_jsdoc.scss */
+.props td, .props th {
+  border: 1px solid #ddd;
+  margin: 0px;
+  text-align: left;
+  vertical-align: top;
+  padding: 4px 6px;
+  display: table-cell;
+}
+
+/* line 269, ../sass/_jsdoc.scss */
+.params th, .props th {
+  border-right: 1px solid #aaa;
+}
+
+/* line 273, ../sass/_jsdoc.scss */
+.params thead .last, .props thead .last {
+  border-right: 1px solid #ddd;
+}
+
+/* line 277, ../sass/_jsdoc.scss */
+.disabled {
+  color: #454545;
+}
+
+/* line 281, ../sass/_jsdoc.scss */
+.more-info {
+  display: none;
+}
+
 /* line 17, ../sass/_kss.scss */
 .kss-footer {
   background-image: none;
@@ -325,148 +608,150 @@ li {
   margin-left: 1.2em;
 }
 
-/******************************************************************
- * Prettify styles (syntax highlighting)
- *****************************************************************/
-/* line 20, ../sass/_prettify.scss */
+/* GitHub Theme */
+/* Pretty printing styles. Used with prettify.js. */
+/* SPAN elements with the classes below are added by prettyprint. */
+/* plain text */
+/* line 6, ../sass/_prettify.scss */
 .pln {
-  color: black;
+  color: #333333;
 }
 
 @media screen {
-  /* line 25, ../sass/_prettify.scss */
+  /* string content */
+  /* line 12, ../sass/_prettify.scss */
   .str {
-    color: #008800;
+    color: #dd1144;
   }
 
-  /* line 28, ../sass/_prettify.scss */
+  /* a keyword */
+  /* line 16, ../sass/_prettify.scss */
   .kwd {
-    color: #000088;
+    color: #333333;
   }
 
-  /* line 31, ../sass/_prettify.scss */
+  /* a comment */
+  /* line 20, ../sass/_prettify.scss */
   .com {
-    color: #880000;
+    color: #999988;
   }
 
-  /* line 34, ../sass/_prettify.scss */
-  .typ {
-    color: #660066;
+  /* a type name */
+  /* line 24, ../sass/_prettify.scss */
+  .typ, .lit {
+    color: #445588;
   }
 
-  /* line 37, ../sass/_prettify.scss */
-  .lit {
-    color: #006666;
+  /* a literal value */
+  /* punctuation */
+  /* line 29, ../sass/_prettify.scss */
+  .pun, .opn, .clo {
+    color: #333333;
   }
 
-  /* line 42, ../sass/_prettify.scss */
-  .pun,
-  .opn,
-  .clo {
-    color: #666600;
-  }
-
-  /* line 45, ../sass/_prettify.scss */
+  /* lisp open bracket */
+  /* lisp close bracket */
+  /* a markup tag name */
+  /* line 35, ../sass/_prettify.scss */
   .tag {
-    color: #000088;
+    color: navy;
   }
 
-  /* line 48, ../sass/_prettify.scss */
+  /* a markup attribute name */
+  /* line 39, ../sass/_prettify.scss */
   .atn {
-    color: #660066;
+    color: teal;
   }
 
-  /* line 51, ../sass/_prettify.scss */
+  /* a markup attribute value */
+  /* line 43, ../sass/_prettify.scss */
   .atv {
-    color: #008800;
+    color: #dd1144;
   }
 
-  /* line 55, ../sass/_prettify.scss */
-  .dec,
+  /* a declaration */
+  /* line 47, ../sass/_prettify.scss */
+  .dec {
+    color: #333333;
+  }
+
+  /* a variable name */
+  /* line 51, ../sass/_prettify.scss */
   .var {
-    color: #660066;
+    color: teal;
   }
 
-  /* line 58, ../sass/_prettify.scss */
+  /* a function name */
+  /* line 55, ../sass/_prettify.scss */
   .fun {
-    color: red;
+    color: #990000;
   }
 }
+/* Use higher contrast and text-weight for printable form. */
 @media print, projection {
-  /* line 64, ../sass/_prettify.scss */
+  /* line 62, ../sass/_prettify.scss */
   .str {
     color: #006600;
   }
 
-  /* line 67, ../sass/_prettify.scss */
+  /* line 65, ../sass/_prettify.scss */
   .kwd {
     color: #006;
-    font-weight: 700;
+    font-weight: bold;
   }
 
-  /* line 71, ../sass/_prettify.scss */
+  /* line 69, ../sass/_prettify.scss */
   .com {
     color: #600;
     font-style: italic;
   }
 
-  /* line 75, ../sass/_prettify.scss */
+  /* line 73, ../sass/_prettify.scss */
   .typ {
     color: #404;
-    font-weight: 700;
+    font-weight: bold;
   }
 
-  /* line 79, ../sass/_prettify.scss */
+  /* line 77, ../sass/_prettify.scss */
   .lit {
     color: #004444;
   }
 
-  /* line 84, ../sass/_prettify.scss */
-  .pun,
-  .opn,
-  .clo {
+  /* line 80, ../sass/_prettify.scss */
+  .pun, .opn, .clo {
     color: #444400;
   }
 
-  /* line 87, ../sass/_prettify.scss */
+  /* line 83, ../sass/_prettify.scss */
   .tag {
     color: #006;
-    font-weight: 700;
+    font-weight: bold;
   }
 
-  /* line 91, ../sass/_prettify.scss */
+  /* line 87, ../sass/_prettify.scss */
   .atn {
     color: #440044;
   }
 
-  /* line 94, ../sass/_prettify.scss */
+  /* line 90, ../sass/_prettify.scss */
   .atv {
     color: #006600;
   }
 }
-/* line 99, ../sass/_prettify.scss */
+/* Style */
+/* line 97, ../sass/_prettify.scss */
+pre.prettyprint {
+  background: white;
+  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+
+/* Specify class=linenums on a pre to get line numbering */
+/* line 108, ../sass/_prettify.scss */
 ol.linenums {
   margin-top: 0;
   margin-bottom: 0;
-}
-
-/* line 111, ../sass/_prettify.scss */
-li.L0,
-li.L1,
-li.L2,
-li.L3,
-li.L5,
-li.L6,
-li.L7,
-li.L8 {
-  list-style-type: none;
-}
-
-/* line 119, ../sass/_prettify.scss */
-li.L1,
-li.L3,
-li.L5,
-li.L7,
-li.L9 {
-  background: #eeeeee;
 }

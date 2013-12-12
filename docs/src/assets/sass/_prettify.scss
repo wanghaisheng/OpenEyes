@@ -1,72 +1,70 @@
-// * OpenEyes
-// *
-// * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
-// * (C) OpenEyes Foundation, 2011-2013
-// * This file is part of OpenEyes.
-// * OpenEyes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-// * OpenEyes is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-// * You should have received a copy of the GNU General Public License along with OpenEyes in a file titled COPYING. If not, see <http://www.gnu.org/licenses/>.
-// *
-// * @package OpenEyes
-// * @link http://www.openeyes.org.uk
-// * @author OpenEyes <info@openeyes.org.uk>
-// * @copyright Copyright (c) 2008-2011, Moorfields Eye Hospital NHS Foundation Trust
-// * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
-// * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+/* GitHub Theme */
+/* Pretty printing styles. Used with prettify.js. */
+/* SPAN elements with the classes below are added by prettyprint. */
+/* plain text */
 
-/******************************************************************
- * Prettify styles (syntax highlighting)
- *****************************************************************/
 .pln {
-	color: black;
+	color: #333333;
 }
 
 @media screen {
+	/* string content */
 	.str {
-		color: #008800;
+		color: #dd1144;
 	}
+	/* a keyword */
 	.kwd {
-		color: #000088;
+		color: #333333;
 	}
+	/* a comment */
 	.com {
-		color: #880000;
+		color: #999988;
 	}
-	.typ {
-		color: #660066;
+	/* a type name */
+	.typ, .lit {
+		color: #445588;
 	}
-	.lit {
-		color: #006666;
+	/* a literal value */
+	/* punctuation */
+	.pun, .opn, .clo {
+		color: #333333;
 	}
-	.pun,
-	.opn,
-	.clo {
-		color: #666600;
-	}
+	/* lisp open bracket */
+	/* lisp close bracket */
+	/* a markup tag name */
 	.tag {
-		color: #000088;
+		color: navy;
 	}
+	/* a markup attribute name */
 	.atn {
-		color: #660066;
+		color: teal;
 	}
+	/* a markup attribute value */
 	.atv {
-		color: #008800;
+		color: #dd1144;
 	}
-	.dec,
+	/* a declaration */
+	.dec {
+		color: #333333;
+	}
+	/* a variable name */
 	.var {
-		color: #660066;
+		color: teal;
 	}
+	/* a function name */
 	.fun {
-		color: red;
+		color: #990000;
 	}
 }
 
+/* Use higher contrast and text-weight for printable form. */
 @media print, projection {
 	.str {
 		color: #006600;
 	}
 	.kwd {
 		color: #006;
-		font-weight: 700;
+		font-weight: bold;
 	}
 	.com {
 		color: #600;
@@ -74,19 +72,17 @@
 	}
 	.typ {
 		color: #404;
-		font-weight: 700;
+		font-weight: bold;
 	}
 	.lit {
 		color: #004444;
 	}
-	.pun,
-	.opn,
-	.clo {
+	.pun, .opn, .clo {
 		color: #444400;
 	}
 	.tag {
 		color: #006;
-		font-weight: 700;
+		font-weight: bold;
 	}
 	.atn {
 		color: #440044;
@@ -96,26 +92,20 @@
 	}
 }
 
+/* Style */
+
+pre.prettyprint {
+	background: white;
+	font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+	font-size: 12px;
+	line-height: 1.5;
+	border: 1px solid #cccccc;
+	padding: 10px;
+}
+
+/* Specify class=linenums on a pre to get line numbering */
+
 ol.linenums {
 	margin-top: 0;
 	margin-bottom: 0;
-}
-
-li.L0,
-li.L1,
-li.L2,
-li.L3,
-li.L5,
-li.L6,
-li.L7,
-li.L8 {
-	list-style-type: none;
-}
-
-li.L1,
-li.L3,
-li.L5,
-li.L7,
-li.L9 {
-	background: #eeeeee;
 }
