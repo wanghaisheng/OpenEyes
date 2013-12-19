@@ -14,136 +14,59 @@
 // * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
 // * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
 
-.kss-footer {
-	background-image: none;
-}
-
-.kss-side-nav {
-	padding: .5em;
-}
-
-.kss-title {
-	margin-top: 0;
-}
-
-.kss-sub-head {
-	font-size: 1.1em;
-}
-
-.kss-overview h1,
-.kss-overview h2,
-.kss-overview h3,
-.kss-overview h4,
-.kss-overview h5,
-.kss-overview h6 {
-	font-weight: bold;
-	border-bottom: 1px solid #ccc;
-	padding-bottom: .4em;
-}
-
-.kss-overview li p {
-	margin: 0;
-	font-size: 1em;
-}
-
-.kss-overview pre {
-	margin: 1em 0;
-}
-
-.kss-mod-list {
-	background: #fff;
-	margin-bottom: 1em;
-}
-
-.kss-mod-description {
-	padding-top: 1em;
-}
-
-.kss-mod {
-	border: solid 1px #dddddd;
-	padding: 0 1em 1em 1em;
-	margin-bottom: 1em;
-}
-
-.kss-mod-name span {
-	background: #eee;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	border: 1px solid #eee;
-	display: inline-block;
-	font-size: .9em;
-	padding: .5em 1em;
-}
-
-.kss-mod-overview {
-	padding: 0 0 1em 0;
-}
-
-.kss-mod-overview p {
-	margin: 0;
-}
-
-.kss-markup {
-	background: #fff;
-	border: 1px solid #dddddd;
-	font-size: .95em;
-	padding: .5em;
-}
-
-.kss-depth-1>h1 {
-	font-size: 2.375em;
-}
-
-.kss-depth-2>h1 {
-	font-size: 2.25em;
-}
-
-.kss-depth-3>h1 {
-	font-size: 2.125em;
-}
-
-.kss-depth-4>h1 {
-	font-size: 2em;
-}
-
-.kss-depth-5>h1 {
-	font-size: 1.875em;
-}
-
-.kss-depth-6>h1 {
-	font-size: 1.75em;
-}
-
-code {
-	margin: 0 2px;
-	padding: 0 5px;
-	white-space: nowrap;
-	border: 1px solid #eaeaea;
-	background-color: #f8f8f8;
-	border-radius: 3px;
-	color: #333;
-	font-weight: normal;
-	font-family: Consolas,"Liberation Mono",Courier,monospace;
-}
-
-pre {
-	background-color: #f8f8f8;
-	border: 1px solid #ccc;
-	font-size: .85em;
-	line-height: 1.1em;
-	overflow: auto;
-	padding: 6px 10px;
-	border-radius: 3px;
-}
-
-pre>code {
-	margin: 0;
-	padding: 0;
-	white-space: pre;
-	border: none;
-	background: transparent;
-}
-
-li {
-	margin-left: 1.2em;
+.container.content.docs {
+	.kss-description {
+		margin-bottom: 1em;
+	}
+	.kss-box {
+		margin-bottom: 1em;
+	}
+	.kss-mod-list {
+		margin-bottom: 1em;
+	}
+	.kss-mod-description {
+		padding-top: 1em;
+	}
+	.kss-mod {
+		border: solid 1px #dddddd;
+		padding: 0 1em 1em 1em;
+		margin-bottom: 1em;
+		overflow: hidden;
+	}
+	.kss-mod-name span {
+		background: #eee;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		border: 1px solid #eee;
+		display: inline-block;
+		font-size: .9em;
+		padding: .5em 1em;
+	}
+	.kss-mod-overview {
+		padding: 0 0 1em 0;
+		p {
+			margin: 0;
+		}
+	}
+	.kss-markup {
+		font-size: .85em;
+	}
+	.kss-depth-1>h1 {
+		font-size: 2.375em;
+	}
+	.kss-depth-2>h1 {
+		font-size: 2.25em;
+	}
+	.kss-depth-3>h1 {
+		font-size: 2.125em;
+	}
+	.kss-depth-4>h1 {
+		font-size: 2em;
+	}
+	.kss-depth-5>h1 {
+		font-size: 1.875em;
+	}
+	.kss-depth-6>h1 {
+		font-size: 1.75em;
+	}
 }

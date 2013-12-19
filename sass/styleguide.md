@@ -1,23 +1,15 @@
-<a id="overview"></a>
-
-# Overview
+# <a id="overview"></a>Overview
 
 Welcome to the OpenEyes living CSS Styleguide.
 
 The content of this styleguide is generated from the KSS style comments found in the Sass files.
 
-This is a living styleguide, and will grow and evolve as the stylesheet grows and evolves.
-
-<a id="sass-and-compass"></a>
-
-## Sass and Compass
+## <a id="sass-and-compass"></a>Sass and Compass
 
 We use Sass to develop our CSS, and use compass to provide us with useful mixins. Please
 use the compass mixins wherever possible.
 
-<a id="sass-and-compass-mixins"></a>
-
-### Compass mixins
+### <a id="sass-and-compass-mixins"></a>Compass mixins
 
 Please be familiar with the following compass mixins:
 
@@ -28,9 +20,7 @@ Please be familiar with the following compass mixins:
 * `@include opacity();`
 * `@include box-sizing();`
 
-<a id="conventions"></a>
-
-## Conventions
+## <a id="conventions"></a>Conventions
 
 Conventions allow for code readability and maintainability. You must follow
 the following conventions if you want to make changes to the stylesheet.
@@ -86,23 +76,17 @@ the following conventions if you want to make changes to the stylesheet.
 * If using Sublime Text text editor, you can use the 'SassBeautify'
   plugin to format your Sass.
 
-<a id="conventions-editor-settibgs"></a>
-
-### Editor settings
+### <a id="conventions-editor-settibgs"></a>Editor settings
 
 [Install editorconfig](http://editorconfig.org/) to enforce the whitespace conventions in your editor. (Refer to the .editorconfig file in the root of the application for the settings.)
 
-<a id="conventions-commenting"></a>
-
-### Commenting
+### <a id="conventions-commenting"></a>Commenting
 
 * Double-slash (Sass) comments will be removed in the compiled CSS.
 * Slash-star (CSS) comments will not be removed in the compiled CSS.
 * Wrap comments after 80 chars.
 
-<a id="conventions-variables"></a>
-
-### Variables
+### <a id="conventions-variables"></a>Variables
 
 * Use variables for all values.
 * To avoid conlicts with foundation variables, we have to namespace our variables,
@@ -111,9 +95,8 @@ the following conventions if you want to make changes to the stylesheet.
   into the _variables file. This allows use to create different themes in the future
   by simply using a different _variables file.
 
-<a id="css-framework"></a>
 
-## CSS Framework
+## <a id="css-framework"></a>CSS Framework
 
 We use the zurb foundation framework as a base for our stylesheet. The foundation framework
 is a responsive (mobile first) framework written in Sass, and give us many useful mixins to
@@ -123,18 +106,14 @@ Most of the zurb classes are not rendered by default, instead we define our own 
 use the foundation mixins to generate the rules. This allows for a more finely tuned stylesheet
 with no bloat.
 
-<a id="css-framework-grid"></a>
-
-### The grid
+### <a id="css-framework-grid"></a>The grid
 
 If the interface is to ever be responsive, we *must* use the foundation grid system to layout
 the interface. There should be very few reason to position elements without using the grid
 system. The foundation grid system is a 12 column grid and allows us to control wrapping of
 columns at 3 different screen widths.
 
-<a id="css-framework-vars-and-themes"></a>
-
-### Variables and themeing
+### <a id="css-framework-vars-and-themes"></a>Variables and themeing
 
 All values used in the stylesheet are stored in variables. We use a global '_variables.scss'
 file to store the values. This allows us to easily theme the interface by simply changing the values

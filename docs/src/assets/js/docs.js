@@ -62,10 +62,17 @@
 		},
 		prettify: function() {
 
+			// Due to markdown's inability to correctly handle code blocks within list items,
+			// we have to remove the excess whitespace manually. Gah!
+			$('code').each(function() {
+				this.innerHTML = this.innerHTML.replace(/^\s{0,4}/mg, '');
+			});
+
 			$('pre').addClass('prettyprint').each(function() {
 				$(this).append($(this).find('code').html());
 				$(this).find('code').remove();
 			});
+
 			prettyPrint();
 
 			(function addLineNumbers() {

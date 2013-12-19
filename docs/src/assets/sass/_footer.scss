@@ -14,19 +14,9 @@
 // * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
 // * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
 
-.container.content.docs {
-	.side-nav {
-		margin: 0;
-		padding: 0;
-		li {
-			margin: 0;
-			padding: .2em 0;
-			a {
-				display: inline-block;
-			}
-			> ul {
-				margin-top: .5em;
-			}
-		}
+.footer {
+	min-height: 32px;
+	.info {
+		padding-top: .8em;
 	}
 }

@@ -5,58 +5,99 @@
 }
 /* line 19, ../sass/_global.scss */
 .container.content.docs h1, .container.content.docs h2, .container.content.docs h3, .container.content.docs h4, .container.content.docs h5, .container.content.docs h6 {
-  font-weight: 500;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: .4em;
 }
-/* line 22, ../sass/_global.scss */
-.container.content.docs pre {
-  font-size: .8em;
-  margin: 1em 0 1.5em 0;
-  width: 99%;
+/* line 24, ../sass/_global.scss */
+.container.content.docs h3, .container.content.docs h4, .container.content.docs h5 {
+  border-bottom: 0;
 }
-/* line 26, ../sass/_global.scss */
-.container.content.docs pre.prettyprint {
-  border-color: #ddd;
-  padding: 2px 5px;
-}
-/* line 31, ../sass/_global.scss */
+/* line 27, ../sass/_global.scss */
 .container.content.docs code {
   font-size: 12px;
   color: #555;
 }
-/* line 35, ../sass/_global.scss */
+/* line 31, ../sass/_global.scss */
 .container.content.docs hr {
   margin-top: .5em;
 }
+/* line 34, ../sass/_global.scss */
+.container.content.docs li p {
+  margin: 0;
+  font-size: 1em;
+}
 /* line 38, ../sass/_global.scss */
+.container.content.docs code {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  color: #333;
+  font-weight: normal;
+  font-family: Consolas,"Liberation Mono",Courier,monospace;
+}
+/* line 49, ../sass/_global.scss */
+.container.content.docs pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: .85em;
+  line-height: 1.1em;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+  margin: 1em 0 1.5em 0;
+  width: 100%;
+}
+/* line 59, ../sass/_global.scss */
+.container.content.docs pre > code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+/* line 66, ../sass/_global.scss */
+.container.content.docs pre.prettyprint {
+  border-color: #ddd;
+  padding: 5px;
+}
+/* line 71, ../sass/_global.scss */
+.container.content.docs li {
+  margin-left: 1.2em;
+}
+/* line 74, ../sass/_global.scss */
 .container.content.docs .example {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   margin: 0 0 1em 0;
 }
-/* line 43, ../sass/_global.scss */
+/* line 79, ../sass/_global.scss */
 .container.content.docs .example > header:first-child {
   margin-bottom: 1em;
 }
-/* line 47, ../sass/_global.scss */
+/* line 83, ../sass/_global.scss */
 .container.content.docs .view-markup {
   font-size: 13px;
 }
-/* line 50, ../sass/_global.scss */
+/* line 86, ../sass/_global.scss */
 .container.content.docs .complete {
   color: green;
   white-space: nowrap;
 }
-/* line 54, ../sass/_global.scss */
+/* line 90, ../sass/_global.scss */
 .container.content.docs .not-complete {
   color: red;
   white-space: nowrap;
 }
-/* line 58, ../sass/_global.scss */
+/* line 94, ../sass/_global.scss */
 .container.content.docs .complete:before {
   content: "✓ ";
 }
-/* line 61, ../sass/_global.scss */
+/* line 97, ../sass/_global.scss */
 .container.content.docs .not-complete:before {
   content: "✖ ";
 }
@@ -71,11 +112,16 @@
   margin: 0;
   padding: 0;
 }
-/* line 22, ../sass/_nav.scss */
+/* line 21, ../sass/_nav.scss */
+.container.content.docs .side-nav li {
+  margin: 0;
+  padding: .2em 0;
+}
+/* line 24, ../sass/_nav.scss */
 .container.content.docs .side-nav li a {
   display: inline-block;
 }
-/* line 25, ../sass/_nav.scss */
+/* line 27, ../sass/_nav.scss */
 .container.content.docs .side-nav li > ul {
   margin-top: .5em;
 }
@@ -450,164 +496,6 @@ code {
   display: none;
 }
 
-/* line 17, ../sass/_kss.scss */
-.kss-footer {
-  background-image: none;
-}
-
-/* line 21, ../sass/_kss.scss */
-.kss-side-nav {
-  padding: .5em;
-}
-
-/* line 25, ../sass/_kss.scss */
-.kss-title {
-  margin-top: 0;
-}
-
-/* line 29, ../sass/_kss.scss */
-.kss-sub-head {
-  font-size: 1.1em;
-}
-
-/* line 38, ../sass/_kss.scss */
-.kss-overview h1,
-.kss-overview h2,
-.kss-overview h3,
-.kss-overview h4,
-.kss-overview h5,
-.kss-overview h6 {
-  font-weight: bold;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: .4em;
-}
-
-/* line 44, ../sass/_kss.scss */
-.kss-overview li p {
-  margin: 0;
-  font-size: 1em;
-}
-
-/* line 49, ../sass/_kss.scss */
-.kss-overview pre {
-  margin: 1em 0;
-}
-
-/* line 53, ../sass/_kss.scss */
-.kss-mod-list {
-  background: #fff;
-  margin-bottom: 1em;
-}
-
-/* line 58, ../sass/_kss.scss */
-.kss-mod-description {
-  padding-top: 1em;
-}
-
-/* line 62, ../sass/_kss.scss */
-.kss-mod {
-  border: solid 1px #dddddd;
-  padding: 0 1em 1em 1em;
-  margin-bottom: 1em;
-}
-
-/* line 68, ../sass/_kss.scss */
-.kss-mod-name span {
-  background: #eee;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border: 1px solid #eee;
-  display: inline-block;
-  font-size: .9em;
-  padding: .5em 1em;
-}
-
-/* line 78, ../sass/_kss.scss */
-.kss-mod-overview {
-  padding: 0 0 1em 0;
-}
-
-/* line 82, ../sass/_kss.scss */
-.kss-mod-overview p {
-  margin: 0;
-}
-
-/* line 86, ../sass/_kss.scss */
-.kss-markup {
-  background: #fff;
-  border: 1px solid #dddddd;
-  font-size: .95em;
-  padding: .5em;
-}
-
-/* line 93, ../sass/_kss.scss */
-.kss-depth-1 > h1 {
-  font-size: 2.375em;
-}
-
-/* line 97, ../sass/_kss.scss */
-.kss-depth-2 > h1 {
-  font-size: 2.25em;
-}
-
-/* line 101, ../sass/_kss.scss */
-.kss-depth-3 > h1 {
-  font-size: 2.125em;
-}
-
-/* line 105, ../sass/_kss.scss */
-.kss-depth-4 > h1 {
-  font-size: 2em;
-}
-
-/* line 109, ../sass/_kss.scss */
-.kss-depth-5 > h1 {
-  font-size: 1.875em;
-}
-
-/* line 113, ../sass/_kss.scss */
-.kss-depth-6 > h1 {
-  font-size: 1.75em;
-}
-
-/* line 117, ../sass/_kss.scss */
-code {
-  margin: 0 2px;
-  padding: 0 5px;
-  white-space: nowrap;
-  border: 1px solid #eaeaea;
-  background-color: #f8f8f8;
-  border-radius: 3px;
-  color: #333;
-  font-weight: normal;
-  font-family: Consolas,"Liberation Mono",Courier,monospace;
-}
-
-/* line 129, ../sass/_kss.scss */
-pre {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
-  font-size: .85em;
-  line-height: 1.1em;
-  overflow: auto;
-  padding: 6px 10px;
-  border-radius: 3px;
-}
-
-/* line 139, ../sass/_kss.scss */
-pre > code {
-  margin: 0;
-  padding: 0;
-  white-space: pre;
-  border: none;
-  background: transparent;
-}
-
-/* line 147, ../sass/_kss.scss */
-li {
-  margin-left: 1.2em;
-}
-
 /* GitHub Theme */
 /* Pretty printing styles. Used with prettify.js. */
 /* SPAN elements with the classes below are added by prettyprint. */
@@ -754,4 +642,83 @@ pre.prettyprint {
 ol.linenums {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+/* line 17, ../sass/_footer.scss */
+.footer {
+  min-height: 32px;
+}
+/* line 19, ../sass/_footer.scss */
+.footer .info {
+  padding-top: .8em;
+}
+
+/* line 18, ../sass/_kss.scss */
+.container.content.docs .kss-description {
+  margin-bottom: 1em;
+}
+/* line 21, ../sass/_kss.scss */
+.container.content.docs .kss-box {
+  margin-bottom: 1em;
+}
+/* line 24, ../sass/_kss.scss */
+.container.content.docs .kss-mod-list {
+  margin-bottom: 1em;
+}
+/* line 27, ../sass/_kss.scss */
+.container.content.docs .kss-mod-description {
+  padding-top: 1em;
+}
+/* line 30, ../sass/_kss.scss */
+.container.content.docs .kss-mod {
+  border: solid 1px #dddddd;
+  padding: 0 1em 1em 1em;
+  margin-bottom: 1em;
+  overflow: hidden;
+}
+/* line 36, ../sass/_kss.scss */
+.container.content.docs .kss-mod-name span {
+  background: #eee;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid #eee;
+  display: inline-block;
+  font-size: .9em;
+  padding: .5em 1em;
+}
+/* line 45, ../sass/_kss.scss */
+.container.content.docs .kss-mod-overview {
+  padding: 0 0 1em 0;
+}
+/* line 47, ../sass/_kss.scss */
+.container.content.docs .kss-mod-overview p {
+  margin: 0;
+}
+/* line 51, ../sass/_kss.scss */
+.container.content.docs .kss-markup {
+  font-size: .85em;
+}
+/* line 54, ../sass/_kss.scss */
+.container.content.docs .kss-depth-1 > h1 {
+  font-size: 2.375em;
+}
+/* line 57, ../sass/_kss.scss */
+.container.content.docs .kss-depth-2 > h1 {
+  font-size: 2.25em;
+}
+/* line 60, ../sass/_kss.scss */
+.container.content.docs .kss-depth-3 > h1 {
+  font-size: 2.125em;
+}
+/* line 63, ../sass/_kss.scss */
+.container.content.docs .kss-depth-4 > h1 {
+  font-size: 2em;
+}
+/* line 66, ../sass/_kss.scss */
+.container.content.docs .kss-depth-5 > h1 {
+  font-size: 1.875em;
+}
+/* line 69, ../sass/_kss.scss */
+.container.content.docs .kss-depth-6 > h1 {
+  font-size: 1.75em;
 }
