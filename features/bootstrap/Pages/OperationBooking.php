@@ -30,7 +30,6 @@ class OperationBooking extends OpenEyesPage
         'operationComments' => array('xpath' => "//*[@id='Element_OphTrOperationbooking_Operation_comments']"),
         'scheduleLater' => array('xpath' => "//*[@id='et_schedulelater']"),
         'scheduleNow' => array('xpath' => "//*[@id='et_save_and_schedule']"),
-        'availableSlotExactDate' => array('xpath' => "//*[@id='calendar']//*[contains(number(),'15')]"),
         'availableTheatreSlotDate' => array('xpath' => "//*[@class='available']"),
         'availableTheatreSlotDateOutsideRTT' => array('xpath' => "//*[@class='available outside_rtt']"),
         'availableThreeWeeksTime' => array ('xpath' => "//*[@id='calendar']//*[contains(text(),'27')]"),
@@ -153,7 +152,7 @@ class OperationBooking extends OpenEyesPage
 
     public function scheduleNow ()
     {
-        $this->getElement('scheduleNow')->keyPress(2191);
+        //$this->getElement('scheduleNow')->keyPress(2191);
         $this->getElement('scheduleNow')->click();
         $this->getSession()->wait(15000,"window.$ && $('.event-title').html() == 'Schedule Operation' ");
     }
@@ -173,15 +172,16 @@ class OperationBooking extends OpenEyesPage
 
     public function availableSlotExactDay ($day)
     {
-        $this->getElement('availableSlotExactDate')->click();
-		$this->getSession()->wait(15000, "window.$ && $('#calendar td.available.selected_date').html().trim() == '15' ");
-//        Need to include
+		$slot = $this->find('xpath' , "//*[@id='calendar']//*[contains(number(),'" . $day ."')]");
+		$slot->click();
+		$this->getSession()->wait(15000, "window.$ && $('#calendar td.available.selected_date').html().trim() == '" . $day . "' ");
     }
 
     public function availableSlot ()
     {
         $slots = $this->findAll('xpath', $this->getElement('availableTheatreSlotDate')->getXpath());
         foreach ($slots as $slot) {
+            $this->scrollWindowToElement($slot);
             $slot->click();
             $this->getSession()->wait(10000, "$('.sessionTimes').length > 0");
             $freeSession = $this->find('css', '.sessionTimes > a > .bookable');
@@ -210,7 +210,9 @@ class OperationBooking extends OpenEyesPage
 
     public function availableSessionTime ()
     {
-        $this->getElement('availableTheatreSessionTime')->click();
+        $element = $this->getElement('availableTheatreSessionTime');
+        $this->scrollWindowToElement($element);
+        $element->click();
         $this->getSession()->wait(10000);
     }
 

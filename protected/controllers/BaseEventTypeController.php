@@ -103,15 +103,6 @@ class BaseEventTypeController extends BaseController
 		);
 	}
 
-	/**
-	 * Whether the current user is allowed to call print actions
-	 * @return boolean
-	 */
-	public function canPrint()
-	{
-		return BaseController::checkUserLevel(3);
-	}
-
 	public function renderEventMetadata($view='//patient/event_metadata')
 	{
 		$this->renderPartial($view);
@@ -152,17 +143,9 @@ class BaseEventTypeController extends BaseController
 					Yii::app()->clientScript->registerScriptFile($this->assetPath.'/js/module.js');
 				}
 
-				if (file_exists(Yii::getPathOfAlias('application.modules.'.$this->getModule()->name.'.assets.js').'/'.get_class($this).'.js')) {
-					Yii::app()->clientScript->registerScriptFile($this->assetPath.'/js/'.get_class($this).'.js');
-				}
-
 				// Register css
 				if (file_exists(Yii::getPathOfAlias('application.modules.'.$this->getModule()->name.'.assets.css').'/module.css')) {
 					$this->registerCssFile('module.css',$this->assetPath.'/css/module.css',10);
-				}
-
-				if (file_exists(Yii::getPathOfAlias('application.modules.'.$this->getModule()->name.'.assets.css').'/css/'.get_class($this).'.css')) {
-					$this->registerCssFile(get_class($this).'.css',$this->assetPath.'/css/'.get_class($this).'.css',10);
 				}
 			}
 		}
@@ -702,26 +685,28 @@ class BaseEventTypeController extends BaseController
 					$keys = array_keys($_POST[$elementClassName]);
 
 					if (is_array($_POST[$elementClassName][$keys[0]])) {
-						if (!isset($generic[$elementClassName])) {
-							$generic[$elementClassName] = $_POST[$elementClassName];
-						}
 
-						$element = new $elementClassName;
+						$generic[$elementClassName] = $_POST[$elementClassName];
 
-						foreach ($keys as $key) {
-							if ($key != '_element_id') {
-								$element->{$key} = array_shift($generic[$elementClassName][$key]);
+						for ($i = 0; $i < count($_POST[$elementClassName][$keys[0]]); $i++)
+						{
+							$element = new $elementClassName;
+
+							foreach ($keys as $key) {
+								if ($key != '_element_id') {
+									$element->{$key} = array_shift($generic[$elementClassName][$key]);
+								}
 							}
-						}
 
-						$this->setPOSTManyToMany($element);
+							$this->setPOSTManyToMany($element);
 
-						if (!$element->validate()) {
-							$proc_name = $element->procedure->term;
-							$elementName = $element->getElementType()->name;
-							foreach ($element->getErrors() as $errormsgs) {
-								foreach ($errormsgs as $error) {
-									$errors[$proc_name][] = $error;
+							if (!$element->validate()) {
+								$proc_name = $element->procedure->term;
+								$elementName = $element->getElementType()->name;
+								foreach ($element->getErrors() as $errormsgs) {
+									foreach ($errormsgs as $error) {
+										$errors[$proc_name][] = $error;
+									}
 								}
 							}
 						}

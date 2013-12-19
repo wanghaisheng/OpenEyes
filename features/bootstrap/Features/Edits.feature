@@ -1,4 +1,4 @@
-@edit
+@editdelete
 Feature: These tests set up Events, Edit and Delete them.
 
 #  Scenario: Route 1A: Login and create a Anaesthetic Satisfaction Audit Regression: Site 2 Kings, Firm 3 Anderson Glaucoma
@@ -128,7 +128,7 @@ Feature: These tests set up Events, Edit and Delete them.
 #    Then I select the Latest Event
 #
 #    And I delete the Last Event
-
+#
 #  Scenario: Route 3A: Login and create a Phasing Event
 #
 #    Given I am on the OpenEyes "master" homepage
@@ -204,7 +204,7 @@ Feature: These tests set up Events, Edit and Delete them.
 #    Then I select the Latest Event
 #
 #    And I delete the Last Event
-
+#
 #  Scenario: Route 4A: Login and fill in a Correspondence
 #
 #    Given I am on the OpenEyes "master" homepage
@@ -342,8 +342,8 @@ Feature: These tests set up Events, Edit and Delete them.
 
     Given I am on the OpenEyes "master" homepage
     And I enter login credentials "admin" and "admin"
-    And I select Site "2"
-    Then I select a firm of "3"
+    And I select Site "1"
+    Then I select a firm of "1"
 
     Then I search for patient name last name "Coffin," and first name "Violet"
 
@@ -394,8 +394,8 @@ Feature: These tests set up Events, Edit and Delete them.
 
     Given I am on the OpenEyes "master" homepage
     And I enter login credentials "admin" and "admin"
-    And I select Site "2"
-    Then I select a firm of "3"
+    And I select Site "1"
+    Then I select a firm of "1"
 
     Then I search for patient name last name "Coffin," and first name "Violet"
 
