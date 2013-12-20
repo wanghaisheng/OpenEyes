@@ -43,9 +43,13 @@ class PatientService extends OEService {
 	 */
 	public function create($contents) {
 		$fhirMarshal = new FhirMarshal();
-		$p = $fhirMarshal->unmarshal($contents);
-		$p->save();
-		return $p;
+		$patient = null;
+		$p = $fhirMarshal->unmarshal($contents, true);
+		if ($p && count($p) == 1) {
+			$p[0]->save();
+			$patient = $p[0];
+		}
+		return $patient;
 	}
 
 	/**

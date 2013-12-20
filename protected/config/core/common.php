@@ -64,9 +64,7 @@ return array(
             'class' => 'HttpRequest',
             'noCsrfValidationRoutes' => array(
                 'site/login', //disabled csrf check on login form
-                'api/create',
-                'api/update',
-                'api/delete'
+                'api',
             ),
         ),
         'event' => array(
@@ -86,12 +84,12 @@ return array(
             'showScriptName' => false,
             'rules' => array(
                 // API
-                array('api/read', 'pattern'=>'api/read/<resource:\w+>/<id:\d+>', 'verb'=>'GET'),
+                array('api/read', 'pattern'=>'api/<resource:\w+>/<id:\d+>', 'verb'=>'GET'),
 								array('api/vread', 'pattern' => 'api/<resource:\w+>/@<id:\d+>/history/@<vid:\d+>', 'verb' => 'GET'),
-                array('api/update', 'pattern' => 'api/update/<resource:\w+>/<id:\d+>', 'verb' => 'PUT'),
-                array('api/delete', 'pattern' => 'api/delete/<resource:\w+>/<id:\d+>', 'verb' => 'DELETE'),
-                array('api/create', 'pattern' => 'api/create/<resource:\w+>', 'verb' => 'POST'),
-                array('api/search', 'pattern' => 'api/search/<resource:\w+>(/search)?', 'verb' => 'GET'),
+                array('api/update', 'pattern' => 'api/<resource:\w+>/<id:\d+>', 'verb' => 'PUT'),
+                array('api/delete', 'pattern' => 'api/<resource:\w+>/<id:\d+>', 'verb' => 'DELETE'),
+                array('api/create', 'pattern' => 'api/<resource:\w+>', 'verb' => 'POST'),
+                array('api/search', 'pattern' => 'api/<resource:\w+>(/search)?', 'verb' => 'GET'),
                 // transaction:
                 array('api/', 'pattern' => 'api/<resource:\w+>/@<id:\d+>', 'verb' => 'POST'),
                 array('api/badrequest', 'pattern' => 'api/(.*)'),
