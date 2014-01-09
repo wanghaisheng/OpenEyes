@@ -1,5 +1,61 @@
 <?php
 
+/**
+ * FHIR classes, named fhir_[resourceName], as mappings of FHIR-defined XML
+ * objects.
+ * 
+ * Each named member variable of a class will contain within it's documentation
+ * one of two entries: either the type of the object used for that member,
+ * for example birthDate:
+ * 
+ * /** fhir_dateTime * /
+ * public $birthDate;
+ * 
+ * ... showing that the member $birthDate should be populated by a fhir_dateTime
+ * instance; or a second form, where FHIR specifies collections
+ * (0 to many etc.):
+ * 
+ * /** array() of fhir_patientContact * /
+ * public $contact;
+ * 
+ * ... shows that the $contact member should be instantiated with an array()
+ * of fhir_patientContact instances.
+ * 
+ * By default, since the members are part of the class, even when using
+ * json_encode null entries are printed; this can be removed by issuing an
+ * (ugly) preg replace on the output:
+ * 
+ * $patient = new fhir_patient();
+ * // ... more instantiation of patient ...
+ * $json = json_encode($patient, true);
+ * echo preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?/', '',$json) . PHP_EOL;
+ * 
+ * TODO use a recursive function to unset null values.
+ * 
+ * The following code shows an example of a FHIR patient being created:
+ * 
+ * $patient = new fhir_patient();
+ * $patient->birthDate = "10/10/1940";
+ * $name = new fhir_humanName();
+ * $patient->name = array($name);
+ * $given_name = new fhir_string();
+ * $given_name->value = "John";
+ * $family_name = new fhir_string();
+ * $family_name->value = "Smith";
+ * $name->family = array($family_name);
+ * $name->given = array($given_name);
+ * $id_pas = new fhir_identifier();
+ * $id_pas->use = new fhir_identifierUse;
+ * $id_pas->use->value = "PAS";
+ * $id_pas->value = "1000001";
+ * $id_nhs = new fhir_identifier();
+ * $id_nhs->use = new fhir_identifierUse;
+ * $id_nhs->use->value = "NHS";
+ * $id_nhs->value = "X0000001";
+ * $patient->identifierArray = array($id_pas, $id_nhs);
+ * 
+ * echo preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?/', '', json_encode($patient, true)) . PHP_EOL;
+ */
 class fhir_patient {
   /** fhir_boolean */
   public $active;
@@ -7808,27 +7864,5 @@ class ParamDocumentEnum_0 {
 
 class NarrativeStatusListEnum_0 {
 }
-
-$patient = new fhir_patient();
-$patient->birthDate = "10/10/1940";
-$name = new fhir_humanName();
-$patient->name = array($name);
-$given_name = new fhir_string();
-$given_name->value = "John";
-$family_name = new fhir_string();
-$family_name->value = "Smith";
-$name->family = array($family_name);
-$name->given = array($given_name);
-$id_pas = new fhir_identifier();
-$id_pas->use = new fhir_identifierUse;
-$id_pas->use->value = "PAS";
-$id_pas->value = "1000001";
-$id_nhs = new fhir_identifier();
-$id_nhs->use = new fhir_identifierUse;
-$id_nhs->use->value = "NHS";
-$id_nhs->value = "X0000001";
-$patient->identifierArray = array($id_pas, $id_nhs);
-
-echo preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?/', '', json_encode($patient, true)) . PHP_EOL;
-
+ 
 ?>

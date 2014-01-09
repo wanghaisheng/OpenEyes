@@ -1,5 +1,27 @@
 <?php
 
+/**
+ * ATOM classes, named atom_[resourceName], as mappings of ATOM-defined XML
+ * objects.
+ * 
+ * Each named member variable of a class will contain within it's documentation
+ * one of two entries: either the type of the object used for that member,
+ * for example birthDate:
+ * 
+ * /** string * /
+ * public $lang;
+ * 
+ * ... showing that the member $lang should be populated by a string
+ * instance; or a second form, where ATOM specifies collections
+ * (0 to many etc.):
+ * 
+ * /** array() of atom_linkType * /
+ * public $link;
+ * 
+ * ... shows that the $link member should be instantiated with an array()
+ * of atom_linkType instances.
+ */
+
 class atom_feedType {
   /** array() of atom_personType */
   public $author;
