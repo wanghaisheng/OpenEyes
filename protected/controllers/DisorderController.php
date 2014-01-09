@@ -19,17 +19,12 @@
 
 class DisorderController extends BaseController
 {
-	public $layout='column2';
-
 	public function accessRules()
 	{
 		return array(
-			// Level 2 or above can do anything
 			array('allow',
-				'expression' => 'BaseController::checkUserLevel(2)',
+				'roles' => array('OprnViewClinical'),
 			),
-			// Deny anything else (default rule allows authenticated users)
-			array('deny'),
 		);
 	}
 

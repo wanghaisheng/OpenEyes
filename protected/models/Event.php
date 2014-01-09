@@ -107,19 +107,6 @@ class Event extends BaseActiveRecord
 		);
 	}
 
-	public function getEditable()
-	{
-		if (!$this->episode->editable) {
-			return FALSE;
-		}
-
-		if ($this->episode->patient->date_of_death) {
-			return FALSE;
-		}
-
-		return TRUE;
-	}
-
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -154,13 +141,21 @@ class Event extends BaseActiveRecord
 		));
 	}
 
-	/* Does this event have some kind of issue that the user should know about */
-
+	/**
+	 * Does this event have some kind of issue that the user should know about
+	 *
+	 * @return boolean
+	 */
 	public function hasIssue()
 	{
 		return (boolean) $this->issues;
 	}
 
+	/**
+	 * Get the text for any issues on this event
+	 *
+	 * @return string
+	 */
 	public function getIssueText()
 	{
 		$text = '';
@@ -172,6 +167,12 @@ class Event extends BaseActiveRecord
 		return $text;
 	}
 
+	/**
+	 * parse out placeholders in the given text
+	 *
+	 * @param $text
+	 * @return mixed
+	 */
 	public function expandIssueText($text)
 	{
 		if (preg_match_all('/\{(.*?)\}/',$text,$m)) {
@@ -191,15 +192,12 @@ class Event extends BaseActiveRecord
 		return $text;
 	}
 
-	public function getInfoText()
-	{
-		foreach (Yii::app()->getController()->getDefaultElements('view',false,$this) as $element) {
-			if ($element->getInfoText()) {
-				return $element->getInfoText();
-			}
-		}
-	}
-
+	/**
+	 * Add an issue to this event
+	 *
+	 * @param $text
+	 * @return bool
+	 */
 	public function addIssue($text)
 	{
 		if (!$issue = Issue::model()->find('name=?',array($text))) {
@@ -223,6 +221,12 @@ class Event extends BaseActiveRecord
 		return true;
 	}
 
+	/**
+	 * Remove an issue assignment for this event
+	 *
+	 * @param $name
+	 * @return bool
+	 */
 	public function deleteIssue($name)
 	{
 		if (!$issue = Issue::model()->find('name=?',array($name))) {
@@ -236,6 +240,10 @@ class Event extends BaseActiveRecord
 		return true;
 	}
 
+	/**
+	 * Remove all issues assigned to this event
+	 *
+	 */
 	public function deleteIssues()
 	{
 		foreach (EventIssue::model()->findAll('event_id=?',array($this->id)) as $event_issue) {
@@ -243,29 +251,54 @@ class Event extends BaseActiveRecord
 		}
 	}
 
-	// Only the event creator can delete the event, and only 24 hours after its initial creation
-	public function canDelete()
+	/**
+	 * Marks an event as deleted and processes any softDelete methods that exist on the elements attached to it.
+	 *
+	 * @throws Exception
+	 */
+	public function softDelete()
 	{
-		if (!BaseController::checkUserLevel(4)) return false;
+		// perform this process in a transaction if one has not been created
+		$transaction = Yii::app()->db->getCurrentTransaction() === null
+			? Yii::app()->db->beginTransaction()
+			: false;
 
-		if ($this->episode->patient->date_of_death) return false;
-
-		if (!$this->episode->editable) return false;
-
-		$admin = User::model()->find('username=?',array('admin'));	 // these two lines should be replaced once we have rbac
-		if ($admin->id == Yii::app()->session['user']->id) {return true;}
-		return ($this->created_user_id == Yii::app()->session['user']->id && (time() - strtotime($this->created_date)) <= 86400);
+		try {
+			$this->deleted = 1;
+			foreach ($this->getElements() as $element) {
+				$element->softDelete();
+			}
+			if (!$this->save()) {
+				throw new Exception("Unable to mark event deleted: ".print_r($this->event->getErrors(),true));
+			}
+			if ($transaction) {
+				$transaction->commit();
+			}
+		}
+		catch (Exception $e) {
+			if ($transaction) {
+				$transaction->rollback();
+			}
+			throw $e;
+		}
 	}
 
+	/**
+	 * Deletes issues for this event before calling the parent delete method
+	 * Does not handle the removal of elements and will therefore fail if this has not been handled before being called.
+	 *
+	 * @return bool
+	 * @see parent::delete()
+	 */
 	public function delete()
 	{
 		// Delete related
 		EventIssue::model()->deleteAll('event_id = ?', array($this->id));
 
-		parent::delete();
+		return parent::delete();
 	}
 
-	/*
+	/**
 	 * returns the latest event of this type in the event episode
 	 *
 	 * @returns Event
@@ -281,7 +314,7 @@ class Event extends BaseActiveRecord
 		return Event::model()->find($criteria);
 	}
 
-	/*
+	/**
 	 * if this event is the most recent of its type in its episode, returns true. false otherwise
 	 *
 	 * @returns boolean
@@ -292,6 +325,15 @@ class Event extends BaseActiveRecord
 		return ($latest->id == $this->id) ? true : false;
 	}
 
+	/**
+	 * Sets various default properties for audit calls on this event
+	 *
+	 * @param $target
+	 * @param $action
+	 * @param null $data
+	 * @param bool $log
+	 * @param array $properties
+	 */
 	public function audit($target, $action, $data=null, $log=false, $properties=array())
 	{
 		$properties['event_id'] = $this->id;
@@ -301,4 +343,27 @@ class Event extends BaseActiveRecord
 		parent::audit($target, $action, $data, $log, $properties);
 	}
 
+	/**
+	 * returns the saved elements that belong to the event if it has any.
+	 *
+	 * @return BaseEventTypeElement[]
+	 */
+	public function getElements()
+	{
+		$elements = array();
+		if ($this->id) {
+			$criteria = new CDbCriteria;
+			$criteria->compare('event_type_id', $this->event_type_id);
+			$criteria->order = 'display_order asc';
+
+			foreach (ElementType::model()->findAll($criteria) as $element_type) {
+				$element_class = $element_type->class_name;
+
+				foreach ($element_class::model()->findAll('event_id = ?',array($this->id)) as $element) {
+					$elements[] = $element;
+				}
+			}
+		}
+		return $elements;
+	}
 }

@@ -22,8 +22,20 @@
 <script type="text/html" id="dialog-alert-template">
 	<p>{{{content}}}</p>
 	<div class="buttons">
-		<button class="classy green mini confirm ok" type="button">
-			<span class="button-span button-span-green">Ok</span>
+		<button class="secondary small confirm ok" type="button">
+			OK
+		</button>
+	</div>
+</script>
+<!-- Dialog confirm template -->
+<script type="text/html" id="dialog-confirm-template">
+	<p>{{{content}}}</p>
+	<div class="buttons">
+		<button class="secondary small confirm ok" type="button">
+			{{{okButton}}}
+		</button>
+		<button class="warning small confirm cancel" type="button">
+			{{{cancelButton}}}
 		</button>
 	</div>
 </script>

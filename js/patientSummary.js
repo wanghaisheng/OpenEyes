@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 	$('.removeDiagnosis').live('click',function(e) {
 		e.preventDefault();
 
@@ -23,13 +24,13 @@ $(document).ready(function() {
 				if (html == 'success') {
 					$('a.removeDiagnosis[rel="'+$('#diagnosis_id').val()+'"]').parent().parent().remove();
 				} else {
-					new OpenEyes.Dialog.Alert({
+					new OpenEyes.UI.Dialog.Alert({
 						content: "Sorry, an internal error occurred and we were unable to remove the diagnosis.\n\nPlease contact support for assistance."
 					}).open();
 				}
 			},
 			'error': function() {
-				new OpenEyes.Dialog.Alert({
+				new OpenEyes.UI.Dialog.Alert({
 					content: "Sorry, an internal error occurred and we were unable to remove the diagnosis.\n\nPlease contact support for assistance."
 				}).open();
 			}
@@ -50,10 +51,17 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var row = $(this).parent().parent();
+		var pca_id = row.attr('data-attr-pca-id');
+
+		// If we're currently editing this contact, hide the edit form
+		var edit_contact = $("#edit_contact:visible");
+		if (edit_contact.find("[name='pca_id']").val() == pca_id) {
+		    edit_contact.slideToggle('fast');
+		}
 
 		$.ajax({
 			'type': 'GET',
-			'url': baseUrl+'/patient/unassociateContact?pca_id='+row.attr('data-attr-pca-id'),
+			'url': baseUrl+'/patient/unassociateContact?pca_id='+pca_id,
 			'success': function(resp) {
 				if (resp == "1") {
 					if (row.attr('data-attr-location-id')) {
@@ -63,7 +71,7 @@ $(document).ready(function() {
 					}
 					row.remove();
 				} else {
-					new OpenEyes.Dialog.Alert({
+					new OpenEyes.UI.Dialog.Alert({
 						content: "There was an error removing the contact association, please try again or contact support for assistance."
 					}).open();
 				}

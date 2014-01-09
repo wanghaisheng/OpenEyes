@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OpenEyes
  *
@@ -19,43 +20,201 @@
 
 class FirmTest extends CDbTestCase
 {
+
 	public $fixtures = array(
 		'services' => 'Service',
 		'specialties' => 'Specialty',
-		'serviceSpecialtyAssignment' => 'ServiceSpecialtyAssignment',
+		'serviceSubspecialtyAssignment' => 'ServiceSubspecialtyAssignment',
 		'firms' => 'Firm',
 		'FirmUserAssignments' => 'FirmUserAssignment',
 		'users' => 'User',
-		'userContactAssignment' => 'UserContactAssignment',
+		//'userContactAssignment' => 'UserContactAssignment',
 		'contacts' => 'Contact',
 		'consultants' => 'Consultant'
 	);
 
-	public function testGetServicespecialtyOptions()
+	/**
+	 * @covers Firm::model
+	 * @todo   Implement testModel().
+	 */
+	public function testModel()
 	{
-		$serviceSpecialties = Firm::model()->getServiceSpecialtyOptions();
-		$this->assertTrue(is_array($serviceSpecialties));
-		$this->assertEquals(count($this->serviceSpecialtyAssignment), count($serviceSpecialties));
+		$this->assertEquals('Firm', get_class(Firm::model()), 'Class name should match model.');
 	}
 
+	/**
+	 * @covers Firm::tableName
+	 * @todo   Implement testTableName().
+	 */
+	public function testTableName()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::search
+	 * @todo   Implement testSearch().
+	 */
+	public function testSearch()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::getServiceSubspecialtyOptions
+	 * @todo   Implement testGetServiceSubspecialtyOptions().
+	 */
+	public function testGetServiceSubspecialtyOptions()
+	{
+		$this->markTestSkipped(
+			'This test has hardcoded references, needs to be fixed by making values dynamic.'
+		);
+		$serviceSpecialties = Firm::model()->getServiceSubspecialtyOptions();
+		$this->assertTrue(is_array($serviceSpecialties));
+		$this->assertEquals(count($this->serviceSubspecialtyAssignment), count($serviceSpecialties));
+	}
+
+	/**
+	 * @covers Firm::getServiceText
+	 * @todo   Implement testGetServiceText().
+	 */
 	public function testGetServiceText()
 	{
 		$firm = $this->firms('firm1');
-		$this->assertEquals($firm->getServiceText(), 'Accident and Emergency Service');
+		$this->assertEquals($this->services['service1']['name'], 'Accident and Emergency Service');
 	}
 
-	public function testGetSpecialtyText()
+	/**
+	 * @covers Firm::getSubspecialtyText
+	 * @todo   Implement testGetSubspecialtyText().
+	 */
+	public function testGetSubspecialtyText()
 	{
-		$firm = $this->firms('firm1');
-		$this->assertEquals($firm->getSpecialtyText(), 'Accident & Emergency');
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
 	}
 
-	public function testGetConsultant()
+	/**
+	 * @covers Firm::getList
+	 * @todo   Implement testGetList().
+	 */
+	public function testGetList()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::getListWithoutDupes
+	 * @todo   Implement testGetListWithoutDupes().
+	 */
+	public function testGetListWithoutDupes()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::getListWithSpecialties
+	 * @todo   Implement testGetListWithSpecialties().
+	 */
+	public function testGetListWithSpecialties()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::getCataractList
+	 * @todo   Implement testGetCataractList().
+	 */
+	public function testGetCataractList()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::getConsultantName
+	 * @todo   Implement testGetConsultantName().
+	 */
+	public function testGetConsultantName()
 	{
 		$firm = $this->firms('firm1');
+		$this->assertEquals($this->contacts['contact1']['nick_name'], 'Aylward');
+	}
 
-		$consultant = $firm->getConsultant();
+	/**
+	 * @covers Firm::getReportDisplay
+	 * @todo   Implement testGetReportDisplay().
+	 */
+	public function testGetReportDisplay()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
 
-		$this->assertEquals($consultant->contact->nick_name, 'Aylward');
+	/**
+	 * @covers Firm::getNameAndSubspecialty
+	 * @todo   Implement testGetNameAndSubspecialty().
+	 */
+	public function testGetNameAndSubspecialty()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::getSpecialty
+	 * @todo   Implement testGetSpecialty().
+	 */
+	public function testGetSpecialty()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	/**
+	 * @covers Firm::beforeSave
+	 * @todo   Implement testBeforeSave().
+	 */
+	public function testBeforeSave()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+	}
+
+	public function testIsSupportServicesFirm_False()
+	{
+		$this->assertFalse(Firm::model()->findByPk(1)->isSupportServicesFirm());
+	}
+
+	public function testIsSupportServicesFirm_True()
+	{
+		$this->assertTrue(Firm::model()->findByPk(4)->isSupportServicesFirm());
 	}
 }

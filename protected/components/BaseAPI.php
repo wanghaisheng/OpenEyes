@@ -26,13 +26,15 @@ class BaseAPI
 	 */
 	protected function getEventType()
 	{
-		if (!$event_type = EventType::model()->find('class_name=?',array(preg_replace('/_API$/','',get_class($this))))) {
-			throw new Exception("Unknown event type or incorrectly named API class: ".get_class($this));
+		$module_class = preg_replace('/_API$/','',get_class($this));
+
+		if (!$event_type = EventType::model()->find('class_name=?',array($module_class))) {
+			throw new Exception("Module is not migrated: $module_class");
 		}
 		return $event_type;
 	}
 
-	/*
+	/**
 	 * gets the element of type $element for the given patient in the given episode
 	 *
 	 * @param Patient $patient - the patient
@@ -57,7 +59,7 @@ class BaseAPI
 		}
 	}
 
-	/*
+	/**
 	 * gets all the events in the episode for the event type this API is for, for the given patient, most recent first.
 	 *
 	 * @param Patient $patient - the patient

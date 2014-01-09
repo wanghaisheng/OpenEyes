@@ -16,65 +16,75 @@
  * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-?>
-<div class="halfColumnRight">
-<div class="blueBox">
-	<h5>All Episodes<span style="float:right;">&nbsp; open <?php echo $episodes_open?> &nbsp;|&nbsp;<span style="font-weight:normal;">closed <?php echo $episodes_closed?></span></span></h5>
-	<div id="yw0" class="grid-view">
-		<?php if (empty($episodes)) {?>
-			<div class="summary">No episodes</div>
-		<?php } else {?>
-			<table class="items">
-				<thead>
-					<tr><th id="yw0_c0">Start  Date</th><th id="yw0_c1">End  Date</th><th id="yw0_c2">Firm</th><th id="yw0_c3">Subspecialty</th><th id="yw0_c4">Eye</th><th id="yw0_c5">Diagnosis</th></tr>
-				</thead>
-				<tbody>
-					<?php foreach ($ordered_episodes as $specialty_episodes) {?>
-						<tr>
-						<td colspan="6" class="all-episode specialty small"><?php echo $specialty_episodes['specialty']->name ?></td>
-						</tr>
-						<?php foreach ($specialty_episodes['episodes'] as $i => $episode) {?>
-							<tr id="<?php echo $episode->id?>" class="clickable all-episode <?php if ($i %2 == 0) {?>even<?php } else {?>odd<?php }?><?php if ($episode->end_date !== null) {?> closed<?php }?>">
-								<td><?php echo $episode->NHSDate('start_date'); ?></td>
-								<td><?php echo $episode->NHSDate('end_date'); ?></td>
-								<td><?php echo CHtml::encode($episode->firm->name)?></td>
-								<td><?php echo CHtml::encode($episode->firm->serviceSubspecialtyAssignment->subspecialty->name)?></td>
-								<td><?php echo ($episode->diagnosis) ? $episode->eye->name : 'No diagnosis' ?></td>
-								<td><?php echo ($episode->diagnosis) ? $episode->diagnosis->term : 'No diagnosis' ?></td>
-							</tr>
-						<?php }?>
-					<?php }?>
-				</tbody>
-			</table>
-			<div class="table_endRow"></div>
-		<?php }?>
-	</div>
-</div>
-<?php 
-$latest = $this->patient->getLatestEvent();
-$editable = false;
 
+//FIXME
+?>
+<section class="box patient-info episodes">
+	<header class="box-header">
+		<h3 class="box-title">All Episodes</h3>
+		<div class="box-info">
+			<strong>open <?php echo $episodes_open?> &nbsp;|&nbsp;closed <?php echo $episodes_closed?></strong>
+		</div>
+	</header>
+	<?php if (empty($episodes)) {?>
+		<div class="summary">No episodes</div>
+	<?php } else {?>
+	<table class="patient-episodes grid">
+		<thead>
+			<tr>
+				<th>Start Date</th>
+				<th>End Date</th>
+				<th>Firm</th>
+				<th>Subspecialty</th>
+				<th>Eye</th>
+				<th>Diagnosis</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($ordered_episodes as $specialty_episodes) {?>
+			<tr class="speciality">
+				<td colspan="6"><?php echo $specialty_episodes['specialty'] ?></td>
+			</tr>
+			<?php foreach ($specialty_episodes['episodes'] as $i => $episode) {?>
+				<tr id="<?php echo $episode->id?>" class="clickable all-episode <?php if ($episode->end_date !== null) {?> closed<?php }?>">
+					<td><?php echo $episode->NHSDate('start_date'); ?></td>
+					<td><?php echo $episode->NHSDate('end_date'); ?></td>
+					<td><?php echo $episode->firm ? CHtml::encode($episode->firm->name) : 'N/A'; ?></td>
+					<td><?php echo CHtml::encode($episode->getSubspecialtyText())?></td>
+					<td><?php echo ($episode->diagnosis) ? $episode->eye->name : 'No diagnosis' ?></td>
+					<td><?php echo ($episode->diagnosis) ? $episode->diagnosis->term : 'No diagnosis' ?></td>
+				</tr>
+			<?php }?>
+		<?php }?>
+		</tbody>
+	</table>
+	<?php }?>
+</section>
+<?php
 if ($episode = $this->patient->getEpisodeForCurrentSubspecialty()) {
 	$latest = $episode->getLatestEvent();
 	$subspecialty = $episode->getSubspecialty();
-	$editable = true;
 }
-if (!$editable && $latest) {
-	$editable = $latest->episode->editable;
+elseif ($latest = $this->patient->getLatestEvent()) {
 	$subspecialty = $latest->episode->getSubspecialty();
 }
 
 $msg = null;
 
 if ($latest) {
-	$msg = "Latest Event in " . $subspecialty->name . ": <strong>" . $latest->eventType->name . "</strong> <span class='small'>(" . $latest->NHSDate('created_date') . ")</span>";
+	$msg = "Latest Event";
+	if ($subspecialty) {
+		// might not be a subspecialty for legacy
+		$msg .= " in " . $subspecialty->name;
+	}
+	$msg .= ": <strong>" . $latest->eventType->name . "</strong> <span class='small'>(" . $latest->NHSDate('created_date') . ")</span>";
 }
-else if (BaseController::checkUserLevel(4)) {
+else if ($this->checkAccess('OprnCreateEpisode')) {
 	$msg = "Create episode / add event";
 }
 
 if ($msg) {
-	echo '<p>' . CHtml::link('<span class="aPush">'. $msg . '</span>',Yii::app()->createUrl('patient/episodes/'.$this->patient->id)) . '</p>';
+	echo '<div class="box patient-info episode-links">' . CHtml::link($msg,Yii::app()->createUrl('patient/episodes/'.$this->patient->id)) . '</div>';
 }
 
 try {
@@ -101,4 +111,3 @@ try {
 	$this->renderPartial('_family_history');
 }
 ?>
-</div>

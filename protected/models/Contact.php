@@ -169,7 +169,9 @@ class Contact extends BaseActiveRecord
 	public function contactLine($location=false)
 	{
 		$line = $this->fullName.' ('.$this->label->name;
-		if ($location) $line .= ', '.$location;
+		if ($location) {
+			$line .= ', '.$location;
+		}
 		return $line.')';
 	}
 
@@ -190,7 +192,7 @@ class Contact extends BaseActiveRecord
 		}
 		$criteria->order = 'title, first_name, last_name';
 
-		foreach (Contact::model()->findAll($criteria) as $contact) {
+		foreach (Contact::model()->with(array('locations'=>array('with'=>array('site','institution')),'label'))->findAll($criteria) as $contact) {
 			if ($contact->locations) {
 				foreach ($contact->locations as $location) {
 					$contacts[] = array(

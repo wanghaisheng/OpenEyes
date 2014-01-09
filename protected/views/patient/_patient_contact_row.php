@@ -21,7 +21,8 @@ $contact = $pca->location ? $pca->location->contact : $pca->contact;
 ?>
 <tr data-attr-pca-id="<?php echo $pca->id?>"<?php if ($pca->location) {?> data-attr-location-id="<?php echo $pca->location_id?>"<?php } if ($pca->contact) {?> data-attr-contact-id="<?php echo $pca->contact_id?>"<?php }?>>
 	<td>
-		<span class="large"><?php echo $contact->fullName?><br/><?php echo $contact->qualifications?></span>
+		<?php echo $contact->fullName?> <br />
+		<?php echo $contact->qualifications?>
 	</td>
 	<td>
 		<?php echo $pca->locationText?>
@@ -30,15 +31,15 @@ $contact = $pca->location ? $pca->location->contact : $pca->contact;
 		<?php echo $contact->label->name?>
 	</td>
 	<td>
-		<?php if (BaseController::checkUserLevel(4)) {?>
+		<?php if ($this->checkAccess('OprnEditContact')) {?>
 			<?php if ($pca->location) {?>
-				<a class="editContact small" rel="<?php echo $pca->id?>" href="#">
-					<strong>Edit</strong>
+				<a class="editContact" rel="<?php echo $pca->id?>" href="#">
+					Edit
 				</a>
 				<br/>
 			<?php }?>
 			<a class="removeContact small" rel="<?php echo $pca->id?>" href="#">
-				<strong>Remove</strong>
+				Remove
 			</a>
 		<?php }?>
 	</td>

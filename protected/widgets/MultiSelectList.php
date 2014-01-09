@@ -17,15 +17,18 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-class MultiSelectList extends BaseCWidget
+class MultiSelectList extends BaseFieldWidget
 {
-	public $htmlOptions;
-	public $options = array();
 	public $default_options = array();
 	public $filtered_options = array();
 	public $relation;
 	public $selected_ids = array();
 	public $relation_id_field;
+	public $options;
+	public $inline = false;
+	public $showRemoveAllLink = false;
+	public $sorted = false;
+	public $noSelectionsMessage;
 
 	public function init()
 	{
@@ -63,6 +66,11 @@ class MultiSelectList extends BaseCWidget
 			}
 		}
 
-		parent::init();
+		// if the widget has javascript, load it in
+		if (file_exists("protected/widgets/js/".get_class($this).".js")) {
+			$this->assetFolder = Yii::app()->getAssetManager()->publish('protected/widgets/js');
+		}
+
+		//NOTE: don't call parent init as the field behaviour doesn't work for the relations attribute with models
 	}
 }

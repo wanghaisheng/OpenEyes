@@ -17,48 +17,139 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-class AdminController extends BaseController
+class AdminController extends BaseAdminController
 {
 	public $layout = 'admin';
 	public $items_per_page = 30;
-
-	public function accessRules()
-	{
-		return array(
-			array('deny'),
-		);
-	}
-
-	protected function beforeAction($action)
-	{
-		$this->registerCssFile('admin.css', Yii::app()->createUrl("css/admin.css"));
-		Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl("js/admin.js"));
-
-		$this->jsVars['items_per_page'] = $this->items_per_page;
-
-		return parent::beforeAction($action);
-	}
 
 	public function actionIndex()
 	{
 		$this->redirect(array('/admin/users'));
 	}
 
-	public function actionUsers($id=false)
+	public function actionDrugs()
 	{
-		if ((integer) $id) {
-			$page = $id;
-		} else {
-			$page = 1;
+		$pagination = $this->initPagination(Drug::model());
+
+		$this->render('/admin/drugs',array(
+				'drugs' => $this->getItems(array(
+						'model' => 'Drug',
+						'page' => $pagination->currentPage ,
+					)),
+				'pagination' => $pagination,
+			));
+	}
+
+	public function actionAddDrug()
+	{
+		$drug=new Drug('create');
+
+		if (!empty($_POST)) {
+
+			$drug->attributes = $_POST['Drug'];
+
+			if (!$drug->validate()) {
+				$errors = $drug->getErrors();
+			} else {
+				if (!$drug->save()) {
+					throw new Exception("Unable to save drug: ".print_r($drug->getErrors(),true));
+				}
+
+				if(isset($_POST['allergies']))
+				{
+					$posted_allergy_ids = $_POST['allergies'];
+
+					//add new allergy mappings
+					foreach($posted_allergy_ids as $asign){
+						$allergy_assignment = new DrugAllergyAssignment();
+						$allergy_assignment->drug_id=$drug->id;
+						$allergy_assignment->allergy_id=$asign;
+						$allergy_assignment->save();
+					}
+				}
+
+				$this->redirect('/admin/drugs/'.ceil($drug->id/$this->items_per_page));
+			}
 		}
 
+		$this->render('/admin/adddrug',array(
+				'drug' => $drug,
+				'errors' => @$errors,
+			));
+	}
+
+	public function actionEditDrug($id)
+	{
+		if (!$drug = Drug::model()->findByPk($id)) {
+			throw new Exception("Drug not found: $id");
+		}
+		$drug->scenario = 'update';
+
+		if (!empty($_POST)) {
+
+			$drug->attributes = $_POST['Drug'];
+
+			if (!$drug->validate()) {
+				$errors = $drug->getErrors();
+			} else {
+				if (!$drug->save()) {
+					throw new Exception("Unable to save drug: ".print_r($drug->getErrors(),true));
+				}
+
+				$posted_allergy_ids = array();
+
+				if(isset($_POST['allergies'])){
+					$posted_allergy_ids = $_POST['allergies'];
+				}
+
+				$criteria=new CDbCriteria;
+				$criteria->compare('drug_id',$drug->id);
+				$allergy_assignments = DrugAllergyAssignment::model()->findAll($criteria);
+
+				$allergy_assignment_ids = array();
+				foreach($allergy_assignments as $allergy_assignment){
+					$allergy_assignment_ids[]=$allergy_assignment->allergy_id;
+				}
+
+				$allergy_assignment_ids_to_delete = array_diff($allergy_assignment_ids,$posted_allergy_ids);
+				$posted_allergy_ids_to_assign =  array_diff($posted_allergy_ids , $allergy_assignment_ids);
+
+				//add new allergy mappings
+				foreach($posted_allergy_ids_to_assign as $asign){
+					$allergy_assignment = new DrugAllergyAssignment();
+					$allergy_assignment->drug_id=$drug->id;
+					$allergy_assignment->allergy_id=$asign;
+					$allergy_assignment->save();
+				}
+
+				//delete redundant allergy mappings
+				foreach($allergy_assignments as $asigned){
+					if(in_array($asigned->allergy_id,$allergy_assignment_ids_to_delete)){
+						$asigned->delete();
+					}
+				}
+
+				$this->redirect('/admin/drugs/'.ceil($drug->id/$this->items_per_page));
+			}
+		}
+
+		$this->render('/admin/editdrug',array(
+				'drug' => $drug,
+				'errors' => @$errors,
+			));
+	}
+
+	public function actionUsers($id=false)
+	{
 		Audit::add('admin-User','list');
+		$pagination = $this->initPagination(User::model());
 
 		$this->render('/admin/users',array(
 			'users' => $this->getItems(array(
 				'model' => 'User',
-				'page' => $page,
+				'page' => $pagination->currentPage ,
 			)),
+			'pagination' => $pagination,
 		));
 	}
 
@@ -75,6 +166,9 @@ class AdminController extends BaseController
 				if (!$user->save()) {
 					throw new Exception("Unable to save user: ".print_r($user->getErrors(),true));
 				}
+
+				$user->saveRoles($_POST['User']['roles']);
+
 				Audit::add('admin-User','add',serialize($_POST));
 				$this->redirect('/admin/users/'.ceil($user->id/$this->items_per_page));
 			}
@@ -87,6 +181,7 @@ class AdminController extends BaseController
 			'errors' => @$errors,
 		));
 	}
+
 
 	public function actionEditUser($id)
 	{
@@ -128,6 +223,8 @@ class AdminController extends BaseController
 					}
 				}
 
+				$user->saveRoles($_POST['User']['roles']);
+
 				Audit::add('admin-User','edit',serialize(array_merge(array('id'=>$id),$_POST)));
 
 				$this->redirect('/admin/users/'.ceil($user->id/$this->items_per_page));
@@ -168,19 +265,16 @@ class AdminController extends BaseController
 
 	public function actionFirms($id=false)
 	{
-		if ((integer) $id) {
-			$page = $id;
-		} else {
-			$page = 1;
-		}
-
 		Audit::add('admin-Firm','list');
+
+		$pagination = $this->initPagination(Firm::model());
 
 		$this->render('/admin/firms',array(
 			'firms' => $this->getItems(array(
 				'model' => 'Firm',
-				'page' => $page,
+				'page' => $pagination->currentPage,
 			)),
+			'pagination' => $pagination,
 		));
 	}
 
@@ -239,15 +333,7 @@ class AdminController extends BaseController
 	public function getItems($params)
 	{
 		$model = $params['model']::model();
-		$pages = ceil(Yii::app()->db->createCommand()->select("count(*)")->from($model->tableName())->queryScalar() / $this->items_per_page);
-
-		if ($params['page'] <1) {
-			$page = 1;
-		} elseif ($params['page'] > $pages) {
-			$page = $pages;
-		} else {
-			$page = $params['page'];
-		}
+		$page = $params['page'];
 
 		$criteria = new CDbCriteria;
 		if (isset($params['order'])) {
@@ -255,20 +341,21 @@ class AdminController extends BaseController
 		} else {
 			$criteria->order = 'id asc';
 		}
-		$criteria->offset = ($page-1) * $this->items_per_page;
+		$criteria->offset = $page * $this->items_per_page;
 		$criteria->limit = $this->items_per_page;
 
-
 		if (!empty($_REQUEST['search'])) {
-			$criteria->addSearchCondition("username",$_REQUEST['search'],true,'OR');
-			$criteria->addSearchCondition("first_name",$_REQUEST['search'],true,'OR');
-			$criteria->addSearchCondition("last_name",$_REQUEST['search'],true,'OR');
+			if($params['model']=='User'){
+				$criteria->addSearchCondition("username",$_REQUEST['search'],true,'OR');
+				$criteria->addSearchCondition("first_name",$_REQUEST['search'],true,'OR');
+				$criteria->addSearchCondition("last_name",$_REQUEST['search'],true,'OR');
+			}
+			else if($params['model']=='Drug'){
+				$criteria->addSearchCondition("name",$_REQUEST['search'],true,'OR');
+			}
 		}
-
 		return array(
-			'items' => $params['model']::model()->findAll($criteria),
-			'page' => $page,
-			'pages' => $pages,
+			'items' => $model->findAll($criteria),
 		);
 	}
 
@@ -285,16 +372,7 @@ class AdminController extends BaseController
 
 	public function actionContacts($id=false)
 	{
-		if ((integer) $id) {
-			$page = $id;
-		} else {
-			$page = 1;
-		}
-
-		if (!empty($_GET)) {
-			$contacts = $this->searchContacts();
-		}
-
+		$contacts = $this->searchContacts();
 		Audit::add('admin-Contact','list');
 
 		$this->render('/admin/contacts',array('contacts'=>@$contacts));
@@ -302,27 +380,22 @@ class AdminController extends BaseController
 
 	public function actionContactlabels($id=false)
 	{
-		if ((integer) $id) {
-			$page = $id;
-		} else {
-			$page = 1;
-		}
-
 		Audit::add('admin-ContactLabel','list');
+		$pagination = $this->initPagination(ContactLabel::model());
 
 		$this->render('/admin/contactlabels',array(
 			'contactlabels' => $this->getItems(array(
 				'model' => 'ContactLabel',
 				'order' => 'name asc',
-				'page' => $page,
+				'page' => $pagination->currentPage,
 			)),
+			'pagination' => $pagination
 		));
 	}
 
 	public function searchContacts()
 	{
 		$criteria = new CDbCriteria;
-
 		Audit::add('admin-Contact','search',@$_GET['q']);
 
 		$ex = explode(' ',@$_GET['q']);
@@ -348,6 +421,7 @@ class AdminController extends BaseController
 		}
 
 		$criteria->order = 'title, first_name, last_name';
+		$pagination = $this->initPagination(Contact::model() , $criteria);
 
 		$contacts = Contact::model()->findAll($criteria);
 
@@ -357,32 +431,9 @@ class AdminController extends BaseController
 			return;
 		}
 
-		$pages = ceil(count($contacts) / $this->items_per_page);
-
-		$page = (integer) @$_GET['page'];
-
-		if ($page <1) {
-			$page = 1;
-		} elseif ($page > $pages) {
-			$page = $pages;
-		}
-
-		$_contacts = array();
-
-		foreach ($contacts as $i => $contact) {
-			if ($i >= (($page-1) * $this->items_per_page)) {
-				$_contacts[] = $contact;
-			}
-
-			if (count($_contacts) >= $this->items_per_page) {
-				break;
-			}
-		}
-
 		return array(
-			'page' => $page,
-			'pages' => $pages,
-			'contacts' => $_contacts,
+			'contacts' => $contacts,
+			'pagination' =>$pagination
 		);
 	}
 
@@ -506,20 +557,16 @@ class AdminController extends BaseController
 
 	public function actionInstitutions($id=false)
 	{
-		if ((integer) $id) {
-			$page = $id;
-		} else {
-			$page = 1;
-		}
-
 		Audit::add('admin-Institution','list');
+		$pagination = $this->initPagination(Institution::model());
 
 		$this->render('/admin/institutions',array(
 			'institutions' => $this->getItems(array(
 				'model' => 'Institution',
 				'order' => 'name asc',
-				'page' => $page,
+				'page' => $pagination->currentPage,
 			)),
+			'pagination' => $pagination
 		));
 	}
 
@@ -620,20 +667,16 @@ class AdminController extends BaseController
 
 	public function actionSites($id=false)
 	{
-		if ((integer) $id) {
-			$page = $id;
-		} else {
-			$page = 1;
-		}
-
 		Audit::add('admin-Site','list');
+		$pagination = $this->initPagination(Site::model());
 
 		$this->render('/admin/sites',array(
 			'sites' => $this->getItems(array(
 				'model' => 'Site',
 				'order' => 'name asc',
-				'page' => $page,
+				'page' => $pagination->currentPage,
 			)),
+			'pagination' => $pagination
 		));
 	}
 
@@ -1158,7 +1201,7 @@ class AdminController extends BaseController
 				if (!$cbs->save()) {
 					throw new Exception("Unable to save CommissioningBodyService: ".print_r($cbs->getErrors(),true));
 				}
-				
+
 				if (!$address->save()) {
 					throw new Exception("Unable to save CommissioningBodyService address: ".print_r($address->getErrors(),true));
 				}

@@ -119,18 +119,25 @@ class Helper
 	 * If date of death provided, then returns age at point of death
 	 * @param string $dob
 	 * @param string $date_of_death
+	 * @param string $check_date Optional date to check age at (default is today)
+	 *
+	 * @return string $age
 	 */
-	public static function getAge($dob, $date_of_death = null)
+	public static function getAge($dob, $date_of_death = null, $check_date = null)
 	{
 		if (!$dob) return 'Unknown';
-		$date = date('Ymd', strtotime($dob));
-		$end_date = ($date_of_death) ? strtotime($date_of_death) : time();
-		$age = date('Y',$end_date) - substr($date, 0, 4);
-		$birthDate = substr($date, 4, 2) . substr($date, 6, 2);
-		if (date('md',$end_date) < $birthDate) {
-			$age--; // birthday hasn't happened yet this year
+
+		$dob_datetime = new DateTime($dob);
+		$check_datetime = new DateTime($check_date);
+
+		if ($date_of_death) {
+			$dod_datetime = new DateTime($date_of_death);
+			if ($check_datetime->diff($dod_datetime)->invert) {
+				$check_datetime = $dod_datetime;
+			}
 		}
-		return $age;
+
+		return $dob_datetime->diff($check_datetime)->y;
 	}
 
 	public static function getMonthText($month, $long=false)
@@ -187,6 +194,27 @@ class Helper
 			case 5: return 'Friday';
 			case 6: return 'Saturday';
 			case 7: return 'Sunday';
+		}
+	}
+
+	/**
+	 * convert string of format n[units] to bytes
+	 * units can be one of B, KB, MB, GB, TB, PB, EB, ZB or YB (case-insensitive)
+	 *
+	 * @param $val
+	 * @return mixed
+	 */
+	public static function convertToBytes($val)
+	{
+		$units = array('B'=>0, 'KB'=>1, 'MB'=>2, 'GB'=>3, 'TB'=>4, 'PB'=>5, 'EB'=>6, 'ZB'=>7, 'YB'=>8);
+		$regexp = implode('|', array_keys($units));
+		if (intval($val) === $val) {
+			// no units, so simply return
+			return $val;
+		}
+
+		if (preg_match('/^([\d\.]+)(' . $regexp . ')$/', strtoupper($val), $matches)) {
+			return $matches[1] * pow(1024, $units[$matches[2]]);
 		}
 	}
 }
