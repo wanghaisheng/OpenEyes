@@ -4,17 +4,17 @@ class fhir_patient {
   /** fhir_boolean */
   public $active;
   /** array() of fhir_address */
-  public $addressArray;
+  public $address;
   /** fhir_patientAnimal */
   public $animal;
   /** fhir_dateTime */
   public $birthDate;
   /** array() of fhir_resourceReference */
-  public $careProviderArray;
+  public $careProvider;
   /** array() of fhir_codeableConcept */
-  public $communicationArray;
+  public $communication;
   /** array() of fhir_patientContact */
-  public $contactArray;
+  public $contact;
   /** fhir_boolean */
   public $deceasedBoolean;
   /** fhir_dateTime */
@@ -22,9 +22,9 @@ class fhir_patient {
   /** fhir_codeableConcept */
   public $gender;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_patientLink */
-  public $linkArray;
+  public $link;
   /** fhir_resourceReference */
   public $managingOrganization;
   /** fhir_codeableConcept */
@@ -34,16 +34,16 @@ class fhir_patient {
   /** fhir_integer */
   public $multipleBirthInteger;
   /** array() of fhir_humanName */
-  public $nameArray;
+  public $name;
   /** array() of fhir_attachment */
-  public $photoArray;
+  public $photo;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
 }
 
 class fhir_resource {
   /** array() of fhir_resourceInline */
-  public $containedArray;
+  public $contained;
   /** fhir_code */
   public $language;
   /** fhir_narrative */
@@ -52,12 +52,12 @@ class fhir_resource {
 
 class fhir_backboneElement {
   /** array() of fhir_extension */
-  public $modifierExtensionArray;
+  public $modifierExtension;
 }
 
 class fhir_element {
   /** array() of fhir_extension */
-  public $extensionArray;
+  public $extension;
   /** string */
   public $id;
 }
@@ -170,7 +170,7 @@ class fhir_address {
   /** fhir_string */
   public $country;
   /** array() of fhir_string */
-  public $lineArray;
+  public $line;
   /** fhir_period */
   public $period;
   /** array() of fhir_string */
@@ -247,7 +247,7 @@ class fhir_uri {
 
 class fhir_codeableConcept {
   /** array() of fhir_coding */
-  public $codingArray;
+  public $coding;
   /** fhir_string */
   public $text;
 }
@@ -307,15 +307,15 @@ class fhir_decimal {
 
 class fhir_humanName {
   /** array() of fhir_string */
-  public $familyArray;
+  public $family;
   /** array() of fhir_string */
-  public $givenArray;
+  public $given;
   /** fhir_period */
   public $period;
   /** array() of fhir_string */
-  public $prefixArray;
+  public $prefix;
   /** array() of fhir_string */
-  public $suffixArray;
+  public $suffix;
   /** fhir_string */
   public $text;
   /** fhir_nameUse */
@@ -408,7 +408,7 @@ class fhir_sampledDataDataType {
 
 class fhir_schedule {
   /** array() of fhir_period */
-  public $eventArray;
+  public $event;
   /** fhir_scheduleRepeat */
   public $repeat;
 }
@@ -463,9 +463,9 @@ class fhir_patientContact {
   /** fhir_resourceReference */
   public $organization;
   /** array() of fhir_codeableConcept */
-  public $relationshipArray;
+  public $relationship;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
 }
 
 class fhir_patientLink {
@@ -587,15 +587,15 @@ class fhir_adverseReaction {
   /** fhir_boolean */
   public $didNotOccurFlag;
   /** array() of fhir_adverseReactionExposure */
-  public $exposureArray;
+  public $exposure;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $recorder;
   /** fhir_resourceReference */
   public $subject;
   /** array() of fhir_adverseReactionSymptom */
-  public $symptomArray;
+  public $symptom;
 }
 
 class fhir_adverseReactionExposure {
@@ -637,7 +637,7 @@ class fhir_alert {
   /** fhir_codeableConcept */
   public $category;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_string */
   public $note;
   /** fhir_alertStatus */
@@ -655,15 +655,15 @@ class fhir_allergyIntolerance {
   /** fhir_criticality */
   public $criticality;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_resourceReference */
-  public $reactionArray;
+  public $reaction;
   /** fhir_dateTime */
   public $recordedDate;
   /** fhir_resourceReference */
   public $recorder;
   /** array() of fhir_resourceReference */
-  public $sensitivityTestArray;
+  public $sensitivityTest;
   /** fhir_sensitivityType */
   public $sensitivityType;
   /** fhir_sensitivityStatus */
@@ -704,19 +704,19 @@ class javaBase64Holder {
 
 class fhir_carePlan {
   /** array() of fhir_carePlanActivity */
-  public $activityArray;
+  public $activity;
   /** array() of fhir_resourceReference */
-  public $concernArray;
+  public $concern;
   /** array() of fhir_carePlanGoal */
-  public $goalArray;
+  public $goal;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_dateTime */
   public $modified;
   /** array() of fhir_string */
   public $notes;
   /** array() of fhir_carePlanParticipant */
-  public $participantArray;
+  public $participant;
   /** fhir_resourceReference */
   public $patient;
   /** fhir_period */
@@ -727,11 +727,11 @@ class fhir_carePlan {
 
 class fhir_carePlanActivity {
   /** array() of fhir_resourceReference */
-  public $actionResultingArray;
+  public $actionResulting;
   /** fhir_resourceReference */
   public $detail;
   /** array() of string */
-  public $goalArray;
+  public $goal;
   /** array() of fhir_string */
   public $notes;
   /** fhir_boolean */
@@ -754,7 +754,7 @@ class fhir_carePlanSimple {
   /** fhir_resourceReference */
   public $location;
   /** array() of fhir_resourceReference */
-  public $performerArray;
+  public $performer;
   /** fhir_resourceReference */
   public $product;
   /** fhir_quantity */
@@ -779,7 +779,7 @@ class fhir_carePlanActivityStatus {
 
 class fhir_carePlanGoal {
   /** array() of fhir_resourceReference */
-  public $concernArray;
+  public $concern;
   /** fhir_string */
   public $description;
   /** array() of fhir_string */
@@ -807,9 +807,9 @@ class fhir_carePlanStatus {
 
 class fhir_composition {
   /** array() of fhir_compositionAttester */
-  public $attesterArray;
+  public $attester;
   /** array() of fhir_resourceReference */
-  public $authorArray;
+  public $author;
   /** fhir_codeableConcept */
   public $class1;
   /** fhir_coding */
@@ -825,7 +825,7 @@ class fhir_composition {
   /** fhir_instant */
   public $instant;
   /** array() of fhir_compositionSection */
-  public $sectionArray;
+  public $section;
   /** fhir_compositionStatus */
   public $status;
   /** fhir_resourceReference */
@@ -838,7 +838,7 @@ class fhir_composition {
 
 class fhir_compositionAttester {
   /** array() of fhir_compositionAttestationMode */
-  public $modeArray;
+  public $mode;
   /** array() of fhir_resourceReference */
   public $party;
   /** fhir_dateTime */
@@ -852,9 +852,9 @@ class fhir_compositionAttestationMode {
 
 class fhir_compositionEvent {
   /** array() of fhir_codeableConcept */
-  public $codeArray;
+  public $code;
   /** array() of fhir_resourceReference */
-  public $detailArray;
+  public $detail;
   /** fhir_period */
   public $period;
 }
@@ -865,7 +865,7 @@ class fhir_compositionSection {
   /** fhir_resourceReference */
   public $content;
   /** array() of fhir_compositionSection */
-  public $sectionArray;
+  public $section;
   /** fhir_resourceReference */
   public $subject;
 }
@@ -877,7 +877,7 @@ class fhir_compositionStatus {
 
 class fhir_conceptMap {
   /** array() of fhir_conceptMapConcept */
-  public $conceptArray;
+  public $concept;
   /** fhir_string */
   public $copyright;
   /** fhir_dateTime */
@@ -899,7 +899,7 @@ class fhir_conceptMap {
   /** fhir_resourceReference */
   public $target;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
   /** fhir_string */
   public $version;
 }
@@ -908,9 +908,9 @@ class fhir_conceptMapConcept {
   /** fhir_code */
   public $code;
   /** array() of fhir_conceptMapDependsOn */
-  public $dependsOnArray;
+  public $dependsOn;
   /** array() of fhir_conceptMapMap */
-  public $mapArray;
+  public $map;
   /** fhir_uri */
   public $system;
 }
@@ -932,7 +932,7 @@ class fhir_conceptMapMap {
   /** fhir_conceptMapEquivalence */
   public $equivalence;
   /** array() of fhir_conceptMapDependsOn */
-  public $productArray;
+  public $product;
   /** fhir_uri */
   public $system;
 }
@@ -967,11 +967,11 @@ class fhir_condition {
   /** fhir_resourceReference */
   public $encounter;
   /** array() of fhir_conditionEvidence */
-  public $evidenceArray;
+  public $evidence;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_conditionLocation */
-  public $locationArray;
+  public $location;
   /** array() of fhir_string */
   public $notes;
   /** fhir_age */
@@ -979,7 +979,7 @@ class fhir_condition {
   /** fhir_date */
   public $onsetDate;
   /** array() of fhir_conditionRelatedItem */
-  public $relatedItemArray;
+  public $relatedItem;
   /** fhir_codeableConcept */
   public $severity;
   /** array() of fhir_conditionStage */
@@ -997,7 +997,7 @@ class fhir_conditionEvidence {
   /** fhir_codeableConcept */
   public $code;
   /** array() of fhir_resourceReference */
-  public $detailArray;
+  public $detail;
 }
 
 class fhir_conditionLocation {
@@ -1023,7 +1023,7 @@ class fhir_conditionRelationshipType {
 
 class fhir_conditionStage {
   /** array() of fhir_resourceReference */
-  public $assessmentArray;
+  public $assessment;
   /** fhir_codeableConcept */
   public $summary;
 }
@@ -1041,33 +1041,33 @@ class fhir_conformance {
   /** fhir_string */
   public $description;
   /** array() of fhir_conformanceDocument1 */
-  public $documentArray;
+  public $document;
   /** fhir_boolean */
   public $experimental;
   /** fhir_id */
   public $fhirVersion;
   /** array() of fhir_code */
-  public $formatArray;
+  public $format;
   /** fhir_string */
   public $identifier;
   /** fhir_conformanceImplementation */
   public $implementation;
   /** array() of fhir_conformanceMessaging */
-  public $messagingArray;
+  public $messaging;
   /** fhir_string */
   public $name;
   /** array() of fhir_resourceReference */
-  public $profileArray;
+  public $profile;
   /** fhir_string */
   public $publisher;
   /** array() of fhir_conformanceRest */
-  public $restArray;
+  public $rest;
   /** fhir_conformanceSoftware */
   public $software;
   /** fhir_conformanceStatementStatus */
   public $status;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
   /** fhir_string */
   public $version;
 }
@@ -1104,7 +1104,7 @@ class fhir_conformanceMessaging {
   /** fhir_uri */
   public $endpoint;
   /** array() of fhir_conformanceEvent */
-  public $eventArray;
+  public $event;
   /** fhir_integer */
   public $reliableCache;
 }
@@ -1121,7 +1121,7 @@ class fhir_conformanceEvent {
   /** fhir_conformanceEventMode */
   public $mode;
   /** array() of fhir_coding */
-  public $protocolArray;
+  public $protocol;
   /** fhir_resourceReference */
   public $request;
   /** fhir_resourceReference */
@@ -1140,17 +1140,17 @@ class fhir_conformanceEventMode {
 
 class fhir_conformanceRest {
   /** array() of fhir_uri */
-  public $documentMailboxArray;
+  public $documentMailbox;
   /** fhir_string */
   public $documentation;
   /** fhir_restfulConformanceMode */
   public $mode;
   /** array() of fhir_conformanceOperation1 */
-  public $operationArray;
+  public $operation;
   /** array() of fhir_conformanceQuery */
-  public $queryArray;
+  public $query;
   /** array() of fhir_conformanceResource */
-  public $resourceArray;
+  public $resource;
   /** fhir_conformanceSecurity */
   public $security;
 }
@@ -1178,12 +1178,12 @@ class fhir_conformanceQuery {
   /** fhir_string */
   public $name;
   /** array() of fhir_conformanceSearchParam */
-  public $parameterArray;
+  public $parameter;
 }
 
 class fhir_conformanceSearchParam {
   /** array() of fhir_string */
-  public $chainArray;
+  public $chain;
   /** fhir_string */
   public $documentation;
   /** fhir_string */
@@ -1191,7 +1191,7 @@ class fhir_conformanceSearchParam {
   /** fhir_uri */
   public $source;
   /** array() of fhir_code */
-  public $targetArray;
+  public $target;
   /** fhir_searchParamType */
   public $type;
   /** array() of fhir_string */
@@ -1205,15 +1205,15 @@ class fhir_searchParamType {
 
 class fhir_conformanceResource {
   /** array() of fhir_conformanceOperation */
-  public $operationArray;
+  public $operation;
   /** fhir_resourceReference */
   public $profile;
   /** fhir_boolean */
   public $readHistory;
   /** array() of fhir_string */
-  public $searchIncludeArray;
+  public $searchInclude;
   /** array() of fhir_conformanceSearchParam */
-  public $searchParamArray;
+  public $searchParam;
   /** fhir_code */
   public $type;
   /** fhir_boolean */
@@ -1234,13 +1234,13 @@ class fhir_restfulOperationType {
 
 class fhir_conformanceSecurity {
   /** array() of fhir_conformanceCertificate */
-  public $certificateArray;
+  public $certificate;
   /** fhir_boolean */
   public $cors;
   /** fhir_string */
   public $description;
   /** array() of fhir_codeableConcept */
-  public $serviceArray;
+  public $service;
 }
 
 class fhir_conformanceCertificate {
@@ -1266,11 +1266,11 @@ class fhir_conformanceStatementStatus {
 
 class fhir_device {
   /** array() of fhir_contact */
-  public $contactArray;
+  public $contact;
   /** fhir_date */
   public $expiry;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $location;
   /** fhir_string */
@@ -1303,12 +1303,12 @@ class fhir_deviceObservationReport {
   /** fhir_resourceReference */
   public $subject;
   /** array() of fhir_deviceObservationReportVirtualDevice */
-  public $virtualDeviceArray;
+  public $virtualDevice;
 }
 
 class fhir_deviceObservationReportVirtualDevice {
   /** array() of fhir_deviceObservationReportChannel */
-  public $channelArray;
+  public $channel;
   /** fhir_codeableConcept */
   public $code;
 }
@@ -1317,7 +1317,7 @@ class fhir_deviceObservationReportChannel {
   /** fhir_codeableConcept */
   public $code;
   /** array() of fhir_deviceObservationReportMetric */
-  public $metricArray;
+  public $metric;
 }
 
 class fhir_deviceObservationReportMetric {
@@ -1331,17 +1331,17 @@ class fhir_diagnosticOrder {
   /** fhir_resourceReference */
   public $encounter;
   /** array() of fhir_diagnosticOrderEvent */
-  public $eventArray;
+  public $event;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_diagnosticOrderItem */
-  public $itemArray;
+  public $item;
   /** fhir_resourceReference */
   public $orderer;
   /** fhir_diagnosticOrderPriority */
   public $priority;
   /** array() of fhir_resourceReference */
-  public $specimenArray;
+  public $specimen;
   /** fhir_diagnosticOrderStatus */
   public $status;
   /** fhir_resourceReference */
@@ -1370,9 +1370,9 @@ class fhir_diagnosticOrderItem {
   /** fhir_codeableConcept */
   public $code;
   /** array() of fhir_diagnosticOrderEvent */
-  public $eventArray;
+  public $event;
   /** array() of fhir_resourceReference */
-  public $specimenArray;
+  public $specimen;
   /** fhir_diagnosticOrderStatus */
   public $status;
 }
@@ -1384,7 +1384,7 @@ class fhir_diagnosticOrderPriority {
 
 class fhir_diagnosticReport {
   /** array() of fhir_codeableConcept */
-  public $codedDiagnosisArray;
+  public $codedDiagnosis;
   /** fhir_string */
   public $conclusion;
   /** fhir_dateTime */
@@ -1394,17 +1394,17 @@ class fhir_diagnosticReport {
   /** fhir_identifier */
   public $identifier;
   /** array() of fhir_diagnosticReportImage */
-  public $imageArray;
+  public $image;
   /** array() of fhir_resourceReference */
-  public $imagingStudyArray;
+  public $imagingStudy;
   /** fhir_dateTime */
   public $issued;
   /** fhir_resourceReference */
   public $performer;
   /** array() of fhir_attachment */
-  public $presentedFormArray;
+  public $presentedForm;
   /** array() of fhir_resourceReference */
-  public $requestDetailArray;
+  public $requestDetail;
   /** fhir_diagnosticReportResults */
   public $results;
   /** fhir_codeableConcept */
@@ -1424,11 +1424,11 @@ class fhir_diagnosticReportImage {
 
 class fhir_diagnosticReportResults {
   /** array() of fhir_diagnosticReportResults */
-  public $groupArray;
+  public $group;
   /** fhir_codeableConcept */
   public $name;
   /** array() of fhir_resourceReference */
-  public $resultArray;
+  public $result;
   /** fhir_resourceReference */
   public $specimen;
 }
@@ -1440,27 +1440,27 @@ class fhir_diagnosticReportStatus {
 
 class fhir_documentManifest {
   /** array() of fhir_resourceReference */
-  public $authorArray;
+  public $author;
   /** fhir_codeableConcept */
   public $confidentiality;
   /** array() of fhir_resourceReference */
-  public $contentArray;
+  public $content;
   /** fhir_dateTime */
   public $created;
   /** fhir_string */
   public $description;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_identifier */
   public $masterIdentifier;
   /** array() of fhir_resourceReference */
-  public $recipientArray;
+  public $recipient;
   /** fhir_uri */
   public $source;
   /** fhir_documentReferenceStatus */
   public $status;
   /** array() of fhir_resourceReference */
-  public $subjectArray;
+  public $subject;
   /** fhir_resourceReference */
   public $supercedes;
   /** fhir_codeableConcept */
@@ -1476,11 +1476,11 @@ class fhir_documentReference {
   /** fhir_resourceReference */
   public $authenticator;
   /** array() of fhir_resourceReference */
-  public $authorArray;
+  public $author;
   /** fhir_codeableConcept */
   public $class1;
   /** array() of fhir_codeableConcept */
-  public $confidentialityArray;
+  public $confidentiality;
   /** fhir_documentReferenceContext */
   public $context;
   /** fhir_dateTime */
@@ -1492,11 +1492,11 @@ class fhir_documentReference {
   /** fhir_codeableConcept */
   public $docStatus;
   /** array() of fhir_uri */
-  public $formatArray;
+  public $format;
   /** fhir_string */
   public $hash;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_instant */
   public $indexed;
   /** fhir_uri */
@@ -1510,7 +1510,7 @@ class fhir_documentReference {
   /** fhir_code */
   public $primaryLanguage;
   /** array() of fhir_documentReferenceRelatesTo */
-  public $relatesToArray;
+  public $relatesTo;
   /** fhir_documentReferenceService */
   public $service;
   /** fhir_integer */
@@ -1525,7 +1525,7 @@ class fhir_documentReference {
 
 class fhir_documentReferenceContext {
   /** array() of fhir_codeableConcept */
-  public $eventArray;
+  public $event;
   /** fhir_codeableConcept */
   public $facilityType;
   /** fhir_period */
@@ -1548,7 +1548,7 @@ class fhir_documentReferenceService {
   /** fhir_string */
   public $address;
   /** array() of fhir_documentReferenceParameter */
-  public $parameterArray;
+  public $parameter;
   /** fhir_codeableConcept */
   public $type;
 }
@@ -1566,17 +1566,17 @@ class fhir_encounter {
   /** fhir_encounterHospitalization */
   public $hospitalization;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $indication;
   /** fhir_duration */
   public $length;
   /** array() of fhir_encounterLocation */
-  public $locationArray;
+  public $location;
   /** fhir_resourceReference */
   public $partOf;
   /** array() of fhir_encounterParticipant */
-  public $participantArray;
+  public $participant;
   /** fhir_period */
   public $period;
   /** fhir_codeableConcept */
@@ -1590,7 +1590,7 @@ class fhir_encounter {
   /** fhir_resourceReference */
   public $subject;
   /** array() of fhir_codeableConcept */
-  public $typeArray;
+  public $type;
 }
 
 class fhir_encounterClass {
@@ -1600,7 +1600,7 @@ class fhir_encounterClass {
 
 class fhir_encounterHospitalization {
   /** array() of fhir_encounterAccomodation */
-  public $accomodationArray;
+  public $accomodation;
   /** fhir_codeableConcept */
   public $admitSource;
   /** fhir_resourceReference */
@@ -1620,9 +1620,9 @@ class fhir_encounterHospitalization {
   /** fhir_boolean */
   public $reAdmission;
   /** array() of fhir_codeableConcept */
-  public $specialArrangementArray;
+  public $specialArrangement;
   /** array() of fhir_codeableConcept */
-  public $specialCourtesyArray;
+  public $specialCourtesy;
 }
 
 class fhir_encounterAccomodation {
@@ -1646,7 +1646,7 @@ class fhir_encounterParticipant {
   /** fhir_resourceReference */
   public $individual;
   /** array() of fhir_codeableConcept */
-  public $typeArray;
+  public $type;
 }
 
 class fhir_encounterState {
@@ -1656,11 +1656,11 @@ class fhir_encounterState {
 
 class fhir_familyHistory {
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_string */
   public $note;
   /** array() of fhir_familyHistoryRelation */
-  public $relationArray;
+  public $relation;
   /** fhir_resourceReference */
   public $subject;
 }
@@ -1673,7 +1673,7 @@ class fhir_familyHistoryRelation {
   /** fhir_string */
   public $bornString;
   /** array() of fhir_familyHistoryCondition */
-  public $conditionArray;
+  public $condition;
   /** fhir_age */
   public $deceasedAge;
   /** fhir_boolean */
@@ -1711,13 +1711,13 @@ class fhir_group {
   /** fhir_boolean */
   public $actual;
   /** array() of fhir_groupCharacteristic */
-  public $characteristicArray;
+  public $characteristic;
   /** fhir_codeableConcept */
   public $code;
   /** fhir_identifier */
   public $identifier;
   /** array() of fhir_resourceReference */
-  public $memberArray;
+  public $member;
   /** fhir_string */
   public $name;
   /** fhir_integer */
@@ -1758,23 +1758,23 @@ class fhir_imagingStudy {
   /** fhir_string */
   public $description;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $interpreter;
   /** array() of fhir_imagingModality */
-  public $modalityArray;
+  public $modality;
   /** fhir_integer */
   public $numberOfInstances;
   /** fhir_integer */
   public $numberOfSeries;
   /** array() of fhir_resourceReference */
-  public $orderArray;
+  public $order;
   /** array() of fhir_coding */
-  public $procedureArray;
+  public $procedure;
   /** fhir_resourceReference */
   public $referrer;
   /** array() of fhir_imagingStudySeries */
-  public $seriesArray;
+  public $series;
   /** fhir_resourceReference */
   public $subject;
   /** fhir_oid */
@@ -1803,7 +1803,7 @@ class fhir_imagingStudySeries {
   /** fhir_string */
   public $description;
   /** array() of fhir_imagingStudyInstance */
-  public $instanceArray;
+  public $instance;
   /** fhir_modality */
   public $modality;
   /** fhir_integer */
@@ -1853,7 +1853,7 @@ class fhir_immunization {
   /** fhir_immunizationExplanation */
   public $explanation;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $location;
   /** fhir_string */
@@ -1863,7 +1863,7 @@ class fhir_immunization {
   /** fhir_resourceReference */
   public $performer;
   /** array() of fhir_immunizationReaction */
-  public $reactionArray;
+  public $reaction;
   /** fhir_boolean */
   public $refusedIndicator;
   /** fhir_boolean */
@@ -1877,16 +1877,16 @@ class fhir_immunization {
   /** fhir_resourceReference */
   public $subject;
   /** array() of fhir_immunizationVaccinationProtocol */
-  public $vaccinationProtocolArray;
+  public $vaccinationProtocol;
   /** fhir_codeableConcept */
   public $vaccineType;
 }
 
 class fhir_immunizationExplanation {
   /** array() of fhir_codeableConcept */
-  public $reasonArray;
+  public $reason;
   /** array() of fhir_codeableConcept */
-  public $refusalReasonArray;
+  public $refusalReason;
 }
 
 class fhir_immunizationReaction {
@@ -1919,9 +1919,9 @@ class fhir_immunizationVaccinationProtocol {
 
 class fhir_immunizationRecommendation {
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_immunizationRecommendationRecommendation */
-  public $recommendationArray;
+  public $recommendation;
   /** fhir_resourceReference */
   public $subject;
 }
@@ -1930,7 +1930,7 @@ class fhir_immunizationRecommendationRecommendation {
   /** fhir_dateTime */
   public $date;
   /** array() of fhir_immunizationRecommendationDateCriterion */
-  public $dateCriterionArray;
+  public $dateCriterion;
   /** fhir_integer */
   public $doseNumber;
   /** fhir_codeableConcept */
@@ -1938,9 +1938,9 @@ class fhir_immunizationRecommendationRecommendation {
   /** fhir_immunizationRecommendationProtocol */
   public $protocol;
   /** array() of fhir_resourceReference */
-  public $supportingImmunizationArray;
+  public $supportingImmunization;
   /** array() of fhir_resourceReference */
-  public $supportingPatientInformationArray;
+  public $supportingPatientInformation;
   /** fhir_codeableConcept */
   public $vaccineType;
 }
@@ -1971,9 +1971,9 @@ class fhir_list {
   /** fhir_codeableConcept */
   public $emptyReason;
   /** array() of fhir_listEntry */
-  public $entryArray;
+  public $entry;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_listMode */
   public $mode;
   /** fhir_boolean */
@@ -1990,7 +1990,7 @@ class fhir_listEntry {
   /** fhir_boolean */
   public $deleted;
   /** array() of fhir_codeableConcept */
-  public $flagArray;
+  public $flag;
   /** fhir_resourceReference */
   public $item;
 }
@@ -2058,7 +2058,7 @@ class fhir_media {
   /** fhir_integer */
   public $height;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_integer */
   public $length;
   /** fhir_resourceReference */
@@ -2106,7 +2106,7 @@ class fhir_medicationPackage {
   /** fhir_codeableConcept */
   public $container;
   /** array() of fhir_medicationContent */
-  public $contentArray;
+  public $content;
 }
 
 class fhir_medicationContent {
@@ -2120,7 +2120,7 @@ class fhir_medicationProduct {
   /** fhir_codeableConcept */
   public $form;
   /** array() of fhir_medicationIngredient */
-  public $ingredientArray;
+  public $ingredient;
 }
 
 class fhir_medicationIngredient {
@@ -2132,13 +2132,13 @@ class fhir_medicationIngredient {
 
 class fhir_medicationAdministration {
   /** array() of fhir_resourceReference */
-  public $deviceArray;
+  public $device;
   /** array() of fhir_medicationAdministrationDosage */
-  public $dosageArray;
+  public $dosage;
   /** fhir_resourceReference */
   public $encounter;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $medication;
   /** fhir_resourceReference */
@@ -2148,7 +2148,7 @@ class fhir_medicationAdministration {
   /** fhir_resourceReference */
   public $prescription;
   /** array() of fhir_codeableConcept */
-  public $reasonNotGivenArray;
+  public $reasonNotGiven;
   /** fhir_medicationAdministrationStatus */
   public $status;
   /** fhir_boolean */
@@ -2185,9 +2185,9 @@ class fhir_medicationAdministrationStatus {
 
 class fhir_medicationDispense {
   /** array() of fhir_resourceReference */
-  public $authorizingPrescriptionArray;
+  public $authorizingPrescription;
   /** array() of fhir_medicationDispenseDispense */
-  public $dispenseArray;
+  public $dispense;
   /** fhir_resourceReference */
   public $dispenser;
   /** fhir_identifier */
@@ -2204,7 +2204,7 @@ class fhir_medicationDispenseDispense {
   /** fhir_resourceReference */
   public $destination;
   /** array() of fhir_medicationDispenseDosage */
-  public $dosageArray;
+  public $dosage;
   /** fhir_identifier */
   public $identifier;
   /** fhir_resourceReference */
@@ -2212,7 +2212,7 @@ class fhir_medicationDispenseDispense {
   /** fhir_quantity */
   public $quantity;
   /** array() of fhir_resourceReference */
-  public $receiverArray;
+  public $receiver;
   /** fhir_medicationDispenseStatus */
   public $status;
   /** fhir_codeableConcept */
@@ -2257,9 +2257,9 @@ class fhir_medicationDispenseStatus {
 
 class fhir_medicationDispenseSubstitution {
   /** array() of fhir_codeableConcept */
-  public $reasonArray;
+  public $reason;
   /** array() of fhir_resourceReference */
-  public $responsiblePartyArray;
+  public $responsibleParty;
   /** fhir_codeableConcept */
   public $type;
 }
@@ -2270,11 +2270,11 @@ class fhir_medicationPrescription {
   /** fhir_medicationPrescriptionDispense */
   public $dispense;
   /** array() of fhir_medicationPrescriptionDosageInstruction */
-  public $dosageInstructionArray;
+  public $dosageInstruction;
   /** fhir_resourceReference */
   public $encounter;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $medication;
   /** fhir_resourceReference */
@@ -2347,17 +2347,17 @@ class fhir_medicationPrescriptionSubstitution {
 
 class fhir_medicationStatement {
   /** array() of fhir_resourceReference */
-  public $deviceArray;
+  public $device;
   /** array() of fhir_medicationStatementDosage */
-  public $dosageArray;
+  public $dosage;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $medication;
   /** fhir_resourceReference */
   public $patient;
   /** array() of fhir_codeableConcept */
-  public $reasonNotGivenArray;
+  public $reasonNotGiven;
   /** fhir_boolean */
   public $wasNotGiven;
   /** fhir_period */
@@ -2389,9 +2389,9 @@ class fhir_messageHeader {
   /** fhir_resourceReference */
   public $author;
   /** array() of fhir_resourceReference */
-  public $dataArray;
+  public $data;
   /** array() of fhir_messageHeaderDestination */
-  public $destinationArray;
+  public $destination;
   /** fhir_resourceReference */
   public $enterer;
   /** array() of fhir_coding */
@@ -2468,9 +2468,9 @@ class fhir_observation {
   /** fhir_codeableConcept */
   public $name;
   /** array() of fhir_resourceReference */
-  public $performerArray;
+  public $performer;
   /** array() of fhir_observationReferenceRange */
-  public $referenceRangeArray;
+  public $referenceRange;
   /** fhir_observationReliability */
   public $reliability;
   /** fhir_resourceReference */
@@ -2518,14 +2518,14 @@ class fhir_observationStatus {
 
 class fhir_operationOutcome {
   /** array() of fhir_operationOutcomeIssue */
-  public $issueArray;
+  public $issue;
 }
 
 class fhir_operationOutcomeIssue {
   /** fhir_string */
   public $details;
   /** array() of fhir_string */
-  public $locationArray;
+  public $location;
   /** fhir_issueSeverity */
   public $severity;
   /** fhir_coding */
@@ -2543,9 +2543,9 @@ class fhir_order {
   /** fhir_dateTime */
   public $date;
   /** array() of fhir_resourceReference */
-  public $detailArray;
+  public $detail;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_codeableConcept */
   public $reasonCodeableConcept;
   /** fhir_resourceReference */
@@ -2579,9 +2579,9 @@ class fhir_orderResponse {
   /** fhir_string */
   public $description;
   /** array() of fhir_resourceReference */
-  public $fulfillmentArray;
+  public $fulfillment;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $request;
   /** fhir_resourceReference */
@@ -2597,19 +2597,19 @@ class fhir_organization {
   /** fhir_boolean */
   public $active;
   /** array() of fhir_address */
-  public $addressArray;
+  public $address;
   /** array() of fhir_organizationContact */
-  public $contactArray;
+  public $contact;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_resourceReference */
-  public $locationArray;
+  public $location;
   /** fhir_string */
   public $name;
   /** fhir_resourceReference */
   public $partOf;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
   /** fhir_codeableConcept */
   public $type;
 }
@@ -2624,7 +2624,7 @@ class fhir_organizationContact {
   /** fhir_codeableConcept */
   public $purpose;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
 }
 
 class fhir_other {
@@ -2635,7 +2635,7 @@ class fhir_other {
   /** fhir_date */
   public $created;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_resourceReference */
   public $subject;
 }
@@ -2646,13 +2646,13 @@ class fhir_practitioner {
   /** fhir_dateTime */
   public $birthDate;
   /** array() of fhir_codeableConcept */
-  public $communicationArray;
+  public $communication;
   /** fhir_codeableConcept */
   public $gender;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_resourceReference */
-  public $locationArray;
+  public $location;
   /** fhir_humanName */
   public $name;
   /** fhir_resourceReference */
@@ -2660,15 +2660,15 @@ class fhir_practitioner {
   /** fhir_period */
   public $period;
   /** array() of fhir_attachment */
-  public $photoArray;
+  public $photo;
   /** array() of fhir_practitionerQualification */
-  public $qualificationArray;
+  public $qualification;
   /** array() of fhir_codeableConcept */
-  public $roleArray;
+  public $role;
   /** array() of fhir_codeableConcept */
-  public $specialtyArray;
+  public $specialty;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
 }
 
 class fhir_practitionerQualification {
@@ -2682,9 +2682,9 @@ class fhir_practitionerQualification {
 
 class fhir_procedure {
   /** array() of fhir_codeableConcept */
-  public $bodySiteArray;
+  public $bodySite;
   /** array() of fhir_codeableConcept */
-  public $complicationArray;
+  public $complication;
   /** fhir_period */
   public $date;
   /** fhir_resourceReference */
@@ -2692,19 +2692,19 @@ class fhir_procedure {
   /** fhir_string */
   public $followUp;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** array() of fhir_codeableConcept */
-  public $indicationArray;
+  public $indication;
   /** array() of fhir_string */
   public $notes;
   /** fhir_string */
   public $outcome;
   /** array() of fhir_procedurePerformer */
-  public $performerArray;
+  public $performer;
   /** array() of fhir_procedureRelatedItem */
-  public $relatedItemArray;
+  public $relatedItem;
   /** array() of fhir_resourceReference */
-  public $reportArray;
+  public $report;
   /** fhir_resourceReference */
   public $subject;
   /** fhir_codeableConcept */
@@ -2732,7 +2732,7 @@ class fhir_procedureRelationshipType {
 
 class fhir_profile {
   /** array() of fhir_coding */
-  public $codeArray;
+  public $code;
   /** fhir_dateTime */
   public $date;
   /** fhir_string */
@@ -2740,13 +2740,13 @@ class fhir_profile {
   /** fhir_boolean */
   public $experimental;
   /** array() of fhir_profileExtensionDefn */
-  public $extensionDefnArray;
+  public $extensionDefn;
   /** fhir_id */
   public $fhirVersion;
   /** fhir_string */
   public $identifier;
   /** array() of fhir_profileMapping */
-  public $mappingArray;
+  public $mapping;
   /** fhir_string */
   public $name;
   /** fhir_string */
@@ -2756,9 +2756,9 @@ class fhir_profile {
   /** fhir_resourceProfileStatus */
   public $status;
   /** array() of fhir_profileStructure */
-  public $structureArray;
+  public $structure;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
   /** fhir_string */
   public $version;
 }
@@ -2767,7 +2767,7 @@ class fhir_profileExtensionDefn {
   /** fhir_code */
   public $code;
   /** array() of fhir_string */
-  public $contextArray;
+  public $context;
   /** fhir_extensionContext */
   public $contextType;
   /** fhir_profileDefinition */
@@ -2787,9 +2787,9 @@ class fhir_profileDefinition {
   /** fhir_string */
   public $comments;
   /** array() of fhir_id */
-  public $conditionArray;
+  public $condition;
   /** array() of fhir_profileConstraint */
-  public $constraintArray;
+  public $constraint;
   /** fhir_address */
   public $exampleAddress;
   /** fhir_attachment */
@@ -2849,7 +2849,7 @@ class fhir_profileDefinition {
   /** fhir_boolean */
   public $isModifier;
   /** array() of fhir_profileMapping1 */
-  public $mappingArray;
+  public $mapping;
   /** fhir_string */
   public $max;
   /** fhir_integer */
@@ -2865,9 +2865,9 @@ class fhir_profileDefinition {
   /** array() of fhir_string */
   public $short;
   /** array() of fhir_string */
-  public $synonymArray;
+  public $synonym;
   /** array() of fhir_profileType */
-  public $typeArray;
+  public $type;
   /** fhir_address */
   public $valueAddress;
   /** fhir_attachment */
@@ -2976,7 +2976,7 @@ class fhir_profileMapping1 {
 
 class fhir_profileType {
   /** array() of fhir_aggregationMode */
-  public $aggregationArray;
+  public $aggregation;
   /** fhir_code */
   public $code;
   /** fhir_uri */
@@ -3006,7 +3006,7 @@ class fhir_resourceProfileStatus {
 
 class fhir_profileStructure {
   /** array() of fhir_profileElement */
-  public $elementArray;
+  public $element;
   /** fhir_string */
   public $name;
   /** fhir_boolean */
@@ -3025,7 +3025,7 @@ class fhir_profileElement {
   /** fhir_string */
   public $path;
   /** array() of fhir_propertyRepresentation */
-  public $representationArray;
+  public $representation;
   /** fhir_profileSlicing */
   public $slicing;
 }
@@ -3051,9 +3051,9 @@ class fhir_slicingRules {
 
 class fhir_provenance {
   /** array() of fhir_provenanceAgent */
-  public $agentArray;
+  public $agent;
   /** array() of fhir_provenanceEntity */
-  public $entityArray;
+  public $entity;
   /** fhir_string */
   public $integritySignature;
   /** fhir_resourceReference */
@@ -3061,13 +3061,13 @@ class fhir_provenance {
   /** fhir_period */
   public $period;
   /** array() of fhir_uri */
-  public $policyArray;
+  public $policy;
   /** fhir_codeableConcept */
   public $reason;
   /** fhir_instant */
   public $recorded;
   /** array() of fhir_resourceReference */
-  public $targetArray;
+  public $target;
 }
 
 class fhir_provenanceAgent {
@@ -3103,28 +3103,28 @@ class fhir_query {
   /** fhir_uri */
   public $identifier;
   /** array() of fhir_extension */
-  public $parameterArray;
+  public $parameter;
   /** fhir_queryResponse */
   public $response;
 }
 
 class fhir_queryResponse {
   /** array() of fhir_extension */
-  public $firstArray;
+  public $first;
   /** fhir_uri */
   public $identifier;
   /** array() of fhir_extension */
-  public $lastArray;
+  public $last;
   /** array() of fhir_extension */
-  public $nextArray;
+  public $next;
   /** fhir_queryOutcome */
   public $outcome;
   /** array() of fhir_extension */
-  public $parameterArray;
+  public $parameter;
   /** array() of fhir_extension */
-  public $previousArray;
+  public $previous;
   /** array() of fhir_resourceReference */
-  public $referenceArray;
+  public $reference;
   /** array() of fhir_integer */
   public $total;
 }
@@ -3144,7 +3144,7 @@ class fhir_questionnaire {
   /** array() of fhir_questionnaireGroup */
   public $group;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_codeableConcept */
   public $name;
   /** fhir_resourceReference */
@@ -3157,7 +3157,7 @@ class fhir_questionnaire {
 
 class fhir_questionnaireGroup {
   /** array() of fhir_questionnaireGroup */
-  public $groupArray;
+  public $group;
   /** fhir_string */
   public $header;
   /** fhir_codeableConcept */
@@ -3165,7 +3165,7 @@ class fhir_questionnaireGroup {
   /** fhir_boolean */
   public $ordered;
   /** array() of fhir_questionnaireQuestion */
-  public $questionArray;
+  public $question;
   /** fhir_resourceReference */
   public $subject;
   /** fhir_string */
@@ -3188,7 +3188,7 @@ class fhir_questionnaireQuestion {
   /** fhir_string */
   public $answerString;
   /** array() of fhir_coding */
-  public $choiceArray;
+  public $choice;
   /** fhir_address */
   public $dataAddress;
   /** fhir_attachment */
@@ -3244,7 +3244,7 @@ class fhir_questionnaireQuestion {
   /** fhir_uuid */
   public $dataUuid;
   /** array() of fhir_questionnaireGroup */
-  public $groupArray;
+  public $group;
   /** fhir_codeableConcept */
   public $name;
   /** fhir_resourceReference */
@@ -3266,26 +3266,26 @@ class fhir_relatedPerson {
   /** fhir_codeableConcept */
   public $gender;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_humanName */
   public $name;
   /** fhir_resourceReference */
   public $patient;
   /** array() of fhir_attachment */
-  public $photoArray;
+  public $photo;
   /** fhir_codeableConcept */
   public $relationship;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
 }
 
 class fhir_securityEvent {
   /** array() of fhir_securityEventEvent */
   public $event;
   /** array() of fhir_securityEventObject */
-  public $objectArray;
+  public $object;
   /** array() of fhir_securityEventParticipant */
-  public $participantArray;
+  public $participant;
   /** fhir_securityEventSource */
   public $source;
 }
@@ -3300,7 +3300,7 @@ class fhir_securityEventEvent {
   /** fhir_string */
   public $outcomeDesc;
   /** array() of fhir_codeableConcept */
-  public $subtypeArray;
+  public $subtype;
   /** fhir_codeableConcept */
   public $type;
 }
@@ -3319,7 +3319,7 @@ class fhir_securityEventObject {
   /** fhir_string */
   public $description;
   /** array() of fhir_securityEventDetail */
-  public $detailArray;
+  public $detail;
   /** fhir_identifier */
   public $identifier;
   /** fhir_securityEventObjectLifecycle */
@@ -3374,7 +3374,7 @@ class fhir_securityEventParticipant {
   /** fhir_boolean */
   public $requestor;
   /** array() of fhir_codeableConcept */
-  public $roleArray;
+  public $role;
   /** fhir_string */
   public $userId;
 }
@@ -3397,7 +3397,7 @@ class fhir_securityEventSource {
   /** fhir_string */
   public $site;
   /** array() of fhir_coding */
-  public $typeArray;
+  public $type;
 }
 
 class fhir_specimen {
@@ -3406,17 +3406,17 @@ class fhir_specimen {
   /** fhir_specimenCollection */
   public $collection;
   /** array() of fhir_specimenContainer */
-  public $containerArray;
+  public $container;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_dateTime */
   public $receivedTime;
   /** array() of fhir_specimenSource */
-  public $sourceArray;
+  public $source;
   /** fhir_resourceReference */
   public $subject;
   /** array() of fhir_specimenTreatment */
-  public $treatmentArray;
+  public $treatment;
   /** fhir_codeableConcept */
   public $type;
 }
@@ -3429,7 +3429,7 @@ class fhir_specimenCollection {
   /** fhir_resourceReference */
   public $collector;
   /** array() of fhir_string */
-  public $commentArray;
+  public $comment;
   /** fhir_codeableConcept */
   public $method;
   /** fhir_quantity */
@@ -3446,7 +3446,7 @@ class fhir_specimenContainer {
   /** fhir_string */
   public $description;
   /** array() of fhir_identifier */
-  public $identifierArray;
+  public $identifier;
   /** fhir_quantity */
   public $specimenQuantity;
   /** fhir_codeableConcept */
@@ -3457,7 +3457,7 @@ class fhir_specimenSource {
   /** fhir_hierarchicalRelationshipType */
   public $relationship;
   /** array() of fhir_resourceReference */
-  public $targetArray;
+  public $target;
 }
 
 class fhir_hierarchicalRelationshipType {
@@ -3467,7 +3467,7 @@ class fhir_hierarchicalRelationshipType {
 
 class fhir_specimenTreatment {
   /** array() of fhir_resourceReference */
-  public $additiveArray;
+  public $additive;
   /** fhir_string */
   public $description;
   /** fhir_codeableConcept */
@@ -3478,7 +3478,7 @@ class fhir_substance {
   /** fhir_string */
   public $description;
   /** array() of fhir_substanceIngredient */
-  public $ingredientArray;
+  public $ingredient;
   /** fhir_substanceInstance */
   public $instance;
   /** fhir_codeableConcept */
@@ -3503,7 +3503,7 @@ class fhir_substanceInstance {
 
 class fhir_supply {
   /** array() of fhir_supplyDispense */
-  public $dispenseArray;
+  public $dispense;
   /** fhir_identifier */
   public $identifier;
   /** fhir_codeableConcept */
@@ -3524,7 +3524,7 @@ class fhir_supplyDispense {
   /** fhir_quantity */
   public $quantity;
   /** array() of fhir_resourceReference */
-  public $receiverArray;
+  public $receiver;
   /** fhir_supplyDispenseStatus */
   public $status;
   /** fhir_resourceReference */
@@ -3575,25 +3575,25 @@ class fhir_valueSet {
   /** fhir_valueSetStatus */
   public $status;
   /** array() of fhir_contact */
-  public $telecomArray;
+  public $telecom;
   /** fhir_string */
   public $version;
 }
 
 class fhir_valueSetCompose {
   /** array() of fhir_valueSetInclude */
-  public $excludeArray;
+  public $exclude;
   /** array() of fhir_uri */
-  public $importArray;
+  public $import;
   /** array() of fhir_valueSetInclude */
-  public $includeArray;
+  public $include;
 }
 
 class fhir_valueSetInclude {
   /** array() of fhir_code */
-  public $codeArray;
+  public $code;
   /** array() of fhir_valueSetFilter */
-  public $filterArray;
+  public $filter;
   /** fhir_uri */
   public $system;
   /** fhir_string */
@@ -3618,7 +3618,7 @@ class fhir_valueSetDefine {
   /** fhir_boolean */
   public $caseSensitive;
   /** array() of fhir_valueSetConcept */
-  public $conceptArray;
+  public $concept;
   /** fhir_uri */
   public $system;
   /** fhir_string */
@@ -3631,7 +3631,7 @@ class fhir_valueSetConcept {
   /** fhir_code */
   public $code;
   /** array() of fhir_valueSetConcept */
-  public $conceptArray;
+  public $concept;
   /** fhir_string */
   public $definition;
   /** fhir_string */
@@ -3640,7 +3640,7 @@ class fhir_valueSetConcept {
 
 class fhir_valueSetExpansion {
   /** array() of fhir_valueSetContains */
-  public $containsArray;
+  public $contains;
   /** fhir_identifier */
   public $identifier;
   /** fhir_instant */
@@ -3651,7 +3651,7 @@ class fhir_valueSetContains {
   /** fhir_code */
   public $code;
   /** array() of fhir_valueSetContains */
-  public $containsArray;
+  public $contains;
   /** fhir_string */
   public $display;
   /** fhir_uri */
@@ -3704,109 +3704,109 @@ class divImpl {
 
 class fhir_flow {
   /** array() of aImpl */
-  public $AArray;
+  public $A;
   /** array() of abbrImpl */
-  public $abbrArray;
+  public $abbr;
   /** array() of acronymImpl */
-  public $acronymArray;
+  public $acronym;
   /** array() of addressImpl */
-  public $addressArray;
+  public $address;
   /** array() of bImpl */
-  public $BArray;
+  public $B;
   /** array() of bdoImpl */
-  public $bdoArray;
+  public $bdo;
   /** array() of bigImpl */
-  public $bigArray;
+  public $big;
   /** array() of blockquoteImpl */
-  public $blockquoteArray;
+  public $blockquote;
   /** array() of brImpl */
-  public $brArray;
+  public $br;
   /** array() of buttonImpl */
-  public $buttonArray;
+  public $button;
   /** array() of citeImpl */
-  public $citeArray;
+  public $cite;
   /** array() of codeImpl */
-  public $codeArray;
+  public $code;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of dfnImpl */
-  public $dfnArray;
+  public $dfn;
   /** array() of divImpl */
-  public $divArray;
+  public $div;
   /** array() of dlImpl */
-  public $dlArray;
+  public $dl;
   /** array() of emImpl */
-  public $emArray;
+  public $em;
   /** array() of fieldsetImpl */
-  public $fieldsetArray;
+  public $fieldset;
   /** array() of formImpl */
-  public $formArray;
+  public $form;
   /** array() of h1Impl */
-  public $h1Array;
+  public $h1;
   /** array() of h2Impl */
-  public $h2Array;
+  public $h2;
   /** array() of h3Impl */
-  public $h3Array;
+  public $h3;
   /** array() of h4Impl */
-  public $h4Array;
+  public $h4;
   /** array() of h5Impl */
-  public $h5Array;
+  public $h5;
   /** array() of h6Impl */
-  public $h6Array;
+  public $h6;
   /** array() of hrImpl */
-  public $hrArray;
+  public $hr;
   /** array() of iImpl */
-  public $IArray;
+  public $I;
   /** array() of imgImpl */
-  public $imgArray;
+  public $img;
   /** array() of inputImpl */
-  public $inputArray;
+  public $input;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of kbdImpl */
-  public $kbdArray;
+  public $kbd;
   /** array() of labelImpl */
-  public $labelArray;
+  public $label;
   /** array() of mapImpl */
-  public $mapArray;
+  public $map;
   /** array() of noscriptImpl */
-  public $noscriptArray;
+  public $noscript;
   /** array() of objectImpl */
-  public $objectArray;
+  public $object;
   /** array() of olImpl */
-  public $olArray;
+  public $ol;
   /** array() of pImpl */
-  public $PArray;
+  public $P;
   /** array() of preImpl */
-  public $preArray;
+  public $pre;
   /** array() of qImpl */
-  public $QArray;
+  public $Q;
   /** array() of sampImpl */
-  public $sampArray;
+  public $samp;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of selectImpl */
-  public $selectArray;
+  public $select;
   /** array() of smallImpl */
-  public $smallArray;
+  public $small;
   /** array() of spanImpl */
-  public $spanArray;
+  public $span;
   /** array() of strongImpl */
-  public $strongArray;
+  public $strong;
   /** array() of subImpl */
-  public $subArray;
+  public $sub;
   /** array() of supImpl */
-  public $supArray;
+  public $sup;
   /** array() of tableImpl */
-  public $tableArray;
+  public $table;
   /** array() of textareaImpl */
-  public $textareaArray;
+  public $textarea;
   /** array() of ttImpl */
-  public $ttArray;
+  public $tt;
   /** array() of ulImpl */
-  public $ulArray;
+  public $ul;
   /** array() of varImpl */
-  public $varArray;
+  public $var;
 }
 
 class aImpl {
@@ -3874,69 +3874,69 @@ class aImpl {
 
 class fhir_aContent {
   /** array() of abbrImpl */
-  public $abbrArray;
+  public $abbr;
   /** array() of acronymImpl */
-  public $acronymArray;
+  public $acronym;
   /** array() of bImpl */
-  public $BArray;
+  public $B;
   /** array() of bdoImpl */
-  public $bdoArray;
+  public $bdo;
   /** array() of bigImpl */
-  public $bigArray;
+  public $big;
   /** array() of brImpl */
-  public $brArray;
+  public $br;
   /** array() of buttonImpl */
-  public $buttonArray;
+  public $button;
   /** array() of citeImpl */
-  public $citeArray;
+  public $cite;
   /** array() of codeImpl */
-  public $codeArray;
+  public $code;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of dfnImpl */
-  public $dfnArray;
+  public $dfn;
   /** array() of emImpl */
-  public $emArray;
+  public $em;
   /** array() of iImpl */
-  public $IArray;
+  public $I;
   /** array() of imgImpl */
-  public $imgArray;
+  public $img;
   /** array() of inputImpl */
-  public $inputArray;
+  public $input;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of kbdImpl */
-  public $kbdArray;
+  public $kbd;
   /** array() of labelImpl */
-  public $labelArray;
+  public $label;
   /** array() of mapImpl */
-  public $mapArray;
+  public $map;
   /** array() of objectImpl */
-  public $objectArray;
+  public $object;
   /** array() of qImpl */
-  public $QArray;
+  public $Q;
   /** array() of sampImpl */
-  public $sampArray;
+  public $samp;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of selectImpl */
-  public $selectArray;
+  public $select;
   /** array() of smallImpl */
-  public $smallArray;
+  public $small;
   /** array() of spanImpl */
-  public $spanArray;
+  public $span;
   /** array() of strongImpl */
-  public $strongArray;
+  public $strong;
   /** array() of subImpl */
-  public $subArray;
+  public $sub;
   /** array() of supImpl */
-  public $supArray;
+  public $sup;
   /** array() of textareaImpl */
-  public $textareaArray;
+  public $textarea;
   /** array() of ttImpl */
-  public $ttArray;
+  public $tt;
   /** array() of varImpl */
-  public $varArray;
+  public $var;
 }
 
 class abbrImpl {
@@ -3978,71 +3978,71 @@ class abbrImpl {
 
 class fhir_inline {
   /** array() of aImpl */
-  public $AArray;
+  public $A;
   /** array() of abbrImpl */
-  public $abbrArray;
+  public $abbr;
   /** array() of acronymImpl */
-  public $acronymArray;
+  public $acronym;
   /** array() of bImpl */
-  public $BArray;
+  public $B;
   /** array() of bdoImpl */
-  public $bdoArray;
+  public $bdo;
   /** array() of bigImpl */
-  public $bigArray;
+  public $big;
   /** array() of brImpl */
-  public $brArray;
+  public $br;
   /** array() of buttonImpl */
-  public $buttonArray;
+  public $button;
   /** array() of citeImpl */
-  public $citeArray;
+  public $cite;
   /** array() of codeImpl */
-  public $codeArray;
+  public $code;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of dfnImpl */
-  public $dfnArray;
+  public $dfn;
   /** array() of emImpl */
-  public $emArray;
+  public $em;
   /** array() of iImpl */
-  public $IArray;
+  public $I;
   /** array() of imgImpl */
-  public $imgArray;
+  public $img;
   /** array() of inputImpl */
-  public $inputArray;
+  public $input;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of kbdImpl */
-  public $kbdArray;
+  public $kbd;
   /** array() of labelImpl */
-  public $labelArray;
+  public $label;
   /** array() of mapImpl */
-  public $mapArray;
+  public $map;
   /** array() of objectImpl */
-  public $objectArray;
+  public $object;
   /** array() of qImpl */
-  public $QArray;
+  public $Q;
   /** array() of sampImpl */
-  public $sampArray;
+  public $samp;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of selectImpl */
-  public $selectArray;
+  public $select;
   /** array() of smallImpl */
-  public $smallArray;
+  public $small;
   /** array() of spanImpl */
-  public $spanArray;
+  public $span;
   /** array() of strongImpl */
-  public $strongArray;
+  public $strong;
   /** array() of subImpl */
-  public $subArray;
+  public $sub;
   /** array() of supImpl */
-  public $supArray;
+  public $sup;
   /** array() of textareaImpl */
-  public $textareaArray;
+  public $textarea;
   /** array() of ttImpl */
-  public $ttArray;
+  public $tt;
   /** array() of varImpl */
-  public $varArray;
+  public $var;
 }
 
 class acronymImpl {
@@ -4255,93 +4255,93 @@ class buttonImpl {
 
 class fhir_buttonContent {
   /** array() of abbrImpl */
-  public $abbrArray;
+  public $abbr;
   /** array() of acronymImpl */
-  public $acronymArray;
+  public $acronym;
   /** array() of addressImpl */
-  public $addressArray;
+  public $address;
   /** array() of bImpl */
-  public $BArray;
+  public $B;
   /** array() of bdoImpl */
-  public $bdoArray;
+  public $bdo;
   /** array() of bigImpl */
-  public $bigArray;
+  public $big;
   /** array() of blockquoteImpl */
-  public $blockquoteArray;
+  public $blockquote;
   /** array() of brImpl */
-  public $brArray;
+  public $br;
   /** array() of citeImpl */
-  public $citeArray;
+  public $cite;
   /** array() of codeImpl */
-  public $codeArray;
+  public $code;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of dfnImpl */
-  public $dfnArray;
+  public $dfn;
   /** array() of divImpl */
-  public $divArray;
+  public $div;
   /** array() of dlImpl */
-  public $dlArray;
+  public $dl;
   /** array() of emImpl */
-  public $emArray;
+  public $em;
   /** array() of h1Impl */
-  public $h1Array;
+  public $h1;
   /** array() of h2Impl */
-  public $h2Array;
+  public $h2;
   /** array() of h3Impl */
-  public $h3Array;
+  public $h3;
   /** array() of h4Impl */
-  public $h4Array;
+  public $h4;
   /** array() of h5Impl */
-  public $h5Array;
+  public $h5;
   /** array() of h6Impl */
-  public $h6Array;
+  public $h6;
   /** array() of hrImpl */
-  public $hrArray;
+  public $hr;
   /** array() of iImpl */
-  public $IArray;
+  public $I;
   /** array() of imgImpl */
-  public $imgArray;
+  public $img;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of kbdImpl */
-  public $kbdArray;
+  public $kbd;
   /** array() of mapImpl */
-  public $mapArray;
+  public $map;
   /** array() of noscriptImpl */
-  public $noscriptArray;
+  public $noscript;
   /** array() of objectImpl */
-  public $objectArray;
+  public $object;
   /** array() of olImpl */
-  public $olArray;
+  public $ol;
   /** array() of pImpl */
-  public $PArray;
+  public $P;
   /** array() of preImpl */
-  public $preArray;
+  public $pre;
   /** array() of qImpl */
-  public $QArray;
+  public $Q;
   /** array() of sampImpl */
-  public $sampArray;
+  public $samp;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of smallImpl */
-  public $smallArray;
+  public $small;
   /** array() of spanImpl */
-  public $spanArray;
+  public $span;
   /** array() of strongImpl */
-  public $strongArray;
+  public $strong;
   /** array() of subImpl */
-  public $subArray;
+  public $sub;
   /** array() of supImpl */
-  public $supArray;
+  public $sup;
   /** array() of tableImpl */
-  public $tableArray;
+  public $table;
   /** array() of ttImpl */
-  public $ttArray;
+  public $tt;
   /** array() of ulImpl */
-  public $ulArray;
+  public $ul;
   /** array() of varImpl */
-  public $varArray;
+  public $var;
 }
 
 class addressImpl {
@@ -4422,49 +4422,49 @@ class blockquoteImpl {
 
 class fhir_block {
   /** array() of addressImpl */
-  public $addressArray;
+  public $address;
   /** array() of blockquoteImpl */
-  public $blockquoteArray;
+  public $blockquote;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of divImpl */
-  public $divArray;
+  public $div;
   /** array() of dlImpl */
-  public $dlArray;
+  public $dl;
   /** array() of fieldsetImpl */
-  public $fieldsetArray;
+  public $fieldset;
   /** array() of formImpl */
-  public $formArray;
+  public $form;
   /** array() of h1Impl */
-  public $h1Array;
+  public $h1;
   /** array() of h2Impl */
-  public $h2Array;
+  public $h2;
   /** array() of h3Impl */
-  public $h3Array;
+  public $h3;
   /** array() of h4Impl */
-  public $h4Array;
+  public $h4;
   /** array() of h5Impl */
-  public $h5Array;
+  public $h5;
   /** array() of h6Impl */
-  public $h6Array;
+  public $h6;
   /** array() of hrImpl */
-  public $hrArray;
+  public $hr;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of noscriptImpl */
-  public $noscriptArray;
+  public $noscript;
   /** array() of olImpl */
-  public $olArray;
+  public $ol;
   /** array() of pImpl */
-  public $PArray;
+  public $P;
   /** array() of preImpl */
-  public $preArray;
+  public $pre;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of tableImpl */
-  public $tableArray;
+  public $table;
   /** array() of ulImpl */
-  public $ulArray;
+  public $ul;
 }
 
 class delImpl {
@@ -4512,11 +4512,11 @@ class dlImpl {
   /** anyType */
   public $class1;
   /** array() of ddImpl */
-  public $ddArray;
+  public $dd;
   /** DlDocumentEnum_0 */
   public $dir;
   /** array() of dtImpl */
-  public $dtArray;
+  public $dt;
   /** string */
   public $id;
   /** string */
@@ -4625,75 +4625,75 @@ class dtImpl {
 
 class fieldsetImpl {
   /** array() of aImpl */
-  public $AArray;
+  public $A;
   /** array() of abbrImpl */
-  public $abbrArray;
+  public $abbr;
   /** array() of acronymImpl */
-  public $acronymArray;
+  public $acronym;
   /** array() of addressImpl */
-  public $addressArray;
+  public $address;
   /** array() of bImpl */
-  public $BArray;
+  public $B;
   /** array() of bdoImpl */
-  public $bdoArray;
+  public $bdo;
   /** array() of bigImpl */
-  public $bigArray;
+  public $big;
   /** array() of blockquoteImpl */
-  public $blockquoteArray;
+  public $blockquote;
   /** array() of brImpl */
-  public $brArray;
+  public $br;
   /** array() of buttonImpl */
-  public $buttonArray;
+  public $button;
   /** array() of citeImpl */
-  public $citeArray;
+  public $cite;
   /** anyType */
   public $class1;
   /** array() of codeImpl */
-  public $codeArray;
+  public $code;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of dfnImpl */
-  public $dfnArray;
+  public $dfn;
   /** FieldsetDocumentEnum_0 */
   public $dir;
   /** array() of divImpl */
-  public $divArray;
+  public $div;
   /** array() of dlImpl */
-  public $dlArray;
+  public $dl;
   /** array() of emImpl */
-  public $emArray;
+  public $em;
   /** array() of fieldsetImpl */
-  public $fieldsetArray;
+  public $fieldset;
   /** array() of formImpl */
-  public $formArray;
+  public $form;
   /** array() of h1Impl */
-  public $h1Array;
+  public $h1;
   /** array() of h2Impl */
-  public $h2Array;
+  public $h2;
   /** array() of h3Impl */
-  public $h3Array;
+  public $h3;
   /** array() of h4Impl */
-  public $h4Array;
+  public $h4;
   /** array() of h5Impl */
-  public $h5Array;
+  public $h5;
   /** array() of h6Impl */
-  public $h6Array;
+  public $h6;
   /** array() of hrImpl */
-  public $hrArray;
+  public $hr;
   /** array() of iImpl */
-  public $IArray;
+  public $I;
   /** string */
   public $id;
   /** array() of imgImpl */
-  public $imgArray;
+  public $img;
   /** array() of inputImpl */
-  public $inputArray;
+  public $input;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of kbdImpl */
-  public $kbdArray;
+  public $kbd;
   /** array() of labelImpl */
-  public $labelArray;
+  public $label;
   /** string */
   public $lang;
   /** array() of string */
@@ -4701,13 +4701,13 @@ class fieldsetImpl {
   /** legendImpl */
   public $legend;
   /** array() of mapImpl */
-  public $mapArray;
+  public $map;
   /** array() of noscriptImpl */
-  public $noscriptArray;
+  public $noscript;
   /** array() of objectImpl */
-  public $objectArray;
+  public $object;
   /** array() of olImpl */
-  public $olArray;
+  public $ol;
   /** string */
   public $onclick;
   /** string */
@@ -4729,41 +4729,41 @@ class fieldsetImpl {
   /** string */
   public $onmouseup;
   /** array() of pImpl */
-  public $PArray;
+  public $P;
   /** array() of preImpl */
-  public $preArray;
+  public $pre;
   /** array() of qImpl */
-  public $QArray;
+  public $Q;
   /** array() of sampImpl */
-  public $sampArray;
+  public $samp;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of selectImpl */
-  public $selectArray;
+  public $select;
   /** array() of smallImpl */
-  public $smallArray;
+  public $small;
   /** array() of spanImpl */
-  public $spanArray;
+  public $span;
   /** array() of strongImpl */
-  public $strongArray;
+  public $strong;
   /** array() of string */
   public $style;
   /** array() of subImpl */
-  public $subArray;
+  public $sub;
   /** array() of supImpl */
-  public $supArray;
+  public $sup;
   /** array() of tableImpl */
-  public $tableArray;
+  public $table;
   /** array() of textareaImpl */
-  public $textareaArray;
+  public $textarea;
   /** array() of string */
   public $title;
   /** array() of ttImpl */
-  public $ttArray;
+  public $tt;
   /** array() of ulImpl */
-  public $ulArray;
+  public $ul;
   /** array() of varImpl */
-  public $varArray;
+  public $var;
 }
 
 class citeImpl {
@@ -4967,47 +4967,47 @@ class formImpl {
 
 class fhir_formContent {
   /** array() of addressImpl */
-  public $addressArray;
+  public $address;
   /** array() of blockquoteImpl */
-  public $blockquoteArray;
+  public $blockquote;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of divImpl */
-  public $divArray;
+  public $div;
   /** array() of dlImpl */
-  public $dlArray;
+  public $dl;
   /** array() of fieldsetImpl */
-  public $fieldsetArray;
+  public $fieldset;
   /** array() of h1Impl */
-  public $h1Array;
+  public $h1;
   /** array() of h2Impl */
-  public $h2Array;
+  public $h2;
   /** array() of h3Impl */
-  public $h3Array;
+  public $h3;
   /** array() of h4Impl */
-  public $h4Array;
+  public $h4;
   /** array() of h5Impl */
-  public $h5Array;
+  public $h5;
   /** array() of h6Impl */
-  public $h6Array;
+  public $h6;
   /** array() of hrImpl */
-  public $hrArray;
+  public $hr;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of noscriptImpl */
-  public $noscriptArray;
+  public $noscript;
   /** array() of olImpl */
-  public $olArray;
+  public $ol;
   /** array() of pImpl */
-  public $PArray;
+  public $P;
   /** array() of preImpl */
-  public $preArray;
+  public $pre;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of tableImpl */
-  public $tableArray;
+  public $table;
   /** array() of ulImpl */
-  public $ulArray;
+  public $ul;
 }
 
 class h1Impl {
@@ -5359,7 +5359,7 @@ class olImpl {
   /** array() of string */
   public $lang2;
   /** array() of liImpl */
-  public $liArray;
+  public $li;
   /** string */
   public $onclick;
   /** string */
@@ -5501,67 +5501,67 @@ class preImpl {
 
 class fhir_preContent {
   /** array() of aImpl */
-  public $AArray;
+  public $A;
   /** array() of abbrImpl */
-  public $abbrArray;
+  public $abbr;
   /** array() of acronymImpl */
-  public $acronymArray;
+  public $acronym;
   /** array() of bImpl */
-  public $BArray;
+  public $B;
   /** array() of bdoImpl */
-  public $bdoArray;
+  public $bdo;
   /** array() of bigImpl */
-  public $bigArray;
+  public $big;
   /** array() of brImpl */
-  public $brArray;
+  public $br;
   /** array() of buttonImpl */
-  public $buttonArray;
+  public $button;
   /** array() of citeImpl */
-  public $citeArray;
+  public $cite;
   /** array() of codeImpl */
-  public $codeArray;
+  public $code;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of dfnImpl */
-  public $dfnArray;
+  public $dfn;
   /** array() of emImpl */
-  public $emArray;
+  public $em;
   /** array() of iImpl */
-  public $IArray;
+  public $I;
   /** array() of inputImpl */
-  public $inputArray;
+  public $input;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of kbdImpl */
-  public $kbdArray;
+  public $kbd;
   /** array() of labelImpl */
-  public $labelArray;
+  public $label;
   /** array() of mapImpl */
-  public $mapArray;
+  public $map;
   /** array() of qImpl */
-  public $QArray;
+  public $Q;
   /** array() of sampImpl */
-  public $sampArray;
+  public $samp;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of selectImpl */
-  public $selectArray;
+  public $select;
   /** array() of smallImpl */
-  public $smallArray;
+  public $small;
   /** array() of spanImpl */
-  public $spanArray;
+  public $span;
   /** array() of strongImpl */
-  public $strongArray;
+  public $strong;
   /** array() of subImpl */
-  public $subArray;
+  public $sub;
   /** array() of supImpl */
-  public $supArray;
+  public $sup;
   /** array() of textareaImpl */
-  public $textareaArray;
+  public $textarea;
   /** array() of ttImpl */
-  public $ttArray;
+  public $tt;
   /** array() of varImpl */
-  public $varArray;
+  public $var;
 }
 
 class enum {
@@ -5753,41 +5753,41 @@ class labelImpl {
 
 class mapImpl {
   /** array() of addressImpl */
-  public $addressArray;
+  public $address;
   /** array() of areaImpl */
-  public $areaArray;
+  public $area;
   /** array() of blockquoteImpl */
-  public $blockquoteArray;
+  public $blockquote;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** MapDocumentEnum_0 */
   public $dir;
   /** array() of divImpl */
-  public $divArray;
+  public $div;
   /** array() of dlImpl */
-  public $dlArray;
+  public $dl;
   /** array() of fieldsetImpl */
-  public $fieldsetArray;
+  public $fieldset;
   /** array() of formImpl */
-  public $formArray;
+  public $form;
   /** array() of h1Impl */
-  public $h1Array;
+  public $h1;
   /** array() of h2Impl */
-  public $h2Array;
+  public $h2;
   /** array() of h3Impl */
-  public $h3Array;
+  public $h3;
   /** array() of h4Impl */
-  public $h4Array;
+  public $h4;
   /** array() of h5Impl */
-  public $h5Array;
+  public $h5;
   /** array() of h6Impl */
-  public $h6Array;
+  public $h6;
   /** array() of hrImpl */
-  public $hrArray;
+  public $hr;
   /** string */
   public $id;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** string */
   public $lang;
   /** array() of string */
@@ -5795,9 +5795,9 @@ class mapImpl {
   /** string */
   public $name;
   /** array() of noscriptImpl */
-  public $noscriptArray;
+  public $noscript;
   /** array() of olImpl */
-  public $olArray;
+  public $ol;
   /** string */
   public $onclick;
   /** string */
@@ -5819,19 +5819,19 @@ class mapImpl {
   /** string */
   public $onmouseup;
   /** array() of pImpl */
-  public $PArray;
+  public $P;
   /** array() of preImpl */
-  public $preArray;
+  public $pre;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of string */
   public $style;
   /** array() of tableImpl */
-  public $tableArray;
+  public $table;
   /** array() of string */
   public $title;
   /** array() of ulImpl */
-  public $ulArray;
+  public $ul;
 }
 
 class areaImpl {
@@ -5916,9 +5916,9 @@ class tableImpl {
   /** anyType */
   public $class1;
   /** array() of colImpl */
-  public $colArray;
+  public $col;
   /** array() of colgroupImpl */
-  public $colgroupArray;
+  public $colgroup;
   /** TableDocumentEnum_0 */
   public $dir;
   /** array() of TFrameEnum_0 */
@@ -5956,7 +5956,7 @@ class tableImpl {
   /** string */
   public $summary;
   /** array() of tbodyImpl */
-  public $tbodyArray;
+  public $tbody;
   /** array() of tfootImpl */
   public $tfoot;
   /** array() of theadImpl */
@@ -5964,7 +5964,7 @@ class tableImpl {
   /** array() of string */
   public $title;
   /** array() of trImpl */
-  public $trArray;
+  public $tr;
   /** array() of string */
   public $width;
 }
@@ -6065,7 +6065,7 @@ class colgroupImpl {
   /** anyType */
   public $class1;
   /** array() of colImpl */
-  public $colArray;
+  public $col;
   /** ColgroupDocumentEnum_2 */
   public $dir;
   /** string */
@@ -6148,7 +6148,7 @@ class tbodyImpl {
   /** array() of string */
   public $title;
   /** array() of trImpl */
-  public $trArray;
+  public $tr;
   /** TbodyDocumentEnum_0 */
   public $valign;
 }
@@ -6193,9 +6193,9 @@ class trImpl {
   /** array() of string */
   public $style;
   /** array() of tdImpl */
-  public $tdArray;
+  public $td;
   /** array() of thImpl */
-  public $thArray;
+  public $th;
   /** array() of string */
   public $title;
   /** TrDocumentEnum_0 */
@@ -6354,7 +6354,7 @@ class tfootImpl {
   /** array() of string */
   public $title;
   /** array() of trImpl */
-  public $trArray;
+  public $tr;
   /** TfootDocumentEnum_0 */
   public $valign;
 }
@@ -6401,7 +6401,7 @@ class theadImpl {
   /** array() of string */
   public $title;
   /** array() of trImpl */
-  public $trArray;
+  public $tr;
   /** TheadDocumentEnum_0 */
   public $valign;
 }
@@ -6418,7 +6418,7 @@ class ulImpl {
   /** array() of string */
   public $lang2;
   /** array() of liImpl */
-  public $liArray;
+  public $li;
   /** string */
   public $onclick;
   /** string */
@@ -6563,9 +6563,9 @@ class selectImpl {
   /** string */
   public $onmouseup;
   /** array() of optgroupImpl */
-  public $optgroupArray;
+  public $optgroup;
   /** array() of optionImpl */
-  public $optionArray;
+  public $option;
   /** integer */
   public $size;
   /** array() of string */
@@ -6612,7 +6612,7 @@ class optgroupImpl {
   /** string */
   public $onmouseup;
   /** array() of optionImpl */
-  public $optionArray;
+  public $option;
   /** array() of string */
   public $style;
   /** array() of string */
@@ -7070,35 +7070,35 @@ class legendImpl {
 
 class objectImpl {
   /** array() of aImpl */
-  public $AArray;
+  public $A;
   /** array() of abbrImpl */
-  public $abbrArray;
+  public $abbr;
   /** array() of acronymImpl */
-  public $acronymArray;
+  public $acronym;
   /** array() of addressImpl */
-  public $addressArray;
+  public $address;
   /** string */
   public $archive;
   /** array() of bImpl */
-  public $BArray;
+  public $B;
   /** array() of bdoImpl */
-  public $bdoArray;
+  public $bdo;
   /** array() of bigImpl */
-  public $bigArray;
+  public $big;
   /** array() of blockquoteImpl */
-  public $blockquoteArray;
+  public $blockquote;
   /** array() of brImpl */
-  public $brArray;
+  public $br;
   /** array() of buttonImpl */
-  public $buttonArray;
+  public $button;
   /** array() of citeImpl */
-  public $citeArray;
+  public $cite;
   /** anyType */
   public $class1;
   /** string */
   public $classid;
   /** array() of codeImpl */
-  public $codeArray;
+  public $code;
   /** string */
   public $codebase;
   /** string */
@@ -7108,65 +7108,65 @@ class objectImpl {
   /** ObjectDocumentEnum_0 */
   public $declare;
   /** array() of delImpl */
-  public $delArray;
+  public $del;
   /** array() of dfnImpl */
-  public $dfnArray;
+  public $dfn;
   /** ObjectDocumentEnum_1 */
   public $dir;
   /** array() of divImpl */
-  public $divArray;
+  public $div;
   /** array() of dlImpl */
-  public $dlArray;
+  public $dl;
   /** array() of emImpl */
-  public $emArray;
+  public $em;
   /** array() of fieldsetImpl */
-  public $fieldsetArray;
+  public $fieldset;
   /** array() of formImpl */
-  public $formArray;
+  public $form;
   /** array() of h1Impl */
-  public $h1Array;
+  public $h1;
   /** array() of h2Impl */
-  public $h2Array;
+  public $h2;
   /** array() of h3Impl */
-  public $h3Array;
+  public $h3;
   /** array() of h4Impl */
-  public $h4Array;
+  public $h4;
   /** array() of h5Impl */
-  public $h5Array;
+  public $h5;
   /** array() of h6Impl */
-  public $h6Array;
+  public $h6;
   /** string */
   public $height;
   /** array() of hrImpl */
-  public $hrArray;
+  public $hr;
   /** array() of iImpl */
-  public $IArray;
+  public $I;
   /** string */
   public $id;
   /** array() of imgImpl */
-  public $imgArray;
+  public $img;
   /** array() of inputImpl */
-  public $inputArray;
+  public $input;
   /** array() of insImpl */
-  public $insArray;
+  public $ins;
   /** array() of kbdImpl */
-  public $kbdArray;
+  public $kbd;
   /** array() of labelImpl */
-  public $labelArray;
+  public $label;
   /** string */
   public $lang;
   /** array() of string */
   public $lang2;
   /** array() of mapImpl */
-  public $mapArray;
+  public $map;
   /** string */
   public $name;
   /** array() of noscriptImpl */
-  public $noscriptArray;
+  public $noscript;
   /** array() of objectImpl */
-  public $objectArray;
+  public $object;
   /** array() of olImpl */
-  public $olArray;
+  public $ol;
   /** string */
   public $onclick;
   /** string */
@@ -7188,51 +7188,51 @@ class objectImpl {
   /** string */
   public $onmouseup;
   /** array() of pImpl */
-  public $PArray;
+  public $P;
   /** array() of paramImpl */
-  public $paramArray;
+  public $param;
   /** array() of preImpl */
-  public $preArray;
+  public $pre;
   /** array() of qImpl */
-  public $QArray;
+  public $Q;
   /** array() of sampImpl */
-  public $sampArray;
+  public $samp;
   /** array() of scriptImpl */
-  public $scriptArray;
+  public $script;
   /** array() of selectImpl */
-  public $selectArray;
+  public $select;
   /** array() of smallImpl */
-  public $smallArray;
+  public $small;
   /** array() of spanImpl */
-  public $spanArray;
+  public $span;
   /** string */
   public $standby;
   /** array() of strongImpl */
-  public $strongArray;
+  public $strong;
   /** array() of string */
   public $style;
   /** array() of subImpl */
-  public $subArray;
+  public $sub;
   /** array() of supImpl */
-  public $supArray;
+  public $sup;
   /** int */
   public $tabindex;
   /** array() of tableImpl */
-  public $tableArray;
+  public $table;
   /** array() of textareaImpl */
-  public $textareaArray;
+  public $textarea;
   /** array() of string */
   public $title;
   /** array() of ttImpl */
-  public $ttArray;
+  public $tt;
   /** string */
   public $type;
   /** array() of ulImpl */
-  public $ulArray;
+  public $ul;
   /** string */
   public $usemap;
   /** array() of varImpl */
-  public $varArray;
+  public $var;
   /** array() of string */
   public $width;
 }
@@ -7809,26 +7809,26 @@ class ParamDocumentEnum_0 {
 class NarrativeStatusListEnum_0 {
 }
 
-//$patient = new fhir_patient();
-//$patient->birthDate = "10/10/1940";
-//$name = new fhir_humanName();
-//$patient->name = array($name);
-//$given_name = new fhir_string();
-//$given_name->value = "John";
-//$family_name = new fhir_string();
-//$family_name->value = "Smith";
-//$name->family = array($family_name);
-//$name->given = array($given_name);
-//$id_pas = new fhir_identifier();
-//$id_pas->use = new fhir_identifierUse;
-//$id_pas->use->value = "PAS";
-//$id_pas->value = "1000001";
-//$id_nhs = new fhir_identifier();
-//$id_nhs->use = new fhir_identifierUse;
-//$id_nhs->use->value = "NHS";
-//$id_nhs->value = "X0000001";
-//$patient->identifierArray = array($id_pas, $id_nhs);
-//
-//echo preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?/', '', json_encode($patient, true)) . PHP_EOL;
+$patient = new fhir_patient();
+$patient->birthDate = "10/10/1940";
+$name = new fhir_humanName();
+$patient->name = array($name);
+$given_name = new fhir_string();
+$given_name->value = "John";
+$family_name = new fhir_string();
+$family_name->value = "Smith";
+$name->family = array($family_name);
+$name->given = array($given_name);
+$id_pas = new fhir_identifier();
+$id_pas->use = new fhir_identifierUse;
+$id_pas->use->value = "PAS";
+$id_pas->value = "1000001";
+$id_nhs = new fhir_identifier();
+$id_nhs->use = new fhir_identifierUse;
+$id_nhs->use->value = "NHS";
+$id_nhs->value = "X0000001";
+$patient->identifierArray = array($id_pas, $id_nhs);
+
+echo preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?/', '', json_encode($patient, true)) . PHP_EOL;
 
 ?>

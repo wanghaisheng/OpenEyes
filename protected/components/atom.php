@@ -2,35 +2,35 @@
 
 class atom_feedType {
   /** array() of atom_personType */
-  public $authorArray;
+  public $author;
   /** string */
   public $base;
   /** array() of atom_categoryType */
-  public $categoryArray;
+  public $category;
   /** array() of atom_personType */
-  public $contributorArray;
+  public $contributor;
   /** array() of atom_entryType */
-  public $entryArray;
+  public $entry;
   /** array() of atom_generatorType */
-  public $generatorArray;
+  public $generator;
   /** array() of atom_iconType */
-  public $iconArray;
+  public $icon;
   /** array() of atom_idType */
-  public $idArray;
+  public $id;
   /** string */
   public $lang;
   /** array() of atom_linkType */
-  public $linkArray;
+  public $link;
   /** array() of atom_logoType */
-  public $logoArray;
+  public $logo;
   /** array() of atom_textType */
-  public $rightsArray;
+  public $rights;
   /** array() of atom_textType */
-  public $subtitleArray;
+  public $subtitle;
   /** array() of atom_textType */
-  public $titleArray;
+  public $title;
   /** array() of atom_dateTimeType */
-  public $updatedArray;
+  public $updated;
 }
 
 class xmlComplexContentImpl {
@@ -81,13 +81,13 @@ class atom_personType {
   /** string */
   public $base;
   /** array() of string */
-  public $emailArray;
+  public $email;
   /** string */
   public $lang;
   /** array() of string */
-  public $nameArray;
+  public $name;
   /** array() of atom_uriType */
-  public $uriArray;
+  public $uri;
 }
 
 class atom_uriType {
@@ -127,33 +127,33 @@ class atom_categoryType {
 
 class atom_entryType {
   /** array() of atom_personType */
-  public $authorArray;
+  public $author;
   /** string */
   public $base;
   /** array() of atom_categoryType */
-  public $categoryArray;
+  public $category;
   /** array() of atom_contentType */
-  public $contentArray;
+  public $content;
   /** array() of atom_personType */
-  public $contributorArray;
+  public $contributor;
   /** array() of atom_idType */
-  public $idArray;
+  public $id;
   /** string */
   public $lang;
   /** array() of atom_linkType */
-  public $linkArray;
+  public $link;
   /** array() of atom_dateTimeType */
-  public $publishedArray;
+  public $published;
   /** array() of atom_textType */
-  public $rightsArray;
+  public $rights;
   /** array() of atom_textType */
-  public $sourceArray;
+  public $source;
   /** array() of atom_textType */
-  public $summaryArray;
+  public $summary;
   /** array() of atom_textType */
-  public $titleArray;
+  public $title;
   /** array() of atom_dateTimeType */
-  public $updatedArray;
+  public $updated;
 }
 
 class atom_contentType {
