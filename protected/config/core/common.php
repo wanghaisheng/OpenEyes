@@ -92,6 +92,7 @@ return array(
                 array('api/delete', 'pattern' => 'api/delete/<resource:\w+>/<id:\d+>', 'verb' => 'DELETE'),
                 array('api/create', 'pattern' => 'api/create/<resource:\w+>', 'verb' => 'POST'),
                 array('api/search', 'pattern' => 'api/search/<resource:\w+>(/search)?', 'verb' => 'GET'),
+
                 // transaction:
                 array('api/', 'pattern' => 'api/<resource:\w+>/@<id:\d+>', 'verb' => 'POST'),
                 array('api/badrequest', 'pattern' => 'api/(.*)'),
