@@ -87,7 +87,7 @@ return array(
             'rules' => array(
                 // API
                 array('api/read', 'pattern'=>'api/<resource:\w+>/<id:\d+>', 'verb'=>'GET'),
-								array('api/vread', 'pattern' => 'api/<resource:\w+>/@<id:\d+>/history/@<vid:\d+>', 'verb' => 'GET'),
+				array('api/vread', 'pattern' => 'api/<resource:\w+>/@<id:\d+>/history/@<vid:\d+>', 'verb' => 'GET'),
                 array('api/update', 'pattern' => 'api/<resource:\w+>/<id:\d+>', 'verb' => 'PUT'),
                 array('api/delete', 'pattern' => 'api/<resource:\w+>/<id:\d+>', 'verb' => 'DELETE'),
                 array('api/create', 'pattern' => 'api/<resource:\w+>', 'verb' => 'POST'),
@@ -117,7 +117,7 @@ return array(
             'schemaCachingDuration' => 300,
         ),
         'authManager' => array(
-            'class' => 'CDbAuthManager',
+            'class' => 'AuthManager',
             'connectionID' => 'db',
         ),
         'cache' => array(
