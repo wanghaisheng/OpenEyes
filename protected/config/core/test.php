@@ -17,6 +17,8 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
+Yii::setPathOfAlias('yiitests', Yii::getPathOfAlias('system') . '/../tests/framework');
+
 return array(
 	'name' => 'OpenEyes Test',
 	'import' => array(
@@ -24,13 +26,15 @@ return array(
 		'application.components.*',
 		'system.cli.commands.*',
 		'system..db.schema.*',
+		'system.test.CDbFixtureManager',
+		'yiitests.validators.*'
 	),
 	'components' => array(
 		'fixture' => array(
-			'class' => 'system.test.CDbFixtureManager',
+			'class' => 'DbFixtureManager',
 		),
 		'db' => array(
-			'class'=> 'CDbConnection',
+			'class'=> 'OEDbConnection',
 			'connectionString' => 'mysql:host=localhost;dbname=openeyestest',
 			'username' => 'oe',
 			'password' => '_OE_TESTDB_PASSWORD_',
@@ -41,5 +45,8 @@ return array(
 			'username' => 'oe',
 			'password' => '_OE_TESTDB_PASSWORD_',
 		),
+	),
+	'params' => array(
+		'rest_test_base_url' => 'http://localhost/api',
 	),
 );

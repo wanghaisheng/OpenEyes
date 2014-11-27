@@ -30,9 +30,7 @@ return array(
 		'application.models.*',
 		'application.models.elements.*',
 		'application.components.*',
-		'application.components.summaryWidgets.*',
 		'application.extensions.tcpdf.*',
-		'application.services.*',
 		'application.modules.*',
 		'application.commands.*',
 		'application.commands.shell.*',
@@ -44,61 +42,74 @@ return array(
 		'system.gii.generators.module.*',
 	),
 
+	'aliases' => array(
+		'services' => 'application.services',
+		'OEModule'=> 'application.modules',
+	),
+
 	'modules' => array(
 		// Gii tool
 		'gii' => array(
 			'class' => 'system.gii.GiiModule',
 			'password' => 'openeyes',
-			'ipFilters'=> array('*')
+			'ipFilters'=> array('127.0.0.1')
 		),
 		'oldadmin',
 	),
 
 	// Application components
 	'components' => array(
-		'mailer' => array(
-			'class' => 'Mailer',
-			'mode' => 'sendmail',
+		'assetManager' => array(
+			'class'=>'AssetManager',
+			// Use symbolic links to publish the assets when in debug mode.
+			'linkAssets' => defined('YII_DEBUG') && YII_DEBUG,
 		),
-		'moduleAPI' => array(
-			'class' => 'ModuleAPI',
+		'authManager' => array(
+			'class' => 'AuthManager',
+			'connectionID' => 'db',
 		),
-		'request' => array(
-			'enableCsrfValidation' => true,
-			'class'=>'HttpRequest',
-			'noCsrfValidationRoutes'=>array(
-				'site/login', //disabled csrf check on login form
-			),
+		'cache' => array(
+			'class' => 'system.caching.CFileCache',
+			'directoryLevel' => 1
 		),
-		'event' => array(
-			'class' => 'OEEventManager',
-			'observers' => array(),
+		'cacheBuster' => array(
+			'class'=>'CacheBuster',
 		),
 		'clientScript' => array(
 			'class' => 'ClientScript',
-		),
-		'user' => array(
-			'class' => 'WebUser',
-			// Enable cookie-based authentication
-			'allowAutoLogin' => true,
-		),
-		'urlManager' => array(
-			'urlFormat' => 'path',
-			'showScriptName' => false,
-			'rules' => array(
-				'' => 'site/index',
-				'patient/viewpas/<pas_key:\d+>' => 'patient/viewpas',
-				'file/view/<id:\d+>/<dimensions:\d+(x\d+)?>/<name:\w+\.\w+>' => 'protectedFile/thumbnail',
-				'file/view/<id:\d+>/<name:\w+\.\w+>' => 'protectedFile/view',
-				'<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
-				'<controller:\w+>/<id:\d+>' => '<controller>/view',
-				'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-				'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-				'<controller:\w+>/<action:\w+>/<hospital_num:\d+>' => 'patient/results',
+			'packages' => array(
+				'jquery' => array(
+					'js' => array('jquery/jquery.min.js'),
+					'basePath' => 'application.assets.components',
+				),
+				'jquery.ui' => array(
+					'js' => array('jquery-ui/ui/minified/jquery-ui.min.js'),
+					'css' => array('jquery-ui/themes/base/jquery-ui.css'),
+					'basePath' => 'application.assets.components',
+					'depends'=>array('jquery'),
+				),
+				'mustache' => array(
+					'js' => array('mustache/mustache.js'),
+					'basePath' => 'application.assets.components'
+				),
+				'eventemitter2' => array(
+					'js' => array('eventemitter2/lib/eventemitter2.js'),
+					'basePath' => 'application.assets.components'
+				),
+				'flot' => array(
+					'js' => array(
+						'components/flot/jquery.flot.js',
+						'components/flot/jquery.flot.time.js',
+						'components/flot/jquery.flot.navigate.js',
+						'js/jquery.flot.dashes.js'
+					),
+					'basePath' => 'application.assets',
+					'depends' => array('jquery'),
+				)
 			),
 		),
 		'db' => array(
-			'class' => 'CDbConnection',
+			'class' => 'OEDbConnection',
 			'connectionString' => 'mysql:host=localhost;dbname=openeyes',
 			'emulatePrepare' => true,
 			'username' => 'oe',
@@ -106,19 +117,15 @@ return array(
 			'charset' => 'utf8',
 			'schemaCachingDuration' => 300,
 		),
-		'authManager' => array(
-			'class' => 'CDbAuthManager',
-			'connectionID' => 'db',
-		),
-		'cache' => array(
-			'class' => 'system.caching.CFileCache',
-			'cachePath' => 'cache',
-			'directoryLevel' => 1
-		),
 		'errorHandler' => array(
 			// use 'site/error' action to display errors
 			'errorAction' => 'site/error',
 		),
+		'event' => array(
+			'class' => 'OEEventManager',
+			'observers' => array(),
+		),
+		'fhirMarshal' => array('class' => 'FhirMarshal'),
 		'log' => array(
 			'class' => 'FlushableLogRouter',
 			'autoFlush' => 1,
@@ -148,8 +155,32 @@ return array(
 				),
 			),
 		),
+		'mailer' => array(
+			'class' => 'Mailer',
+			'mode' => 'sendmail',
+		),
+		'moduleAPI' => array(
+			'class' => 'ModuleAPI',
+		),
+		'request' => array(
+			'enableCsrfValidation' => true,
+			'class'=>'HttpRequest',
+			'noCsrfValidationRoutes'=>array(
+				'site/login', //disabled csrf check on login form
+				'api/',
+			),
+		),
+		'service' => array(
+			'class' => 'services\ServiceManager',
+			'internal_services' => array(
+				'services\CommissioningBodyService',
+				'services\GpService',
+				'services\PracticeService',
+				'services\PatientService',
+			),
+		),
 		'session' => array(
-			'class' => 'CDbHttpSession',
+			'class' => 'OESession',
 			'connectionID' => 'db',
 			'sessionTableName' => 'user_session',
 			'autoCreateSessionTable' => false
@@ -157,7 +188,48 @@ return array(
 				'lifetime' => 300,
 			),*/
 		),
+		'urlManager' => array(
+			'urlFormat' => 'path',
+			'showScriptName' => false,
+			'rules' => array(
+				'' => 'site/index',
+				'patient/viewpas/<pas_key:\d+>' => 'patient/viewpas',
+				'file/view/<id:\d+>/<dimensions:\d+(x\d+)?>/<name:\w+\.\w+>' => 'protectedFile/thumbnail',
+				'file/view/<id:\d+>/<name:\w+\.\w+>' => 'protectedFile/view',
+
+				// API
+				array('api/conformance', 'pattern' => 'api/metadata', 'verb' => 'GET'),
+				array('api/conformance', 'pattern' => 'api', 'verb' => 'OPTIONS'),
+				array('api/read', 'pattern' => 'api/<resource_type:\w+>/<id:[a-z0-9\-\.]{1,36}>', 'verb' => 'GET'),
+				array('api/vread', 'pattern' => 'api/<resource_type:\w+>/<id:[a-z0-9\-\.]{1,36}>/_history/<vid:\d+>', 'verb' => 'GET'),
+				array('api/update', 'pattern' => 'api/<resource_type:\w+>/<id:[a-z0-9\-\.]{1,36}>', 'verb' => 'PUT'),
+				array('api/delete', 'pattern' => 'api/<resource_type:\w+>/<id:[a-z0-9\-\.]{1,36}>', 'verb' => 'DELETE'),
+				array('api/create', 'pattern' => 'api/<resource_type:\w+>', 'verb' => 'POST'),
+				array('api/search', 'pattern' => 'api/<resource_type:\w+>', 'verb' => 'GET'),
+				array('api/search', 'pattern' => 'api/<resource_type:\w+>/_search', 'verb' => 'GET,POST'),
+				array('api/badrequest', 'pattern' => 'api/(.*)'),
+
+				'<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
+				'<controller:\w+>/<id:\d+>' => '<controller>/view',
+				'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+				'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+				'<controller:\w+>/<action:\w+>/<hospital_num:\d+>' => 'patient/results',
+			),
+		),
+		'user' => array(
+			'class' => 'OEWebUser',
+			'loginRequiredAjaxResponse' => 'Login required.',
+			// Enable cookie-based authentication
+			'allowAutoLogin' => true,
+		),
+		'version' => array(
+			'class' => 'Version',
+		),
+		'widgetFactory'=>array(
+			'class' => 'WidgetFactory'
+		),
 	),
+
 	'params'=>array(
 		'pseudonymise_patient_details' => false,
 		'ab_testing' => false,
@@ -177,7 +249,6 @@ return array(
 		'ldap_update_name' => false,
 		'ldap_update_email' => true,
 		'environment' => 'dev',
-		'audit_trail' => false,
 		'watermark' => '',
 		'watermark_admin' => 'You are logged in as admin. So this is OpenEyes Goldenrod Edition',
 		'watermark_description' => '',
@@ -186,9 +257,6 @@ return array(
 		'google_analytics_account' => '',
 		'local_users' => array(),
 		'log_events' => true,
-		'urgent_booking_notify_hours' => 24,
-		'urgent_booking_notify_email' => array(),
-		'urgent_booking_notify_email_from' => 'OpenEyes <helpdesk@example.com>',
 		'default_site_code' => '',
 		'institution_code' => 'RP6',
 		'erod_lead_time_weeks' => 3,
@@ -214,5 +282,20 @@ return array(
 		),
 		'admin_menu' => array(
 		),
+		'admin_email' => '',
+		'enable_transactions' => true,
+		'event_lock_days' => 0,
+		'event_lock_disable' => false,
+		// html|pdf, pdf requires wkhtmltopdf with patched QT
+		'event_print_method' => 'html',
+		// use this to set a specific path to the wkhtmltopdf binary. if this is not set it will search the current path.
+		'wkhtmltopdf_path' => '/usr/local/bin/wkhtmltopdf',
+		'wkhtmltopdf_footer_left' => '{{DOCREF}}{{BARCODE}}{{PATIENT_NAME}}{{PATIENT_HOSNUM}}{{PATIENT_NHSNUM}}',
+		'wkhtmltopdf_footer_middle' => 'Page {{PAGE}} of {{PAGES}}',
+		'wkhtmltopdf_footer_right' => 'OpenEyes',
+		'wkhtmltopdf_top_margin' => '10mm',
+		'wkhtmltopdf_bottom_margin' => '12mm',
+		'wkhtmltopdf_left_margin' => '17mm',
+		'wkhtmltopdf_right_margin' => '17mm',
 	),
 );

@@ -20,17 +20,15 @@
 
 class FirmTest extends CDbTestCase
 {
-
 	public $fixtures = array(
 		'services' => 'Service',
 		'specialties' => 'Specialty',
 		'serviceSubspecialtyAssignment' => 'ServiceSubspecialtyAssignment',
+		'subspecialties' => 'Subspecialty',
 		'firms' => 'Firm',
 		'FirmUserAssignments' => 'FirmUserAssignment',
 		'users' => 'User',
-		//'userContactAssignment' => 'UserContactAssignment',
 		'contacts' => 'Contact',
-		'consultants' => 'Consultant'
 	);
 
 	/**
@@ -55,42 +53,6 @@ class FirmTest extends CDbTestCase
 	}
 
 	/**
-	 * @covers Firm::rules
-	 * @todo   Implement testRules().
-	 */
-	public function testRules()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
-	 * @covers Firm::relations
-	 * @todo   Implement testRelations().
-	 */
-	public function testRelations()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
-	 * @covers Firm::attributeLabels
-	 * @todo   Implement testAttributeLabels().
-	 */
-	public function testAttributeLabels()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
 	 * @covers Firm::search
 	 * @todo   Implement testSearch().
 	 */
@@ -103,27 +65,12 @@ class FirmTest extends CDbTestCase
 	}
 
 	/**
-	 * @covers Firm::getServiceSubspecialtyOptions
-	 * @todo   Implement testGetServiceSubspecialtyOptions().
-	 */
-	public function testGetServiceSubspecialtyOptions()
-	{
-		$this->markTestSkipped(
-			'This test has hardcoded references, needs to be fixed by making values dynamic.'
-		);
-		$serviceSpecialties = Firm::model()->getServiceSubspecialtyOptions();
-		$this->assertTrue(is_array($serviceSpecialties));
-		$this->assertEquals(count($this->serviceSubspecialtyAssignment), count($serviceSpecialties));
-	}
-
-	/**
 	 * @covers Firm::getServiceText
-	 * @todo   Implement testGetServiceText().
 	 */
 	public function testGetServiceText()
 	{
 		$firm = $this->firms('firm1');
-		$this->assertEquals($this->services['service1']['name'], 'Accident and Emergency Service');
+		$this->assertEquals($firm->getServiceText(), $firm->serviceSubspecialtyAssignment->service->name);
 	}
 
 	/**
@@ -188,41 +135,38 @@ class FirmTest extends CDbTestCase
 
 	/**
 	 * @covers Firm::getConsultantName
-	 * @todo   Implement testGetConsultantName().
 	 */
 	public function testGetConsultantName()
 	{
-		$firm = $this->firms('firm1');
-		$this->assertEquals($this->contacts['contact1']['nick_name'], 'Aylward');
+		$this->assertEquals('Mr Jim Aylward', $this->firms('firm1')->getConsultantName());
+	}
+
+	/**
+	 * @covers Firm::getConsultantName
+	 */
+	public function testGetConsultantName_NoConsultant()
+	{
+		$this->assertEquals('NO CONSULTANT', $this->firms('firm2')->getConsultantName());
 	}
 
 	/**
 	 * @covers Firm::getReportDisplay
-	 * @todo   Implement testGetReportDisplay().
 	 */
 	public function testGetReportDisplay()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$this->assertEquals('Aylward Firm (Subspecialty 1)', $this->firms('firm1')->getReportDisplay());
 	}
 
 	/**
 	 * @covers Firm::getNameAndSubspecialty
-	 * @todo   Implement testGetNameAndSubspecialty().
 	 */
 	public function testGetNameAndSubspecialty()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$this->assertEquals('Aylward Firm (Subspecialty 1)', $this->firms('firm1')->getNameAndSubspecialty());
 	}
 
 	/**
 	 * @covers Firm::getSpecialty
-	 * @todo   Implement testGetSpecialty().
 	 */
 	public function testGetSpecialty()
 	{
@@ -244,23 +188,13 @@ class FirmTest extends CDbTestCase
 		);
 	}
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp()
+	public function testIsSupportServicesFirm_False()
 	{
-		parent::setUp();
-		$this->object = new Firm;
+		$this->assertFalse(Firm::model()->findByPk(1)->isSupportServicesFirm());
 	}
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown()
+	public function testIsSupportServicesFirm_True()
 	{
-
+		$this->assertTrue(Firm::model()->findByPk(4)->isSupportServicesFirm());
 	}
-
 }

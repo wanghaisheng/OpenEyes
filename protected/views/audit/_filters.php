@@ -48,7 +48,7 @@
 										<?php echo CHtml::dropDownList('site_id',@$_POST['site_id'],Site::model()->getListForCurrentInstitution(),array('empty'=>'All sites'))?>
 									</td>
 									<td>
-										<?php echo CHtml::dropDownList('firm_id', @$_POST['firm_id'], Firm::model()->getListWithoutDupes(), array('empty'=>'All firms'))?>
+										<?php echo CHtml::dropDownList('firm_id', @$_POST['firm_id'], Firm::model()->getList(), array('empty'=>'All firms'))?>
 									</td>
 									<td>
 										<?php
@@ -119,8 +119,8 @@
 						</div>
 					</div>
 					<div class="large-2 column text-right">
-						<img class="loader hidden" src="/img/ajax-loader.gif" alt="loading..." style="margin-right:10px" />
-						<button type="submit" class="secondary">Filter</button>
+						<img class="loader hidden" src="<?php echo Yii::app()->assetManager->createUrl('img/ajax-loader.gif');?>" alt="loading..." style="margin-right:10px" />
+						<button type="submit" class="secondary long">Filter</button>
 					</div>
 				</div>
 			</div>

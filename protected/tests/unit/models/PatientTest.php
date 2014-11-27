@@ -22,7 +22,12 @@ class PatientTest extends CDbTestCase
 	public $model;
 	public $fixtures = array(
 		'patients' => 'Patient',
-		'addresses' => 'Address'
+		'addresses' => 'Address',
+		'Disorder',
+		'SecondaryDiagnosis',
+		'Specialty',
+		'Event',
+		'Episode'
 	);
 
 	public function dataProvider_Search()
@@ -51,20 +56,8 @@ class PatientTest extends CDbTestCase
 	 */
 	protected function setUp()
 	{
-		$this->markTestSkipped(
-			'This test might be redundant/not needed anymore.'
-		);
 		parent::setUp();
 		$this->model = new Patient;
-	}
-
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown()
-	{
-
 	}
 
 	/**
@@ -74,18 +67,6 @@ class PatientTest extends CDbTestCase
 	public function testModel()
 	{
 		$this->assertEquals('Patient', get_class(Patient::model()), 'Class name should match model.');
-	}
-
-	/**
-	 * @covers Patient::behaviors
-	 * @todo   Implement testBehaviors().
-	 */
-	public function testBehaviors()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
 	}
 
 	/**
@@ -101,48 +82,10 @@ class PatientTest extends CDbTestCase
 	}
 
 	/**
-	 * @covers Patient::tableName
-	 * @todo   Implement testTableName().
-	 */
-	public function testTableName()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
-	 * @covers Patient::rules
-	 * @todo   Implement testRules().
-	 */
-	public function testRules()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
-	 * @covers Patient::relations
-	 * @todo   Implement testRelations().
-	 */
-	public function testRelations()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
 	 * @covers Patient::attributeLabels
-	 * @todo   Implement testAttributeLabels().
 	 */
 	public function testAttributeLabels()
 	{
-
 		$expected = array(
 			'id' => 'ID',
 			'pas_key' => 'PAS Key',
@@ -163,19 +106,6 @@ class PatientTest extends CDbTestCase
 	 */
 	public function testSearch_nr()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
-	 * @covers Patient::search
-	 * @todo   Implement testSearch().
-	 */
-	public function testSearch()
-	{
-
 		// Remove the following lines when you implement this test.
 		$this->markTestIncomplete(
 			'This test has not been implemented yet.'
@@ -236,7 +166,6 @@ class PatientTest extends CDbTestCase
 	 */
 	public function testGetAge()
 	{
-		$this->markTestSkipped('Too many errors in this class test, Skipping until someone can refactor it.');
 		Yii::app()->params['pseudonymise_patient_details'] = false;
 
 		$attributes = array(
@@ -262,7 +191,6 @@ class PatientTest extends CDbTestCase
 
 	public function testRandomData_ParamSetOff_ReturnsFalse()
 	{
-		$this->markTestSkipped('Too many errors in this class test, Skipping until someone can refactor it.');
 		Yii::app()->params['pseudonymise_patient_details'] = false;
 
 		$attributes = array(
@@ -728,14 +656,18 @@ class PatientTest extends CDbTestCase
 
 	/**
 	 * @covers Patient::editOphInfo
-	 * @todo   Implement testEditOphInfo().
 	 */
-	public function testEditOphInfo()
+	public function testEditOphInfo_Success()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$cvi_status = ComponentStubGenerator::generate('PatientOphInfoCviStatus', array('id' => 1));
+		$this->assertTrue($this->patients('patient1')->editOphInfo($cvi_status, '2000-01-01'));
+	}
+
+	public function testEditOphInfo_ValidationFailure()
+	{
+		$cvi_status = ComponentStubGenerator::generate('PatientOphInfoCviStatus', array('id' => 1));
+		$errors = $this->patients('patient1')->editOphInfo($cvi_status, '2000-42-35');
+		$this->assertEquals(array('cvi_status_date' => array('This is not a valid date')), $errors);
 	}
 
 	/**
@@ -1052,14 +984,15 @@ class PatientTest extends CDbTestCase
 
 	/**
 	 * @covers Patient::getSdl
-	 * @todo   Implement testGetSdl().
 	 */
 	public function testGetSdl()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$this->assertEquals('left myopia, right retinal lattice degeneration and bilateral posterior vitreous detachment', $this->patients('patient2')->getSdl());
+	}
+
+	public function testGetSyd()
+	{
+		$this->assertEquals('diabetes mellitus type 1 and essential hypertension', $this->patients('patient2')->getSyd());
 	}
 
 	/**
@@ -1157,5 +1090,22 @@ class PatientTest extends CDbTestCase
 			'This test has not been implemented yet.'
 		);
 	}
+	/**
+	 * @covers Patient::getLatestEvent
+	 */
+	public function testGetLatestEvent()
+	{
+		$event = $this->patients('patient1')->getLatestEvent();
+		$this->assertEquals('someinfo3', $event->info);
+	}
 
+	public function testGetHSCICName_NotBold()
+	{
+		$this->assertEquals("AYLWARD, Jim (Mr)",$this->patients('patient1')->getHSCICName());
+	}
+
+	public function testGetHSCICName_Bold()
+	{
+		$this->assertEquals("<strong>AYLWARD</strong>, Jim (Mr)",$this->patients('patient1')->getHSCICName(true));
+	}
 }

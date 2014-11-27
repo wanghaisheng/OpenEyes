@@ -1,8 +1,6 @@
 <?php
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-
-class Login extends Page
+class Login extends OpenEyesPage
 {
     protected $path = '/site/login';
 
@@ -14,8 +12,12 @@ class Login extends Page
 
     public function maximizeBrowserWindow ()
     {
+        $this->getSession()->resizeWindow(2650,1600); # Full screen on Mac Second Monitor
+    }
+
+    public function halfBrowserWindow ()
+    {
         $this->getSession()->resizeWindow(1280,800); # Smaller screen on Mac Second Monitor
-//        $this->getSession()->resizeWindow(2650,1600); # Full screen on Mac Second Monitor
     }
 
     public function loginWith($user, $password)

@@ -1,15 +1,3 @@
-<?php
-
-extract($this->getEpisodes());
-
-if ($module = $this->getModule()) {
-	$module = $module->getName();
-	if (file_exists(Yii::getPathOfAlias('application.modules.'.$module.'.assets'))) {
-		Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.'.$module.'.assets'),true).'/';
-	}
-}
-?>
-
 <h1 class="badge">Episodes and events</h1>
 
 <div class="box content">
@@ -28,10 +16,28 @@ if ($module = $this->getModule()) {
 			<?php $this->renderPartial('//patient/event_tabs')?>
 
 			<div class="event-content" id="event-content">
-					<?php echo $content; ?>
-					<?php if ($this->action->id == 'view') {
+
+				<h2 class="event-title"><?php echo $this->title?></h2>
+
+				<?php $this->renderPartial('//base/_messages'); ?>
+
+				<?php
+				if($this->action->id == 'view'){
+					if($this->event->isEventDateDifferentFromCreated()){?>
+					<div class="row data-row">
+						<div class="large-2 column" style="margin-left: 10px;">
+							<div class="data-label"><?php echo $this->event->getAttributeLabel( 'event_date') ?>:</div>
+						</div>
+						<div class="large-9 column end">
+							<div class="data-value"><?php echo $this->event->NHSDate('event_date') ?></div>
+						</div>
+					</div>
+		<?php 		}
+				}
+				echo $content;
+				if ($this->action->id == 'view') {
 						$this->renderEventMetadata();
-					} ?>
+				} ?>
 			</div>
 		</div>
 	</div>

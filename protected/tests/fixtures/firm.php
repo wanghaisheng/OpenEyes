@@ -23,7 +23,8 @@ return array(
 		'id' => 1,
 		'service_subspecialty_assignment_id' => '1',
 		'pas_code' => 'AEAB',
-		'name' => 'Aylward Firm'
+		'name' => 'Aylward Firm',
+		'consultant_id' => 1,
 	),
 	'firm2' => array(
 		'id' => 2,
@@ -33,8 +34,13 @@ return array(
 	),
 	'firm3' => array(
 		'3' => 3,
-		'service_subspecialty_assignment_id' => '3',
+		'service_subspecialty_assignment_id' => '2',
 		'pas_code' => 'CAAB',
 		'name' => 'Allan Firm'
+	),
+	'firm4' => array(
+		'id' => 4,
+		'service_subspecialty_assignment_id' => null,
+		'name' => 'Support Services Firm'
 	),
 );

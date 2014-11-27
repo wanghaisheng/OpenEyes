@@ -8,7 +8,7 @@ $(document).ready(function() {
 				foreach ($element['fields'] as $field) {
 					if ($field['type'] == 'EyeDraw' && @$field['extra_report']) {?>
 			if ($('#<?php echo $element['class_name']?>_<?php echo $field['name']?>2').length >0) {
-				$('#<?php echo $element['class_name']?>_<?php echo $field['name']?>2').val(ed_drawing_edit_<?php echo $field['eyedraw_class']?>.report());
+				$('#<?php echo $element['class_name']?>_<?php echo $field['name']?>2').val(ED.getInstance('ed_drawing_edit_<?php echo $field['eyedraw_class']?>').report());
 			}
 					<?php }
 				}
@@ -22,21 +22,14 @@ $(document).ready(function() {
 		if (m = window.location.href.match(/\/update\/[0-9]+/)) {
 			window.location.href = window.location.href.replace('/update/','/view/');
 		} else {
-			window.location.href = baseUrl+'/patient/episodes/'+et_patient_id;
+			window.location.href = baseUrl+'/patient/episodes/'+OE_patient_id;
 		}
 		e.preventDefault();
 	});
 
 	handleButton($('#et_deleteevent'));
 
-	handleButton($('#et_canceldelete'),function(e) {
-		if (m = window.location.href.match(/\/delete\/[0-9]+/)) {
-			window.location.href = window.location.href.replace('/delete/','/view/');
-		} else {
-			window.location.href = baseUrl+'/patient/episodes/'+et_patient_id;
-		}
-		e.preventDefault();
-	});
+	handleButton($('#et_canceldelete'));
 
 	handleButton($('#et_print'),function(e) {
 		printIFrameUrl(OE_print_url, null);

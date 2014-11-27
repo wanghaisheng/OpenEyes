@@ -20,12 +20,15 @@
 
 <?php echo "<?php\n"?>$this->beginContent('//patient/event_container');<?php echo "?>\n"?>
 
-<h2 class="event-title"><?php echo '<?php '?>echo $this->event_type->name<?php echo '?>'?></h2>
-
 <div id="delete_event">
 	<h3>Delete event</h3>
 	<div class="alert-box alert with-icon">
 		<strong>WARNING: This will permanently delete the event and remove it from view.<br><br>THIS ACTION CANNOT BE UNDONE.</strong>
+	</div>
+	<?php echo '<?php'?> $this->displayErrors($errors)<?php echo "?>\n"?>
+	<div style="width:300px; margin-bottom: 0.6em;">
+		<p>Reason for deletion:</p>
+		<?php echo '<?php'?> echo CHtml::textArea('delete_reason','')<?php echo "?>\n"?>
 	</div>
 	<p>
 		<strong>Are you sure you want to proceed?</strong>
@@ -40,7 +43,7 @@
 	<button type="submit" class="secondary" id="et_canceldelete" name="et_canceldelete">
 		Cancel
 	</button>
-	<img class="loader" src="<?php echo '<?php'?> echo Yii::app()->createUrl('img/ajax-loader.gif')<?php echo '?>'?>" alt="loading..." style="display: none;" />
+	<img class="loader" src="<?php echo '<?php'?> echo Yii::app()->assetManager->createUrl('img/ajax-loader.gif')<?php echo '?>'?>" alt="loading..." style="display: none;" />
 	<?php echo '<?php'?> echo CHtml::endForm()<?php echo "?>\n"?>
 </div>
 

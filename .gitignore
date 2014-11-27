@@ -22,6 +22,7 @@ tags
 /protected/views/elements/ElementExample/
 /protected/config/db_dw.php
 /protected/config/db_muu.php
+/protected/config/local
 /protected/views/patient/custom/info/php
 /protected/commands/
 vendor
@@ -35,11 +36,11 @@ vendor
 /bin/phpunit
 /bin/webunit
 /docs/public
+/protected/assets/img/fieldImages/*
 
-# Bower development dependencies
-/js/components/google-code-prettify
-/js/components/jquery
-/js/components/jquery-ui
+# Tests
+/bin/.enabled-modules
+/jm_behat_report.html
 
 # Temporary, until we've sorted out vagrant for installing test dependencies
 bin/OLD selenium-server-standalone-2.33.0.jar

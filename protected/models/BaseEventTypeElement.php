@@ -19,28 +19,43 @@
 
 /**
  * A class that all clinical elements should extend from.
+ * @property boolean $useContainerView When rendering the element, wrap the element
+ * in a container view?
  */
 class BaseEventTypeElement extends BaseElement
 {
 	public $firm;
 	public $userId;
 	public $patientId;
+	public $useContainerView = true;
 
-	protected $element_type;
+	protected $_element_type;
+	protected $_children;
 
-	// Used to display the view number set in site_element_type for any particular
-	// instance of this element
-	public $viewNumber;
+	private $settings = array();
 
-	// Used during creation and updating of elements
-	public $required = false;
-
+	/**
+	 * Get the ElementType for this element
+	 *
+	 * @return ElementType
+	 */
 	public function getElementType()
 	{
-		if (!$this->element_type) {
-			$this->element_type = ElementType::model()->find('class_name=?', array(get_class($this)));
+		if (!$this->_element_type) {
+
+			$this->_element_type = ElementType::model()->find('class_name=?', array(get_class($this)));
 		}
-		return $this->element_type;
+		return $this->_element_type;
+	}
+
+	/**
+	 * Return the element type name
+	 *
+	 * @return string $name
+	 */
+	public function getElementTypeName()
+	{
+		return $this->getElementType()->name;
 	}
 
 	/**
@@ -54,21 +69,87 @@ class BaseEventTypeElement extends BaseElement
 	}
 
 	/**
+	 * Can we view the previous version of this element
+	 * @return boolean
+	 */
+	public function canViewPrevious()
+	{
+		return false;
+	}
+
+	/**
+	 * Is this a required element?
+	 * @return boolean
+	 */
+	public function isRequired()
+	{
+		return $this->elementType->required;
+	}
+
+	/**
+	 * Is this element required in the UI? (Prevents the user from being able
+	 * to remove the element.)
+	 * @return boolean
+	 */
+	public function isRequiredInUI()
+	{
+		return $this->isRequired();
+	}
+
+	/**
+	 * Is this element to be hidden in the UI? (Prevents the elements from
+	 * being displayed on page load.)
+	 * @return boolean
+	 */
+	public function isHiddenInUI()
+	{
+		return false;
+	}
+
+	/**
+	 * get the child element types for this BaseEventElementType
+	 *
+	 * @return ElementType[]
+	 */
+	public function getChildElementTypes()
+	{
+		return ElementType::model()->findAll('parent_element_type_id = :element_type_id', array(':element_type_id' => $this->getElementType()->id));
+	}
+	/**
+	 * set the children for this element - allows external definition of what the children should
+	 * be (for workflows determined by controllers and the like.
+	 *
+	 * @param BaseEventTypeElement[] $children
+	 */
+	public function setChildren($children)
+	{
+		$this->_children = $children;
+	}
+
+	/**
 	 * Return this elements children
 	 * @return array
 	 */
 	public function getChildren()
 	{
-		$child_elements = array();
-		if ($this->event_id) {
-			$child_element_types = ElementType::model()->findAll('parent_element_type_id = :element_type_id', array(':element_type_id' => $this->getElementType()->id));
-			foreach ($child_element_types as $child_element_type) {
-				if ($element = self::model($child_element_type->class_name)->find('event_id = ?', array($this->event_id))) {
-					$child_elements[] = $element;
+		if ($this->_children === null) {
+			$this->_children = array();
+			foreach ($this->getChildElementTypes() as $child_element_type) {
+				if ($this->event_id) {
+					if ($element = self::model($child_element_type->class_name)->find('event_id = ?', array($this->event_id))) {
+						$this->_children[] = $element;
+					}
+				}
+				else {
+					// set the children to be based on the standard defaults - can be overridden by setting the children
+					// with setChildren method outside of the element model
+					if ($child_element_type->default) {
+						$this->_children[] = new $child_element_type->class_name;
+					}
 				}
 			}
 		}
-		return $child_elements;
+		return $this->_children;
 	}
 
 	/**
@@ -117,46 +198,15 @@ class BaseEventTypeElement extends BaseElement
 		$this->Controller->renderPartial();
 	}
 
-	public function getFormOptions($table)
+	public function getSetting($key)
 	{
-		$options = array();
-
-		$table_exists = false;
-
-		foreach (Yii::app()->db->createCommand("show tables;")->query() as $_table) {
-			foreach ($_table as $key => $value) {
-				if ("element_type_$table" == $value) {
-					$table_exists = true;
-					break;
-				}
-			}
+		if (!array_key_exists($key, $this->settings)) {
+			$this->settings[$key] = $this->loadSetting($key);
 		}
-
-		if ($table_exists) {
-			foreach (Yii::app()->db->createCommand()
-					->select("$table.*")
-					->from($table)
-					->join("element_type_$table","element_type_$table.{$table}_id = $table.id")
-					->where("element_type_id = ".$this->getElementType()->id)
-					->order("display_order asc")
-					->queryAll() as $option) {
-
-				$options[$option['id']] = $option['name'];
-			}
-		} else {
-			foreach (Yii::app()->db->createCommand()
-					->select("$table.*")
-					->from($table)
-					->queryAll() as $option) {
-
-				$options[$option['id']] = $option['name'];
-			}
-		}
-
-		return $options;
+		return $this->settings[$key];
 	}
 
-	public function getSetting($key)
+	protected function loadSetting($key)
 	{
 		$element_type = ElementType::model()->find('class_name=?',array(get_class($this)));
 
@@ -217,25 +267,6 @@ class BaseEventTypeElement extends BaseElement
 	}
 
 	/**
-	 * Here we need to provide default options for when the element is instantiated
-	 * by findByPk in ClinicalService->getElements().
-	 *
-	 * @param object $firm
-	 * @param int $patientId
-	 * @param int $userId
-	 * @param int $viewNumber
-	 * @param boolean $required
-	 */
-	public function setBaseOptions($firm = null, $patientId = null, $userId = null, $viewNumber = null, $required = false)
-	{
-		$this->firm = $firm;
-		$this->patientId = $patientId;
-		$this->userId = $userId;
-		$this->viewNumber = $viewNumber;
-		$this->required = $required;
-	}
-
-	/**
 	 * Stubbed method to set default options
 	 * Used by child objects to set defaults for forms on create
 	 */
@@ -257,27 +288,63 @@ class BaseEventTypeElement extends BaseElement
 
 	public function getDefaultView()
 	{
-		return get_class($this);
+		$kls = explode('\\', get_class($this));
+		return end($kls);
 	}
 
 	public function getCreate_view()
 	{
-		return $this->getDefaultView();
+		return $this->getForm_View();
 	}
 
 	public function getUpdate_view()
 	{
-		return $this->getDefaultView();
+		return $this->getForm_View();
 	}
 
 	public function getView_view()
 	{
-		return $this->getDefaultView();
+		return 'view_'.$this->getDefaultView();
 	}
 
 	public function getPrint_view()
 	{
-		return $this->getDefaultView();
+		return $this->getView_View();
+	}
+
+	public function getForm_View()
+	{
+		return 'form_'.$this->getDefaultView();
+	}
+
+	public function getDefaultContainerView()
+	{
+		return '//patient/element_container_view';
+	}
+
+	public function getContainer_view_view()
+	{
+		return '//patient/element_container_view';
+	}
+
+	public function getContainer_print_view()
+	{
+		return '//patient/element_container_print';
+	}
+
+	public function getContainer_form_view()
+	{
+		return '//patient/element_container_form';
+	}
+
+	public function getContainer_create_view()
+	{
+		return $this->getContainer_form_view();
+	}
+
+	public function getContainer_update_view()
+	{
+		return $this->getContainer_form_view();
 	}
 
 	public function isEditable()
@@ -299,15 +366,54 @@ class BaseEventTypeElement extends BaseElement
 		}
 	}
 
-	public function textWithLineBreaks($field) {
-		return str_replace("\n","<br/>",$this->$field);
-	}
-
 	/**
 	 * stub method to allow elements to carry out actions related to being a part of a soft deleted event
 	 */
 	public function softDelete()
 	{
 
+	}
+
+	/**
+	 * Returns true if the specified multiselect relation has the value $value_string
+	 */
+	public function hasMultiSelectValue($relation, $value_string) {
+		foreach ($this->$relation as $item) {
+			if ($item->name == $value_string) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Updates multiselect items in the database, deleting items not passed in $ids
+	 */
+	public function updateMultiSelectData($model, $ids, $relation_field)
+	{
+		$_ids = array();
+
+		foreach ($ids as $id) {
+			if (!$assignment = $model::model()->find("element_id=? and $relation_field=?",array($this->id,$id))) {
+				$assignment = new $model;
+				$assignment->element_id = $this->id;
+				$assignment->$relation_field = $id;
+
+				if (!$assignment->save()) {
+					throw new Exception("Unable to save assignment: ".print_r($assignment->getErrors(),true));
+				}
+			}
+
+			$_ids[] = $assignment->id;
+		}
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('element_id = :element_id');
+		$criteria->params[':element_id'] = $this->id;
+
+		!empty($_ids) && $criteria->addNotInCondition('id',$_ids);
+
+		$model::model()->deleteAll($criteria);
 	}
 }

@@ -163,6 +163,18 @@ class CorrespondenceContext extends PageObjectContext
     }
 
     /**
+     * @Then /^I Save the Correspondence Draft and confirm it has been created successfully$/
+     */
+    public function iSaveTheCorrespondenceDraftAndConfirm()
+    {
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->saveCorrespondenceAndConfirm();
+    }
+
+    /**
      * @Then /^I Save the Correspondence Draft$/
      */
     public function iSaveTheCorrespondenceDraft()
@@ -172,5 +184,17 @@ class CorrespondenceContext extends PageObjectContext
          */
         $Correspondence  = $this->getPage('Correspondence');
         $Correspondence->saveDraft();
+    }
+
+    /**
+     * @Then /^I Confirm that the Mandatory Correspondence fields validation error messages are displayed$/
+     */
+    public function iConfirmThatTheMandatoryFieldsValidationErrorMessagesAreDisplayed()
+    {
+        /**
+         * @var correspondence $Correspondence
+         */
+        $Correspondence  = $this->getPage('Correspondence');
+        $Correspondence->correspondenceMandatoryFieldsErrorValidation();
     }
 }

@@ -31,7 +31,7 @@
 			'field' => 5
 		)
 	))?>
-		<?php echo $form->dropDownList($cb,'commissioning_body_type_id',CHtml::listData(CommissioningBodyType::model()->findAll(array('order'=>'name')),'id','name'),array('style'=>'margin-bottom:6px;'))?>
+		<?php echo $form->dropDownList($cb,'commissioning_body_type_id','CommissioningBodyType',array('style'=>'margin-bottom:6px;'))?>
 		<?php echo $form->textField($cb,'name')?>
 		<?php echo $form->textField($cb,'code',null,null,array('field' => 2))?>
 		<?php echo $form->textField($address,'address1')?>
@@ -39,16 +39,7 @@
 		<?php echo $form->textField($address,'city')?>
 		<?php echo $form->textField($address,'county')?>
 		<?php echo $form->textField($address,'postcode')?>
-		<?php echo $form->dropDownList($address,'country_id',CHtml::listData(Country::model()->findAll(array('order'=>'name')),'id','name'))?>
-		<?php echo $form->formActions();?>
+		<?php echo $form->dropDownList($address,'country_id','Country')?>
+		<?php echo $form->formActions(array('cancel-uri' => '/admin/commissioning_bodies'));?>
 	<?php $this->endWidget()?>
 </div>
-<script type="text/javascript">
-	handleButton($('#et_cancel'),function(e) {
-		e.preventDefault();
-		window.location.href = baseUrl+'/admin/commissioning_bodies';
-	});
-	handleButton($('#et_save'),function(e) {
-		$('#adminform').submit();
-	});
-</script>

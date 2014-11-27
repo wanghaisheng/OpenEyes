@@ -51,7 +51,7 @@
  * @property EthnicGroup $ethnic_group
  * @property CommissioningBody[] $commissioningbodies
  */
-class Patient extends BaseActiveRecord
+class Patient extends BaseActiveRecordVersioned
 {
 	const CHILD_AGE_LIMIT = 16;
 
@@ -135,12 +135,15 @@ class Patient extends BaseActiveRecord
 				'order' => 'patient_allergies.name'),
 			'secondarydiagnoses' => array(self::HAS_MANY, 'SecondaryDiagnosis', 'patient_id'),
 			'ethnic_group' => array(self::BELONGS_TO, 'EthnicGroup', 'ethnic_group_id'),
-			'previousOperations' => array(self::HAS_MANY, 'PreviousOperation', 'patient_id', 'order' => 'date'),
+			'previousOperations' => array(self::HAS_MANY, 'PreviousOperation', 'patient_id', 'order' => 'CASE WHEN Date IS NULL THEN 1 ELSE 0 END, Date'),
 			'familyHistory' => array(self::HAS_MANY, 'FamilyHistory', 'patient_id', 'order' => 'created_date'),
 			'medications' => array(self::HAS_MANY, 'Medication', 'patient_id', 'order' => 'created_date', 'condition' => 'end_date is null'),
+			'previous_medications' => array(self::HAS_MANY, 'Medication', 'patient_id', 'order' => 'created_date', 'condition' => 'end_date is not null'),
 			'commissioningbodies' => array(self::MANY_MANY, 'CommissioningBody', 'commissioning_body_patient_assignment(patient_id, commissioning_body_id)'),
 			'referrals' => array(self::HAS_MANY, 'Referral', 'patient_id'),
 			'lastReferral' => array(self::HAS_ONE, 'Referral', 'patient_id', 'order' => 'received_date desc'),
+			'socialhistory' => array(self::HAS_ONE, 'SocialHistory', 'patient_id'),
+			'adherence' => array(self::HAS_ONE, 'MedicationAdherence', 'patient_id'),
 		);
 	}
 
@@ -182,21 +185,20 @@ class Patient extends BaseActiveRecord
 	 * @param array $params
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
-	public function search($params = null)
+	public function search($params = array())
 	{
-		if (!is_array($params)) {
-			$params = array(
-				'pageSize' => 20,
-				'currentPage' => 0,
-				'sortBy' => 'hos_num*1',
-				'sortDir' => 'asc',
-			);
-		}
+		$params += array(
+			'pageSize' => 20,
+			'currentPage' => 0,
+			'sortBy' => 'hos_num*1',
+			'sortDir' => 'asc',
+		);
 
 		$criteria=new CDbCriteria;
+		$criteria->compare('t.id', $this->id);
 		$criteria->join = "JOIN contact ON contact_id = contact.id";
-		$criteria->compare('LOWER(contact.first_name)',strtolower($params['first_name']), false);
-		$criteria->compare('LOWER(contact.last_name)',strtolower($params['last_name']), false);
+		if (isset($params['first_name'])) $criteria->compare('LOWER(contact.first_name)',strtolower($params['first_name']), false);
+		if (isset($params['last_name'])) $criteria->compare('LOWER(contact.last_name)',strtolower($params['last_name']), false);
 		if (strlen($this->nhs_num) == 10) {
 			$criteria->compare('nhs_num',$this->nhs_num, false);
 		} else {
@@ -321,6 +323,16 @@ class Patient extends BaseActiveRecord
 	}
 
 	/**
+	 * Returns the date on which the patient will become an adult
+	 *
+	 * @return null|string
+	 */
+	public function getBecomesAdultDate()
+	{
+		return Helper::getDateForAge($this->dob, (isset(Yii::app()->params['child_age_limit'])) ? Yii::app()->params['child_age_limit'] : self::CHILD_AGE_LIMIT);
+	}
+
+	/**
 	* @param integer $drug_id
 	* @return boolean Is patient allergic?
 	*/
@@ -411,6 +423,17 @@ class Patient extends BaseActiveRecord
 		return trim(implode(' ',array($this->title, $this->first_name, $this->last_name)));
 	}
 
+	/**
+	 * get the Patient name according to HSCIC guidelines
+	 *
+	 * @return string
+	 */
+	public function getHSCICName($bold=false)
+	{
+		$last_name = $bold ? "<strong>".strtoupper($this->last_name)."</strong>" : strtoupper($this->last_name);
+		return trim(implode(' ',array($last_name . ",", $this->first_name, '('. $this->title . ')')));
+	}
+
 	public function getDisplayName()
 	{
 		return '<span class="patient-surname">'.strtoupper($this->last_name).'</span>, <span class="patient-name">'.$this->first_name.'</span>';
@@ -486,6 +509,23 @@ class Patient extends BaseActiveRecord
 
 		return Episode::model()->getCurrentEpisodeByFirm($this->id, $firm, true);
 	}
+
+	/**
+	 * Get or create an episode for the patient under the given Firm (Note that an episode will be returned if there
+	 * is match on Firm Subspecialty rather than on Firm)
+	 *
+	 * @param $firm
+	 * @param bool $include_closed
+	 * @return CActiveRecord|Episode|null
+	 */
+	public function getOrCreateEpisodeForFirm($firm, $include_closed = false)
+	{
+		if (!$episode = Episode::getCurrentEpisodeByFirm($this->id, $firm, $include_closed)) {
+			$episode = $this->addEpisode($firm);
+		}
+		return $episode;
+	}
+
 
 	/**
 	 * returns the ophthalmic information object for this patient (creates a default one if one does not exist - but does not save it)
@@ -637,7 +677,7 @@ class Patient extends BaseActiveRecord
 					throw new Exception('Unable to add patient allergy assignment: '.print_r($paa->getErrors(),true));
 				}
 
-				$this->audit('patient','add-allergy',$paa->getAuditAttributes());
+				$this->audit('patient','add-allergy');
 				if ($this->no_allergies_date) {
 					$this->no_allergies_date = null;
 					if (!$this->save()) {
@@ -667,7 +707,7 @@ class Patient extends BaseActiveRecord
 				throw new Exception('Unable to delete patient allergy assignment: '.print_r($paa->getErrors(),true));
 			}
 
-			$this->audit('patient','remove-allergy',$paa->getAuditAttributes());
+			$this->audit('patient','remove-allergy');
 		}
 	}
 
@@ -724,7 +764,7 @@ class Patient extends BaseActiveRecord
 				if (!$paa->delete()) {
 					throw new Exception('Unable to delete patient allergy assignment: '.print_r($paa->getErrors(),true));
 				}
-				$this->audit('patient', 'remove-allergy', $paa->getAuditAttributes());
+				$this->audit('patient','remove-allergy');
 			}
 			$this->no_allergies_date = date('Y-m-d H:i:s');
 			if (!$this->save()) {
@@ -890,7 +930,7 @@ class Patient extends BaseActiveRecord
 				throw new Exception('Unable to save secondary diagnosis: '.print_r($sd->getErrors(),true));
 			}
 
-			$this->audit('patient',$action,$sd->getAuditAttributes());
+			$this->audit('patient',$action);
 		}
 	}
 
@@ -910,13 +950,11 @@ class Patient extends BaseActiveRecord
 			$type = 'sys';
 		}
 
-		$audit_attributes = $sd->getAuditAttributes();
-
 		if (!$sd->delete()) {
 			throw new Exception('Unable to delete diagnosis: '.print_r($sd->getErrors(),true));
 		}
 
-		$this->audit('patient',"remove-$type-diagnosis",$audit_attributes);
+		$this->audit('patient',"remove-$type-diagnosis");
 	}
 
 	/**
@@ -924,6 +962,7 @@ class Patient extends BaseActiveRecord
 	 *
 	 * @param PatientOphInfoCviStatus $cvi_status
 	 * @param string $cvi_status_date - fuzzy date string of the format yyyy-mm-dd
+	 * @return true|array True or array of errors
 	 */
 	public function editOphInfo($cvi_status, $cvi_status_date)
 	{
@@ -937,11 +976,13 @@ class Patient extends BaseActiveRecord
 		$oph_info->cvi_status_id = $cvi_status->id;
 		$oph_info->cvi_status_date = $cvi_status_date;
 
-		$oph_info->save();
+		if (!$oph_info->save()) {
+			return $oph_info->errors;
+		}
 
-		$audit_attributes = $oph_info->getAuditAttributes();
+		$this->audit('patient', $action);
 
-		$this->audit('patient', $action, $audit_attributes);
+		return true;
 	}
 
 	public function getContactAddress($contact_id, $location_type=false, $location_id=false)
@@ -1042,14 +1083,17 @@ class Patient extends BaseActiveRecord
 			}
 		}
 
-		if (count($diagnoses) >1) {
-			$last = array_pop($diagnoses);
-			return implode(', ',$diagnoses).' and '.$last;
-		}
+		return Helper::formatList($diagnoses);
+	}
 
-		if (!empty($diagnoses)) {
-			return array_pop($diagnoses);
-		}
+	/**
+	 * Systemic diagnoses shortcode
+	 *
+	 * @return string
+	 */
+	public function getSyd()
+	{
+		return strtolower(Helper::formatList(Helper::extractValues($this->getSystemicDiagnoses(), 'disorder.term')));
 	}
 
 	public function addPreviousOperation($operation, $side_id, $date)
@@ -1122,25 +1166,6 @@ class Patient extends BaseActiveRecord
 		}
 	}
 
-	public function updateMedication($m, $params)
-	{
-		$m->patient_id = $this->id;
-		$m->drug_id = $params['drug_id'];
-		$m->route_id = $params['route_id'];
-		$m->option_id = $params['option_id'];
-		$m->frequency_id = $params['frequency_id'];
-		$m->start_date = date('Y-m-d',strtotime($params['start_date']));
-
-		if (!$m->save()) {
-			throw new Exception("Unable to save medication: ".print_r($m->getErrors(),true));
-		}
-	}
-
-	public function addMedication($params)
-	{
-		$this->updateMedication(new Medication, $params);
-	}
-
 	/**
 	 * return the open episode of the given subspecialty if there is one, null otherwise
 	 *
@@ -1163,6 +1188,13 @@ class Patient extends BaseActiveRecord
 		return  $this->getOpenEpisodeOfSubspecialty($subspecialty_id) ? true : false;
 	}
 
+	/**
+	 * add an episode to the patient for the given Firm
+	 *
+	 * @param $firm
+	 * @return Episode
+	 * @throws Exception
+	 */
 	public function addEpisode($firm)
 	{
 		$episode = new Episode;
@@ -1193,7 +1225,7 @@ class Patient extends BaseActiveRecord
 		$criteria = new CDbCriteria();
 		$criteria->addCondition('episode.patient_id = :pid');
 		$criteria->params = array(':pid' => $this->id);
-		$criteria->order = "t.created_date DESC";
+		$criteria->order = "t.event_date DESC, t.created_date DESC";
 		$criteria->limit = 1;
 
 		return Event::model()->with('episode')->find($criteria);

@@ -31,7 +31,6 @@
  *
  * The following are the available model relations:
  * @property Gp $gp
- * @property Consultant $consultant
  * @property Address[] $addresses
  * @property Address $address Primary address
  * @property Address $homeAddress Home address
@@ -42,7 +41,7 @@
  * @property string $salutationName
  * @property string $fullName
  */
-class Contact extends BaseActiveRecord
+class Contact extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -79,25 +78,19 @@ class Contact extends BaseActiveRecord
 	public function relations()
 	{
 		return array(
-			'consultant' => array(self::HAS_ONE, 'Consultant', 'contact_id'),
 			'gp' => array(self::HAS_ONE, 'Gp', 'contact_id'),
-			'addresses' => array(self::HAS_MANY, 'Address', 'parent_id',
-				'on' => "parent_class = 'Contact'"
-			),
+			'addresses' => array(self::HAS_MANY, 'Address', 'contact_id'),
 			// Prefer H records for primary address, but fall back to others
-			'address' => array(self::HAS_ONE, 'Address', 'parent_id',
-				'on' => "parent_class = 'Contact'",
+			'address' => array(self::HAS_ONE, 'Address', 'contact_id',
 				'order' => "((date_end is NULL OR date_end > NOW()) AND (date_start is NULL OR date_start < NOW())) DESC, FIELD(address_type_id," . AddressType::HOME . ") DESC, date_start DESC"
 			),
 			// Prefer H records for home address, but fall back to others
-			'homeAddress' => array(self::HAS_ONE, 'Address', 'parent_id',
-				'on' => "parent_class = 'Contact'",
+			'homeAddress' => array(self::HAS_ONE, 'Address', 'contact_id',
 				'order' => "((date_end is NULL OR date_end > NOW()) AND (date_start is NULL OR date_start < NOW())) DESC, FIELD(address_type_id," . AddressType::HOME . ") DESC, date_start DESC"
 			),
 			// Prefer C records for correspond address, but fall back to others
-			'correspondAddress' => array(self::HAS_ONE, 'Address', 'parent_id',
+			'correspondAddress' => array(self::HAS_ONE, 'Address', 'contact_id',
 				'order' => "((date_end is NULL OR date_end > NOW()) AND (date_start is NULL OR date_start < NOW())) DESC, FIELD(address_type_id," . AddressType::CORRESPOND . ") DESC, date_start DESC",
-				'on' => "parent_class = 'Contact'",
 			),
 			'label' => array(self::BELONGS_TO, 'ContactLabel', 'contact_label_id'),
 			'locations' => array(self::HAS_MANY, 'ContactLocation', 'contact_id'),
@@ -157,7 +150,7 @@ class Contact extends BaseActiveRecord
 	{
 		return $this->getFullName();
 	}
-	
+
 	/**
 	 * @return string Salutaion name
 	 */
@@ -175,7 +168,15 @@ class Contact extends BaseActiveRecord
 		return $line.')';
 	}
 
-	public function findByLabel($term, $label, $exclude=false)
+	/**
+	 * Searches for contacts with the given criteria
+	 *
+	 * string $term - string to search Contact last name - will do exact match so provide wild cards as required
+	 * string $label - the exact label string to match on.
+	 * boolean $exclude - if true, search for all contacts without the given label. otherwise only that label
+	 * string $join - table to join on to force only matches of that contact type. Currently only supports person
+	 */
+	public function findByLabel($term, $label, $exclude=false, $join=null)
 	{
 		if (!$cl = ContactLabel::model()->find('name=?',array($label))) {
 			throw new Exception("Unknown contact label: $label");
@@ -190,9 +191,19 @@ class Contact extends BaseActiveRecord
 		} else {
 			$criteria->compare('contact_label_id',$cl->id);
 		}
+
 		$criteria->order = 'title, first_name, last_name';
 
-		foreach (Contact::model()->with(array('locations'=>array('with'=>array('site','institution')),'label'))->findAll($criteria) as $contact) {
+		if ($join) {
+			if (!in_array($join, array('person'))) {
+				throw new Exception('Unknown join table ' . $join);
+			}
+			// force to only match on Person contacts
+			$criteria->join = 'join ' . $join . ' model_join on model_join.contact_id = t.id';
+		}
+		$found_contacts = Contact::model()->with(array('locations'=>array('with'=>array('site','institution')),'label'))->findAll($criteria);
+
+		foreach ($found_contacts as $contact) {
 			if ($contact->locations) {
 				foreach ($contact->locations as $location) {
 					$contacts[] = array(

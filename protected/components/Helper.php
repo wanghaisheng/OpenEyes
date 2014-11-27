@@ -29,7 +29,7 @@ class Helper
 
 	/**
 	 * Convert NHS dates to MySQL format.
-	 * Strings that do not match the NHS format are returned unchanged.
+	 * Strings that do not match the NHS format are returned unchanged or are not valid dates.
 	 *
 	 * @param string|array $data Data containing one or more NHS dates
 	 * @param array $fields Fields (keys) to convert (optional, if empty then all fields are checked for dates)
@@ -47,7 +47,10 @@ class Helper
 				if (is_array($data[$key])) {
 					$data[$key] = Helper::convertNHS2MySQL($data[$key], $fields);
 				} elseif (is_string($data[$key]) && preg_match(self::NHS_DATE_REGEX, $data[$key])) {
-					$data[$key] = date('Y-m-d',strtotime($data[$key]));
+					$check_date = date_parse_from_format('j M Y',$data[$key]);
+					if(checkdate($check_date['month'], $check_date['day'], $check_date['year'])){
+						$data[$key] = date('Y-m-d',strtotime($data[$key]));
+					}
 				}
 			}
 
@@ -114,6 +117,18 @@ class Helper
 	}
 
 	/**
+	 * Convert mysql format datetime to JS timestamp (milliseconds since unix epoch)
+	 *
+	 * @param string $value
+	 * @return float
+	 */
+	static public function mysqlDate2JsTimestamp($value)
+	{
+		$time = strtotime($value);
+		return $time ? $time * 1000 : null;
+	}
+
+	/**
 	 * Calculate age from dob
 	 *
 	 * If date of death provided, then returns age at point of death
@@ -140,9 +155,38 @@ class Helper
 		return $dob_datetime->diff($check_datetime)->y;
 	}
 
+	/**
+	 * Given a dob and an age (in years) returns the date at which the person would reach the given age.
+	 * If given a date of death, and they will never reach the age, returns null
+	 *
+	 * @param $dob
+	 * @param $age
+	 * @param null $date_of_death
+	 * @return null|string
+	 */
+	public static function getDateForAge($dob, $age, $date_of_death = null)
+	{
+		if (!$dob) return null;
+		$dob_datetime = new DateTime($dob);
+		$age_date = $dob_datetime->add(new DateInterval('P' . $age . 'Y'));
+
+		if ($date_of_death) {
+			$dod_datetime = new DateTime($date_of_death);
+			if ($dod_datetime < $age_date) {
+				return null;
+			}
+		}
+		return $age_date->format('Y-m-d');
+	}
+
 	public static function getMonthText($month, $long=false)
 	{
 		return date($long?'F':'M',mktime(0,0,0,$month,1,date('Y')));
+	}
+
+	public static function padFuzzyDate($day, $month, $year)
+	{
+		return str_pad(@$day,4,'0',STR_PAD_LEFT).'-'.str_pad(@$month,2,'0',STR_PAD_LEFT).'-'.str_pad(@$year,2,'0',STR_PAD_LEFT);
 	}
 
 	/**
@@ -170,7 +214,7 @@ class Helper
 			return (string) $year;
 		}
 
-		return 'Unknown';
+		return 'Undated';
 	}
 
 	/**
@@ -217,4 +261,69 @@ class Helper
 			return $matches[1] * pow(1024, $units[$matches[2]]);
 		}
 	}
+
+	/**
+	 * Generate a version 4 UUID
+	 *
+	 * @return string
+	 */
+	static public function generateUuid()
+	{
+		return sprintf(
+			"%04x%04x-%04x-4%03x-%01x%03x-%04x%04x%04x",
+			mt_rand(0, 65535),
+			mt_rand(0, 65535),
+			mt_rand(0, 65535),
+			mt_rand(0, 4095),
+			mt_rand(8, 11), mt_rand(0, 4095),
+			mt_rand(0, 65535),
+			mt_rand(0, 65535),
+			mt_rand(0, 65535)
+		);
+	}
+
+	/**
+	 * Extract values from a list of objects or arrays using {@link CHtml value}
+	 *
+	 * @param object[]|array[] $objects
+	 * @param string attribute
+	 * @param mixed $default
+	 * @return array
+	 */
+	static public function extractValues(array $objects, $attribute, $default = null)
+	{
+		$values = array();
+		foreach ($objects as $object) {
+			$values[] = CHtml::value($object, $attribute, $default);
+		}
+		return $values;
+	}
+
+	/**
+	 * Format a list of strings with comma separators and a final 'and'
+	 *
+	 * @param string $items
+	 * @return string
+	 */
+	static public function formatList(array $items)
+	{
+		switch (count($items)) {
+			case 0:
+				return '';
+				break;
+			case 1:
+				return reset($items);
+				break;
+			default:
+				$last = array_pop($items);
+				return implode(', ', $items) . ' and ' . $last;
+		}
+	}
+
+	public static function getNSShortname($instance)
+	{
+		$r = new ReflectionClass($instance);
+		return $r->getShortName();
+	}
+
 }

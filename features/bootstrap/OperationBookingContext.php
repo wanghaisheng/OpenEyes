@@ -174,7 +174,7 @@ class OperationBookingContext extends PageObjectContext
          */
         $operationBooking = $this->getPage('OperationBooking');
         $operationBooking->decisionDate($date);
-        $operationBooking->getSession()->wait(3000);
+
 }
 
     /**
@@ -210,8 +210,20 @@ class OperationBookingContext extends PageObjectContext
          * @var OperationBooking $operationBooking
          */
         $operationBooking = $this->getPage('OperationBooking');
-        $operationBooking->getSession()->wait(3000);
+        //$operationBooking->getSession()->wait(3000);
         $operationBooking->scheduleNow();
+    }
+
+    /**
+     * @Given /^I select OK to Duplicate procedure if requested$/
+     */
+    public function okToDuplicateProcedure()
+    {
+        /**
+         * @var OperationBooking $operationBooking
+         */
+        $operationBooking = $this->getPage('OperationBooking');
+        $operationBooking->duplicateProcedureOk();
     }
 
     /**
@@ -251,6 +263,27 @@ class OperationBookingContext extends PageObjectContext
     }
 
 
+	/**
+	 * @Then /^I select an Available theatre slot date of next "([^"]*)"$/
+	 */
+	public function iSelectAnAvailableTheatreSlotDateOfNext($dayOfTheWeek)
+	{
+		/**
+		 * @var OperationBooking $operationBooking
+		 */
+
+		$operationBooking = $this->getPage('OperationBooking');
+
+		$nextDay = date('j', strtotime('this ' . $dayOfTheWeek));
+		$today = date('j', strtotime('today'));
+
+		if($today > $nextDay){
+			$operationBooking->nextMonth();
+		}
+		$operationBooking->availableSlotExactDay($nextDay);
+	}
+
+
     /**
      * @Given /^I select an Available theatre slot date$/
      */
@@ -260,7 +293,7 @@ class OperationBookingContext extends PageObjectContext
          * @var OperationBooking $operationBooking
          */
         $operationBooking = $this->getPage('OperationBooking');
-        $operationBooking->getSession()->wait(3000);
+//        $operationBooking->getSession()->wait(3000);
         $operationBooking->availableSlot();
     }
 
@@ -273,7 +306,7 @@ class OperationBookingContext extends PageObjectContext
          * @var OperationBooking $operationBooking
          */
         $operationBooking = $this->getPage('OperationBooking');
-        $operationBooking->getSession()->wait(3000);
+//        $operationBooking->getSession()->wait(3000);
     }
 
     /**
@@ -285,7 +318,6 @@ class OperationBookingContext extends PageObjectContext
          * @var OperationBooking $operationBooking
          */
         $operationBooking = $this->getPage('OperationBooking');
-        $operationBooking->getSession()->wait(3000);
         $operationBooking->availableSessionTime();
     }
 
@@ -302,7 +334,7 @@ class OperationBookingContext extends PageObjectContext
     }
 
     /**
-     * @Given /^I add Operation comments of "([^"]*)"$/
+     * @Given/^I add Operation comments of "([^"]*)"$/
      */
     public function iAddOperationCommentsOf($opComments)
     {
@@ -314,6 +346,18 @@ class OperationBookingContext extends PageObjectContext
     }
 
     /**
+     * @Given /^enter RTT comments of "([^"]*)"$/
+     */
+    public function enterRttCommentsOf($RTTcomments)
+    {
+        /**
+         * @var OperationBooking $operationBooking
+         */
+        $operationBooking = $this->getPage('OperationBooking');
+        $operationBooking->sessionRTTComments($RTTcomments);
+    }
+
+    /**
      * @Then /^I confirm the operation slot$/
      */
     public function iConfirmTheOperationSlot()
@@ -322,7 +366,55 @@ class OperationBookingContext extends PageObjectContext
          * @var OperationBooking $operationBooking
          */
         $operationBooking = $this->getPage('OperationBooking');
-        $operationBooking->getSession()->wait(3000);
         $operationBooking->confirmSlot();
     }
+
+    /**
+     * @Then /^I select a Ward of "([^"]*)"$/
+     */
+    public function iSelectAWardOf($ward)
+    {
+        /**
+         * @var OperationBooking $operationBooking
+         */
+        $operationBooking = $this->getPage('OperationBooking');
+        $operationBooking->chooseWard($ward);
+    }
+
+    /**
+     * @Given /^enter an admission time of "([^"]*)"$/
+     */
+    public function enterAnAdmissionTimeOf($time)
+    {
+        /**
+         * @var OperationBooking $operationBooking
+         */
+        $operationBooking = $this->getPage('OperationBooking');
+        $operationBooking->admissionTime($time);
+    }
+
+    /**
+     * @Then /^I select Save$/
+     */
+    public function save()
+    {
+        /**
+         * @var OperationBooking $operationBooking
+         */
+        $operationBooking = $this->getPage('OperationBooking');
+        $operationBooking->save();
+    }
+
+    /**
+     * @Then /^I confirm that You must change the session or cancel the booking error is displayed$/
+     */
+    public function consultantErrorValidation()
+    {
+        /**
+         * @var OperationBooking $operationBooking
+         */
+        $operationBooking = $this->getPage('OperationBooking');
+        $operationBooking->consultantValidationCheck();
+    }
+
 }

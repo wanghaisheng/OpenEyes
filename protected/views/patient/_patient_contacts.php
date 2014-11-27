@@ -31,7 +31,7 @@
 					<th>Name</th>
 					<th>Location</th>
 					<th>Type</th>
-					<?php if (BaseController::checkUserLevel(4)) {?><th></th><?php }?>
+					<?php if ($this->checkAccess('OprnEditContact')) {?><th></th><?php }?>
 				</tr>
 			</thead>
 			<tbody id="patient_contacts">
@@ -40,7 +40,7 @@
 				}?>
 			</tbody>
 		</table>
-		<?php if (BaseController::checkUserLevel(4)) {?>
+		<?php if ($this->checkAccess('OprnEditContact')) {?>
 			<div class="row data-row">
 
 				<div class="large-2 column">
@@ -145,7 +145,7 @@
 				</div>
 
 				<div class="large-2 column">
-					<img src="<?php echo Yii::app()->createUrl('img/ajax-loader.gif')?>" class="loader hide" alt="loading..." />
+					<img src="<?php echo Yii::app()->assetManager->createUrl('img/ajax-loader.gif')?>" class="loader hide" alt="loading..." />
 					<button id="btn-add-contact" class="secondary small hide" type="button">Add</button>
 				</div>
 			</div>
@@ -181,7 +181,7 @@
 								<label for="institution_id">Institution:</label>
 							</div>
 							<div class="<?php echo $form->columns('field');?>">
-								<?php echo CHtml::dropDownList('institution_id','',CHtml::listData(Institution::model()->findAll(array('order'=>'name')),'id','name'),array('empty'=>'- Select -'))?>
+								<?php echo CHtml::dropDownList('institution_id','',CHtml::listData(Institution::model()->active()->findAll(array('order'=>'name')),'id','name'),array('empty'=>'- Select -'))?>
 							</div>
 						</div>
 
@@ -199,7 +199,7 @@
 								<label for="label_id">Label:</label>
 							</div>
 							<div class="<?php echo $form->columns('field');?>">
-								<?php echo CHtml::dropDownList('label_id','',CHtml::listData(ContactLabel::model()->findAll(array('order'=>'name')),'id','name'),array('empty'=>'- Select -'))?>
+								<?php echo CHtml::dropDownList('label_id','',CHtml::listData(ContactLabel::model()->active()->findAll(array('order'=>'name')),'id','name'),array('empty'=>'- Select -'))?>
 							</div>
 						</div>
 
@@ -264,7 +264,7 @@
 								<button class="small btn_add_site" type="submit">Add site/institution</button>
 							</div>
 							<div class="large-7 column text-right">
-								<img src="<?php echo Yii::app()->createUrl('/img/ajax-loader.gif')?>" class="add_contact_loader" style="display: none;" />
+								<img src="<?php echo Yii::app()->assetManager->createUrl('img/ajax-loader.gif')?>" class="add_contact_loader" style="display: none;" />
 								<button class="secondary small btn_save_contact" type="submit">Save</button>
 								<button class="warning small btn_cancel_contact" type="submit">Cancel</button>
 							</div>
@@ -307,7 +307,7 @@
 								<div class="label">Institution:</div>
 							</div>
 							<div class="<?php echo $form->columns('field');?>">
-								<?php echo CHtml::dropDownList('institution_id','',CHtml::listData(Institution::model()->findAll(array('order'=>'name')),'id','name'),array('empty'=>'- Select -'))?>
+								<?php echo CHtml::dropDownList('institution_id','',CHtml::listData(Institution::model()->active()->findAll(array('order'=>'name')),'id','name'),array('empty'=>'- Select -'))?>
 							</div>
 						</div>
 
@@ -327,7 +327,7 @@
 								<button class="small btn_add_site" type="submit">Add site/institution</button>
 							</div>
 							<div class="large-7 column text-right">
-								<img src="<?php echo Yii::app()->createUrl('/img/ajax-loader.gif')?>" class="edit_contact_loader" style="display: none;" />
+								<img src="<?php echo Yii::app()->assetManager->createUrl('img/ajax-loader.gif')?>" class="edit_contact_loader" style="display: none;" />
 								<button class="secondary small btn_save_editcontact" type="submit">Save</button>
 								<button class="warning small btn_cancel_editcontact" type="submit">Cancel</button>
 							</div>
@@ -383,7 +383,7 @@
 				<div class="buttons">
 					<button type="submit" class="secondary small btn_add_site_ok">Send</button>
 					<button type="submit" class="warning small btn_add_site_cancel">Cancel</button>
-					<img class="loader" src="<?php echo Yii::app()->createUrl('img/ajax-loader.gif')?>" alt="loading..." style="display: none;" />
+					<img class="loader" src="<?php echo Yii::app()->assetManager->createUrl('img/ajax-loader.gif')?>" alt="loading..." style="display: none;" />
 				</div>
 			</div>
 		<?php }?>

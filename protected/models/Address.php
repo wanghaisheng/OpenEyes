@@ -22,8 +22,7 @@
  *
  * The followings are the available columns in table 'address':
  * @property integer $id
- * @property string $parent_class Class of parent model
- * @property integer $parent_id ID of parent record
+ * @property integer $contact_id ID of contact this address applies to
  * @property string $type Type of address (H = Home, C = Correspondence, T = Temporary)
  * @property string $date_start Date address is valid from
  * @property string $date_end Date address is valid to
@@ -38,7 +37,7 @@
  * The following are the available model relations:
  * @property Country $country
  */
-class Address extends BaseActiveRecord
+class Address extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -66,8 +65,8 @@ class Address extends BaseActiveRecord
 			array('address1, address2, city, county', 'length', 'max' => 255),
 			array('postcode', 'length', 'max' => 10),
 			array('email', 'length', 'max' => 255),
-			array('country_id, parent_class, parent_id, type, date_start, date_end', 'safe'),
-			array('id, address1, address2, city, postcode, county, email, country_id, parent_class, parent_id, type, date_start, date_end', 'safe', 'on' => 'search'),
+			array('country_id, type, date_start, date_end', 'safe'),
+			array('id, address1, address2, city, postcode, county, email, country_id, type, date_start, date_end', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -77,9 +76,8 @@ class Address extends BaseActiveRecord
 	public function relations()
 	{
 		return array(
-			// TODO: Make this work
-			//'parent' => array(self::BELONGS_TO, $this->parent_class, 'parent_id'),
 			'country' => array(self::BELONGS_TO, 'Country', 'country_id'),
+			'type' => array(self::BELONGS_TO, 'AddressType', 'address_type_id'),
 		);
 	}
 
@@ -162,7 +160,7 @@ class Address extends BaseActiveRecord
 		if ($include_country) {
 			if (!empty($this->country->name)) {
 				$site = Site::model()->findByPk(Yii::app()->session['selected_site_id']);
-				if ($site->institution->contact->address->country_id != $this->country_id) {
+				if (!$site || ($site->institution->contact->address->country_id != $this->country_id)) {
 					$address[] = $this->country->name;
 				}
 			}

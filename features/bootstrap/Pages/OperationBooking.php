@@ -1,8 +1,6 @@
 <?php
-
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-
-class OperationBooking extends Page
+use Behat\Behat\Exception\BehaviorException;
+class OperationBooking extends OpenEyesPage
 {
     protected $path = "/site/OphTrOperationbooking/Default/create?patient_id={parentId}";
 
@@ -32,17 +30,26 @@ class OperationBooking extends Page
         'operationComments' => array('xpath' => "//*[@id='Element_OphTrOperationbooking_Operation_comments']"),
         'scheduleLater' => array('xpath' => "//*[@id='et_schedulelater']"),
         'scheduleNow' => array('xpath' => "//*[@id='et_save_and_schedule']"),
-        'availableSlotExactDate' => array('xpath' => "//*[@id='calendar']//*[contains(number(),'30')]"),
+        'duplicateProcedureOk' => array('xpath' => "//*[@class='secondary small confirm ok']"),
+        'duplicateProcedureCancel' => array('xpath' => "//*[@class='warning small confirm cancel']"),
         'availableTheatreSlotDate' => array('xpath' => "//*[@class='available']"),
         'availableTheatreSlotDateOutsideRTT' => array('xpath' => "//*[@class='available outside_rtt']"),
         'availableThreeWeeksTime' => array ('xpath' => "//*[@id='calendar']//*[contains(text(),'27')]"),
-        'nextMonth' => array('xpath' => "//*[@id='next_month']"),
+        'nextMonth' => array('css' => '#next_month > a'),
         'availableTheatreSessionTime' => array('xpath' => "//*[@class='timeBlock available bookable']"),
         'noAnaesthetist' => array ('xpath' => "//*[@id='bookingSession1824']"),
         'sessionComments' => array('xpath' => "//*[@id='Session_comments']"),
-        'sessionOperationComments' => array('xpath' => "//*[@id='operation_comments']"),
+        'sessionOperationComments' => array('xpath' => "//*[@name='Operation[comments]']"),
+        'sessionRTTComments' => array('xpath' => "//*[@name='Operation[comments_rtt]']"),
         'confirmSlot' => array('xpath' => "//*[@id='confirm_slot']"),
-        'EmergencyList' => array ('xpath' => "//select[@id='firm_id']")
+        'EmergencyList' => array ('xpath' => "//select[@id='firm_id']"),
+	    'currentMonth' => array('css' => "#current_month"),
+        'saveButton' => array('xpath' => "//*[@id='et_save']"),
+        'chooseWard' => array('xpath' => "//*[@id='Booking_ward_id']"),
+        'admissionTime' => array('xpath' => "//*[@id='Booking_admission_time']"),
+        'consultantValidationError' => array('xpath' => "//*[@class='alert-box alert with-icon']//*[contains(text(),'Operation: The booked session does not have a consultant present, you must change the session or cancel the booking before making this change')]"),
+
+
     );
 
     public function diagnosisEyes ($eye)
@@ -60,7 +67,9 @@ class OperationBooking extends Page
 
     public function diagnosis ($diagnosis)
     {
-        $this->getElement('operationDiagnosis')->setValue($diagnosis);
+        $element =$this->getElement('operationDiagnosis');
+        $this->scrollWindowToElement($element);
+        $element->setValue($diagnosis);
     }
 
     public function operationEyes ($opEyes)
@@ -78,11 +87,15 @@ class OperationBooking extends Page
     public function procedure ($procedure)
     {
         $this->getElement('operationProcedure')->setValue($procedure);
+        $this->getSession()->wait(2000);
+
     }
 
     public function consultantYes ()
     {
-        $this->getElement('consultantYes')->click();
+        $element = $this->getElement('consultantYes');
+        $this->scrollWindowToElement($element);
+        $element->click();
     }
 
     public function consultantNo ()
@@ -92,21 +105,27 @@ class OperationBooking extends Page
 
     public function selectAnaesthetic ($type)
     {
-        if ($type==='Topical') {
-            $this->getElement('anaestheticTopical')->click();
+		$element = null;
+		if ($type==='Topical') {
+            $element = $this->getElement('anaestheticTopical');
         }
         if ($type==='LA') {
-            $this->getElement('anaestheticLa')->click();
+			$element = $this->getElement('anaestheticLa');
         }
         if ($type==='LAC') {
-            $this->getElement('anaestheticLac')->click();
+			$element = $this->getElement('anaestheticLac');
         }
         if ($type==='LAS') {
-            $this->getElement('anaestheticLas')->click();
+			$element = $this->getElement('anaestheticLas');
         }
         if ($type==='GA') {
-            $this->getElement('anaestheticGa')->click();
+			$element = $this->getElement('anaestheticGa');
         }
+//		$element->focus();
+        $this->scrollWindowToElement($element);
+        $this->getSession()->wait(2000);
+		$element->click();
+		$this->getSession()->wait(3000);
     }
 
     public function postOpStayYes ()
@@ -126,17 +145,23 @@ class OperationBooking extends Page
 
     public function priorityRoutine ()
     {
-        $this->getElement('priorityRoutine')->click();
+        $element = $this->getElement('priorityRoutine');
+        $this->scrollWindowToElement($element);
+        $element->click();
     }
 
     public function priorityUrgent ()
     {
-        $this->getElement('priorityUrgent')->check();
+        $element = $this->getElement('priorityUrgent');
+        $this->scrollWindowToElement($element);
+        $element->check();
+
     }
 
     public function decisionDate ($date)
     {
         $this->getElement('decisionDate')->selectOption($date);
+        $this->getSession()->wait(3000);
     }
 
     public function operationComments ($comments)
@@ -151,35 +176,53 @@ class OperationBooking extends Page
 
     public function scheduleNow ()
     {
-        $this->getElement('scheduleNow')->keyPress(2191);
+        //$this->getElement('scheduleNow')->keyPress(2191);
         $this->getElement('scheduleNow')->click();
-        $this->getSession()->wait(5000);
+        $this->getSession()->wait(15000,"window.$ && $('.event-title').html() == 'Schedule Operation' ");
+    }
+
+    public function duplicateProcedureOk ()
+    {
+        if ($this->isDuplicateProcedurePopUpShown()) {
+        $this->getElement('duplicateProcedureOk')->click();
+        }
+    }
+
+    public function isDuplicateProcedurePopUpShown ()
+    {
+        return (bool) $this->find('xpath', $this->getElement('duplicateProcedureOk')->getXpath());
     }
 
     public function EmergencyList ()
     {
         $this->getElement('EmergencyList')->selectOption("EMG");
-        $this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
-        $this->getSession()->wait(5000);
+		//alert is not happening anymore so call is commented out
+        //$this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
+        $this->getSession()->wait(15000, "window.$ && $('.alert-box.alert').last().html() == 'You are booking into the Emergency List.' ");
     }
 
     public function nextMonth ()
     {
-        $this->getElement('nextMonth')->click();
+			$currMonthText = $this->getElement('currentMonth')->getText();
+			$this->getElement('nextMonth')->click();
+			$this->getSession()->wait(15000, "window.$ && $('#current_month').html().trim().length > 0 && $('#current_month').html().trim() != '" . $currMonthText . "' ");
     }
 
     public function availableSlotExactDay ($day)
     {
-        $this->getElement('availableSlotExactDate')->click();
-//        Need to include
+		$slot = $this->find('xpath' , "//*[@id='calendar']//*[number()='" . $day ."']");
+		$this->scrollWindowToElement($slot);
+        $slot->click();
+		$this->getSession()->wait(15000, "window.$ && $('#calendar td.available.selected_date').html().trim() == '" . $day . "' ");
     }
 
     public function availableSlot ()
     {
         $slots = $this->findAll('xpath', $this->getElement('availableTheatreSlotDate')->getXpath());
         foreach ($slots as $slot) {
+            $this->scrollWindowToElement($slot);
             $slot->click();
-            $this->getSession()->wait(10000, "$('.sessionTimes').length > 0");
+            $this->getSession()->wait(10000, "window.$ && $('.sessionTimes').length > 0");
             $freeSession = $this->find('css', '.sessionTimes > a > .bookable');
             if ($freeSession) {
                 return true;
@@ -194,7 +237,7 @@ class OperationBooking extends Page
         $slots = $this->findAll('xpath', $this->getElement('availableTheatreSlotDateOutsideRTT')->getXpath());
         foreach ($slots as $slot) {
             $slot->click();
-            $this->getSession()->wait(10000, "$('.sessionTimes').length > 0");
+            $this->getSession()->wait(10000, "window.$ && $('.sessionTimes').length > 0");
             $freeSession = $this->find('css', '.sessionTimes > a > .bookable');
             if ($freeSession) {
                 return true;
@@ -206,9 +249,11 @@ class OperationBooking extends Page
 
     public function availableSessionTime ()
     {
-//        $this->getSession()->wait(5000);
-        $this->getElement('availableTheatreSessionTime')->click();
-        $this->getSession()->wait(10000, "$('.active') == 0");
+        $this->waitForElementDisplayBlock('.timeBlock.available.bookable');
+		$element = $this->getElement('availableTheatreSessionTime');
+        $this->scrollWindowToElement($element);
+        $element->click();
+        $this->waitForElementDisplayBlock('Session_comments');
     }
 
     public function availableThreeWeeksTime ()
@@ -220,7 +265,6 @@ class OperationBooking extends Page
 
     public function sessionComments ($sessionComments)
     {
-        $this->getSession()->wait(7000);
         $this->getElement('sessionComments')->setValue($sessionComments);
     }
 
@@ -229,8 +273,46 @@ class OperationBooking extends Page
         $this->getElement('sessionOperationComments')->setValue($opComments);
     }
 
+    public function sessionRTTComments ($RTTcomments)
+    {
+        $this->getElement('sessionRTTComments')->setValue($RTTcomments);
+    }
+
     public function confirmSlot ()
     {
         $this->getElement('confirmSlot')->click();
     }
+
+    public function save ()
+    {
+        $this->getElement('saveButton')->click();
+        $this->getSession()->wait(5000);
+    }
+
+    public function chooseWard ($ward)
+    {
+        $this->waitForElementDisplayBlock('#Booking_ward_id');
+		$this->getElement('chooseWard')->selectOption($ward);
+    }
+
+    public function admissionTime ($time)
+    {
+        $this->getElement('admissionTime')->setValue($time);
+    }
+
+    public function consultantValidationError ()
+    {
+        return (bool) $this->find('xpath', $this->getElement('consultantValidationError')->getXpath());
+    }
+
+    public function consultantValidationCheck ()
+    {
+        if ($this->consultantValidationError()){
+            print "Consultant Validation error has been displayed";
+        }
+        else{
+            throw new BehaviorException ("CONSULTANT BOOKING VALIDATION ERROR!!!");
+        }
+    }
+
 }

@@ -31,7 +31,7 @@
  * @property User $user
  * @property EventType $eventType
  */
-class Event extends BaseActiveRecord
+class Event extends BaseActiveRecordVersioned
 {
 	private $defaultScopeDisabled = false;
 
@@ -83,11 +83,12 @@ class Event extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_type_id', 'required'),
+			array('event_type_id, event_date', 'required'),
 			array('episode_id, event_type_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, episode_id, event_type_id, created_date', 'safe', 'on'=>'search'),
+			array('id, episode_id, event_type_id, created_date, event_date', 'safe', 'on'=>'search'),
+			array('event_date', 'OEDateValidatorNotFuture'),
 		);
 	}
 
@@ -107,17 +108,24 @@ class Event extends BaseActiveRecord
 		);
 	}
 
-	public function getEditable()
+	/**
+	 * Make sure event date is set
+	 */
+	protected function afterConstruct()
 	{
-		if (!$this->episode->editable) {
-			return FALSE;
+		$this->event_date = date('Y-m-d H:i:s');
+		parent::afterConstruct();
+	}
+
+	public function moduleAllowsEditing()
+	{
+		if ($api = Yii::app()->moduleAPI->get($this->eventType->class_name)) {
+			if (method_exists($api,'canUpdate')) {
+				return $api->canUpdate($this->id);
+			}
 		}
 
-		if ($this->episode->patient->date_of_death) {
-			return FALSE;
-		}
-
-		return TRUE;
+		return null;
 	}
 
 	/**
@@ -154,13 +162,21 @@ class Event extends BaseActiveRecord
 		));
 	}
 
-	/* Does this event have some kind of issue that the user should know about */
-
+	/**
+	 * Does this event have some kind of issue that the user should know about
+	 *
+	 * @return boolean
+	 */
 	public function hasIssue()
 	{
 		return (boolean) $this->issues;
 	}
 
+	/**
+	 * Get the text for any issues on this event
+	 *
+	 * @return string
+	 */
 	public function getIssueText()
 	{
 		$text = '';
@@ -172,6 +188,12 @@ class Event extends BaseActiveRecord
 		return $text;
 	}
 
+	/**
+	 * parse out placeholders in the given text
+	 *
+	 * @param $text
+	 * @return mixed
+	 */
 	public function expandIssueText($text)
 	{
 		if (preg_match_all('/\{(.*?)\}/',$text,$m)) {
@@ -191,15 +213,12 @@ class Event extends BaseActiveRecord
 		return $text;
 	}
 
-	public function getInfoText()
-	{
-		foreach (Yii::app()->getController()->getDefaultElements('view',false,$this) as $element) {
-			if ($element->getInfoText()) {
-				return $element->getInfoText();
-			}
-		}
-	}
-
+	/**
+	 * Add an issue to this event
+	 *
+	 * @param $text
+	 * @return bool
+	 */
 	public function addIssue($text)
 	{
 		if (!$issue = Issue::model()->find('name=?',array($text))) {
@@ -223,6 +242,12 @@ class Event extends BaseActiveRecord
 		return true;
 	}
 
+	/**
+	 * Remove an issue assignment for this event
+	 *
+	 * @param $name
+	 * @return bool
+	 */
 	public function deleteIssue($name)
 	{
 		if (!$issue = Issue::model()->find('name=?',array($name))) {
@@ -236,6 +261,10 @@ class Event extends BaseActiveRecord
 		return true;
 	}
 
+	/**
+	 * Remove all issues assigned to this event
+	 *
+	 */
 	public function deleteIssues()
 	{
 		foreach (EventIssue::model()->findAll('event_id=?',array($this->id)) as $event_issue) {
@@ -243,26 +272,23 @@ class Event extends BaseActiveRecord
 		}
 	}
 
-	// Only the event creator can delete the event, and only 24 hours after its initial creation
-	public function canDelete()
+	public function showDeleteIcon()
 	{
-		if (!BaseController::checkUserLevel(4)) return false;
+		if ($api = Yii::app()->moduleAPI->get($this->eventType->class_name)) {
+			if (method_exists($api,'showDeleteIcon')) {
+				return $api->showDeleteIcon($this->id);
+			}
+		}
 
-		if ($this->episode->patient->date_of_death) return false;
-
-		if (!$this->episode->editable) return false;
-
-		$admin = User::model()->find('username=?',array('admin'));	 // these two lines should be replaced once we have rbac
-		if ($admin->id == Yii::app()->session['user']->id) {return true;}
-		return ($this->created_user_id == Yii::app()->session['user']->id && (time() - strtotime($this->created_date)) <= 86400);
+		return null;
 	}
 
 	/**
-	 * marks an event as deleted and processes any softDelete methods that exist on the elements attached to it.
+	 * Marks an event as deleted and processes any softDelete methods that exist on the elements attached to it.
 	 *
 	 * @throws Exception
 	 */
-	public function softDelete()
+	public function softDelete($reason=false)
 	{
 		// perform this process in a transaction if one has not been created
 		$transaction = Yii::app()->db->getCurrentTransaction() === null
@@ -271,6 +297,12 @@ class Event extends BaseActiveRecord
 
 		try {
 			$this->deleted = 1;
+			$this->delete_pending = 0;
+
+			if ($reason) {
+				$this->delete_reason = $reason;
+			}
+
 			foreach ($this->getElements() as $element) {
 				$element->softDelete();
 			}
@@ -289,15 +321,22 @@ class Event extends BaseActiveRecord
 		}
 	}
 
+	/**
+	 * Deletes issues for this event before calling the parent delete method
+	 * Does not handle the removal of elements and will therefore fail if this has not been handled before being called.
+	 *
+	 * @return bool
+	 * @see parent::delete()
+	 */
 	public function delete()
 	{
 		// Delete related
 		EventIssue::model()->deleteAll('event_id = ?', array($this->id));
 
-		parent::delete();
+		return parent::delete();
 	}
 
-	/*
+	/**
 	 * returns the latest event of this type in the event episode
 	 *
 	 * @returns Event
@@ -307,13 +346,13 @@ class Event extends BaseActiveRecord
 		$criteria = new CDbCriteria;
 		$criteria->condition = 'episode_id = :e_id AND event_type_id = :et_id';
 		$criteria->limit = 1;
-		$criteria->order = 'created_date DESC';
+		$criteria->order = ' event_date DESC, created_date DESC';
 		$criteria->params = array(':e_id'=>$this->episode_id, ':et_id'=>$this->event_type_id);
 
 		return Event::model()->find($criteria);
 	}
 
-	/*
+	/**
 	 * if this event is the most recent of its type in its episode, returns true. false otherwise
 	 *
 	 * @returns boolean
@@ -324,6 +363,15 @@ class Event extends BaseActiveRecord
 		return ($latest->id == $this->id) ? true : false;
 	}
 
+	/**
+	 * Sets various default properties for audit calls on this event
+	 *
+	 * @param $target
+	 * @param $action
+	 * @param null $data
+	 * @param bool $log
+	 * @param array $properties
+	 */
 	public function audit($target, $action, $data=null, $log=false, $properties=array())
 	{
 		$properties['event_id'] = $this->id;
@@ -342,18 +390,116 @@ class Event extends BaseActiveRecord
 	{
 		$elements = array();
 		if ($this->id) {
-			$criteria = new CDbCriteria;
-			$criteria->compare('event_type_id', $this->event_type_id);
-			$criteria->order = 'display_order asc';
-
-			foreach (ElementType::model()->findAll($criteria) as $element_type) {
+			foreach ($this->eventType->getAllElementTypes() as $element_type) {
 				$element_class = $element_type->class_name;
 
-				if ($element = $element_class::model()->find('event_id = ?',array($this->id))) {
+				foreach ($element_class::model()->findAll('event_id = ?',array($this->id)) as $element) {
 					$elements[] = $element;
 				}
 			}
 		}
 		return $elements;
+	}
+
+	public function requestDeletion($reason)
+	{
+		$this->delete_reason = $reason;
+		$this->delete_pending = 1;
+
+		if (!$this->save()) {
+			throw new Exception("Unable to mark event as delete pending: ".print_r($this->getErrors(),true));
+		}
+
+		$this->audit('event','delete-request',serialize(array(
+			'requested_user_id' => $this->last_modified_user_id,
+			'requested_datetime' => $this->last_modified_date,
+		)));
+	}
+
+	public function isLocked()
+	{
+		return $this->delete_pending;
+	}
+
+	/**
+	 * Fetch a single element of the specified class for this event
+	 *
+	 * @param $element_class
+	 */
+	public function getElementByClass($element_class)
+	{
+		return $element_class::model()->find(
+			array(
+				'condition' => 'event_id = :event_id',
+				'params' => array('event_id' => $this->id),
+				'limit' => 1,
+			)
+		);
+	}
+
+	public function isEventDateDifferentFromCreated()
+	{
+		$evDate = new DateTime($this->event_date);
+		$creDate = new DateTime($this->created_date);
+		if($creDate->format('Y-m-d') != $evDate->format('Y-m-d')){
+			return true;
+		}
+		return false;
+	}
+
+	public function getImageDirectory()
+	{
+		return Yii::app()->basePath.DIRECTORY_SEPARATOR."runtime" . DIRECTORY_SEPARATOR . "cache" . DIRECTORY_SEPARATOR . "events" . DIRECTORY_SEPARATOR . "event_{$this->id}_".strtotime($this->last_modified_date);
+	}
+
+	public function hasEventImage($name)
+	{
+		return file_exists($this->getImagePath($name));
+	}
+
+	public function getImagePath($name)
+	{
+		return $this->imageDirectory."/$name.png";
+	}
+
+	public function getPDF($pdf_print_suffix=null)
+	{
+		return $pdf_print_suffix ? "$this->imageDirectory" . DIRECTORY_SEPARATOR . "event_$pdf_print_suffix.pdf" : "$this->imageDirectory" . DIRECTORY_SEPARATOR . "event.pdf";
+	}
+
+	public function hasPDF($pdf_print_suffix=null)
+	{
+		$pdf = $this->getPDF($pdf_print_suffix);
+
+		return file_exists($pdf) && filesize($pdf) >0;
+	} 
+
+	protected function getLockKey()
+	{
+		return "openeyes.event:$this->id";
+	}
+
+	public function lock()
+	{
+		$cmd = $this->dbConnection->createCommand('SELECT GET_LOCK(?, 1)');
+
+		while (!$cmd->queryScalar(array($this->lockKey)));
+	}
+
+	public function unlock()
+	{
+		$this->dbConnection->createCommand('SELECT RELEASE_LOCK(?)')->execute(array($this->lockKey));
+	}
+
+	public function getBarCodeHTML()
+	{
+		$barcode = new TCPDFBarcode("E:$this->id", 'C128');
+
+		return $barcode->getBarcodeHTML(1,8);
+	}
+
+	public function getDocref()
+	{
+		return "E:$this->id/".strtoupper(base_convert(time().sprintf('%04d', Yii::app()->user->getId()), 10, 32)).'/{{PAGE}}';
 	}
 }

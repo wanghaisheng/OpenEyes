@@ -20,6 +20,30 @@ class TherapyApplicationContext extends PageObjectContext
     }
 
     /**
+     * @Then /^I remove the Diagnosis right eye$/
+     */
+    public function iRemoveRightEye()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->removeRightEye();
+    }
+
+    /**
+     * @Then /^I add the Diagnosis right eye$/
+     */
+    public function iAddRightEye()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->addRightEye();
+    }
+
+    /**
      * @Then /^I add Right Side$/
      */
     public function iAddRightSide()
@@ -585,7 +609,7 @@ class TherapyApplicationContext extends PageObjectContext
     }
 
     /**
-     * @Then /^I Save the Therapy Application$/
+     * @Then /^I Save the Therapy Application and confirm it has been created successfully$/
      */
     public function iSaveTheTherapyApplication()
     {
@@ -593,7 +617,165 @@ class TherapyApplicationContext extends PageObjectContext
          * @var TherapyApplication $TherapyApplication
          */
         $TherapyApplication = $this->getPage("TherapyApplication");
-        $TherapyApplication->saveTherapy();
+        $TherapyApplication->saveTherapyAndConfirm();
     }
+
+    /**
+     * @Given /^I select a Right Patient has CNV of No$/
+     */
+    public function iSelectARightPatientHasCnvOfNo()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightPatientCnvNO();
+    }
+
+    /**
+     * @Then /^I select a Right Patient has Macular Oedema of Yes$/
+     */
+    public function iSelectARightPatientHasMacularOedemaOfYes()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightMacularOdemaYes();
+    }
+
+    /**
+     * @Given /^I select a Right Patient has Diabetic Macular Oedema of Yes$/
+     */
+    public function iSelectARightPatientHasDiabeticMacularOedemaOfYes()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightDiabeticMacularOdemaYes();
+    }
+
+    /**
+     * @Then /^I select a Right CRT>=(\d+) of Yes$/
+     */
+    public function iSelectARightCrtOfYes($arg1)
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightCRT400Yes();
+    }
+
+    /**
+     * @Given /^I select a Left Patient has CNV of No$/
+     */
+    public function iSelectALeftPatientHasCnvOfNo()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->leftPatientCnvNO();
+    }
+
+    /**
+     * @Then /^I select a Left Patient has Macular Oedema of Yes$/
+     */
+    public function iSelectALeftPatientHasMacularOedemaOfYes()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->leftMacularOdemaYes();
+    }
+
+    /**
+     * @Given /^I select a Left Patient has Diabetic Macular Oedema of Yes$/
+     */
+    public function iSelectALeftPatientHasDiabeticMacularOedemaOfYes()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->leftDiabeticMacularOdemaYes();
+    }
+
+    /**
+     * @Then /^I select a Left CRT>=(\d+) of Yes$/
+     */
+    public function iSelectALeftCrtOfYes($arg1)
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->leftCRT400Yes();
+    }
+
+    /**
+     * @Given /^I select Is this ocular condition rare of Yes$/
+     */
+    public function iSelectIsThisOcularConditionRareOfYes()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightOcularConditionRareYes();
+    }
+
+    /**
+     * @Given /^I select Is this ocular condition rare of No$/
+     */
+    public function iSelectIsThisOcularConditionRareOfNo()
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightOcularConditionRareNo();
+    }
+
+    /**
+     * @Then /^I add Right incidence details of "([^"]*)"$/
+     */
+    public function iAddRightIncidenceDetailsOf($comments)
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightIncidenceDetails($comments);
+    }
+
+    /**
+     * @Given /^I add How is the patient significantly different comments "([^"]*)"$/
+     */
+    public function iAddHowIsThePatientSignificantlyDifferentComments($comments)
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightPatientSignificantlyDifferent($comments);
+    }
+
+    /**
+     * @Then /^I add How is the patient likely to gain comments "([^"]*)"$/
+     */
+    public function iAddHowIsThePatientLikelyToGainComments($comments)
+    {
+        /**
+         * @var TherapyApplication $TherapyApplication
+         */
+        $TherapyApplication = $this->getPage("TherapyApplication");
+        $TherapyApplication->rightPatientLikelyToGainBenefit($comments);
+    }
+
+
 
 }

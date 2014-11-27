@@ -19,10 +19,16 @@
  */
 class ContactTest extends CDbTestCase {
 
-      public $model;
-      public $fixtures = array(
-                               'contacts' => 'Contact',
-                               'addresses' => 'Address'
+	public $model;
+	public $fixtures = array(
+		'contactlabels' => 'ContactLabel',
+		'contacts' => 'Contact',
+		'addresses' => 'Address',
+		'contactlocations' => 'ContactLocation',
+		'sites' => 'Site',
+		'institutions' => 'Institution',
+		'person' => 'Person'
+
       );
 
       public function dataProvider_Search() {
@@ -45,34 +51,15 @@ class ContactTest extends CDbTestCase {
             $this->model->setAttributes($this->contacts('contact1')->getAttributes());
       }
 
-      /**
-       * Tears down the fixture, for example, closes a network connection.
-       * This method is called after a test is executed.
-       */
-      protected function tearDown() {
-            
-      }
-
-      /**
-       * @covers Contact::model
-       * @todo   Implement testModel().
-       */
-      public function testModel() {
-            $this->assertEquals('Contact', get_class(Contact::model()), 'Class name should match model.');
-      }
-
-      /**
-       * @covers Contact::tableName
-       * @todo   Implement testTableName().
-       */
-      public function testTableName() {
-
-            $this->assertEquals('contact', $this->model->tableName());
-      }
+	/**
+	* Tears down the fixture, for example, closes a network connection.
+	* This method is called after a test is executed.
+	*/
+	protected function tearDown() {
+	}
 
       /**
        * @covers Contact::rules
-       * @todo   Implement testRules().
        */
       public function testRules() {
 
@@ -81,153 +68,173 @@ class ContactTest extends CDbTestCase {
       }
 
       /**
-       * @covers Contact::relations
-       * @todo   Implement testRelations().
-       */
-      public function testRelations() {
-            // Remove the following lines when you implement this test.
-            $this->markTestIncomplete(
-                      'This test has not been implemented yet.'
-            );
-      }
-
-      /**
        * @covers Contact::attributeLabels
-       * @todo   Implement testAttributeLabels().
        */
-      public function testAttributeLabels() {
-            $expected = array(
-                                     'id' => 'ID',
-                                     'nick_name' => 'Nickname',
-                                     'primary_phone' => 'Phone number',
-                                     'title' => 'Title',
-                                     'first_name' => 'First name',
-                                     'last_name' => 'Last name',
-                                     'qualifications' => 'Qualifications',
-                                     'contact_label_id' => 'Label',
-            );
+	public function testAttributeLabels() {
+		$expected = array(
+			 'id' => 'ID',
+			 'nick_name' => 'Nickname',
+			 'primary_phone' => 'Phone number',
+			 'title' => 'Title',
+			 'first_name' => 'First name',
+			 'last_name' => 'Last name',
+			 'qualifications' => 'Qualifications',
+			 'contact_label_id' => 'Label',
+		);
 
-            $this->assertEquals($expected, $this->model->attributeLabels(), 'Attribute labels should match.');
-      }
+		$this->assertEquals($expected, $this->model->attributeLabels(), 'Attribute labels should match.');
+	}
 
-      /**
-       * @covers Contact::search
-       * @todo   Implement testSearch().
-       */
-      public function testSearch() {
+	/**
+	* @covers Contact::getFullName
+	*/
+	public function testGetFullName()
+	{
 
-            $this->markTestSkipped(
-                      'already implemented as "testSearch_WithValidTerms_ReturnsExpectedResults" '
-            );
-      }
+		$c1 = $this->contacts('contact1');
 
-      /**
-       * @covers Contact::getFullName
-       * @todo   Implement testGetFullName().
-       */
-      public function testGetFullName() {
+		$expected = trim(implode(' ',array($c1->title, $c1->first_name, $c1->last_name)));
+		$result = $this->model->getFullName();
 
-            $expected = $this->contacts('contact1')->getFullName();
-            $result = $this->model->getFullName();
+		$this->assertEquals($expected, $result);
+	}
 
-            // print_r($this->model->getAttributes());
-            $this->assertEquals($expected, $result);
-      }
+	/**
+	* @covers Contact::getReversedFullName
+	*/
+	public function testGetReversedFullName()
+	{
+		$c1 = $this->contacts('contact1');
 
-      /**
-       * @covers Contact::getReversedFullName
-       * @todo   Implement testGetReversedFullName().
-       */
-      public function testGetReversedFullName() {
+		$expected = trim(implode(' ',array($c1->title, $c1->last_name, $c1->first_name)));
+		$result = $this->model->getReversedFullName();
 
-            $expected = $this->contacts('contact1')->getReversedFullName();
-            $result = $this->model->getReversedFullName();
+		$this->assertEquals($expected, $result);
+	}
 
-            $this->assertEquals($expected, $result);
-      }
+	/**
+	* @covers Contact::getSalutationName
+	*/
+	public function testGetSalutationName() {
 
-      /**
-       * @covers Contact::getSalutationName
-       * @todo   Implement testGetSalutationName().
-       */
-      public function testGetSalutationName() {
+		$c1 = $this->contacts('contact1');
+		$expected = $c1->title . ' ' . $c1->last_name;
+		$result = $this->model->GetSalutationName();
 
-            $expected = $this->contacts('contact1')->GetSalutationName();
-            $result = $this->model->GetSalutationName();
+		$this->assertEquals($expected, $result);
+	}
 
-            $this->assertEquals($expected, $result);
-      }
+	/**
+	 * @covers Contact::contactLine
+	 */
+	public function testContactLine_withLocation()
+	{
+		$c1 = $this->contacts('contact1');
+		$location = $this->contactlocations('contactlocation1');
+		$expectedwithlocation = $c1->getFullName() . ' (' . $c1->label->name . ', ' . $location . ')';
 
-      /**
-       * @covers Contact::contactLine
-       * @todo   Implement testContactLine().
-       */
-      public function testContactLine() {
+		$resultwithlocation = $this->model->ContactLine($location);
+		$this->assertEquals($expectedwithlocation, $resultwithlocation);
+	}
 
-            $expectedwithlocation = $this->contacts('contact1')->ContactLine('london');
+	/**
+	 * @covers Contact::contactLine
+	 */
+	public function testContactLine_withoutLocation()
+	{
+		$c1 = $this->contacts('contact1');
+		$expectedwithoutlocation = $c1->getFullName() . ' (' . $c1->label->name . ')';
+		$resultwithoutlocation = $this->model->ContactLine();
+		$this->assertEquals($expectedwithoutlocation, $resultwithoutlocation);
+	}
 
-            $resultwithlocation = $this->model->ContactLine('london');
+	/**
+	 * @covers Contact::findByLabel
+	 */
+	public function testFindByLabel_noPartialMatch()
+	{
+		$label = $this->contactlabels('contactlabel1');
+		$res = Contact::model()->findByLabel('aylw', $label->name);
 
-            $expectedwithoutlocation = $this->contacts('contact1')->ContactLine();
+		$this->assertEquals(array(), $res, 'No partial match without % appended to search term');
+	}
 
-            $resultwithoutlocation = $this->model->ContactLine();
+	/**
+	 * @covers Contact::findByLabel
+	 */
+	public function testFindByLabel_wildcardMatchWithoutLocation()
+	{
+		$c4 = $this->contacts('contact4');
+		$c5 = $this->contacts('contact5');
+		$label = $c4->label;
+		$term = strtolower(substr($c4->last_name, 0, 3));
+		$res = Contact::model()->findByLabel($term . '%', $label->name);
 
+		$expected = array(
+			array('line' => $c5->ContactLine(), 'contact_id' => $c5->id),
+			array('line' => $c4->ContactLine(), 'contact_id' => $c4->id),
+		);
 
-            $this->assertEquals($expectedwithlocation, $resultwithlocation);
-            $this->assertEquals($expectedwithoutlocation, $resultwithoutlocation);
-      }
- 
+		$this->assertEquals($expected, $res, 'Should match the contact with wildcard appended to substring of last name');
+	}
+	/**
+	 * @covers Contact::findByLabel
+	 */
+	public function testFindByLabel_wildcardMatchWithLocation()
+	{
+		$label = $this->contactlabels('contactlabel1');
+		$res = Contact::model()->findByLabel('aylw%', $label->name);
+		$c1 = $this->contacts('contact1');
+		$expected = array(array('line' => $c1->ContactLine('City Road, flat 1, flitchley'), 'contact_location_id' => $this->contactlocations('contactlocation1')->id));
 
-      /**
-       * @covers Contact::findByLabel
-       * @todo   Implement testfindByLabel().
-       */
-      public function testFindByLabel() {
+		$this->assertEquals($expected, $res, 'Should match the first contact with wildcard appended to term');
+	}
 
-            $term = $this->model->last_name;
-            $label = $this->model->label->name;
+	/**
+	 * @covers Contact::findByLabel
+	 */
+	public function testFindByLabel_wildcardMatchPerson()
+	{
+		// note checking restricted to only Person as the search term matches a non-Person contact as well
+		$c5 = $this->contacts('contact5');
+		$term = strtolower(substr($c5->last_name, 0, 3));
+		$expected = array(array('line' => $c5->ContactLine(), 'contact_id' => $c5->id));
+		$res = Contact::model()->findByLabel($term . '%', $c5->label->name, false, 'person');
 
+		$this->assertEquals($expected, $res);
+	}
 
-            $result = $this->model->findByLabel($term, $label, $exclude = false);
-            $expected = $this->model->findByLabel($term, $label, $exclude = false);
+	/**
+	 * @dataProvider dataProvider_Search
+	 * @covers Contact::search
+	 */
+	public function testSearch_WithValidTerms_ReturnsExpectedResults($searchTerms, $numResults, $expectedKeys)
+	{
+		$contact = new Contact;
+		$contact->setAttributes($searchTerms);
+		$results = $contact->search();
+		$data = $results->getData();
 
-            $this->assertEquals($expected, $result);
-      }
+		$expectedResults = array();
+		if (!empty($expectedKeys)) {
+			foreach ($expectedKeys as $key) {
+				$expectedResults[] = $this->contacts($key);
+			}
+		}
 
-      /**
-       * @covers Contact::getType
-       * @todo   Implement testGetType().
-       */
-      public function testGetType() {
+		$this->assertEquals($numResults, $results->getItemCount(), 'Number of results should match.');
+		$this->assertEquals($expectedResults, $data, 'Actual results should match.');
+	}
 
-            $this->model->setAttribute('id', 1);
+	/**
+	 * @covers Contact::getType
+	 */
+	public function testGetType() {
 
-            $result = $this->model->GetType();
-
-            $expected = $this->contacts('contact1')->GetType();
-
-            $this->assertEquals($expected, $result);
-      }
-
-      /**
-       * @dataProvider dataProvider_Search
-       */
-      public function testSearch_WithValidTerms_ReturnsExpectedResults($searchTerms, $numResults, $expectedKeys) {
-
-            $contact = new Contact;
-            $contact->setAttributes($searchTerms);
-            $results = $contact->search();
-            $data = $results->getData();
-
-            $expectedResults = array();
-            if (!empty($expectedKeys)) {
-                  foreach ($expectedKeys as $key) {
-                        $expectedResults[] = $this->contacts($key);
-                  }
-            }
-
-            $this->assertEquals($numResults, $results->getItemCount(), 'Number of results should match.');
-            $this->assertEquals($expectedResults, $data, 'Actual results should match.');
-      }
+		$this->model->setAttribute('id', 1);
+		$result = $this->model->GetType();
+		$expected = $this->contacts('contact1')->GetType();
+		$this->assertEquals($expected, $result);
+	}
 
 }

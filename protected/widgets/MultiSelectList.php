@@ -35,12 +35,12 @@ class MultiSelectList extends BaseFieldWidget
 		$this->filtered_options = $this->options;
 
 		if (empty($_POST)) {
-			if ($this->element->{$this->relation}) {
+			if ($this->element && $this->element->{$this->relation}) {
 				foreach ($this->element->{$this->relation} as $item) {
 					$this->selected_ids[] = $item->{$this->relation_id_field};
 					unset($this->filtered_options[$item->{$this->relation_id_field}]);
 				}
-			} else if (!$this->element->id) {
+			} else if (!$this->element || !$this->element->id) {
 				if (is_array($this->default_options)) {
 					$this->selected_ids = $this->default_options;
 					foreach ($this->default_options as $id) {
@@ -58,14 +58,19 @@ class MultiSelectList extends BaseFieldWidget
 			}
 			// when the field being used contains the appropriate square brackets for defining the associative array, the original (above)
 			// approach for retrieving the posted value does not work. The following (more standard) approach does
-			else if (isset($_POST[get_class($this->element)][$this->relation])) {
-				foreach ($_POST[get_class($this->element)][$this->relation] as $id) {
+			else if (isset($_POST[CHtml::modelName($this->element)][$this->relation])) {
+				foreach ($_POST[CHtml::modelName($this->element)][$this->relation] as $id) {
 					$this->selected_ids[] = $id;
 					unset($this->filtered_options[$id]);
 				}
 			}
 		}
 
-		parent::init();
+		// if the widget has javascript, load it in
+		if (file_exists("protected/widgets/js/".get_class($this).".js")) {
+			$this->assetFolder = Yii::app()->getAssetManager()->publish('protected/widgets/js');
+		}
+
+		//NOTE: don't call parent init as the field behaviour doesn't work for the relations attribute with models
 	}
 }

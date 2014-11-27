@@ -31,6 +31,18 @@ class ConsentFormContext extends PageObjectContext
     }
 
     /**
+     * @Then /^I select the previously created operation "([^"]*)"$/
+     */
+    public function iSelectThePreviouslyCreatedOperation($value)
+    {
+        /**
+         * @var ConsentForm $consentForm
+         */
+        $consentForm = $this->getPage('ConsentForm');
+        $consentForm->existingOperation($value);
+    }
+
+    /**
      * @Then /^I select Add Consent Form$/
      */
     public function iSelectAddConsentForm()
@@ -76,6 +88,18 @@ class ConsentFormContext extends PageObjectContext
          */
         $consentForm = $this->getPage('ConsentForm');
         $consentForm->procedureType($type);
+    }
+
+    /**
+     * @Given /^I choose an additional procedure of "([^"]*)"$/
+     */
+    public function iChooseAdditionalProcedureOf($type)
+    {
+        /**
+         * @var ConsentForm $consentForm
+         */
+        $consentForm = $this->getPage('ConsentForm');
+        $consentForm->additionalProcedure($type);
     }
 
 
@@ -224,6 +248,18 @@ class ConsentFormContext extends PageObjectContext
     }
 
     /**
+     * @Then /^I save the Consent Form Draft$/
+     */
+    public function iSaveTheConsentFormDraft()
+    {
+        /**
+         * @var ConsentForm $consentForm
+         */
+        $consentForm = $this->getPage('ConsentForm');
+        $consentForm->saveConsentFormDraft();
+    }
+
+    /**
      * @Then /^I save the Consent Form$/
      */
     public function iSaveTheConsentForm()
@@ -235,4 +271,27 @@ class ConsentFormContext extends PageObjectContext
         $consentForm->saveConsentForm();
     }
 
+    /**
+     * @Then /^I save the Consent Form and confirm it has been created successfully$/
+     */
+    public function iSaveTheConsentFormAndConfirm()
+    {
+        /**
+         * @var ConsentForm $consentForm
+         */
+        $consentForm = $this->getPage('ConsentForm');
+        $consentForm->saveConsentAndConfirm();
+    }
+
+    /**
+     * @Then /^I confirm that the Consent Validation error messages have been displayed$/
+     */
+    public function iConfirmThatTheConsentValidationErrorMessagesHaveBeenDisplayed()
+    {
+        /**
+         * @var ConsentForm $consentForm
+         */
+        $consentForm = $this->getPage('ConsentForm');
+        $consentForm ->validationMessagesCheck();
+    }
 }

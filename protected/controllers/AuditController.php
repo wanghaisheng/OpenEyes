@@ -29,12 +29,9 @@ class AuditController extends BaseController
 	public function accessRules()
 	{
 		return array(
-			// Level 2 or above can do anything
 			array('allow',
-				'expression' => 'BaseController::checkUserLevel(2)',
+				'roles' => array('OprnViewClinical'),
 			),
-			// Deny anything else (default rule allows authenticated users)
-			array('deny'),
 		);
 	}
 
@@ -58,7 +55,7 @@ class AuditController extends BaseController
 			$data = $this->getData();
 		}
 
-		Yii::app()->clientScript->registerScriptFile(Yii::app()->createUrl('js/audit.js'));
+		Yii::app()->assetManager->registerScriptFile('js/audit.js');
 		$this->renderPartial('_list', array('data' => $data), false, true);
 		echo "<!-------------------------->";
 		$this->renderPartial('_pagination', array('data' => $data), false, true);
@@ -73,7 +70,8 @@ class AuditController extends BaseController
 		}
 
 		if (@$_REQUEST['site_id']) {
-			$criteria->addCondition('site_id='.$_REQUEST['site_id']);
+			$criteria->addCondition('site_id = :site_id');
+			$criteria->params[':site_id'] = $_REQUEST['site_id'];
 		}
 
 		if (@$_REQUEST['firm_id']) {
@@ -123,12 +121,14 @@ class AuditController extends BaseController
 
 		if (@$_REQUEST['date_from']) {
 			$date_from = Helper::convertNHS2MySQL($_REQUEST['date_from']).' 00:00:00';
-			$criteria->addCondition("`t`.created_date >= '$date_from'");
+			$criteria->addCondition("`t`.created_date >= :date_from");
+			$criteria->params[':date_from'] = $date_from;
 		}
 
 		if (@$_REQUEST['date_to']) {
 			$date_to = Helper::convertNHS2MySQL($_REQUEST['date_to']).' 23:59:59';
-			$criteria->addCondition("`t`.created_date <= '$date_to'");
+			$criteria->addCondition("`t`.created_date <= :date_to");
+			$criteria->params[':date_to'] = $date_to;
 		}
 
 		if (@$_REQUEST['hos_num']) {

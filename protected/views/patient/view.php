@@ -20,7 +20,7 @@
 ?>
 
 <?php
-$clinical = (BaseController::checkUserLevel(2));
+$clinical = $clinical = $this->checkAccess('OprnViewClinical');
 
 $warnings = $this->patient->getWarnings($clinical);
 ?>
@@ -85,8 +85,8 @@ $warnings = $this->patient->getWarnings($clinical);
 			<?php $this->renderPartial('_patient_commissioningbodies')?>
 			<?php $this->renderPartial('_patient_contacts')?>
 		</div>
-		<div class="large-6 column">
-			<?php if (BaseController::checkUserLevel(2)) {?>
+		<div class="large-6 column" id="patient-summary-form-container">
+			<?php if ($this->checkAccess('OprnViewClinical')) {?>
 				<?php $this->renderPartial('_patient_episodes',array(
 					'episodes' => $episodes,
 					'ordered_episodes' => $ordered_episodes,

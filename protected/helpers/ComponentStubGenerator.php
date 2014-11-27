@@ -29,18 +29,31 @@ class ComponentStubGenerator
 	 */
 	static public function generate($class_name, array $properties = array())
 	{
-		$stub = PHPUnit_Framework_MockObject_Generator::getMock($class_name, array(), array(), '', false);
+		$stub = PHPUnit_Framework_MockObject_Generator::getMock($class_name, array(), array(), '', false, false, true, false);
 
+		self::propertiesSetAndMatch($stub, $properties);
+
+		return $stub;
+	}
+
+	/**
+	 * iteratest through properties to set values on the stub that exists on the stub class. If $force is true,
+	 * will set the value regardless of whether or not the property exists on the element
+	 *
+	 * @param $stub
+	 * @param array $properties
+	 * @param bool $force
+	 */
+	static public function propertiesSetAndMatch($stub, array $properties = array(), $force = false)
+	{
 		$rf_obj = new ReflectionObject($stub);
 		foreach ($properties as $name => $value) {
-			if ($rf_obj->hasProperty($name)) {
+			if ($force || $rf_obj->hasProperty($name)) {
 				$stub->$name = $value;
 			}
 		}
 
 		$stub->__phpunit_getInvocationMocker()->addMatcher(new ComponentStubMatcher($properties));
-
-		return $stub;
 	}
 }
 
@@ -62,7 +75,7 @@ class ComponentStubMatcher implements PHPUnit_Framework_MockObject_Matcher_Invoc
 	{
 		if ($invocation->methodName == '__set') {
 			$this->properties[$invocation->parameters[0]] = $invocation->parameters[1];
-		} elseif ($invocation->methodName == '__get') {
+		} elseif ($invocation->methodName == '__get' || $invocation->methodName == '__isset') {
 			return array_key_exists($invocation->parameters[0], $this->properties);
 		} else {
 			return $this->methodNameToProperty($invocation, true);
@@ -73,6 +86,8 @@ class ComponentStubMatcher implements PHPUnit_Framework_MockObject_Matcher_Invoc
 	{
 		if ($invocation->methodName == '__get') {
 			return $this->properties[$invocation->parameters[0]];
+		} else if ($invocation->methodName == '__isset') {
+			return isset($this->properties[$invocation->parameters[0]]);
 		} else {
 			return $this->methodNameToProperty($invocation, false);
 		}
